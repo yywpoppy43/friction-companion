@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0e14" />
+<title>Friction Companion</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #131826;
+    --ink: #eef2ff;
+    --muted: #8b95b0;
+    --accent: #6ee7ff;
+    --baseline: #34d3c4;
+    --intention: #f5b73d;
+    --encounter: #ff5d6c;
+    --growth: #5ddc8a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+  .app {
+    width: 100%; max-width: 440px;
+    background: var(--panel);
+    border-radius: 22px;
+    padding: 26px 22px 30px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.5);
+    position: relative;
+  }
+  h1 { font-size: 19px; margin: 0 0 2px; letter-spacing: .2px; }
+  .tag { color: var(--muted); font-size: 13px; margin: 0 0 22px; }
+
+  /* setup screen */
+  .field { margin: 18px 0; }
+  .field label { display:flex; justify-content:space-between; font-size:14px; color: var(--muted); margin-bottom:8px; }
+  .field label b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  input[type=range] { width:100%; accent-color: var(--accent); }
+  .quick { display:flex; gap:8px; margin: 6px 0 2px; }
+  .quick button {
+    flex:1; background:#1d2436; color:var(--ink); border:1px solid #2a3450;
+    border-radius:12px; padding:10px 6px; font-size:13px; cursor:pointer;
+  }
+  .quick button:active { transform: scale(.98); }
+
+  .start {
+    width:100%; margin-top:24px; border:0; border-radius:16px;
+    background: linear-gradient(135deg, #6ee7ff, #5ddc8a);
+    color:#06121a; font-size:18px; font-weight:700; padding:18px; cursor:pointer;
+  }
+  .start:active { transform: scale(.99); }
+  .note { color: var(--muted); font-size:12px; text-align:center; margin-top:14px; }
+  .warn { color: #ffb4bd; font-size:13px; margin-top:14px; display:none; }
+
+  /* running screen */
+  .run { display:none; text-align:center; }
+  .ring { position: relative; width: 230px; height: 230px; margin: 6px auto 10px; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .center {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; padding: 0 24px;
+  }
+  .stage { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+  .stagebig { font-size: 30px; font-weight: 800; margin: 2px 0 0; }
+  .roundlbl { font-size:12px; color: var(--muted); margin-top:6px; }
+  .cuebox {
+    min-height: 96px; margin: 16px 6px 4px; padding: 16px 16px;
+    background:#0e1320; border:1px solid #222b42; border-radius:14px;
+    font-size: 18px; line-height:1.45;
+  }
+  .cuetone { color: var(--muted); font-size:12px; margin-top:8px; }
+  .clock { color: var(--muted); font-size:13px; margin-top:14px; font-variant-numeric: tabular-nums; }
+  .stop {
+    margin-top:20px; width:100%; border:1px solid #3a2730; background:#1c1116;
+    color:#ff9aa6; border-radius:14px; padding:14px; font-size:15px; cursor:pointer;
+  }
+  .muted-pulse { animation: pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.55} 50%{opacity:1} }
+  .done .stagebig { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── SETUP ─────────────────────────────────────────── -->
+  <div id="setup">
+    <h1>Friction Companion</h1>
+    <p class="tag">Press start. Train. It coaches you through the wall — out loud.</p>
+
+    <div class="field">
+      <label>Session length <b id="minVal">5 min</b></label>
+      <input id="min" type="range" min="1" max="30" value="5" />
+    </div>
+    <div class="field">
+      <label>Hard pushes (rounds) <b id="rndVal">2</b></label>
+      <input id="rnd" type="range" min="1" max="6" value="2" />
+    </div>
+
+    <div class="quick">
+      <button data-min="1" data-rnd="1">1-min taste</button>
+      <button data-min="10" data-rnd="3">10 min · 3</button>
+      <button data-min="20" data-rnd="4">20 min · 4</button>
+    </div>
+
+    <button id="startBtn" class="start">▶  Start session</button>
+    <p class="note">Use earbuds. Keep the screen on. Volume up.</p>
+    <p id="warn" class="warn">This browser can’t speak out loud. Try Safari (iPhone) or Chrome.</p>
+  </div>
+
+  <!-- ── RUNNING ───────────────────────────────────────── -->
+  <div id="run" class="run">
+    <div class="ring">
+      <svg width="230" height="230" viewBox="0 0 230 230">
+        <circle cx="115" cy="115" r="104" fill="none" stroke="#1d2436" stroke-width="14"/>
+        <circle id="prog" cx="115" cy="115" r="104" fill="none" stroke="var(--accent)"
+                stroke-width="14" stroke-linecap="round"
+                stroke-dasharray="653.45" stroke-dashoffset="653.45"/>
+      </svg>
+      <div class="center">
+        <div class="stage" id="stage">getting ready</div>
+        <div class="stagebig" id="stageBig">—</div>
+        <div class="roundlbl" id="roundLbl"></div>
+      </div>
+    </div>
+    <div class="cuebox">
+      <div id="cueText" class="muted-pulse">Settle in. Listen.</div>
+      <div id="cueTone" class="cuetone"></div>
+    </div>
+    <div class="clock" id="clock">0:00 / 0:00</div>
+    <button id="stopBtn" class="stop">Stop session</button>
+  </div>
+
+</div>
+
+<script>
+/* ──────────────────────────────────────────────────────────────────────────
+   Cue corpus — REAL cues produced by the engine's live Anthropic generator and
+   baked in (this mirrors how the engine's default source is a static corpus).
+   ────────────────────────────────────────────────────────────────────────── */
+const CORPUS = {
+  BASELINE: [
+    { text: "Find your feet on the ground. Drop your breath low and stay there. This is where you start.", tone: "Calm, grounded, matter-of-fact" },
+    { text: "Find your breath low. Feel your feet. You're here and steady.", tone: "Calm, grounded, matter-of-fact" },
+    { text: "Find your feet on the ground. Drop your breath low into your belly and hold it there. This is where you start from.", tone: "Calm, grounded, settling" }
+  ],
+  INTENTION: [
+    { text: "Your gaze is soft. Lift it to one point and lengthen your spine. Your power lives in the line you hold.", tone: "Calm, precise, grounding" },
+    { text: "Your gaze is drifting. Lift it to one point and lengthen your spine. Your power lives in the line you hold.", tone: "Direct, measured, clarifying" },
+    { text: "Your gaze is soft. Lock it to one point. Stack your spine and hips — precision first, force follows.", tone: "Calm, direct, settling" }
+  ],
+  ENCOUNTER: [
+    { text: "Your breath is shallow. Drop it low, expand your ribs. The breath steadies you right now.", tone: "Sharp, grounded, commanding" },
+    { text: "You're rushing it. Slow the cadence, hold each transition. Control lives inside the effort, not in racing past it.", tone: "Sharp, commanding, calm authority" },
+    { text: "Your breath is shallow. Drop it low, expand your ribs wide. The breath is what steadies you right now.", tone: "Sharp, grounded, commanding" },
+    { text: "Your shoulders are climbing and your breath is shallow. Drop them both. Stay inside the effort — don't race past it.", tone: "Sharp, commanding, calm authority" }
+  ],
+  GROWTH: [
+    { text: "You're at the threshold. Lengthen your spine, anchor your hips, and drive from the ground up. Everything builds from a solid line.", tone: "Calm, grounded authority — steady and precise" },
+    { text: "You're at the edge now. Send everything into the one muscle doing the work. That's where the growth lives.", tone: "Sharp, commanding, steady" },
+    { text: "Your spine is the line. Lengthen it, anchor your hips, and send all the effort into the one muscle working. Everything else stays quiet.", tone: "Calm, direct, authoritative" }
+  ]
+};
+
+const STAGE_SUB = {
+  BASELINE:  "you are capable — settle",
+  INTENTION: "aim your focus",
+  TRACK:     "holding… stay with it",
+  ENCOUNTER: "the wall — push through",
+  GROWTH:    "bank it · take more"
+};
+const STAGE_COLOR = {
+  BASELINE: "var(--baseline)", INTENTION: "var(--intention)",
+  TRACK: "var(--intention)", ENCOUNTER: "var(--encounter)", GROWTH: "var(--growth)"
+};
+
+/* ── tiny helpers ───────────────────────────────────────────────────────── */
+const $ = (id) => document.getElementById(id);
+const RING = 2 * Math.PI * 104; // circumference
+const lastIdx = {}; // per-state rotation memory (freshness, like the engine)
+
+function pickCue(state) {
+  const pool = CORPUS[state];
+  let i = Math.floor(Math.random() * pool.length);
+  if (pool.length > 1 && i === lastIdx[state]) i = (i + 1) % pool.length;
+  lastIdx[state] = i;
+  return pool[i];
+}
+
+function mmss(ms) {
+  const s = Math.max(0, Math.round(ms / 1000));
+  return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+}
+
+/* ── speech ─────────────────────────────────────────────────────────────── */
+let voice = null;
+function loadVoice() {
+  const vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+  // Prefer a clear English voice; fall back to the first available.
+  voice = vs.find(v => /en[-_]US/i.test(v.lang) && /google|samantha|aria|natural/i.test(v.name))
+       || vs.find(v => /^en/i.test(v.lang)) || vs[0] || null;
+}
+if (window.speechSynthesis) {
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+function say(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if (voice) u.voice = voice;
+  u.rate = 0.98; u.pitch = 1.0; u.volume = 1.0;
+  speechSynthesis.speak(u);
+}
+
+/* ── session engine (faithful to the PRD §5 loop) ───────────────────────── */
+let timers = [];
+let rafId = null;
+let session = null; // { startedAt, totalMs }
+let wakeLock = null;
+
+function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+function clearAll() { timers.forEach(clearTimeout); timers = []; if (rafId) cancelAnimationFrame(rafId); rafId = null; }
+
+function setStage(state, round, rounds) {
+  $("stage").textContent = STAGE_SUB[state] || state.toLowerCase();
+  $("stageBig").textContent = state === "TRACK" ? "INTENTION" : state;
+  $("stageBig").style.color = STAGE_COLOR[state] || "var(--ink)";
+  $("prog").style.stroke = STAGE_COLOR[state] || "var(--accent)";
+  $("roundLbl").textContent = rounds > 1 ? ("round " + round + " of " + rounds) : "";
+}
+
+function showCue(state) {
+  const c = pickCue(state);
+  const el = $("cueText");
+  el.classList.remove("muted-pulse");
+  el.textContent = c.text;
+  $("cueTone").textContent = c.tone;
+  say(c.text);
+}
+
+function fireStage(state, round, rounds) {
+  setStage(state, round, rounds);
+  if (state !== "TRACK") showCue(state);
+  else { $("cueText").classList.add("muted-pulse"); $("cueText").textContent = "Holding the line… stay with it."; $("cueTone").textContent = ""; }
+}
+
+function tickClock() {
+  if (!session) return;
+  const elapsed = Date.now() - session.startedAt;
+  const frac = Math.min(1, elapsed / session.totalMs);
+  $("prog").style.strokeDashoffset = String(RING * (1 - frac));
+  $("clock").textContent = mmss(elapsed) + " / " + mmss(session.totalMs);
+  rafId = requestAnimationFrame(tickClock);
+}
+
+async function start(minutes, rounds) {
+  if (!window.speechSynthesis) { $("warn").style.display = "block"; return; }
+  $("setup").style.display = "none";
+  $("run").style.display = "block";
+  $("run").classList.remove("done");
+
+  // Keep the screen awake during the set (best-effort).
+  try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) {}
+
+  const totalMs = minutes * 60000;
+  const roundMs = totalMs / rounds;
+  session = { startedAt: Date.now(), totalMs };
+  tickClock();
+
+  // PRD §5: Initialize → BASELINE anchor, then settle into round 1.
+  fireStage("BASELINE", 1, rounds);
+
+  const BASELINE_SETTLE = Math.min(4000, roundMs * 0.12);
+
+  for (let r = 1; r <= rounds; r++) {
+    const base = (r - 1) * roundMs;
+    const intentionAt = base + (r === 1 ? BASELINE_SETTLE : 0);
+    const trackAt     = base + roundMs * 0.30;   // go silent, monitor
+    const encounterAt = base + roundMs * 0.62;   // tipping point
+    const growthAt    = base + roundMs * 0.86;   // stabilized → demand more
+
+    at(intentionAt, () => fireStage("INTENTION", r, rounds));
+    at(trackAt,     () => fireStage("TRACK", r, rounds));
+    at(encounterAt, () => fireStage("ENCOUNTER", r, rounds));
+    at(growthAt,    () => fireStage("GROWTH", r, rounds));
+  }
+
+  at(totalMs, finish);
+}
+
+function finish() {
+  clearAll();
+  $("run").classList.add("done");
+  setStage("GROWTH", 1, 1);
+  $("stage").textContent = "complete";
+  $("stageBig").textContent = "DONE";
+  $("stageBig").style.color = "var(--accent)";
+  $("cueText").classList.remove("muted-pulse");
+  $("cueText").textContent = "That's the set. You met the wall and moved it. Breathe.";
+  $("cueTone").textContent = "";
+  say("That's the set. You met the wall, and you moved it. Breathe.");
+  if (wakeLock) { try { wakeLock.release(); } catch(e){} wakeLock = null; }
+}
+
+function stop() {
+  clearAll();
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (wakeLock) { try { wakeLock.release(); } catch(e){} wakeLock = null; }
+  session = null;
+  $("run").style.display = "none";
+  $("setup").style.display = "block";
+}
+
+/* ── wiring ─────────────────────────────────────────────────────────────── */
+$("min").addEventListener("input", e => $("minVal").textContent = e.target.value + " min");
+$("rnd").addEventListener("input", e => $("rndVal").textContent = e.target.value);
+document.querySelectorAll(".quick button").forEach(b => b.addEventListener("click", () => {
+  $("min").value = b.dataset.min; $("minVal").textContent = b.dataset.min + " min";
+  $("rnd").value = b.dataset.rnd; $("rndVal").textContent = b.dataset.rnd;
+}));
+$("startBtn").addEventListener("click", () => {
+  // First speak happens inside the tap gesture → unlocks audio on iOS.
+  if (window.speechSynthesis) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(" ")); }
+  start(parseInt($("min").value, 10), parseInt($("rnd").value, 10));
+});
+$("stopBtn").addEventListener("click", stop);
+if (!window.speechSynthesis) $("warn").style.display = "block";
+</script>
+</body>
+</html>
