@@ -16,7 +16,9 @@
     "demo:biometric": "node src/examples/runBiometricSession.ts",
     "demo:generative": "node src/examples/runGenerativeSession.ts",
     "smoke:live": "node --env-file-if-exists=.env src/examples/liveSmoke.ts",
-    "session:live": "node --env-file-if-exists=.env src/examples/runLiveSession.ts"
+    "session:live": "node --env-file-if-exists=.env src/examples/runLiveSession.ts",
+    "serve:app": "node --env-file-if-exists=.env webapp/server.ts",
+    "verify:app": "node --env-file-if-exists=.env webapp/verify.mjs"
   },
   "keywords": [
     "state-machine",

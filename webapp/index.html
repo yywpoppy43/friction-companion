@@ -92,21 +92,17 @@
   <!-- ── SETUP ─────────────────────────────────────────── -->
   <div id="setup">
     <h1>Friction Companion</h1>
-    <p class="tag">Press start. Train. It coaches you through the wall — out loud.</p>
+    <p class="tag">Press start. Train. It coaches you through the wall — out loud, live.</p>
 
     <div class="field">
-      <label>Session length <b id="minVal">5 min</b></label>
-      <input id="min" type="range" min="1" max="30" value="5" />
-    </div>
-    <div class="field">
-      <label>Hard pushes (rounds) <b id="rndVal">2</b></label>
-      <input id="rnd" type="range" min="1" max="6" value="2" />
+      <label>Session length <b id="minVal">10 min</b></label>
+      <input id="min" type="range" min="1" max="30" value="10" />
     </div>
 
     <div class="quick">
-      <button data-min="1" data-rnd="1">1-min taste</button>
-      <button data-min="10" data-rnd="3">10 min · 3</button>
-      <button data-min="20" data-rnd="4">20 min · 4</button>
+      <button data-min="1">1-min taste</button>
+      <button data-min="10">10 min</button>
+      <button data-min="20">20 min</button>
     </div>
 
     <button id="startBtn" class="start">▶  Start session</button>
@@ -141,32 +137,26 @@
 
 <script>
 /* ──────────────────────────────────────────────────────────────────────────
-   Cue corpus — REAL cues produced by the engine's live Anthropic generator and
-   baked in (this mirrors how the engine's default source is a static corpus).
+   Friction Companion — Stage-1 client.
+
+   NO cues are baked into this page. On Start, each of the four stages
+   (Baseline → Intention → Encounter → Growth) is fetched LIVE from the server
+   (`POST /api/cue`), which runs the engine's real Anthropic generator. Each cue
+   is spoken with the browser's built-in voice, and no cue begins before the
+   previous one has finished speaking. Stages are spaced across the true session
+   length, with the Encounter near the realistic break point.
    ────────────────────────────────────────────────────────────────────────── */
-const CORPUS = {
-  BASELINE: [
-    { text: "Find your feet on the ground. Drop your breath low and stay there. This is where you start.", tone: "Calm, grounded, matter-of-fact" },
-    { text: "Find your breath low. Feel your feet. You're here and steady.", tone: "Calm, grounded, matter-of-fact" },
-    { text: "Find your feet on the ground. Drop your breath low into your belly and hold it there. This is where you start from.", tone: "Calm, grounded, settling" }
-  ],
-  INTENTION: [
-    { text: "Your gaze is soft. Lift it to one point and lengthen your spine. Your power lives in the line you hold.", tone: "Calm, precise, grounding" },
-    { text: "Your gaze is drifting. Lift it to one point and lengthen your spine. Your power lives in the line you hold.", tone: "Direct, measured, clarifying" },
-    { text: "Your gaze is soft. Lock it to one point. Stack your spine and hips — precision first, force follows.", tone: "Calm, direct, settling" }
-  ],
-  ENCOUNTER: [
-    { text: "Your breath is shallow. Drop it low, expand your ribs. The breath steadies you right now.", tone: "Sharp, grounded, commanding" },
-    { text: "You're rushing it. Slow the cadence, hold each transition. Control lives inside the effort, not in racing past it.", tone: "Sharp, commanding, calm authority" },
-    { text: "Your breath is shallow. Drop it low, expand your ribs wide. The breath is what steadies you right now.", tone: "Sharp, grounded, commanding" },
-    { text: "Your shoulders are climbing and your breath is shallow. Drop them both. Stay inside the effort — don't race past it.", tone: "Sharp, commanding, calm authority" }
-  ],
-  GROWTH: [
-    { text: "You're at the threshold. Lengthen your spine, anchor your hips, and drive from the ground up. Everything builds from a solid line.", tone: "Calm, grounded authority — steady and precise" },
-    { text: "You're at the edge now. Send everything into the one muscle doing the work. That's where the growth lives.", tone: "Sharp, commanding, steady" },
-    { text: "Your spine is the line. Lengthen it, anchor your hips, and send all the effort into the one muscle working. Everything else stays quiet.", tone: "Calm, direct, authoritative" }
-  ]
-};
+
+/* Fractions of the session at which each stage's cue is spoken. Baseline and
+   Intention set you up early; the long stretch between Intention and Encounter
+   is the silent "work" phase; the Encounter lands in the last ~14% (the wall);
+   Growth consolidates just before the end. */
+const PLAN = [
+  { key: 'BASELINE',  frac: 0.00 },
+  { key: 'INTENTION', frac: 0.25 },
+  { key: 'ENCOUNTER', frac: 0.86 },
+  { key: 'GROWTH',    frac: 0.94 },
+];
 
 const STAGE_SUB = {
   BASELINE:  "you are capable — settle",
@@ -180,29 +170,23 @@ const STAGE_COLOR = {
   TRACK: "var(--intention)", ENCOUNTER: "var(--encounter)", GROWTH: "var(--growth)"
 };
 
-/* ── tiny helpers ───────────────────────────────────────────────────────── */
 const $ = (id) => document.getElementById(id);
-const RING = 2 * Math.PI * 104; // circumference
-const lastIdx = {}; // per-state rotation memory (freshness, like the engine)
-
-function pickCue(state) {
-  const pool = CORPUS[state];
-  let i = Math.floor(Math.random() * pool.length);
-  if (pool.length > 1 && i === lastIdx[state]) i = (i + 1) % pool.length;
-  lastIdx[state] = i;
-  return pool[i];
-}
+const RING = 2 * Math.PI * 104;
 
 function mmss(ms) {
   const s = Math.max(0, Math.round(ms / 1000));
   return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
 }
 
-/* ── speech ─────────────────────────────────────────────────────────────── */
+/** Pure: the spoken time (ms from start) for each stage, given a duration. */
+function computeSchedule(durationMs) {
+  return PLAN.map((p) => ({ key: p.key, frac: p.frac, atMs: Math.round(p.frac * durationMs) }));
+}
+
+/* ── speech (browser built-in voice, unchanged) ─────────────────────────── */
 let voice = null;
 function loadVoice() {
   const vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
-  // Prefer a clear English voice; fall back to the first available.
   voice = vs.find(v => /en[-_]US/i.test(v.lang) && /google|samantha|aria|natural/i.test(v.name))
        || vs.find(v => /^en/i.test(v.lang)) || vs[0] || null;
 }
@@ -210,109 +194,175 @@ if (window.speechSynthesis) {
   loadVoice();
   speechSynthesis.onvoiceschanged = loadVoice;
 }
-function say(text) {
-  if (!window.speechSynthesis) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  if (voice) u.voice = voice;
-  u.rate = 0.98; u.pitch = 1.0; u.volume = 1.0;
-  speechSynthesis.speak(u);
+
+/* ── live cue fetch (no baked cues; the server is the only source) ───────── */
+async function fetchCue(stage, round) {
+  try {
+    const res = await fetch('/api/cue', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ stage, round })
+    });
+    if (!res.ok) throw new Error('server ' + res.status);
+    return await res.json(); // { cue: {AudioTranscript, DeliveryTone, ...}, origin, ... }
+  } catch (e) {
+    // No fabricated cue text here — keep the "no baked cues" contract. Surface
+    // the failure; the stage shows a note and speaks nothing.
+    return { cue: { AudioTranscript: '', DeliveryTone: '' }, origin: 'unreachable', error: String(e) };
+  }
 }
 
-/* ── session engine (faithful to the PRD §5 loop) ───────────────────────── */
-let timers = [];
+/* ── run state ──────────────────────────────────────────────────────────── */
+let running = false;
+let session = null;      // { startedAt, durationMs }
+let timers = [];         // clearable timeouts
+let onStop = [];         // resolvers to release awaits on stop()
 let rafId = null;
-let session = null; // { startedAt, totalMs }
 let wakeLock = null;
 
-function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
-function clearAll() { timers.forEach(clearTimeout); timers = []; if (rafId) cancelAnimationFrame(rafId); rafId = null; }
+function cancelableSleep(ms) {
+  return new Promise((resolve) => {
+    const id = setTimeout(resolve, ms);
+    timers.push(id);
+    onStop.push(() => { clearTimeout(id); resolve(); });
+  });
+}
+function waitUntil(atMs) {
+  const elapsed = performance.now() - session.startedAt;
+  return cancelableSleep(Math.max(0, atMs - elapsed));
+}
 
-function setStage(state, round, rounds) {
+/** Speak `text`; resolves when speech ends (or on stop / safety timeout). Never
+    lets the next cue overlap this one. Records timing for verification. */
+function speak(text, stage, origin) {
+  const rec = { stage, text, origin, startedAt: performance.now(), endedAt: null };
+  window.__spoken.push(rec);
+  return new Promise((resolve) => {
+    const done = () => { if (rec.endedAt == null) { rec.endedAt = performance.now(); resolve(); } };
+    onStop.push(done);
+    if (!window.speechSynthesis || !text) { done(); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (voice) u.voice = voice;
+    u.rate = 0.98; u.pitch = 1.0; u.volume = 1.0;
+    u.onend = done; u.onerror = done;
+    speechSynthesis.speak(u);
+    // Safety net if onend never fires (some mobile browsers): estimate duration.
+    const id = setTimeout(done, Math.max(3500, text.length * 90));
+    timers.push(id);
+  });
+}
+
+/* ── UI ─────────────────────────────────────────────────────────────────── */
+function setStageUI(state) {
   $("stage").textContent = STAGE_SUB[state] || state.toLowerCase();
   $("stageBig").textContent = state === "TRACK" ? "INTENTION" : state;
   $("stageBig").style.color = STAGE_COLOR[state] || "var(--ink)";
   $("prog").style.stroke = STAGE_COLOR[state] || "var(--accent)";
-  $("roundLbl").textContent = rounds > 1 ? ("round " + round + " of " + rounds) : "";
+  if (state === "TRACK") {
+    $("cueText").classList.add("muted-pulse");
+    $("cueText").textContent = "Holding the line… stay with it.";
+    $("cueTone").textContent = "";
+  }
 }
-
-function showCue(state) {
-  const c = pickCue(state);
+function setCueText(text, tone, origin) {
   const el = $("cueText");
   el.classList.remove("muted-pulse");
-  el.textContent = c.text;
-  $("cueTone").textContent = c.tone;
-  say(c.text);
+  el.textContent = text || "(server unreachable — no cue)";
+  $("cueTone").textContent = origin === 'unreachable' ? "connection lost" : (tone || "");
 }
-
-function fireStage(state, round, rounds) {
-  setStage(state, round, rounds);
-  if (state !== "TRACK") showCue(state);
-  else { $("cueText").classList.add("muted-pulse"); $("cueText").textContent = "Holding the line… stay with it."; $("cueTone").textContent = ""; }
-}
-
 function tickClock() {
   if (!session) return;
-  const elapsed = Date.now() - session.startedAt;
-  const frac = Math.min(1, elapsed / session.totalMs);
+  const elapsed = performance.now() - session.startedAt;
+  const frac = Math.min(1, elapsed / session.durationMs);
   $("prog").style.strokeDashoffset = String(RING * (1 - frac));
-  $("clock").textContent = mmss(elapsed) + " / " + mmss(session.totalMs);
+  $("clock").textContent = mmss(elapsed) + " / " + mmss(session.durationMs);
   rafId = requestAnimationFrame(tickClock);
 }
 
-async function start(minutes, rounds) {
-  if (!window.speechSynthesis) { $("warn").style.display = "block"; return; }
+/* ── the session flow (faithful to the engine's lifecycle) ──────────────── */
+async function runSession(durationMs) {
+  window.__spoken = [];
+  window.__sessionDone = false;
+  window.__schedule = computeSchedule(durationMs);
+  running = true;
+  onStop = []; timers = [];
+  session = { startedAt: performance.now(), durationMs };
+
   $("setup").style.display = "none";
   $("run").style.display = "block";
   $("run").classList.remove("done");
-
-  // Keep the screen awake during the set (best-effort).
-  try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) {}
-
-  const totalMs = minutes * 60000;
-  const roundMs = totalMs / rounds;
-  session = { startedAt: Date.now(), totalMs };
+  setStageUI("BASELINE");
+  $("cueText").classList.add("muted-pulse");
+  $("cueText").textContent = "Settle in. Listen.";
   tickClock();
 
-  // PRD §5: Initialize → BASELINE anchor, then settle into round 1.
-  fireStage("BASELINE", 1, rounds);
+  try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) {}
 
-  const BASELINE_SETTLE = Math.min(4000, roundMs * 0.12);
+  const schedule = window.__schedule;
+  let speechDone = Promise.resolve();
 
-  for (let r = 1; r <= rounds; r++) {
-    const base = (r - 1) * roundMs;
-    const intentionAt = base + (r === 1 ? BASELINE_SETTLE : 0);
-    const trackAt     = base + roundMs * 0.30;   // go silent, monitor
-    const encounterAt = base + roundMs * 0.62;   // tipping point
-    const growthAt    = base + roundMs * 0.86;   // stabilized → demand more
+  for (let i = 0; i < schedule.length; i++) {
+    const s = schedule[i];
+    if (!running) return;
 
-    at(intentionAt, () => fireStage("INTENTION", r, rounds));
-    at(trackAt,     () => fireStage("TRACK", r, rounds));
-    at(encounterAt, () => fireStage("ENCOUNTER", r, rounds));
-    at(growthAt,    () => fireStage("GROWTH", r, rounds));
+    // Prefetch this stage's cue now; it resolves while we wait for its moment.
+    const cuePromise = fetchCue(s.key, 1);
+
+    // Never start a cue before the previous one has finished speaking.
+    await speechDone;
+    if (!running) return;
+
+    // Between cues, show the silent "holding/tracking" state (engine goes quiet).
+    if (i > 0) setStageUI("TRACK");
+
+    // Wait until this stage's scheduled moment in the real timeline.
+    await waitUntil(s.atMs);
+    if (!running) return;
+
+    const resp = await cuePromise;
+    if (!running) return;
+
+    setStageUI(s.key);
+    setCueText(resp.cue.AudioTranscript, resp.cue.DeliveryTone, resp.origin);
+    speechDone = speak(resp.cue.AudioTranscript, s.key, resp.origin);
   }
 
-  at(totalMs, finish);
+  await speechDone;
+  if (!running) return;
+  finish();
 }
 
 function finish() {
-  clearAll();
+  running = false;
+  clearTimers();
   $("run").classList.add("done");
-  setStage("GROWTH", 1, 1);
   $("stage").textContent = "complete";
   $("stageBig").textContent = "DONE";
   $("stageBig").style.color = "var(--accent)";
+  $("prog").style.strokeDashoffset = "0";
   $("cueText").classList.remove("muted-pulse");
   $("cueText").textContent = "That's the set. You met the wall and moved it. Breathe.";
   $("cueTone").textContent = "";
-  say("That's the set. You met the wall, and you moved it. Breathe.");
-  if (wakeLock) { try { wakeLock.release(); } catch(e){} wakeLock = null; }
+  if (window.speechSynthesis) {
+    const u = new SpeechSynthesisUtterance("That's the set. You met the wall, and you moved it. Breathe.");
+    if (voice) u.voice = voice; u.rate = 0.98;
+    speechSynthesis.speak(u);
+  }
+  releaseWake();
+  window.__sessionDone = true;
 }
 
+function clearTimers() { timers.forEach(clearTimeout); timers = []; if (rafId) cancelAnimationFrame(rafId); rafId = null; }
+function releaseWake() { if (wakeLock) { try { wakeLock.release(); } catch (e) {} wakeLock = null; } }
+
 function stop() {
-  clearAll();
+  running = false;
+  clearTimers();
+  onStop.forEach((fn) => { try { fn(); } catch (e) {} });
+  onStop = [];
   if (window.speechSynthesis) speechSynthesis.cancel();
-  if (wakeLock) { try { wakeLock.release(); } catch(e){} wakeLock = null; }
+  releaseWake();
   session = null;
   $("run").style.display = "none";
   $("setup").style.display = "block";
@@ -320,18 +370,24 @@ function stop() {
 
 /* ── wiring ─────────────────────────────────────────────────────────────── */
 $("min").addEventListener("input", e => $("minVal").textContent = e.target.value + " min");
-$("rnd").addEventListener("input", e => $("rndVal").textContent = e.target.value);
 document.querySelectorAll(".quick button").forEach(b => b.addEventListener("click", () => {
   $("min").value = b.dataset.min; $("minVal").textContent = b.dataset.min + " min";
-  $("rnd").value = b.dataset.rnd; $("rndVal").textContent = b.dataset.rnd;
 }));
 $("startBtn").addEventListener("click", () => {
-  // First speak happens inside the tap gesture → unlocks audio on iOS.
-  if (window.speechSynthesis) { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(" ")); }
-  start(parseInt($("min").value, 10), parseInt($("rnd").value, 10));
+  if (!window.speechSynthesis) { $("warn").style.display = "block"; return; }
+  // First speak inside the tap gesture → unlocks audio on iOS.
+  speechSynthesis.cancel();
+  speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
+  runSession(parseInt($("min").value, 10) * 60000);
 });
 $("stopBtn").addEventListener("click", stop);
 if (!window.speechSynthesis) $("warn").style.display = "block";
+
+// Test hooks (used by webapp/verify.mjs).
+window.runSession = runSession;
+window.computeSchedule = computeSchedule;
+window.__spoken = [];
+window.__sessionDone = false;
 </script>
 </body>
 </html>
