@@ -1,0 +1,212 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poppy Lifeforce</title>
+<meta name="description" content="Poppy Lifeforce · The Return.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#e9ebe4;      /* cool bone paper — light, slightly cool */
+    --ink:#191b1a;        /* near-black graphite */
+    --grey:#666a66;       /* muted graphite grey (secondary) */
+    --bridge-ink:#3c3f3c; /* lighter than the Door, darker than grey */
+    --oxblood:#6e241b;    /* deep red-brown — used exactly once */
+    --hair:rgba(25,27,26,.16);
+
+    --display:"Bricolage Grotesque", system-ui, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, monospace;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--display);
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  .wrap{
+    max-width:64rem;
+    margin:0 auto;
+    padding:0 clamp(1.5rem, 5vw, 4rem);
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1.5rem;
+    padding:clamp(1.1rem,3vh,1.6rem) 0;
+    font-family:var(--mono);
+  }
+  .wordmark{
+    font-size:.78rem;
+    font-weight:500;
+    letter-spacing:.22em;
+    color:var(--ink);
+  }
+  .nav{display:flex; gap:clamp(1.1rem,4vw,2.2rem)}
+  .nav a{
+    font-size:.74rem;
+    letter-spacing:.08em;
+    color:var(--grey);
+    text-decoration:none;
+    transition:color .3s ease;
+  }
+  .nav a:hover,.nav a:focus-visible{color:var(--ink)}
+
+  /* ---------- the opening: Door + Deck share one viewport ---------- */
+  .opening{
+    min-height:calc(100svh - 4.5rem);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:clamp(2rem,6vh,4rem) 0;
+  }
+
+  .door{
+    display:flex;
+    flex-direction:column;
+    gap:.26em;
+    font-size:clamp(1.7rem, 3.5vw, 2.7rem);
+    font-weight:600;
+    line-height:1.16;
+    letter-spacing:-.015em;
+    text-wrap:balance;
+  }
+  .door p{margin:0}
+  .door .quiet{           /* "They work." — the shortest line, quieter */
+    font-size:.58em;
+    font-weight:400;
+    letter-spacing:-.005em;
+  }
+  .door .final{margin-top:.5em}  /* a touch more air above the last line */
+
+  .ox{color:var(--oxblood)}      /* the single accent */
+
+  .deck{
+    max-width:34rem;
+    margin:clamp(1.7rem,4.5vw,2.8rem) 0 0;
+    font-size:clamp(1.02rem, 1.7vw, 1.3rem);
+    font-weight:400;
+    line-height:1.5;
+    color:var(--grey);
+    text-wrap:pretty;
+  }
+
+  /* ---------- the Bridge: revealed on scroll ---------- */
+  .bridge{
+    padding:clamp(6rem,18vh,12rem) 0 clamp(3rem,8vh,6rem);
+  }
+  .bridge .rule{
+    width:100%;
+    max-width:38rem;
+    height:1px;
+    margin:0 0 clamp(2rem,5vw,3.2rem);
+    border:0;
+    background:var(--hair);
+  }
+  .bridge p{
+    max-width:60ch;
+    margin:0;
+    font-size:clamp(1.05rem, 1.5vw, 1.22rem);
+    font-weight:400;
+    line-height:1.65;
+    color:var(--bridge-ink);
+    text-wrap:pretty;
+  }
+
+  /* ---------- footer ---------- */
+  footer{padding:clamp(4rem,10vh,7rem) 0 clamp(2.5rem,6vh,4rem)}
+  footer p{
+    margin:0;
+    font-family:var(--mono);
+    font-size:.72rem;
+    font-weight:400;
+    letter-spacing:.12em;
+    color:var(--grey);
+  }
+
+  /* ---------- scroll reveal (opt-in, JS-guarded) ---------- */
+  .motion .reveal{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .9s ease, transform .9s ease;
+  }
+  .motion .reveal.in{opacity:1; transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    .motion .reveal{opacity:1; transform:none; transition:none}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="topbar">
+    <span class="wordmark">Poppy Lifeforce</span>
+    <nav class="nav">
+      <a href="you-have-to-be-the-shopper.html">the shopper</a>
+      <a href="mailto:hello@poppylifeforce.com">write</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- 1 · The Door + 2 · The Deck — one visual unit, first viewport -->
+    <section class="opening">
+      <div class="door">
+        <p>For a long time, the answer has been the&nbsp;universe.</p>
+        <p>To find the right questions, we built phenomenal instruments — and bought the time to keep&nbsp;asking.</p>
+        <p class="quiet">They work.</p>
+        <p>Here, the answer is&nbsp;<span class="ox">you</span>.</p>
+        <p class="final">What do we ask&nbsp;now?</p>
+      </div>
+
+      <p class="deck">Everything we have ever discovered was already there before we found it. The answers were never the bottleneck — the questions were.</p>
+    </section>
+
+    <!-- 3 · The Bridge — revealed on scroll -->
+    <section class="bridge reveal">
+      <hr class="rule">
+      <p>A question is only as good as the mind that asks it — so the long project of our species has been growing that mind. We look outward by nature. The universe hides nothing; it waits for us to know enough to ask. So we built instruments that see farther than any eye, minds that think beside our own — and we guard our survival fiercely, so someone is always here to keep looking. All of it points one way: out. What never got examined is the eye behind the instruments — the one doing the asking. Here, that same momentum turns around. If the answer is you, the first question is already waiting: what, exactly, is this&nbsp;“you”?</p>
+    </section>
+
+    <!-- THE WALK: plates 01–11 land here in the next build pass -->
+
+  </main>
+
+  <footer>
+    <p>Poppy Lifeforce · The Return</p>
+  </footer>
+
+</div>
+
+<script>
+  // Opt into motion only when the user hasn't asked to reduce it.
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) return;
+
+    document.documentElement.classList.add("motion");
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  })();
+</script>
