@@ -1,0 +1,322 @@
+<!--
+  poppylifeforce.com — the entry.
+  One job: turn a stranger's arrow around — from pointing outward at the universe
+  to pointing back at themselves. Quiet → LOUD → quiet.
+
+  The turn is made physical: reading runs left-aligned all the way down, then at
+  "Here is the other direction." the alignment itself reverses to the right. The
+  page changes direction the moment the words do. Ink and space do the work —
+  zero accent colour on the entry.
+-->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>Poppy Lifeforce</title>
+<meta name="description" content="For a long time the answer was the universe. Here is the other direction — the answer is you." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<script>
+  /* Mark JS on so reveal styles only apply when we can undo them. No JS → all visible. */
+  document.documentElement.className = "js";
+</script>
+
+<style>
+  :root {
+    /* Fixed identity */
+    --paper: #e7e6de; /* cool bone */
+    --ink: #22221e; /* graphite */
+    --muted: #6c6f72; /* secondary grey */
+    --oxblood: #7b2c27; /* single permitted accent — held in reserve, unused on the entry */
+
+    /* Column */
+    --wrap: 60rem;
+    --measure: 62ch;
+    --pad: clamp(1.5rem, 6vw, 5rem);
+
+    /* Type */
+    --fs-prose: clamp(1.03rem, 0.99rem + 0.28vw, 1.16rem);
+    --lh-prose: 1.66;
+    --fs-beat: clamp(1.55rem, 1.02rem + 2.45vw, 2.6rem);
+    --fs-peak: clamp(2.85rem, 1.35rem + 6.1vw, 4.6rem);
+    --fs-coda: clamp(1.3rem, 1.02rem + 1.5vw, 1.95rem);
+
+    /* Reveal motion */
+    --ease: cubic-bezier(0.22, 0.61, 0.24, 1);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, sans-serif;
+    font-optical-sizing: auto;
+    line-height: var(--lh-prose);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--wrap);
+    margin-inline: auto;
+    padding-inline: var(--pad);
+  }
+
+  /* ── Top bar — nearly disappears ─────────────────────────────── */
+  .bar {
+    padding-top: clamp(1.4rem, 3.2vh, 2.4rem);
+    padding-bottom: 0.25rem;
+  }
+  .wordmark {
+    margin: 0;
+    font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo,
+      Consolas, monospace;
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    color: var(--muted);
+  }
+
+  /* ── Shared prose — the two light framing layers ─────────────── */
+  .prose {
+    max-width: var(--measure);
+    color: var(--muted);
+    font-weight: 400;
+    font-size: var(--fs-prose);
+    text-wrap: pretty;
+  }
+  .prose p {
+    margin: 0;
+  }
+  .prose p + p {
+    margin-top: 1.55em; /* soft gap between paragraphs */
+  }
+
+  .premise {
+    margin-top: clamp(5.5rem, 20vh, 12rem);
+  }
+  .landing {
+    margin-top: clamp(8rem, 22vh, 15rem);
+  }
+
+  /* ── The turn — the only visually dominant layer ─────────────── */
+  .turn {
+    margin-top: clamp(8.5rem, 24vh, 16rem);
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.012em;
+  }
+  .turn p {
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .beat {
+    font-size: var(--fs-beat);
+    line-height: 1.13;
+    text-align: left; /* outward — the established reading direction */
+  }
+  .beat + .beat {
+    margin-top: clamp(2.1rem, 6vh, 4rem); /* real vertical air between beats */
+  }
+
+  /* The reversal: from here down, the page turns to face the other way. */
+  .beat--pivot,
+  .peak,
+  .coda {
+    text-align: right;
+  }
+
+  .beat--pivot {
+    margin-top: clamp(3.4rem, 9vh, 6.75rem); /* a held breath before the turn */
+  }
+
+  .peak {
+    margin-top: clamp(3.4rem, 9vh, 6.75rem); /* its own space above */
+    margin-bottom: clamp(1.6rem, 4vh, 2.9rem); /* …and below */
+    font-size: var(--fs-peak);
+    line-height: 1.01;
+    letter-spacing: -0.02em;
+  }
+
+  .coda {
+    font-size: var(--fs-coda);
+    line-height: 1.12;
+    font-weight: 500;
+    color: #34342f; /* graphite, a touch quieter — still the turn, not the frame */
+  }
+
+  /* ── Hand-off to the existing title block + map ──────────────── */
+  .handoff {
+    margin-top: clamp(12rem, 32vh, 22rem); /* the turn has fully landed */
+    padding-bottom: clamp(6rem, 16vh, 12rem);
+  }
+  .return-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .return-caption {
+    margin: 1.1rem 0 0;
+    max-width: var(--measure);
+    color: var(--muted);
+    font-weight: 400;
+    font-size: var(--fs-prose);
+    text-wrap: pretty;
+  }
+  /* Placeholder for the existing interactive map, which mounts below the title.
+     Restrained on purpose — a hairline and quiet label, no faux UI. */
+  .map-slot {
+    margin-top: clamp(2.5rem, 6vh, 4.5rem);
+    border-top: 1px solid rgba(34, 34, 30, 0.14);
+    min-height: clamp(12rem, 34vh, 22rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .map-slot span {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: lowercase;
+    color: rgba(108, 111, 114, 0.6);
+  }
+
+  /* ── Reveal: soft fade-and-rise, slow and calm ───────────────── */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1.15s var(--ease), transform 1.15s var(--ease);
+    will-change: opacity, transform;
+  }
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <p class="wordmark">Poppy Lifeforce</p>
+  </div>
+</header>
+
+<main>
+  <!-- Layer 1 · the premise — light, quiet, the reader walking in -->
+  <section class="wrap prose premise" aria-label="Premise">
+    <p class="reveal">
+      Since humans arrived, we&rsquo;ve reached to make sense of the world.
+      Everything that has been discovered was already there before we understood
+      it. The answers were not the bottleneck &mdash; the questions were. The
+      universe holds everything and explains none of it, as we grow to know
+      enough to ask the right questions.
+    </p>
+    <p class="reveal">
+      A question is only as good as the mind that asks it &mdash; so the long
+      project of our species has been extending that mind. We built instruments
+      to see farther, to think faster, to last longer, and we guarded our own
+      survival so humanity would be here to keep looking.
+    </p>
+  </section>
+
+  <!-- Layer 2 · the turn — major. Left-aligned approach, then the reversal. -->
+  <section class="wrap turn" aria-label="The turn">
+    <p class="beat reveal">
+      For a long time, the answer has been the universe &mdash; reality itself.
+    </p>
+    <p class="beat reveal">
+      The work was to ask the right questions. So we built phenomenal tools, and
+      bought ourselves time to keep asking.
+    </p>
+    <p class="beat reveal">They work.</p>
+
+    <!-- the page turns to face the other way -->
+    <p class="beat beat--pivot reveal">Here is the other direction.</p>
+    <h1 class="peak reveal">The answer is you.</h1>
+    <p class="coda reveal">What do we ask now?</p>
+  </section>
+
+  <!-- Layer 3 · the landing — light again, the reader turned around -->
+  <section class="wrap prose landing" aria-label="The landing">
+    <p class="reveal">
+      We&rsquo;ve poured our evolution into understanding the world out there.
+      What happens if we reverse it &mdash; turn all that gathered momentum
+      around &mdash; and the answer is you: the one who wants, who asks, who
+      reaches when the pressure comes?
+    </p>
+    <p class="reveal">
+      Here, the answer sits the way it has always sat out there &mdash; whole,
+      already present, waiting on the right question.
+    </p>
+  </section>
+
+  <!-- Hand-off · the existing title block begins; the map mounts below it.
+       Title, caption, and map slot are placeholders for the real site's map
+       section — swap them for the live component. -->
+  <section class="wrap handoff" aria-label="The Return">
+    <h2 class="return-title reveal">The Return</h2>
+    <p class="return-caption reveal">
+      A living map of returns &mdash; each point a moment the pressure came, and
+      someone stayed.
+    </p>
+    <div class="map-slot reveal" aria-hidden="true"><span>the map</span></div>
+  </section>
+</main>
+
+<script>
+  (function () {
+    var reduce =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var revealables = document.querySelectorAll(".reveal");
+
+    if (reduce || !("IntersectionObserver" in window)) {
+      revealables.forEach(function (el) {
+        el.classList.add("is-visible");
+      });
+      return;
+    }
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    revealables.forEach(function (el) {
+      io.observe(el);
+    });
+  })();
+</script>
