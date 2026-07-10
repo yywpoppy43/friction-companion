@@ -10,6 +10,11 @@
  *   RESOURCE  — breath holding, shallow breathing, bracing (breath & oxygen)
  *   ALIGNMENT — collapsing chest, dropping gaze, losing form (skeletal line)
  *   TENSION   — clenching, wasted effort leaking to non-target muscles
+ *   ESCAPE    — the quit-negotiation: the urge to stop, bargaining, reaching
+ *               for the exit, "I'm done" signals. The cue holds the person one
+ *               beat past the urge WITHOUT pushing them higher (a floor, not a
+ *               push). During ENCOUNTER, when no other condition is detected,
+ *               the tipping point defaults to ESCAPE.
  *
  * It is optional everywhere: a trigger MAY tag a signal with a condition, and
  * the generator falls back to inferring one when none is supplied.
@@ -19,6 +24,7 @@ export const FrictionCondition = {
   RESOURCE: 'RESOURCE',
   ALIGNMENT: 'ALIGNMENT',
   TENSION: 'TENSION',
+  ESCAPE: 'ESCAPE',
 } as const;
 
 export type FrictionCondition = (typeof FrictionCondition)[keyof typeof FrictionCondition];
@@ -28,4 +34,5 @@ export const FRICTION_CONDITIONS: readonly FrictionCondition[] = [
   FrictionCondition.RESOURCE,
   FrictionCondition.ALIGNMENT,
   FrictionCondition.TENSION,
+  FrictionCondition.ESCAPE,
 ];

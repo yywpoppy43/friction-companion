@@ -22,7 +22,7 @@
 import type { Cue } from '../domain/cue.ts';
 import { isCue } from '../domain/cue.ts';
 import type { CueGenerator, CueGenerationRequest, GenerationOutcome } from '../ports/cue-generator.ts';
-import { GENERATIVE_SYSTEM_PROMPT } from './system-prompt.ts';
+import { buildSystemPrompt } from './system-prompt.ts';
 import { findForbiddenVocabulary } from './output-vocabulary.ts';
 
 /** Minimal shape of the `fetch` function (so it can be injected in tests). */
@@ -146,7 +146,9 @@ export class AnthropicCueGenerator implements CueGenerator {
     const body: Record<string, unknown> = {
       model: this.model,
       max_tokens: this.maxTokens,
-      system: GENERATIVE_SYSTEM_PROMPT,
+      // Calibration (if the request carries an operator profile) shapes FORM only;
+      // with no profile this is exactly the base prompt.
+      system: buildSystemPrompt(request.profile),
       tools: [
         {
           name: CUE_TOOL_NAME,
@@ -222,7 +224,7 @@ export class AnthropicCueGenerator implements CueGenerator {
         lastReason = 'malformed model output';
         continue;
       }
-      const leaked = findForbiddenVocabulary(cue.AudioTranscript);
+      const leaked = findForbiddenVocabulary(cue.AudioTranscript, { profile: request.profile });
       if (leaked.length === 0) {
         return { cue, status: 'ok', attempts, networkRetries };
       }

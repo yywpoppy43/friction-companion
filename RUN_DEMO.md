@@ -75,6 +75,21 @@ Friction Companion server listening on http://localhost:8787
 
 **Or the full arc:** pick a length and tap **Full session** — one pass with the wall (Encounter) landing near the end, like a real set.
 
+**Safety — say this out loud before anyone starts, and mean it:** the cues are for *burn and shake* — the ordinary discomfort of effort — **never for pain**. If a participant feels **sharp pain, joint pain, dizziness, or numbness**, they stop immediately and reset; that overrides anything the voice says. The app is built the same way: if a cue is ever generated for a pain/dizziness situation, the only thing it will say is to stop and reset. You are the human in the room — if someone looks wrong, stop the session.
+
+**Operator calibration (optional, advanced):** you can tune *how* the cues are worded to the specific person in front of you. Open the app with `?operator=1` on the end of the address (e.g. `http://192.168.1.23:8787/?operator=1`) — an **Operator calibration** box appears that participants never see on the plain address. Paste a short four-line read:
+
+```
+CORE: what this person runs on
+STRONG: what they do well
+ABSENT: the missing channel
+FAULT LINES: where they bail / negotiate the exit
+```
+
+This shapes the *form* of the cues only (e.g. a "grinds through everything" person gets subtracting, slowing cues; a "no breath channel" person gets one move, not a sequence). The profile is **never spoken aloud and never referenced** — the app double-checks every line and rejects any that quotes it. Leave the box blank and the app behaves exactly as normal. Keep `?operator=1` to your own control device; open the plain address on the participant's phone.
+
+![the operator calibration panel](webapp/screenshot-operator.png)
+
 **Reset for the next person (one tap):**
 - When the screen says **DONE**, tap **“▶ Next person — run again”** — the exact same stack restarts immediately, with **freshly generated cues** (they will be worded differently each run).
 - Want a different stack for the next person? Tap **Edit stack** — your queue is kept; adjust and Start.

@@ -1,9 +1,10 @@
 /**
  * Code-level enforcement of the spoken-output constraint.
  *
- * The system prompt forbids internal architectural vocabulary and generic
- * motivation in spoken output, but prompts can leak. This module re-checks every
- * generated `AudioTranscript` programmatically before it reaches TTS — the
+ * The system prompt forbids internal architectural vocabulary, generic
+ * motivation, universal slogans, and (when calibration is on) any operator
+ * profile text in spoken output — but prompts can leak. This module re-checks
+ * every generated `AudioTranscript` programmatically before it reaches TTS — the
  * "double seal" the spec calls for. If anything is found, the generator rejects
  * the cue and regenerates.
  *
@@ -30,7 +31,10 @@ const INTERNAL_VOCABULARY: readonly RegExp[] = [
   /\bstructur\w*/i, // structure, structural (as jargon)
 ];
 
-/** Generic motivation phrases (YAML `Forbidden_Phrases`). Matched as substrings. */
+/**
+ * Generic motivation phrases (YAML `Forbidden_Phrases`) AND universal slogans /
+ * outcome-claims the Reframe_Rule bans. Matched as substrings, case-insensitively.
+ */
 const GENERIC_MOTIVATION: readonly string[] = [
   'you can do it',
   'believe in yourself',
@@ -40,13 +44,51 @@ const GENERIC_MOTIVATION: readonly string[] = [
   'push through',
   'no pain no gain',
   'dig deep',
+  // Slogan / belief / outcome-claim patterns (Reframe_Rule).
+  'power goes',
+  'speed is not',
+  'believe',
+  'you got this',
 ];
+
+/** Lowercased word tokens (letters, digits, apostrophes) from arbitrary text. */
+function words(text: string): string[] {
+  const m = text.toLowerCase().match(/[a-z0-9']+/g);
+  return m ?? [];
+}
+
+/**
+ * The set of profile "shingles" (3 consecutive content words) that must never be
+ * spoken verbatim, plus the identifying label phrase "fault line(s)". Strips the
+ * CORE / STRONG / ABSENT / FAULT LINES labels so only the operator's descriptive
+ * content is protected. Kept to 3-grams to catch actual quoting while avoiding
+ * single-word false positives (a profile that mentions "breath" must not block a
+ * legitimate "drop your breath low" cue).
+ */
+function profileShingles(profile: string): string[] {
+  const out: string[] = [];
+  for (const rawLine of profile.split(/\r?\n/)) {
+    const line = rawLine.replace(/^\s*(core|strong|absent|fault\s+lines?)\s*:?\s*/i, '');
+    const w = words(line);
+    for (let i = 0; i + 3 <= w.length; i++) {
+      out.push(w.slice(i, i + 3).join(' '));
+    }
+  }
+  return out;
+}
+
+export interface VocabularyOptions {
+  /** Operator profile text whose content must never be spoken verbatim. */
+  profile?: string;
+}
 
 /**
  * Returns the list of forbidden terms/phrases found in `text` (lower-cased).
- * An empty array means the text is clean and safe to speak.
+ * An empty array means the text is clean and safe to speak. When `opts.profile`
+ * is supplied, any verbatim 3-word run from the profile (or the "fault line"
+ * label) also counts as a leak.
  */
-export function findForbiddenVocabulary(text: string): string[] {
+export function findForbiddenVocabulary(text: string, opts: VocabularyOptions = {}): string[] {
   const found: string[] = [];
   for (const pattern of INTERNAL_VOCABULARY) {
     const m = pattern.exec(text);
@@ -56,10 +98,19 @@ export function findForbiddenVocabulary(text: string): string[] {
   for (const phrase of GENERIC_MOTIVATION) {
     if (lower.includes(phrase)) found.push(phrase);
   }
+
+  const profile = (opts.profile ?? '').trim();
+  if (profile) {
+    if (/\bfault\s+lines?\b/i.test(text)) found.push('fault line');
+    const haystack = ' ' + words(text).join(' ') + ' ';
+    for (const shingle of profileShingles(profile)) {
+      if (haystack.includes(' ' + shingle + ' ')) found.push(`profile: ${shingle}`);
+    }
+  }
   return found;
 }
 
-/** True when `text` contains no forbidden internal vocabulary or generic motivation. */
-export function isSpeakable(text: string): boolean {
-  return findForbiddenVocabulary(text).length === 0;
+/** True when `text` contains no forbidden internal vocabulary, slogan, or profile leak. */
+export function isSpeakable(text: string, opts: VocabularyOptions = {}): boolean {
+  return findForbiddenVocabulary(text, opts).length === 0;
 }

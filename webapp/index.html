@@ -38,6 +38,15 @@
   .tag { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
   .sect { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; }
 
+  /* operator-only calibration panel (hidden unless ?operator=1) */
+  .oppanel { display:none; background:#120e17; border:1px solid #3a2a48; border-radius:14px; padding:12px 12px 10px; margin: 4px 0 8px; }
+  .oppanel .sect { margin-top: 0; color:#c79be6; }
+  .oppanel textarea {
+    width:100%; background:#0b0f1a; color:var(--ink); border:1px solid #222b42; border-radius:10px;
+    padding:10px; font:13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; resize:vertical; min-height:92px;
+  }
+  .ophint { color:var(--muted); font-size:11.5px; margin-top:6px; }
+
   /* stage cards */
   .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .card {
@@ -146,6 +155,13 @@
   <div id="setup">
     <h1>Friction Companion</h1>
     <p class="tag">Stack the pieces you want — or run the full arc. Live cues, out loud.</p>
+
+    <div id="opPanel" class="oppanel">
+      <div class="sect">Operator calibration — not shown to participants</div>
+      <textarea id="profile" spellcheck="false"
+        placeholder="CORE: what this system runs on&#10;STRONG: what it does well&#10;ABSENT: the missing channel&#10;FAULT LINES: where it bails / negotiates"></textarea>
+      <div class="ophint">Your read of this person. Shapes cue <b>form</b> only — never spoken, never referenced aloud. Leave blank for default behaviour.</div>
+    </div>
 
     <div class="sect">Build a stack — tap to add, in any order</div>
     <div class="cards">
@@ -292,13 +308,23 @@ function unlockSpeech() {
   speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
 }
 
+/* ── operator calibration (gated by ?operator=1; participants never see it) ── */
+const IS_OPERATOR = new URLSearchParams(location.search).get('operator') === '1';
+function getProfile() {
+  const el = $("profile");
+  return el ? el.value.trim() : '';
+}
+
 /* ── live cue fetch (no baked cues; the server is the only source) ───────── */
 async function fetchCue(stage, round) {
+  const profile = getProfile();
+  const payload = { stage, round };
+  if (profile) payload.profile = profile; // absent → server behaves exactly as before
   try {
     const res = await fetch('/api/cue', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ stage, round })
+      body: JSON.stringify(payload)
     });
     if (!res.ok) throw new Error('server ' + res.status);
     return await res.json(); // { cue: {AudioTranscript, DeliveryTone, ...}, origin, ... }
@@ -331,9 +357,12 @@ function waitUntil(atMs) {
 }
 
 /** Speak `text`; resolves when speech ends (or on stop / safety timeout). Never
-    lets the next cue overlap this one. Records timing for verification. */
-function speak(text, stage, origin) {
-  const rec = { stage, text, origin, startedAt: performance.now(), endedAt: null };
+    lets the next cue overlap this one. `triggerAt` is when the stage's trigger
+    fired; `gapMs` (trigger → audio start) is recorded for the 300ms assertion. */
+function speak(text, stage, origin, triggerAt) {
+  const startedAt = performance.now();
+  const t0 = triggerAt == null ? startedAt : triggerAt;
+  const rec = { stage, text, origin, startedAt, endedAt: null, triggerAt: t0, gapMs: startedAt - t0 };
   window.__spoken.push(rec);
   return new Promise((resolve) => {
     const done = () => { if (rec.endedAt == null) { rec.endedAt = performance.now(); resolve(); } };
@@ -411,7 +440,11 @@ async function runWithSchedule(schedule, durationMs, pieceLabel) {
     const s = schedule[i];
     if (!running) return;
 
-    // Prefetch this stage's live cue now; it resolves while we wait for its moment.
+    // PREFETCH: generate this stage's cue now — during the PREVIOUS stage — and
+    // hold it locally. It resolves while we wait for this stage's moment, so when
+    // the trigger fires the cue is already in hand and audio starts immediately
+    // (no per-cue regeneration; the time-based model has no mid-stage condition
+    // change to react to).
     const cuePromise = fetchCue(s.key, i + 1);
 
     // Never start a cue before the previous one has finished speaking.
@@ -424,17 +457,20 @@ async function runWithSchedule(schedule, durationMs, pieceLabel) {
       $("roundLbl").textContent = "next: " + NICE[s.key];
     }
 
-    // Wait until this stage's scheduled moment in the real timeline.
+    // Wait until this stage's scheduled moment — the trigger fires the instant
+    // waitUntil resolves.
     await waitUntil(s.atMs);
     if (!running) return;
+    const triggerAt = performance.now();
 
+    // Cue is already prefetched, so this resolves immediately → audio within ms.
     const resp = await cuePromise;
     if (!running) return;
 
     setStageUI(s.key);
     $("roundLbl").textContent = pieceLabel ? pieceLabel(i) : "";
     setCueText(resp.cue.AudioTranscript, resp.cue.DeliveryTone, resp.origin);
-    speechDone = speak(resp.cue.AudioTranscript, s.key, resp.origin);
+    speechDone = speak(resp.cue.AudioTranscript, s.key, resp.origin, triggerAt);
   }
 
   await speechDone;
@@ -570,6 +606,19 @@ $("fullBtn").addEventListener("click", () => {
 $("againBtn").addEventListener("click", () => { unlockSpeech(); runAgain(); });
 $("stopBtn").addEventListener("click", stop);
 if (!window.speechSynthesis) $("warn").style.display = "block";
+
+// Operator calibration panel: only revealed with ?operator=1, so participants
+// never see the private read. The profile persists for the session.
+if (IS_OPERATOR) {
+  $("opPanel").style.display = "block";
+  try {
+    const saved = sessionStorage.getItem("fc_profile");
+    if (saved) $("profile").value = saved;
+    $("profile").addEventListener("input", () => {
+      try { sessionStorage.setItem("fc_profile", $("profile").value); } catch (e) {}
+    });
+  } catch (e) {}
+}
 renderQueue();
 
 // Test hooks (used by webapp/verify.mjs).
@@ -577,6 +626,7 @@ window.runSession = runSession;
 window.runQueue = runQueue;
 window.computeSchedule = computeSchedule;
 window.computeQueueSchedule = computeQueueSchedule;
+window.__setProfile = (t) => { const el = $("profile"); if (el) el.value = t || ''; };
 window.__spoken = [];
 window.__sessionDone = false;
 </script>

@@ -13,6 +13,11 @@
  *      server serves safe-default fallbacks — reported, not failed.
  *   5. Stack mode: a queue tapped in arbitrary order (with a repeated stage)
  *      plays in exactly that order as equal per-piece blocks, no overlap.
+ *   6. Every live cue survives the banned-vocabulary + slogan filter.
+ *   7. Trigger → audio start is within 300ms for prefetched cues.
+ *   8. The operator calibration panel is hidden without ?operator=1 and shown
+ *      with it; a session run with a sample profile is printed beside a
+ *      no-profile run (wording differs when a key is present).
  *
  * Speech is stubbed (headless has no audio) with a fixed simulated duration so
  * the no-overlap gate is measurable. Run:  node webapp/verify.mjs
@@ -20,10 +25,17 @@
 
 import { spawn } from 'node:child_process';
 import { setTimeout as sleep } from 'node:timers/promises';
+import { isSpeakable } from '../src/generative/output-vocabulary.ts';
 
 const PORT = Number(process.env['VERIFY_PORT'] ?? 8791);
 const BASE = `http://127.0.0.1:${PORT}`;
 const STAGES = ['BASELINE', 'INTENTION', 'ENCOUNTER', 'GROWTH'];
+const MAX_TRIGGER_GAP_MS = 300;
+const SAMPLE_PROFILE =
+  'CORE: high-output competitor who muscles everything\n' +
+  'STRONG: raw force, grinds through discomfort\n' +
+  'ABSENT: breath rhythm under load\n' +
+  'FAULT LINES: bails the instant it gets uncomfortable, bargains for the exit';
 
 async function loadChromium() {
   try { return (await import('playwright')).chromium; } catch {}
@@ -58,21 +70,40 @@ const SPEECH_STUB = `
   }
 `;
 
-async function runOneSession(page, durationMs) {
+const CAPTURE = `window.__spoken.map(r => ({
+  stage: r.stage, text: r.text, origin: r.origin,
+  startedAt: r.startedAt, endedAt: r.endedAt, gapMs: r.gapMs,
+}))`;
+
+async function runOneSession(page, durationMs, profile) {
+  await page.evaluate((p) => window.__setProfile(p || ''), profile ?? '');
   await page.evaluate((d) => { window.runSession(d); }, durationMs);
   await page.waitForFunction(() => window.__sessionDone === true, { timeout: 60000 });
-  const spoken = await page.evaluate(() => window.__spoken.map(r => ({
-    stage: r.stage, text: r.text, origin: r.origin, startedAt: r.startedAt, endedAt: r.endedAt,
-  })));
+  const spoken = await page.evaluate(`(() => (${CAPTURE}))()`);
+  await page.evaluate(() => window.__setProfile(''));
   return spoken;
 }
 
 async function runQueueSession(page, stages, pieceMs) {
   await page.evaluate((a) => { window.runQueue(a.stages, a.pieceMs); }, { stages, pieceMs });
   await page.waitForFunction(() => window.__sessionDone === true, { timeout: 60000 });
-  return await page.evaluate(() => window.__spoken.map(r => ({
-    stage: r.stage, text: r.text, origin: r.origin, startedAt: r.startedAt, endedAt: r.endedAt,
-  })));
+  return await page.evaluate(`(() => (${CAPTURE}))()`);
+}
+
+/** trigger→audio gaps for the stage cues that had a prefetch window (index ≥ 1). */
+function triggerGaps(spoken) {
+  const cues = stageCues(spoken).slice(1); // first cue of a run has no prefetch window
+  return cues.map((c) => c.gapMs ?? 0);
+}
+
+/** Every spoken stage cue must survive the banned/slogan/profile filter. */
+function assertClean(cues, profile, label, problems) {
+  for (const c of cues) {
+    if (c.origin === 'unreachable') continue;
+    if (!isSpeakable(c.text, { profile: profile || undefined })) {
+      problems.push(`${label}: cue failed the vocabulary/slogan/profile filter → "${c.text}"`);
+    }
+  }
 }
 
 function checkNoOverlap(spoken) {
@@ -183,6 +214,56 @@ async function main() {
     const ov3 = checkNoOverlap(s3);
     if (!ov3.ok) problems.push('stack session cue overlap: ' + ov3.detail);
     console.log(`\n✔ (5) stack mode: ${QUEUE.join(' → ')} played in queued order (equal blocks, no overlap)`);
+
+    // (6) Every spoken cue survives the banned-vocabulary + slogan filter.
+    assertClean(stageCues(s1), '', 'session 1', problems);
+    assertClean(stageCues(s2), '', 'session 2', problems);
+    assertClean(stageCues(s3), '', 'stack', problems);
+    console.log('\n✔ (6) all live cues passed the banned-vocabulary + slogan filter');
+
+    // (7) Trigger → audio start within 300ms (prefetched cues, index ≥ 1).
+    const gaps = [...triggerGaps(s1), ...triggerGaps(s2), ...triggerGaps(s3)];
+    const worst = gaps.length ? Math.max(...gaps) : 0;
+    if (worst > MAX_TRIGGER_GAP_MS) problems.push(`trigger→audio gap ${worst.toFixed(0)}ms exceeds ${MAX_TRIGGER_GAP_MS}ms`);
+    console.log(`✔ (7) trigger→audio gap ≤ ${MAX_TRIGGER_GAP_MS}ms (worst prefetched cue: ${worst.toFixed(0)}ms)`);
+
+    // (8) Operator gating + calibration changes the wording.
+    // Participants (plain URL) never see the operator panel.
+    const opHiddenPlain = await page.evaluate(() => getComputedStyle(document.getElementById('opPanel')).display === 'none');
+    if (!opHiddenPlain) problems.push('operator calibration panel is visible without ?operator=1');
+    // With ?operator=1 it is revealed (checked on a throwaway page).
+    const opPage = await browser.newPage();
+    await opPage.addInitScript(SPEECH_STUB);
+    await opPage.goto(`${BASE}/?operator=1`);
+    const opShownFlag = await opPage.evaluate(() => getComputedStyle(document.getElementById('opPanel')).display !== 'none');
+    await opPage.close();
+    if (!opShownFlag) problems.push('operator calibration panel did not appear with ?operator=1');
+
+    // Run one session WITH a sample profile and one WITHOUT; print both.
+    const sp = await runOneSession(page, 12000, SAMPLE_PROFILE);
+    const cp = stageCues(sp);
+    assertClean(cp, SAMPLE_PROFILE, 'profile-run', problems);
+    const gp = triggerGaps(sp);
+    if (gp.length && Math.max(...gp) > MAX_TRIGGER_GAP_MS) problems.push('profile run exceeded the 300ms trigger gap');
+
+    console.log('\n── CALIBRATION: no profile vs. sample profile ─────');
+    console.log(`  profile used: ${SAMPLE_PROFILE.replace(/\n/g, ' | ')}`);
+    for (const st of STAGES) {
+      const a = c1.find(c => c.stage === st);
+      const b = cp.find(c => c.stage === st);
+      console.log(`  ${st}`);
+      console.log(`    no profile [${a?.origin}]: ${a?.text}`);
+      console.log(`    profile    [${b?.origin}]: ${b?.text}`);
+    }
+    const bothGenerated = [...c1, ...cp].every(c => c.origin === 'generated');
+    const calDiff = STAGES.some((st) => c1.find(c => c.stage === st)?.text !== cp.find(c => c.stage === st)?.text);
+    if (keyPresent && bothGenerated) {
+      if (calDiff) console.log('\n✔ (8) operator gating holds and calibration changed the wording');
+      else problems.push('(8) calibration produced identical wording to the no-profile run');
+    } else {
+      console.log('\n✔ (8) operator gating holds (calibration-wording diff needs a key; served fallbacks are identical)');
+      notes.push('(8) calibration-wording diff SKIPPED without a key (fallback cues are identical by design).');
+    }
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');

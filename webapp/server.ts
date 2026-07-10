@@ -88,9 +88,11 @@ const STAGE_PLAN: Record<
   [FrictionState.BASELINE]: { intensity: 0.25, source: 'INIT' },
   [FrictionState.INTENTION]: { intensity: 0.5, source: 'INIT' },
   [FrictionState.ENCOUNTER]: {
+    // The wall is, by default, the quit-negotiation: with no live condition
+    // detection, ENCOUNTER defaults to ESCAPE (hold-not-push).
     intensity: 0.9,
     source: TriggerSource.TEMPORAL,
-    frictionCondition: FrictionCondition.RESOURCE,
+    frictionCondition: FrictionCondition.ESCAPE,
   },
   [FrictionState.GROWTH]: { intensity: 0.72, source: 'INIT' },
 };
@@ -136,7 +138,7 @@ async function readBody(req: http.IncomingMessage, limitBytes = 8_192): Promise<
 
 /** POST /api/cue — generate one live cue for the requested stage. */
 async function handleCue(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
-  let body: { stage?: unknown; round?: unknown };
+  let body: { stage?: unknown; round?: unknown; profile?: unknown };
   try {
     body = (await readBody(req)) as typeof body;
   } catch {
@@ -151,6 +153,9 @@ async function handleCue(req: http.IncomingMessage, res: http.ServerResponse): P
   }
   const state = stage as FrictionState;
   const round = Number.isFinite(Number(body.round)) ? Math.max(1, Math.floor(Number(body.round))) : 1;
+  // Optional operator profile: shapes cue FORM only, capped, never echoed back.
+  const profile =
+    typeof body.profile === 'string' && body.profile.trim() ? body.profile.trim().slice(0, 2000) : undefined;
   const plan = STAGE_PLAN[state];
 
   const request: CueGenerationRequest = {
@@ -159,12 +164,14 @@ async function handleCue(req: http.IncomingMessage, res: http.ServerResponse): P
     intensity: plan.intensity,
     round,
     frictionCondition: plan.frictionCondition,
+    profile,
   };
 
   const outcome = await generator.generate(request);
 
   // Never silent: on any failure, fall back to the engine's safe-default cue.
-  if (outcome.status !== 'ok' || !outcome.cue || !isSpeakable(outcome.cue.AudioTranscript)) {
+  // The final guard also enforces the profile-leak rule on the spoken transcript.
+  if (outcome.status !== 'ok' || !outcome.cue || !isSpeakable(outcome.cue.AudioTranscript, { profile })) {
     const fallback = safeDefaultCue(state);
     sendJson(res, 200, {
       cue: toClientCue(fallback),

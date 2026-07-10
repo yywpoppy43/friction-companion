@@ -79,9 +79,38 @@ and a stack queued in arbitrary order (with a repeated stage) plays in exactly
 that order with no overlap.
 Requires Playwright (`npm i -D playwright && npx playwright install chromium`).
 
+## Operator calibration (optional)
+
+Open the app with `?operator=1` to reveal an **Operator calibration** box that
+participants never see on the plain URL. Paste a four-line read of the person —
+`CORE` / `STRONG` / `ABSENT` / `FAULT LINES`. It's sent with each cue request and
+appended to the model's system prompt as a CALIBRATION section that shapes the
+cue's **form** only (a "grinds-through" system gets subtracting cues; a
+"no-breath-channel" system gets one move, not a sequence). The profile is
+**never spoken**: the same guard that blocks internal vocabulary also rejects any
+transcript that quotes the profile verbatim, or the "fault line" label. Blank box
+→ behaviour is identical to before.
+
+![operator calibration panel](screenshot-operator.png)
+
+## The ENCOUNTER default is ESCAPE
+
+The wall is, by default, the *quit-negotiation*: with no live condition detection,
+ENCOUNTER cues target the `ESCAPE` condition — hold-not-push language ("Stay.",
+"Don't answer it.", "Let it shake."), reframes that reattribute the present
+sensation ("the shake is the muscle working"), never a demand for more.
+
+## Safety
+
+A high-priority prompt rule (and a matching note in `RUN_DEMO.md`): if the person
+signals **sharp pain, joint pain, dizziness, or numbness**, the only cue is to
+stop and reset — the hold applies to burn and shake, never to pain.
+
 ## What this MVP still isn't (Stage 2/3)
 
 It fires on **time**, not on your heart rate; and it uses the browser's built-in
-voice, not a premium one. Those upgrades ride on seams the backend already has
-(biometric trigger, swappable TTS, the relational cue matrix). See the project
-README.
+voice, not a premium one; live per-moment **condition detection** (which would let
+it pick VELOCITY/RESOURCE/ALIGNMENT/TENSION/ESCAPE from the body in the moment,
+and regenerate mid-stage on a change) is not wired yet. Those upgrades ride on
+seams the backend already has (biometric trigger, swappable TTS, the relational
+cue matrix). See the project README.

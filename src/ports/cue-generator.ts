@@ -24,6 +24,14 @@ export interface CueGenerationRequest {
   round: number;
   /** Optional finer friction classification to target (PRD typology addition). */
   frictionCondition?: FrictionCondition;
+  /**
+   * Optional operator-supplied "read" of this person (plain text, e.g. four lines
+   * CORE / STRONG / ABSENT / FAULT LINES). When present it shapes the cue's FORM
+   * only — it is appended to the system prompt as a CALIBRATION section and its
+   * text is never spoken (the spoken-vocabulary guard rejects any verbatim leak).
+   * When absent, generation behaves exactly as before.
+   */
+  profile?: string;
 }
 
 /**
