@@ -13,8 +13,8 @@
  * returns the engine's hand-authored safe-default cue for that state, so a stage
  * is never silent (mirrors the engine's never-silent principle).
  *
- * Run:
- *   node --env-file-if-exists=.env webapp/server.ts        # or: npm run serve:app
+ * Run (the server auto-loads `.env` itself — no exported env vars needed):
+ *   npm run serve:app          # or plain:  node webapp/server.ts
  *   PORT=9000 node webapp/server.ts
  *
  * Zero runtime dependencies (Node built-ins only), consistent with the rest of
@@ -22,6 +22,7 @@
  */
 
 import http from 'node:http';
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -38,6 +39,41 @@ import type { Cue } from '../src/domain/cue.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const INDEX_HTML = join(here, 'index.html');
+
+/**
+ * Auto-load `.env` so a non-technical operator never has to export environment
+ * variables: plain `node webapp/server.ts` finds the key by itself. Looks for a
+ * `.env` next to package.json (repo root — the documented spot) and next to this
+ * file (webapp/.env). Already-set environment variables always win; values here
+ * never override them. Minimal KEY=VALUE parser (comments/blank lines ignored,
+ * optional `export ` prefix and surrounding quotes stripped) — no dependency.
+ */
+function loadDotEnv(): void {
+  for (const path of [join(here, '..', '.env'), join(here, '.env')]) {
+    let text: string;
+    try {
+      text = readFileSync(path, 'utf8');
+    } catch {
+      continue; // no file here — fine
+    }
+    for (const raw of text.split(/\r?\n/)) {
+      const line = raw.replace(/^\uFEFF/, '').trim();
+      if (!line || line.startsWith('#')) continue;
+      const m = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/.exec(line);
+      if (!m) continue;
+      let value = m[2]!.trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"') && value.length >= 2) ||
+        (value.startsWith("'") && value.endsWith("'") && value.length >= 2)
+      ) {
+        value = value.slice(1, -1);
+      }
+      if (process.env[m[1]!] === undefined) process.env[m[1]!] = value;
+    }
+  }
+}
+loadDotEnv();
+
 const PORT = Number(process.env['PORT'] ?? 8787);
 
 /**
@@ -198,10 +234,14 @@ server.listen(PORT, '0.0.0.0', () => {
   const keyPresent = Boolean(process.env['ANTHROPIC_API_KEY']);
   console.log(`Friction Companion server listening on http://localhost:${PORT}`);
   for (const u of lanUrls(PORT)) console.log(`  on your network:  ${u}   ← open this on your phone`);
-  if (!keyPresent) {
+  if (keyPresent) {
+    console.log('✔ API key loaded — cues will be generated live.');
+  } else {
     console.warn(
-      '⚠ ANTHROPIC_API_KEY is not set — /api/cue will serve safe-default cues only.\n' +
-        '  Set it (see README "Setting the API key") and restart for live generation.',
+      '⚠ No API key found — every cue will be the same safe-default line (not live).\n' +
+        '  Fix: create a file named .env next to package.json containing exactly:\n' +
+        '      ANTHROPIC_API_KEY=sk-ant-your-key-here\n' +
+        '  then stop this server (Ctrl+C) and run it again. See RUN_DEMO.md.',
     );
   }
 });

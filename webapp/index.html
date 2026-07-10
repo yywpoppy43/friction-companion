@@ -24,40 +24,88 @@
     color: var(--ink);
     font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     display: flex; align-items: center; justify-content: center;
-    padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
-    overflow: hidden;
+    padding: max(14px, env(safe-area-inset-top)) 16px max(14px, env(safe-area-inset-bottom));
   }
   .app {
     width: 100%; max-width: 440px;
     background: var(--panel);
     border-radius: 22px;
-    padding: 26px 22px 30px;
+    padding: 22px 20px 24px;
     box-shadow: 0 18px 60px rgba(0,0,0,.5);
     position: relative;
   }
   h1 { font-size: 19px; margin: 0 0 2px; letter-spacing: .2px; }
-  .tag { color: var(--muted); font-size: 13px; margin: 0 0 22px; }
+  .tag { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+  .sect { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; }
 
-  /* setup screen */
-  .field { margin: 18px 0; }
-  .field label { display:flex; justify-content:space-between; font-size:14px; color: var(--muted); margin-bottom:8px; }
+  /* stage cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card {
+    position: relative; text-align: left; cursor: pointer;
+    background:#0e1320; color: var(--ink);
+    border:1px solid #222b42; border-left-width: 4px; border-radius: 14px;
+    padding: 12px 12px 10px;
+  }
+  .card:active { transform: scale(.98); }
+  .card b { display:block; font-size: 15px; letter-spacing: .3px; }
+  .card span { display:block; color: var(--muted); font-size: 11.5px; line-height: 1.35; margin-top: 2px; }
+  .card .cnt {
+    position: absolute; top: 8px; right: 8px; min-width: 22px; height: 22px;
+    border-radius: 11px; background:#1d2436; border:1px solid #2a3450;
+    color: var(--ink); font-size: 12px; font-weight: 700;
+    display: none; align-items: center; justify-content: center; padding: 0 6px;
+  }
+  .card[data-stage="BASELINE"]  { border-left-color: var(--baseline); }
+  .card[data-stage="INTENTION"] { border-left-color: var(--intention); }
+  .card[data-stage="ENCOUNTER"] { border-left-color: var(--encounter); }
+  .card[data-stage="GROWTH"]    { border-left-color: var(--growth); }
+
+  /* queue chips */
+  .queuebar { display: flex; align-items: center; gap: 8px; margin-top: 10px; min-height: 34px; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; flex: 1; padding-bottom: 2px; }
+  .chip {
+    flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px;
+    background:#1d2436; border:1px solid #2a3450; border-radius: 999px;
+    padding: 5px 10px; font-size: 12.5px; cursor: pointer; color: var(--ink);
+  }
+  .chip i { font-style: normal; font-weight: 700; }
+  .chip .x { color: var(--muted); font-weight: 700; }
+  .chip[data-stage="BASELINE"]  i { color: var(--baseline); }
+  .chip[data-stage="INTENTION"] i { color: var(--intention); }
+  .chip[data-stage="ENCOUNTER"] i { color: var(--encounter); }
+  .chip[data-stage="GROWTH"]    i { color: var(--growth); }
+  .clear {
+    flex: 0 0 auto; background: none; border: 1px solid #2a3450; color: var(--muted);
+    border-radius: 10px; padding: 6px 10px; font-size: 12px; cursor: pointer;
+  }
+  .qhint { color: var(--muted); font-size: 12.5px; }
+
+  /* sliders */
+  .field { margin: 12px 0 0; }
+  .field label { display:flex; justify-content:space-between; font-size:13.5px; color: var(--muted); margin-bottom:6px; }
   .field label b { color: var(--ink); font-variant-numeric: tabular-nums; }
   input[type=range] { width:100%; accent-color: var(--accent); }
-  .quick { display:flex; gap:8px; margin: 6px 0 2px; }
+  .quick { display:flex; gap:8px; margin-top: 8px; }
   .quick button {
     flex:1; background:#1d2436; color:var(--ink); border:1px solid #2a3450;
-    border-radius:12px; padding:10px 6px; font-size:13px; cursor:pointer;
+    border-radius:12px; padding:9px 6px; font-size:13px; cursor:pointer;
   }
   .quick button:active { transform: scale(.98); }
 
   .start {
-    width:100%; margin-top:24px; border:0; border-radius:16px;
+    width:100%; margin-top:14px; border:0; border-radius:16px;
     background: linear-gradient(135deg, #6ee7ff, #5ddc8a);
-    color:#06121a; font-size:18px; font-weight:700; padding:18px; cursor:pointer;
+    color:#06121a; font-size:17px; font-weight:700; padding:16px; cursor:pointer;
   }
   .start:active { transform: scale(.99); }
-  .note { color: var(--muted); font-size:12px; text-align:center; margin-top:14px; }
-  .warn { color: #ffb4bd; font-size:13px; margin-top:14px; display:none; }
+  .start[disabled] { opacity: .35; cursor: default; }
+  .start--secondary {
+    background: #1d2436; color: var(--ink); border: 1px solid #2a3450;
+  }
+  .divider { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12px; margin: 18px 0 2px; }
+  .divider::before, .divider::after { content:""; flex:1; height:1px; background:#222b42; }
+  .note { color: var(--muted); font-size:12px; text-align:center; margin: 12px 0 0; }
+  .warn { color: #ffb4bd; font-size:13px; margin-top:12px; display:none; }
 
   /* running screen */
   .run { display:none; text-align:center; }
@@ -77,8 +125,13 @@
   }
   .cuetone { color: var(--muted); font-size:12px; margin-top:8px; }
   .clock { color: var(--muted); font-size:13px; margin-top:14px; font-variant-numeric: tabular-nums; }
+  .again {
+    display:none; width:100%; margin-top:20px; border:0; border-radius:16px;
+    background: linear-gradient(135deg, #6ee7ff, #5ddc8a);
+    color:#06121a; font-size:17px; font-weight:700; padding:16px; cursor:pointer;
+  }
   .stop {
-    margin-top:20px; width:100%; border:1px solid #3a2730; background:#1c1116;
+    margin-top:12px; width:100%; border:1px solid #3a2730; background:#1c1116;
     color:#ff9aa6; border-radius:14px; padding:14px; font-size:15px; cursor:pointer;
   }
   .muted-pulse { animation: pulse 2.2s ease-in-out infinite; }
@@ -89,23 +142,44 @@
 <body>
 <div class="app">
 
-  <!-- ── SETUP ─────────────────────────────────────────── -->
+  <!-- ── SETUP / PICKER ────────────────────────────────── -->
   <div id="setup">
     <h1>Friction Companion</h1>
-    <p class="tag">Press start. Train. It coaches you through the wall — out loud, live.</p>
+    <p class="tag">Stack the pieces you want — or run the full arc. Live cues, out loud.</p>
+
+    <div class="sect">Build a stack — tap to add, in any order</div>
+    <div class="cards">
+      <button class="card" data-stage="BASELINE"><b>Baseline</b><span>settle · ground · “you are capable”</span><em class="cnt"></em></button>
+      <button class="card" data-stage="INTENTION"><b>Intention</b><span>aim the focus · set the line</span><em class="cnt"></em></button>
+      <button class="card" data-stage="ENCOUNTER"><b>Encounter</b><span>the wall — push through</span><em class="cnt"></em></button>
+      <button class="card" data-stage="GROWTH"><b>Growth</b><span>bank it · take more</span><em class="cnt"></em></button>
+    </div>
+
+    <div class="queuebar">
+      <div class="chips" id="chips"><span class="qhint">nothing queued yet</span></div>
+      <button class="clear" id="clearBtn">Clear</button>
+    </div>
 
     <div class="field">
-      <label>Session length <b id="minVal">10 min</b></label>
+      <label>Length per piece <b id="pieceVal">1:15</b></label>
+      <input id="piece" type="range" min="30" max="180" step="15" value="75" />
+    </div>
+
+    <button id="startBtn" class="start" disabled>▶  Start stack</button>
+
+    <div class="divider">or</div>
+
+    <div class="field">
+      <label>Full session — one pass, wall near the end <b id="minVal">10 min</b></label>
       <input id="min" type="range" min="1" max="30" value="10" />
+      <div class="quick">
+        <button data-min="1">1-min taste</button>
+        <button data-min="10">10 min</button>
+        <button data-min="20">20 min</button>
+      </div>
     </div>
+    <button id="fullBtn" class="start start--secondary">▶  Full session</button>
 
-    <div class="quick">
-      <button data-min="1">1-min taste</button>
-      <button data-min="10">10 min</button>
-      <button data-min="20">20 min</button>
-    </div>
-
-    <button id="startBtn" class="start">▶  Start session</button>
     <p class="note">Use earbuds. Keep the screen on. Volume up.</p>
     <p id="warn" class="warn">This browser can’t speak out loud. Try Safari (iPhone) or Chrome.</p>
   </div>
@@ -130,6 +204,7 @@
       <div id="cueTone" class="cuetone"></div>
     </div>
     <div class="clock" id="clock">0:00 / 0:00</div>
+    <button id="againBtn" class="again">▶  Next person — run again</button>
     <button id="stopBtn" class="stop">Stop session</button>
   </div>
 
@@ -137,21 +212,27 @@
 
 <script>
 /* ──────────────────────────────────────────────────────────────────────────
-   Friction Companion — Stage-1 client.
+   Friction Companion — Stage-1 client (stage picker + live cues).
 
-   NO cues are baked into this page. On Start, each of the four stages
-   (Baseline → Intention → Encounter → Growth) is fetched LIVE from the server
-   (`POST /api/cue`), which runs the engine's real Anthropic generator. Each cue
-   is spoken with the browser's built-in voice, and no cue begins before the
-   previous one has finished speaking. Stages are spaced across the true session
-   length, with the Encounter near the realistic break point.
+   NO cues are baked into this page. Every stage cue is fetched LIVE from the
+   server (`POST /api/cue`), which runs the engine's real Anthropic generator
+   and keeps the API key server-side. Each cue is spoken with the browser's
+   built-in voice, and no cue begins before the previous one finished speaking.
+
+   Two ways to run:
+     • STACK — tap stage cards in any order (repeats allowed). Each queued piece
+       gets an equal block of the chosen per-piece length; its cue fires at the
+       block's start, then the hold continues silently until the next piece.
+     • FULL SESSION — the canonical single pass, stages spaced across the true
+       length with the Encounter near the break (~86%).
    ────────────────────────────────────────────────────────────────────────── */
 
-/* Fractions of the session at which each stage's cue is spoken. Baseline and
-   Intention set you up early; the long stretch between Intention and Encounter
-   is the silent "work" phase; the Encounter lands in the last ~14% (the wall);
-   Growth consolidates just before the end. */
-const PLAN = [
+const STAGES = ['BASELINE', 'INTENTION', 'ENCOUNTER', 'GROWTH'];
+
+/* Full-session spacing: Baseline and Intention set you up early; the long
+   stretch after Intention is the silent "work" phase; the Encounter lands in
+   the last ~14% (the wall); Growth consolidates just before the end. */
+const FULL_PLAN = [
   { key: 'BASELINE',  frac: 0.00 },
   { key: 'INTENTION', frac: 0.25 },
   { key: 'ENCOUNTER', frac: 0.86 },
@@ -169,6 +250,7 @@ const STAGE_COLOR = {
   BASELINE: "var(--baseline)", INTENTION: "var(--intention)",
   TRACK: "var(--intention)", ENCOUNTER: "var(--encounter)", GROWTH: "var(--growth)"
 };
+const NICE = { BASELINE: 'Baseline', INTENTION: 'Intention', ENCOUNTER: 'Encounter', GROWTH: 'Growth' };
 
 const $ = (id) => document.getElementById(id);
 const RING = 2 * Math.PI * 104;
@@ -178,9 +260,18 @@ function mmss(ms) {
   return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
 }
 
-/** Pure: the spoken time (ms from start) for each stage, given a duration. */
+/* ── schedules (pure; verified by webapp/verify.mjs) ────────────────────── */
+/** Full session: the four stages at canonical fractions of the duration. */
 function computeSchedule(durationMs) {
-  return PLAN.map((p) => ({ key: p.key, frac: p.frac, atMs: Math.round(p.frac * durationMs) }));
+  return FULL_PLAN.map((p) => ({ key: p.key, frac: p.frac, atMs: Math.round(p.frac * durationMs) }));
+}
+/** Stack: each queued piece gets an equal block; its cue fires at block start. */
+function computeQueueSchedule(stages, pieceMs) {
+  return stages.map((key, i) => ({
+    key,
+    frac: stages.length > 0 ? i / stages.length : 0,
+    atMs: i * pieceMs,
+  }));
 }
 
 /* ── speech (browser built-in voice, unchanged) ─────────────────────────── */
@@ -193,6 +284,12 @@ function loadVoice() {
 if (window.speechSynthesis) {
   loadVoice();
   speechSynthesis.onvoiceschanged = loadVoice;
+}
+function unlockSpeech() {
+  // Called inside a tap gesture — unlocks audio on iOS.
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
 }
 
 /* ── live cue fetch (no baked cues; the server is the only source) ───────── */
@@ -219,6 +316,7 @@ let timers = [];         // clearable timeouts
 let onStop = [];         // resolvers to release awaits on stop()
 let rafId = null;
 let wakeLock = null;
+let lastConfig = null;   // for one-tap "next person — run again"
 
 function cancelableSleep(ms) {
   return new Promise((resolve) => {
@@ -256,7 +354,7 @@ function speak(text, stage, origin) {
 /* ── UI ─────────────────────────────────────────────────────────────────── */
 function setStageUI(state) {
   $("stage").textContent = STAGE_SUB[state] || state.toLowerCase();
-  $("stageBig").textContent = state === "TRACK" ? "INTENTION" : state;
+  $("stageBig").textContent = state === "TRACK" ? "HOLD" : state;
   $("stageBig").style.color = STAGE_COLOR[state] || "var(--ink)";
   $("prog").style.stroke = STAGE_COLOR[state] || "var(--accent)";
   if (state === "TRACK") {
@@ -280,11 +378,15 @@ function tickClock() {
   rafId = requestAnimationFrame(tickClock);
 }
 
-/* ── the session flow (faithful to the engine's lifecycle) ──────────────── */
-async function runSession(durationMs) {
+/* ── the shared session runner ──────────────────────────────────────────── */
+/** Run any schedule across `durationMs`. `pieceLabel(i)` labels the fired
+    stage (e.g. "piece 2 of 3"); between cues the silent HOLD state shows with
+    an "up next" hint. The no-overlap rule: each iteration awaits the previous
+    cue's speech-end before its own cue may begin. */
+async function runWithSchedule(schedule, durationMs, pieceLabel) {
   window.__spoken = [];
   window.__sessionDone = false;
-  window.__schedule = computeSchedule(durationMs);
+  window.__schedule = schedule;
   running = true;
   onStop = []; timers = [];
   session = { startedAt: performance.now(), durationMs };
@@ -292,29 +394,35 @@ async function runSession(durationMs) {
   $("setup").style.display = "none";
   $("run").style.display = "block";
   $("run").classList.remove("done");
-  setStageUI("BASELINE");
+  $("againBtn").style.display = "none";
+  $("stopBtn").textContent = "Stop session";
+  $("roundLbl").textContent = "";
+  setStageUI(schedule[0].key);
   $("cueText").classList.add("muted-pulse");
   $("cueText").textContent = "Settle in. Listen.";
+  $("cueTone").textContent = "";
   tickClock();
 
   try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) {}
 
-  const schedule = window.__schedule;
   let speechDone = Promise.resolve();
 
   for (let i = 0; i < schedule.length; i++) {
     const s = schedule[i];
     if (!running) return;
 
-    // Prefetch this stage's cue now; it resolves while we wait for its moment.
-    const cuePromise = fetchCue(s.key, 1);
+    // Prefetch this stage's live cue now; it resolves while we wait for its moment.
+    const cuePromise = fetchCue(s.key, i + 1);
 
     // Never start a cue before the previous one has finished speaking.
     await speechDone;
     if (!running) return;
 
-    // Between cues, show the silent "holding/tracking" state (engine goes quiet).
-    if (i > 0) setStageUI("TRACK");
+    // Between cues, show the silent holding state with an "up next" hint.
+    if (i > 0) {
+      setStageUI("TRACK");
+      $("roundLbl").textContent = "next: " + NICE[s.key];
+    }
 
     // Wait until this stage's scheduled moment in the real timeline.
     await waitUntil(s.atMs);
@@ -324,6 +432,7 @@ async function runSession(durationMs) {
     if (!running) return;
 
     setStageUI(s.key);
+    $("roundLbl").textContent = pieceLabel ? pieceLabel(i) : "";
     setCueText(resp.cue.AudioTranscript, resp.cue.DeliveryTone, resp.origin);
     speechDone = speak(resp.cue.AudioTranscript, s.key, resp.origin);
   }
@@ -331,6 +440,27 @@ async function runSession(durationMs) {
   await speechDone;
   if (!running) return;
   finish();
+}
+
+/** Full session: canonical single pass across the true length. */
+function runSession(durationMs) {
+  lastConfig = { mode: 'full', durationMs };
+  return runWithSchedule(computeSchedule(durationMs), durationMs, null);
+}
+/** Stack: the queued pieces, in tap order, each an equal block. */
+function runQueue(stages, pieceMs) {
+  lastConfig = { mode: 'queue', stages: stages.slice(), pieceMs };
+  const n = stages.length;
+  return runWithSchedule(
+    computeQueueSchedule(stages, pieceMs),
+    n * pieceMs,
+    (i) => `piece ${i + 1} of ${n}`,
+  );
+}
+function runAgain() {
+  if (!lastConfig) return;
+  if (lastConfig.mode === 'queue') runQueue(lastConfig.stages, lastConfig.pieceMs);
+  else runSession(lastConfig.durationMs);
 }
 
 function finish() {
@@ -341,6 +471,7 @@ function finish() {
   $("stageBig").textContent = "DONE";
   $("stageBig").style.color = "var(--accent)";
   $("prog").style.strokeDashoffset = "0";
+  $("roundLbl").textContent = "";
   $("cueText").classList.remove("muted-pulse");
   $("cueText").textContent = "That's the set. You met the wall and moved it. Breathe.";
   $("cueTone").textContent = "";
@@ -349,6 +480,9 @@ function finish() {
     if (voice) u.voice = voice; u.rate = 0.98;
     speechSynthesis.speak(u);
   }
+  // One-tap reset for the room: replay the exact same stack for the next person.
+  $("againBtn").style.display = "block";
+  $("stopBtn").textContent = "Edit stack";
   releaseWake();
   window.__sessionDone = true;
 }
@@ -364,28 +498,85 @@ function stop() {
   if (window.speechSynthesis) speechSynthesis.cancel();
   releaseWake();
   session = null;
+  $("againBtn").style.display = "none";
+  $("stopBtn").textContent = "Stop session";
   $("run").style.display = "none";
-  $("setup").style.display = "block";
+  $("setup").style.display = "block";  // queue is intentionally kept for the next person
+}
+
+/* ── the queue (picker state) ───────────────────────────────────────────── */
+let queue = [];
+
+function renderQueue() {
+  const chips = $("chips");
+  chips.innerHTML = "";
+  if (queue.length === 0) {
+    chips.innerHTML = '<span class="qhint">nothing queued yet</span>';
+  } else {
+    queue.forEach((st, i) => {
+      const c = document.createElement("button");
+      c.className = "chip";
+      c.dataset.stage = st;
+      c.innerHTML = `<i>${i + 1}</i> ${NICE[st]} <span class="x">×</span>`;
+      c.title = "remove";
+      c.addEventListener("click", () => { queue.splice(i, 1); renderQueue(); });
+      chips.appendChild(c);
+    });
+  }
+  // per-card count badges
+  document.querySelectorAll(".card").forEach((card) => {
+    const n = queue.filter((s) => s === card.dataset.stage).length;
+    const badge = card.querySelector(".cnt");
+    badge.style.display = n > 0 ? "flex" : "none";
+    badge.textContent = n > 1 ? "×" + n : "✓";
+  });
+  // start button label + enabled state
+  const pieceMs = Number($("piece").value) * 1000;
+  const btn = $("startBtn");
+  if (queue.length === 0) {
+    btn.disabled = true;
+    btn.textContent = "▶  Start stack";
+  } else {
+    btn.disabled = false;
+    btn.textContent = `▶  Start stack — ${queue.length} piece${queue.length > 1 ? "s" : ""} · ${mmss(queue.length * pieceMs)}`;
+  }
 }
 
 /* ── wiring ─────────────────────────────────────────────────────────────── */
-$("min").addEventListener("input", e => $("minVal").textContent = e.target.value + " min");
-document.querySelectorAll(".quick button").forEach(b => b.addEventListener("click", () => {
+document.querySelectorAll(".card").forEach((card) =>
+  card.addEventListener("click", () => { queue.push(card.dataset.stage); renderQueue(); })
+);
+$("clearBtn").addEventListener("click", () => { queue = []; renderQueue(); });
+$("piece").addEventListener("input", (e) => {
+  $("pieceVal").textContent = mmss(Number(e.target.value) * 1000);
+  renderQueue();
+});
+$("min").addEventListener("input", (e) => $("minVal").textContent = e.target.value + " min");
+document.querySelectorAll(".quick button").forEach((b) => b.addEventListener("click", () => {
   $("min").value = b.dataset.min; $("minVal").textContent = b.dataset.min + " min";
 }));
+
 $("startBtn").addEventListener("click", () => {
+  if (queue.length === 0) return;
   if (!window.speechSynthesis) { $("warn").style.display = "block"; return; }
-  // First speak inside the tap gesture → unlocks audio on iOS.
-  speechSynthesis.cancel();
-  speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
+  unlockSpeech();
+  runQueue(queue.slice(), Number($("piece").value) * 1000);
+});
+$("fullBtn").addEventListener("click", () => {
+  if (!window.speechSynthesis) { $("warn").style.display = "block"; return; }
+  unlockSpeech();
   runSession(parseInt($("min").value, 10) * 60000);
 });
+$("againBtn").addEventListener("click", () => { unlockSpeech(); runAgain(); });
 $("stopBtn").addEventListener("click", stop);
 if (!window.speechSynthesis) $("warn").style.display = "block";
+renderQueue();
 
 // Test hooks (used by webapp/verify.mjs).
 window.runSession = runSession;
+window.runQueue = runQueue;
 window.computeSchedule = computeSchedule;
+window.computeQueueSchedule = computeQueueSchedule;
 window.__spoken = [];
 window.__sessionDone = false;
 </script>

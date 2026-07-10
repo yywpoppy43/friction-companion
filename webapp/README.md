@@ -5,6 +5,24 @@ out loud, with **live-generated cues** and **real session timing**. It uses your
 device's **built-in voice** (free, offline once loaded); the cue *text* is
 generated fresh each session by the engine.
 
+> **Running a live demo for other people?** Follow the step-by-step
+> [`RUN_DEMO.md`](../RUN_DEMO.md) at the repo root — written for a
+> non-technical operator (key setup, one command, phone, next-person reset).
+
+Two ways to run a session:
+
+- **Build a stack** — tap the four stage cards (Baseline / Intention /
+  Encounter / Growth) in any order, repeats allowed. Each queued piece runs as
+  an equal block of the chosen per-piece length (default 1:15), speaks its own
+  live cue at the block start, then holds silently. Numbered chips show the
+  order; tap a chip to remove it.
+- **Full session** — the canonical single pass: stages spaced across the true
+  length you pick, with the Encounter near the break (~86%).
+
+After **DONE**, one tap — **“Next person — run again”** — replays the same
+stack with freshly generated cues; **Edit stack** returns to the picker with
+the queue kept.
+
 ![setup](screenshot-setup.png) ![running](screenshot-running.png)
 
 ## Architecture (two parts)
@@ -28,8 +46,10 @@ generated fresh each session by the engine.
 
 ## Run it
 
-Live cues need the key. Set `ANTHROPIC_API_KEY` (see the repo README, *Setting the
-API key*), then from the repo root:
+Live cues need the key. Create a `.env` file next to `package.json` containing
+`ANTHROPIC_API_KEY=sk-ant-...` — **the server auto-loads it itself**, so no
+exported environment variables are needed (an already-exported variable still
+wins if present). Then from the repo root:
 
 ```bash
 npm run serve:app          # prints a localhost URL and your LAN URL(s)
@@ -53,13 +73,15 @@ npm run verify:app         # starts the server, drives two sessions in headless 
 
 Checks: no key material in the page; the 10-minute schedule spaces the four
 stages with the Encounter near the break; two consecutive sessions run in
-lifecycle order with **no overlapping speech**; and — when a key is present — the
-two sessions' wording **differs** (proof of live generation, not a baked batch).
+lifecycle order with **no overlapping speech**; — when a key is present — the
+two sessions' wording **differs** (proof of live generation, not a baked batch);
+and a stack queued in arbitrary order (with a repeated stage) plays in exactly
+that order with no overlap.
 Requires Playwright (`npm i -D playwright && npx playwright install chromium`).
 
 ## What this MVP still isn't (Stage 2/3)
 
-It fires on **time**, not on your heart rate; it uses the browser's built-in
-voice, not a premium one; and it's one pass of the four stages, not a multi-round
-loop. Those upgrades ride on seams the backend already has (biometric trigger,
-swappable TTS, the relational cue matrix). See the project README.
+It fires on **time**, not on your heart rate; and it uses the browser's built-in
+voice, not a premium one. Those upgrades ride on seams the backend already has
+(biometric trigger, swappable TTS, the relational cue matrix). See the project
+README.

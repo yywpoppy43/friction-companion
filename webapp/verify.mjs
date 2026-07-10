@@ -11,6 +11,8 @@
  *   4. When a real ANTHROPIC_API_KEY is present, the two sessions' cue wording
  *      DIFFERS (proves live generation, not a baked batch). Without a key the
  *      server serves safe-default fallbacks — reported, not failed.
+ *   5. Stack mode: a queue tapped in arbitrary order (with a repeated stage)
+ *      plays in exactly that order as equal per-piece blocks, no overlap.
  *
  * Speech is stubbed (headless has no audio) with a fixed simulated duration so
  * the no-overlap gate is measurable. Run:  node webapp/verify.mjs
@@ -57,12 +59,20 @@ const SPEECH_STUB = `
 `;
 
 async function runOneSession(page, durationMs) {
-  await page.evaluate((d) => window.runSession(d), durationMs);
+  await page.evaluate((d) => { window.runSession(d); }, durationMs);
   await page.waitForFunction(() => window.__sessionDone === true, { timeout: 60000 });
   const spoken = await page.evaluate(() => window.__spoken.map(r => ({
     stage: r.stage, text: r.text, origin: r.origin, startedAt: r.startedAt, endedAt: r.endedAt,
   })));
   return spoken;
+}
+
+async function runQueueSession(page, stages, pieceMs) {
+  await page.evaluate((a) => { window.runQueue(a.stages, a.pieceMs); }, { stages, pieceMs });
+  await page.waitForFunction(() => window.__sessionDone === true, { timeout: 60000 });
+  return await page.evaluate(() => window.__spoken.map(r => ({
+    stage: r.stage, text: r.text, origin: r.origin, startedAt: r.startedAt, endedAt: r.endedAt,
+  })));
 }
 
 function checkNoOverlap(spoken) {
@@ -157,6 +167,22 @@ async function main() {
       notes.push('(4) live-generation wording proof SKIPPED: no ANTHROPIC_API_KEY in this environment, ' +
                  'so the server served safe-default fallback cues (identical by design). Set the key and re-run to see live, differing cues.');
     }
+
+    // (5) Stack mode: arbitrary order (with a repeat), equal blocks, no overlap.
+    const QUEUE = ['GROWTH', 'ENCOUNTER', 'BASELINE', 'ENCOUNTER'];
+    const PIECE = 75000;
+    const qSched = await page.evaluate((a) => window.computeQueueSchedule(a.q, a.p), { q: QUEUE, p: PIECE });
+    if (!qSched.every((s, i) => s.key === QUEUE[i] && s.atMs === i * PIECE)) {
+      problems.push('queue schedule is not equal per-piece blocks in queued order');
+    }
+    const s3 = await runQueueSession(page, QUEUE, 2500);
+    const q3 = stageCues(s3);
+    if (JSON.stringify(q3.map(c => c.stage)) !== JSON.stringify(QUEUE)) {
+      problems.push(`stack played ${q3.map(c => c.stage).join('→')} instead of the queued order`);
+    }
+    const ov3 = checkNoOverlap(s3);
+    if (!ov3.ok) problems.push('stack session cue overlap: ' + ov3.detail);
+    console.log(`\n✔ (5) stack mode: ${QUEUE.join(' → ')} played in queued order (equal blocks, no overlap)`);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
