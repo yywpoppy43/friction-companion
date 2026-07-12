@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#14110c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>The Return</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6' fill='%23d8633a'/></svg>">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<main id="app">
+
+  <!-- Start screen (also the audio-unlock gesture on phones) -->
+  <section id="intro" class="screen is-active">
+    <p class="eyebrow">The Return</p>
+    <h1 class="intro-title">Stay in the shake.</h1>
+    <p id="intro-sub" class="intro-sub">A grounded voice, at the moments that matter.</p>
+    <button id="begin" class="begin" type="button">Begin</button>
+    <p class="intro-foot">Put your headphones in. Find your ground.</p>
+    <p id="modes" class="modes" hidden></p>
+  </section>
+
+  <!-- Session screen -->
+  <section id="session" class="screen">
+    <header class="hud">
+      <span id="stage-label" class="stage-label">Baseline</span>
+      <span id="clock" class="clock mono">0:00</span>
+    </header>
+
+    <div class="ring-wrap">
+      <svg id="ring" viewBox="0 0 240 240" aria-hidden="true">
+        <circle class="ring-track" cx="120" cy="120" r="108"/>
+        <circle id="ring-fill" class="ring-fill" cx="120" cy="120" r="108"/>
+        <circle id="wall-mark" class="wall-mark" cx="120" cy="12" r="4.5"/>
+      </svg>
+      <div class="ring-center">
+        <div id="stage-mech" class="stage-mech">arrive · find the ground</div>
+        <div id="wall-count" class="wall-count mono"></div>
+      </div>
+    </div>
+
+    <div class="cue-wrap">
+      <p id="cue-text" class="cue-text"></p>
+    </div>
+
+    <footer class="foot">
+      <div id="beats" class="beats" aria-hidden="true"></div>
+      <button id="end" class="end" type="button">End</button>
+    </footer>
+  </section>
+
+  <!-- Closing screen -->
+  <section id="outro" class="screen">
+    <p class="eyebrow">Held.</p>
+    <h1 class="intro-title">You stayed in it.</h1>
+    <p class="intro-sub">That edge is yours now.</p>
+    <button id="again" class="begin" type="button">Again</button>
+  </section>
+
+  <div id="flash" class="flash" aria-hidden="true"></div>
+</main>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

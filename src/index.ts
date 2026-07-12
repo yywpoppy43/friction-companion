@@ -48,6 +48,17 @@ export * from './generative/system-prompt.ts';
 export * from './generative/output-vocabulary.ts';
 export * from './generative/anthropic-cue-generator.ts';
 
+// ── Session Arc (real-timing scheduler) ───────────────────────────────────
+export * from './session/arc.ts';
+
+// ── Phone-app server (thin proxy: live cues + cloud TTS) ──────────────────
+// The `main.ts` entrypoint is intentionally NOT re-exported (importing it would
+// start a server). Import these to embed or test the server pieces directly.
+export * from './server/cue-service.ts';
+export * from './server/session-cue-generator.ts';
+export * from './server/tts-service.ts';
+export * from './server/server.ts';
+
 // ── Adapters ──────────────────────────────────────────────────────────────
 export * from './adapters/system-clock.ts';
 export * from './adapters/manual-clock.ts';

@@ -24,6 +24,12 @@ export interface CueGenerationRequest {
   round: number;
   /** Optional finer friction classification to target (PRD typology addition). */
   frictionCondition?: FrictionCondition;
+  /**
+   * Optional recent spoken lines the new cue should vary away from. Purely
+   * additive: the default generator ignores it, but a session-aware generator can
+   * use it to keep every cue fresh so a live session never repeats itself.
+   */
+  avoidTranscripts?: readonly string[];
 }
 
 /**

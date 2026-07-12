@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Active Friction Voice Companion — backend Behavioral Physics Engine (Friction State Machine + temporal/biometric trigger listeners). No UI.",
+  "description": "Active Friction Voice Companion — Behavioral Physics Engine (Friction State Machine + temporal/biometric triggers) with a phone web-app (\"The Return\") served by a thin, key-protecting proxy for live cue generation and cloud TTS.",
   "engines": {
     "node": ">=22.6.0"
   },
@@ -12,6 +12,7 @@
     "build": "tsc -p tsconfig.build.json && node -e \"require('fs').copyFileSync('src/cue-bank/cue-database.json','dist/cue-bank/cue-database.json')\"",
     "test": "node --test",
     "test:watch": "node --test --watch",
+    "serve": "node --env-file-if-exists=.env src/server/main.ts",
     "demo:temporal": "node src/examples/runTemporalSession.ts",
     "demo:biometric": "node src/examples/runBiometricSession.ts",
     "demo:generative": "node src/examples/runGenerativeSession.ts",

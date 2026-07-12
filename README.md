@@ -5,8 +5,67 @@ headless, event-driven backend that drives the PRD's *Friction State Machine*,
 selects verbal *Cues* from a strict relational matrix, and fires them at precise
 friction "tipping points" detected either by **time** (V1) or **biometrics** (V2).
 
-> This package is backend only — **no UI**. A future UI/mobile client is purely a
-> consumer of the typed event stream plus the swappable TTS/Telemetry adapters.
+> The engine is headless. On top of it ships **[The Return](#the-return--phone-web-app-build-stage-1)** —
+> a phone web-app served by a thin, key-protecting proxy that generates cues live
+> per session and speaks them in a natural cloud voice, on a real session clock.
+
+---
+
+## The Return — phone web-app (Build Stage 1)
+
+A first-time user, in one real session, should **feel the event**: hold through the
+shake, get stronger. The engine already proved the shape (state machine →
+tipping-point → live cue generation → speak-like-a-human filter); this build makes
+it *feel real* by fixing exactly three things and nothing else.
+
+| Fix | Before | Now | Where |
+|---|---|---|---|
+| **Live cues, key protected** | a baked static batch, repeating | every cue generated fresh per session via a thin server proxy; the model key never reaches the page; the [human filter](src/generative/output-vocabulary.ts) stays on the live path; **only** the spoken line + tone cross the wire | [`server/cue-service.ts`](src/server/cue-service.ts), [`server/session-cue-generator.ts`](src/server/session-cue-generator.ts) |
+| **Natural voice** | the robotic browser `SpeechSynthesis` | server-side cloud TTS (key protected), streamed back and played through Web Audio — one clean, neutral, grounded voice | [`server/tts-service.ts`](src/server/tts-service.ts) |
+| **Real timing** | a compressed clock, cues cutting each other off | a param-driven scheduler places the four stages across the *true* session length, lands the Encounter cluster in the wall window, fires the wedge at the wall, and a playback queue enforces a minimum gap so **no cue ever overlaps** | [`session/arc.ts`](src/session/arc.ts), [`public/playback-queue.js`](public/playback-queue.js) |
+
+Cues are **drawn from the existing engine and Cue Bank** — this build is plumbing
+and timing, not content. It reuses `AnthropicCueGenerator`, the system prompt, the
+`findForbiddenVocabulary` seal, the Cue Bank corpus, and the four `FrictionState`s
+unchanged; it never reinvents the cues or the state machine.
+
+### Run it
+
+```bash
+npm run serve                     # → http://localhost:3000  (open on a phone via the machine's LAN IP)
+```
+
+It runs with **no keys** for a full offline dry-run: cues are drawn from the Cue
+Bank and spoken with a soft tone stand-in, so the whole pipeline — timing, the
+no-overlap queue, the felt event at the wall — is demonstrable end-to-end. Add keys
+to `.env` (see [`.env.example`](.env.example)) and the identical path goes live:
+
+```bash
+ANTHROPIC_API_KEY=…    # live cue generation per session (else offline Cue-Bank mode)
+OPENAI_API_KEY=…       # a real neutral voice (or GOOGLE_TTS_API_KEY; else a tone stand-in)
+```
+
+Flow: **app → server → model API → cue**, and **app → server → TTS API → audio → app plays it.**
+The server ([`server/server.ts`](src/server/server.ts)) is a zero-dependency
+`node:http` proxy; the app ([`public/`](public)) is plain HTML/JS — no install, no
+store, opens on a phone.
+
+### Tune the arc, don't touch the code
+
+The timing is entirely parameters, seeded from the Session Arc design (30-min
+example, stage boundaries 0 / 18 / 40 / 80 %, wall at ~62 %). Change them via env
+(no code change):
+
+```bash
+SESSION_LENGTH_MIN=45     # the real class length — every cue placement scales with it
+WALL_AT=0.6               # where the wedge (felt event) lands, 0..1
+MIN_GAP_MS=14000          # minimum silence between cues
+ARC_JSON='{ "stages": [ … ] }'   # full/partial SessionArc override
+```
+
+For a quick compressed demo (timing only), append a query: `…:3000/?lengthMin=1`.
+`planSchedule` in [`session/arc.ts`](src/session/arc.ts) is pure and unit-tested;
+the server computes the schedule and hands it to the phone, which executes it.
 
 ---
 
