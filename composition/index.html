@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Composition Engine · The Architecture of Human Reality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* the dawn end of the dusk-to-dawn system — same values as The_Architecture_of_Human_Reality.html */
+  --field:#f2e8cf; --surface:#faf4e4; --cream:#2b2216; --creamMid:#6f6047;
+  --sage:#4a6634; --gold:#96650f; --clay:#8f4c2c; --dawn:#171009;
+  --night:#2b2216; --night2:#e6dabc;
+  --line:rgba(43,34,22,.18); --lineSoft:rgba(43,34,22,.09);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{
+  background:radial-gradient(130% 90% at 78% -12%,rgba(150,101,15,.07),transparent 48%),
+             radial-gradient(120% 80% at 8% 118%,rgba(74,102,52,.06),transparent 52%),var(--field);
+  color:var(--cream); font-family:"Spectral",Georgia,serif; font-weight:400; line-height:1.62;
+  -webkit-font-smoothing:antialiased; min-height:100vh; padding:clamp(28px,5vw,72px) clamp(18px,5vw,56px) 96px;
+}
+.wrap{max-width:1120px;margin:0 auto}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--creamMid)}
+h1{font-weight:300;font-size:clamp(2.2rem,5.6vw,3.9rem);line-height:1.02;letter-spacing:-.015em;margin:.55rem 0 1rem}
+h1 em{font-style:italic;color:var(--gold)}
+.thesis{font-size:clamp(1rem,1.5vw,1.14rem);max-width:62ch;color:var(--creamMid)}
+.thesis b{color:var(--cream);font-weight:400}
+hr.dawn{height:1px;border:0;margin:2.4rem 0 1.8rem;background:linear-gradient(90deg,var(--sage),var(--gold) 52%,transparent);opacity:.55}
+.mono{font-family:"JetBrains Mono",monospace}
+
+/* ---- controls ---- */
+.tabs{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;border-bottom:1px solid var(--line);padding-bottom:.9rem}
+.tab{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  background:none;border:1px solid transparent;border-radius:20px;padding:.5em 1em;color:var(--creamMid);cursor:pointer;transition:.25s}
+.tab:hover{color:var(--cream)}
+.tab.on{color:var(--surface);background:var(--night);border-color:var(--night)}
+.tab:focus-visible,.src:focus-visible,select:focus-visible,.scell:focus-visible,.filebtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.src{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);border-radius:20px;padding:.5em .95em;color:var(--creamMid);cursor:pointer;transition:.25s}
+.src[aria-pressed="true"]{color:var(--gold);border-color:rgba(150,101,15,.45);background:rgba(150,101,15,.09)}
+
+.controls{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:flex-end;margin:1.5rem 0 0}
+.ctl{display:flex;flex-direction:column;gap:.3rem}
+.ctl label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--creamMid)}
+.selwrap{position:relative}
+.selwrap::after{content:"▾";position:absolute;right:.85em;top:50%;transform:translateY(-52%);color:var(--creamMid);pointer-events:none;font-size:.8em}
+select{appearance:none;-webkit-appearance:none;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;
+  color:var(--cream);background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:.55em 2.2em .55em .9em;cursor:pointer;max-width:min(78vw,340px)}
+select:hover{border-color:rgba(43,34,22,.38)}
+.check{display:flex;gap:.45rem;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--creamMid);cursor:pointer;padding-bottom:.55em}
+.check input{accent-color:var(--gold)}
+
+/* ---- composed cell ---- */
+#stage{margin-top:2.4rem;scroll-margin-top:1.5rem}
+.addr{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--creamMid)}
+.addr b{color:var(--edge,var(--gold));font-weight:500}
+.anchorcard{margin:1rem 0 0;padding:1.2rem 1.4rem;border-radius:12px;border:1px solid var(--gold);
+  background:linear-gradient(100deg,rgba(150,101,15,.09),transparent 72%)}
+.anchorcard .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--creamMid)}
+.anchorcard .v{font-size:clamp(1.15rem,2.2vw,1.45rem);font-weight:400;color:var(--dawn);margin-top:.35rem;font-style:italic;line-height:1.4}
+.bridge{margin:1.5rem 0 .2rem;font-size:1.05rem;font-style:italic;color:var(--creamMid)}
+.bridge b{color:var(--cream);font-weight:400;font-style:normal}
+
+.walk{margin-top:.6rem;display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:2.1rem 13.5rem 1fr;gap:1.1rem;padding:1.15rem 0;border-top:1px solid var(--lineSoft);align-items:start}
+.row:first-child{border-top:0}
+.row .lk{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--creamMid);padding-top:.28rem}
+.row .ln{font-size:.97rem;color:var(--cream);padding-top:.1rem}
+.row .lt{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--creamMid);opacity:.8;display:block;margin-top:.22rem}
+.body{font-size:1rem;line-height:1.62}
+.il{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--creamMid);font-weight:500;margin-right:.3rem}
+.note{font-family:"JetBrains Mono",monospace;font-size:10.5px;line-height:1.55;color:var(--creamMid);opacity:.9;margin-top:.6rem;padding-left:.75rem;border-left:1px solid var(--lineSoft)}
+.note.flagged{color:var(--clay);opacity:.95;border-left-color:var(--clay)}
+.langnote{font-size:.86rem;color:var(--creamMid);font-style:italic;margin-top:1rem;padding-left:.9rem;border-left:2px solid var(--lineSoft);max-width:78ch}
+.uncovered{border:1px dashed var(--line);border-radius:14px;padding:1.6rem 1.5rem;margin-top:1.4rem;color:var(--creamMid);font-style:italic;max-width:78ch}
+
+/* tiers */
+.tierstrip{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;margin-top:1.8rem;padding-top:1.1rem;border-top:1px solid var(--line)}
+.chip{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:20px;padding:.4em .85em;color:var(--creamMid);background:none}
+.chip.big{font-size:10.5px;font-weight:500}
+.t-EST{color:var(--sage);border-color:rgba(74,102,52,.5);background:rgba(74,102,52,.07)}
+.t-STR{color:var(--gold);border-color:rgba(150,101,15,.5);background:rgba(150,101,15,.08)}
+.t-MOD{color:var(--clay);border-color:rgba(143,76,44,.5);background:rgba(143,76,44,.07)}
+.tiernote{font-family:"JetBrains Mono",monospace;font-size:10px;line-height:1.6;color:var(--creamMid);margin-top:.7rem;max-width:88ch}
+
+/* ---- source faces ---- */
+.facesHead{margin-top:2.6rem;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--creamMid)}
+.facegrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.8rem;align-items:start}
+.face{position:relative;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.35));padding:1.15rem 1.25rem 1.1rem}
+.face::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--edge,var(--gold));opacity:.8}
+.face .faddr{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--creamMid);line-height:1.7}
+.face .faddr b{color:var(--edge,var(--gold));font-weight:500}
+.face .raw{font-size:.94rem;line-height:1.6;margin-top:.65rem}
+.face .fx{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.4rem 1.3rem;margin:.8rem 0 .2rem;border-top:1px solid var(--lineSoft);padding-top:.8rem}
+.face .fx .k{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--creamMid);display:block;margin-bottom:.14rem}
+.face .fx .v{font-size:.86rem;color:var(--cream);line-height:1.45}
+.face .flayer{border-top:1px solid var(--lineSoft);margin-top:.85rem;padding-top:.85rem}
+.m-Assertive{--edge:var(--gold)} .m-Withdrawn{--edge:var(--sage)} .m-Compliant{--edge:var(--clay)}
+
+/* ---- sheet ---- */
+.gridwrap{overflow-x:auto;padding-bottom:4px;margin-top:1.6rem}
+table.sheet{border-collapse:separate;border-spacing:7px;width:100%;min-width:1150px}
+table.sheet th{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--creamMid);font-weight:400;text-align:left;padding:0 .2rem .25rem;white-space:nowrap;vertical-align:bottom}
+table.sheet th b{display:block;font-weight:500;color:var(--cream);font-size:10.5px}
+table.sheet th.rowh{text-align:right;padding-right:.7rem;vertical-align:middle;max-width:11rem;white-space:normal}
+table.sheet th.rowh b{font-size:10px}
+table.sheet th.grouph{padding-top:1.1rem;text-align:left;letter-spacing:.26em;color:var(--creamMid);opacity:.85}
+.scell{position:relative;display:block;width:100%;min-width:12.5rem;text-align:left;color:inherit;font-family:inherit;cursor:pointer;
+  border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.35));
+  padding:.7rem .8rem .65rem;transition:border-color .25s,transform .25s}
+.scell::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--edge,var(--gold));opacity:.7}
+.scell:hover{transform:translateY(-2px);border-color:rgba(43,34,22,.38)}
+.scell .si{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--creamMid);display:block;margin-bottom:.3rem}
+.scell .sp{font-size:.85rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.fulltext .scell .sp{display:block;overflow:visible}
+.scell .sfoot{display:flex;gap:.35rem;align-items:center;margin-top:.5rem;flex-wrap:wrap}
+.scell .mini{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:14px;padding:.25em .6em;color:var(--creamMid)}
+.scell.uni{border-style:dashed}
+.scell.uni .sp{font-style:italic;color:var(--creamMid)}
+.sheetnote{font-size:.9rem;color:var(--creamMid);font-style:italic;margin-top:.9rem;max-width:70ch}
+
+/* ---- loader ---- */
+.drop{border:1px dashed var(--line);border-radius:14px;padding:2.6rem 1.5rem;text-align:center;color:var(--creamMid);margin-top:2.4rem}
+.drop.hot{border-color:var(--gold);background:rgba(150,101,15,.05)}
+.drop p{max-width:56ch;margin:0 auto;font-style:italic}
+.drop .stat{display:flex;gap:.5rem;justify-content:center;margin-top:1.1rem;flex-wrap:wrap}
+.filebtn{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);border-radius:20px;padding:.6em 1.2em;color:var(--cream);cursor:pointer;margin-top:1.2rem}
+.filebtn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ---- guardrails drawer ---- */
+#drawer{display:none;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:1.3rem 1.5rem;margin-top:1.4rem}
+#drawer.on{display:block}
+#drawer h3{font-weight:400;font-size:1.15rem;margin:.2rem 0 .5rem}
+#drawer .gr{border-top:1px solid var(--lineSoft);padding:.9rem 0}
+#drawer .gr:first-of-type{border-top:0;padding-top:.2rem}
+#drawer .gk{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--creamMid);display:block;margin-bottom:.3rem}
+#drawer .gv{font-size:.92rem;line-height:1.6;max-width:88ch}
+#drawer details{margin-top:.6rem}
+#drawer summary{cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--creamMid)}
+#drawer pre{white-space:pre-wrap;font-family:"Spectral",Georgia,serif;font-size:.88rem;line-height:1.55;color:var(--cream);
+  border-left:2px solid var(--lineSoft);padding-left:1rem;margin-top:.7rem;max-height:24rem;overflow-y:auto}
+.ok{color:var(--sage)} .bad{color:var(--clay)}
+
+footer{margin-top:4rem;border-top:1px solid var(--line);padding-top:1.5rem;font-size:.87rem;color:var(--creamMid);max-width:78ch}
+footer b{color:var(--dawn);font-weight:400}
+.stamp{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;margin-top:1.1rem}
+#selfcheck{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:.8rem;line-height:2}
+
+@media(max-width:760px){
+  .row{grid-template-columns:1.7rem 1fr;gap:.7rem}
+  .row .ln{grid-column:2} .row > div:last-child{grid-column:2}
+  .facegrid{grid-template-columns:1fr}
+}
+@media print{
+  body{padding:0;background:#fff}
+  .tabs,.controls,.filebtn,#drawer,.src{display:none!important}
+  .scell .sp{display:block;overflow:visible}
+  .scell:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style></head><body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">The Return · The Architecture of Human Reality · Composition Engine</div>
+  <h1>Nobody writes the <em>interior</em>.</h1>
+  <p class="thesis" id="thesis">Two faces of the cube are authored — Concept × Lens, and Concept × Pattern. Everything between them composes at runtime: <b>the pattern supplies the content, the lens supplies the voice,</b> and the tier rides along at its weakest.</p>
+  <hr class="dawn">
+</header>
+
+<nav class="tabs" role="tablist" id="viewtabs" hidden>
+  <button class="tab on" data-v="cell" role="tab" aria-selected="true">Single Cell</button>
+  <button class="tab" data-v="sheet" role="tab" aria-selected="false">Sheet</button>
+  <button class="src" id="grBtn" aria-pressed="false">Guardrails &amp; self-check</button>
+</nav>
+
+<div id="drawer"></div>
+<div id="controls"></div>
+<div id="stage"><div class="drop" id="drop" hidden></div></div>
+
+<footer>
+  <p>Every sentence in a composed cell is either <b>verbatim source text</b> from one of the two faces or <b>fixed connective grammar</b> from this engine — the engine can name, frame, and order; it cannot claim. A composed cell inherits the <b>weakest</b> tier of its inputs, never the strongest. No study has ever linked a pattern to a biometric measure; every somatic tell here is observable — visible from across a room, needing no instrument.</p>
+  <div id="selfcheck"></div>
+  <div class="stamp">Internal reference · not user-facing · pattern numbers and tier tags never surface downstream</div>
+</footer>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+   The Composition Engine
+   interior(concept, pattern, lens) — composed at runtime from
+   grid_data.json  (Face A · Concept × Lens · pattern collapsed)
+   matrix_data.json (Face B · Concept × Pattern · lens collapsed)
+   Rule: the lens supplies vocabulary and audience; the pattern
+   supplies content; the universal statement anchors; the tier
+   inherited is the WEAKEST of the inputs. Nothing is authored.
+   ============================================================ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---- tiers: rank, grammar, chip class ---- */
+const TIERS = {
+  ESTABLISHED: {rank:3, phrase:'research shows',       cls:'t-EST'},
+  STRUCTURE:   {rank:2, phrase:'in Enneagram theory',  cls:'t-STR'},
+  MODEL:       {rank:1, phrase:'we model this as',     cls:'t-MOD'}
+};
+
+/* Parse a tier out of a bracket tag or a layer-meta tier string.
+   Weakest-component rule: if MODEL appears anywhere in a mixed tag,
+   the input counts as MODEL for inheritance. Untagged content is MODEL. */
+function tierOf(tag){
+  if(!tag || !/(ESTABLISHED|STRUCTURE|\bMODEL\b)/.test(tag))
+    return {weakest:'MODEL', label: tag || 'untagged — defaults to MODEL', tagged:false};
+  const weakest = /\bMODEL\b/.test(tag) ? 'MODEL' : (/\bSTRUCTURE\b/.test(tag) ? 'STRUCTURE' : 'ESTABLISHED');
+  return {weakest, label: tag, tagged:true};
+}
+
+/* Grid cell text → display text, trailing [tag], head term for bridges */
+function parseCell(text){
+  const m = String(text).match(/\s*\[([^\][]+)\]\s*$/);
+  const tag = m ? m[1] : null;
+  const display = (m ? text.slice(0, m.index) : text).trim();
+  return {display, tag, tier: tierOf(tag), head: headOf(display)};
+}
+function headOf(t){
+  let cut = t.length;
+  for(const ix of [t.indexOf(' - '), t.indexOf(': ')]) if(ix > -1) cut = Math.min(cut, ix);
+  const dot = t.search(/\.(\s|$)/); if(dot > -1) cut = Math.min(cut, dot);
+  const h = t.slice(0, cut).trim();
+  return (h.length >= 2 && h.length <= 48) ? h : null;
+}
+/* Matrix layer text → body text + trailing [bracketed note] */
+function splitNote(text){
+  const m = String(text).match(/\s*\[([^\][]+)\]\s*$/);
+  return m ? {text: text.slice(0, m.index).trim(), note: m[1]} : {text: String(text).trim(), note: null};
+}
+function fmtBody(t){
+  return esc(t).replace(/\b(TELL|CUE|CATCH|RECOGNIZE|MOVE):\s*/g, '<b class="il">$1</b> ');
+}
+
+/* ============================================================
+   Engine vocabulary — the ONLY text the engine itself adds.
+   Connective grammar per (layer role × lens): names the layer's
+   role in the lens's register. It frames; it never claims.
+   ============================================================ */
+const INTRO = {
+  a: {experience:'What the body is doing underneath', psychological:'The baseline coping posture',            spiritual:'How the armor sits on the body',                      scientific:'The modeled baseline state',                    product:"The system's resting configuration"},
+  b: {experience:'How care actually lands',           psychological:'The characteristic misappraisal',        spiritual:'How the armor mishears love',                         scientific:'The modeled appraisal error',                   product:'The false positive to catch'},
+  c: {experience:'What actually helps',               psychological:'The regulation route',                   spiritual:'Where the body remembers the ground',                 scientific:'The modeled route to down-regulation',          product:'The reset protocol'},
+  d: {experience:'What you can see, and what to say', psychological:'Observable presentation, and the cue',   spiritual:'The armor made visible — and the words that reach it', scientific:'The observable tell (no instrument), and the cue', product:'The detection signature, and the intervention copy'},
+  e: {experience:'The thing that finally lands',      psychological:'The corrective insight',                 spiritual:'The truth under the fear',                            scientific:'The modeled belief update',                     product:'The data correction'},
+  f: {experience:"What's real underneath it",         psychological:'The intact capacity beneath the defense',spiritual:'The love the armor was built around',                 scientific:'The modeled override condition',                product:'The asset under the wall'},
+  g: {experience:'The situation that opens the door', psychological:'The disconfirming environment',          spiritual:'The room where the wall can come down',               scientific:'The modeled stand-down condition',              product:'The environment spec'},
+  h: {experience:'Which way out',                     psychological:'The direction of correction',            spiritual:'Which way the return runs',                           scientific:'The modeled correction vector',                 product:'The routing rule'},
+  i: {experience:'Catching yourself in the act',      psychological:'The self-monitoring sequence',           spiritual:'Waking up mid-pattern',                               scientific:'The modeled self-interruption sequence',        product:'The self-serve flow'},
+  j: {experience:'What to say to them',               psychological:'The relational intervention, spoken',    spiritual:'The sentence that disarms',                           scientific:'The modeled relational input',                  product:'The partner-facing copy'},
+  k: {experience:"Where it's all headed",             psychological:'The integration trajectory',             spiritual:'The passion dissolving into the virtue',              scientific:'The traditional trajectory',                    product:'The long-arc outcome'}
+};
+
+/* Bridge sentence per lens — the turn from the universal anchor to the
+   pattern's specifics. Scientific bridges speak the inherited tier's grammar. */
+const BRIDGE = {
+  experience: (t) => `Through Pattern ${t.n} — ${t.name} — it lands like this:`,
+  psychological: (t) => {
+    const d = t.anchor.defense ? t.anchor.defense.charAt(0).toLowerCase() + t.anchor.defense.slice(1) : '';
+    return `In Pattern ${t.n} (${t.name}) the presentation is specific — its defense is ${d}:`;
+  },
+  spiritual: (t, head) => head ? `For Pattern ${t.n}, ${head} takes this shape:` : `For Pattern ${t.n}, it takes this shape:`,
+  scientific: (t, head, inherited) => inherited === 'STRUCTURE'
+    ? `In Enneagram theory, Pattern ${t.n}'s (${t.name}) form of this runs:`
+    : `We model Pattern ${t.n}'s (${t.name}) version of this as:`,
+  product: (t) => `Configured for Pattern ${t.n} (${t.name}):`
+};
+
+const LENS_LABEL = {experience:'Experience', psychological:'Psychological', spiritual:'Spiritual', scientific:'Scientific', product:'Product'};
+
+/* ---- state ---- */
+let GRID = null, MATRIX = null;
+let LENSES = [], CONCEPTS = [], TYPES = [], LAYERMETA = {}, CONCEPT_LAYERS = {};
+let state = {view:'cell', c:'The Flinch', p:3, l:'spiritual', fix:'lens', val:'spiritual', full:false};
+let checks = [];
+
+function boot(grid, matrix){
+  GRID = grid; MATRIX = matrix;
+  LENSES = grid._meta.lenses;
+  CONCEPTS = [
+    ...grid.core_systems.map(c => ({...c, group:'Core Systems'})),
+    ...grid.relational_mechanics.map(c => ({...c, group:'Relational Mechanics'}))
+  ];
+  TYPES = matrix.types;
+  LAYERMETA = matrix._meta.layers;
+  CONCEPT_LAYERS = {};
+  CONCEPTS.forEach(c => CONCEPT_LAYERS[c.name] = []);
+  for(const [k, parents] of Object.entries(matrix._meta.grid_concepts))
+    parents.split(' / ').forEach(p => { if(CONCEPT_LAYERS[p]) CONCEPT_LAYERS[p].push(k); });
+  Object.values(CONCEPT_LAYERS).forEach(a => a.sort());
+
+  const covered = CONCEPTS.filter(c => CONCEPT_LAYERS[c.name].length).length;
+  const nC = CONCEPTS.length, nP = TYPES.length, nL = LENSES.length;
+  $('#thesis').innerHTML =
+    `Two faces of the cube are authored — Concept × Lens (${nC}×${nL} = ${nC*nL} cells), and Concept × Pattern `+
+    `(${nP} patterns × ${Object.keys(LAYERMETA).length} layers = ${nP*Object.keys(LAYERMETA).length} cells). The interior — `+
+    `<b>${nC*nP*nL} coordinates</b> — is never authored: <b>the pattern supplies the content, the lens supplies the voice,</b> `+
+    `and the tier rides along at its weakest. ${covered*nP*nL} coordinates compose from both faces; `+
+    `${(nC-covered)*nP*nL} stay honestly universal where no layer rolls up.`;
+
+  $('#viewtabs').hidden = false;
+  buildControls();
+  readHash();
+  runChecks();
+  render();
+  window.addEventListener('hashchange', () => { readHash(); render(); });
+}
+
+/* ---- composition: the core function ---- */
+function compose(conceptName, n, lens){
+  const c = CONCEPTS.find(x => x.name === conceptName);
+  const cell = parseCell(c[lens]);
+  const type = TYPES.find(x => x.n === n);
+  const keys = CONCEPT_LAYERS[conceptName] || [];
+  const specifics = keys.map(k => {
+    const meta = LAYERMETA[k];
+    const {text, note} = splitNote(type.layers[k]);
+    return {k, name: meta.name, kind: meta.kind, tierRaw: meta.tier, tier: tierOf(meta.tier),
+            observable: /observable/i.test(meta.tier), text, note};
+  });
+  const inputs = [{who:'anchor', tier:cell.tier}, ...specifics.map(s => ({who:s.k, tier:s.tier}))];
+  const inherited = inputs.reduce((w, x) => TIERS[x.tier.weakest].rank < TIERS[w].rank ? x.tier.weakest : w, 'ESTABLISHED');
+  return {concept:c, cell, type, lens, keys, specifics, inherited, covered: keys.length > 0};
+}
+
+/* ---- controls ---- */
+function buildControls(){
+  const conceptOpts = ['Core Systems','Relational Mechanics'].map(g =>
+    `<optgroup label="${g}">` + CONCEPTS.filter(c => c.group === g).map(c =>
+      `<option value="${esc(c.name)}">${esc(c.name)}${CONCEPT_LAYERS[c.name].length ? '' : ' · universal only'}</option>`).join('') + '</optgroup>').join('');
+  const patternOpts = TYPES.map(t => `<option value="${t.n}">Pattern ${t.n} — ${esc(t.name)}</option>`).join('');
+  const lensOpts = LENSES.map(l => `<option value="${l}">${LENS_LABEL[l] || l}</option>`).join('');
+  $('#controls').innerHTML = `
+    <div class="controls" id="cellCtl">
+      <div class="ctl"><label for="selC">Concept</label><span class="selwrap"><select id="selC">${conceptOpts}</select></span></div>
+      <div class="ctl"><label for="selP">Pattern</label><span class="selwrap"><select id="selP">${patternOpts}</select></span></div>
+      <div class="ctl"><label for="selL">Lens</label><span class="selwrap"><select id="selL">${lensOpts}</select></span></div>
+    </div>
+    <div class="controls" id="sheetCtl" hidden>
+      <div class="ctl"><label for="selFix">Fixed axis</label><span class="selwrap"><select id="selFix">
+        <option value="lens">Fix the lens → Concept × Pattern</option>
+        <option value="pattern">Fix the pattern → Concept × Lens</option>
+        <option value="concept">Fix the concept → Pattern × Lens</option>
+      </select></span></div>
+      <div class="ctl"><label for="selVal" id="selValLab">Lens</label><span class="selwrap"><select id="selVal"></select></span></div>
+      <label class="check"><input type="checkbox" id="chkFull"> full text</label>
+    </div>`;
+  $('#selC').addEventListener('change', e => { state.c = e.target.value; writeHash(); render(); });
+  $('#selP').addEventListener('change', e => { state.p = +e.target.value; writeHash(); render(); });
+  $('#selL').addEventListener('change', e => { state.l = e.target.value; writeHash(); render(); });
+  $('#selFix').addEventListener('change', e => {
+    state.fix = e.target.value;
+    state.val = state.fix === 'lens' ? state.l : state.fix === 'pattern' ? String(state.p) : state.c;
+    writeHash(); render();
+  });
+  $('#selVal').addEventListener('change', e => { state.val = e.target.value; writeHash(); render(); });
+  $('#chkFull').addEventListener('change', e => { state.full = e.target.checked; writeHash(); render(); });
+
+  document.querySelectorAll('#viewtabs .tab').forEach(t => t.addEventListener('click', () => {
+    state.view = t.dataset.v; writeHash(); render();
+  }));
+  $('#grBtn').addEventListener('click', toggleDrawer);
+}
+
+function syncControls(){
+  document.querySelectorAll('#viewtabs .tab').forEach(t => {
+    const on = t.dataset.v === state.view;
+    t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  $('#cellCtl').hidden = state.view !== 'cell';
+  $('#sheetCtl').hidden = state.view !== 'sheet';
+  if(state.view === 'cell'){
+    $('#selC').value = state.c; $('#selP').value = String(state.p); $('#selL').value = state.l;
+  } else {
+    $('#selFix').value = state.fix;
+    const lab = {lens:'Lens', pattern:'Pattern', concept:'Concept'}[state.fix];
+    $('#selValLab').textContent = lab;
+    const opts = state.fix === 'lens'
+      ? LENSES.map(l => `<option value="${l}">${LENS_LABEL[l] || l}</option>`)
+      : state.fix === 'pattern'
+        ? TYPES.map(t => `<option value="${t.n}">Pattern ${t.n} — ${esc(t.name)}</option>`)
+        : CONCEPTS.map(c => `<option value="${esc(c.name)}">${esc(c.name)}</option>`);
+    $('#selVal').innerHTML = opts.join('');
+    $('#selVal').value = state.val;
+    $('#chkFull').checked = state.full;
+  }
+}
+
+/* ---- hash state ---- */
+function writeHash(){
+  const q = new URLSearchParams();
+  q.set('v', state.view);
+  if(state.view === 'cell'){ q.set('c', state.c); q.set('p', state.p); q.set('l', state.l); }
+  else { q.set('fix', state.fix); q.set('val', state.val); if(state.full) q.set('full','1'); }
+  history.replaceState(null, '', '#' + q.toString());
+}
+function readHash(){
+  if(!location.hash) return;
+  const q = new URLSearchParams(location.hash.slice(1));
+  if(q.get('v')) state.view = q.get('v') === 'sheet' ? 'sheet' : 'cell';
+  if(q.get('c') && CONCEPTS.some(c => c.name === q.get('c'))) state.c = q.get('c');
+  if(q.get('p') && TYPES.some(t => t.n === +q.get('p'))) state.p = +q.get('p');
+  if(q.get('l') && LENSES.includes(q.get('l'))) state.l = q.get('l');
+  if(q.get('fix')) state.fix = ['lens','pattern','concept'].includes(q.get('fix')) ? q.get('fix') : 'lens';
+  if(q.get('val')) state.val = q.get('val');
+  state.full = q.get('full') === '1';
+  const valid = state.fix === 'lens' ? LENSES.includes(state.val)
+    : state.fix === 'pattern' ? TYPES.some(t => String(t.n) === String(state.val))
+    : CONCEPTS.some(c => c.name === state.val);
+  if(!valid) state.val = state.fix === 'lens' ? state.l : state.fix === 'pattern' ? String(state.p) : state.c;
+}
+
+/* ---- render dispatch ---- */
+function render(){
+  syncControls();
+  if(state.view === 'cell') renderCell(); else renderSheet();
+}
+
+function tierChip(name, big){
+  return `<span class="chip ${big ? 'big ' : ''}${TIERS[name].cls}">${name}</span>`;
+}
+function modeCls(type){ return 'm-' + (type.anchor.mode.split(' ')[0].replace(/[^A-Za-z]/g,'')); }
+
+/* ---- single-cell view ---- */
+function renderCell(){
+  const {c, p, l} = state;
+  const r = compose(c, p, l);
+  const t = r.type;
+  const mode = modeCls(t);
+  const anchorNote = r.cell.tag
+    ? `<p class="note">[${esc(r.cell.tag)}]</p>`
+    : `<p class="note">untagged — defaults to MODEL</p>`;
+
+  let inner = `
+    <div class="addr">interior · ${esc(c)} × <b>Pattern ${p}</b> × ${esc(LENS_LABEL[l] || l)}</div>
+    <div class="anchorcard">
+      <div class="k">The universal anchor — Face A · grid[&ldquo;${esc(c)}&rdquo;][${esc(l)}]</div>
+      <div class="v">${esc(r.cell.display)}</div>
+      ${anchorNote}
+    </div>`;
+
+  if(!r.covered){
+    inner += `
+      <div class="uncovered">No matrix layer rolls up to &ldquo;${esc(c)}&rdquo;. Its pattern axis is universal by
+      construction — the engine composes nothing here, and invents nothing. What you see above is the authored face itself.</div>
+      <div class="tierstrip">${tierChip(r.inherited, true)}
+        <span class="chip">&ldquo;${TIERS[r.inherited].phrase}&rdquo;</span>
+        <span class="chip">anchor only — no pattern inputs</span></div>`;
+  } else {
+    const bridge = BRIDGE[l](t, r.cell.head, r.inherited);
+    const rows = r.specifics.map(s => `
+      <div class="row">
+        <div class="lk">${s.k}</div>
+        <div><div class="ln">${esc(INTRO[s.k][l])}</div>
+             <span class="lt">${esc(s.name)} · ${esc(s.tierRaw)}</span></div>
+        <div><p class="body">${fmtBody(s.text)}</p>
+             ${s.note ? `<p class="note${/^FLAGGED/.test(s.note) ? ' flagged' : ''}">${esc(s.note)}</p>` : ''}</div>
+      </div>`).join('');
+
+    const derivation = [`anchor: ${r.cell.tier.weakest}${r.cell.tier.tagged ? '' : ' (untagged)'}`]
+      .concat(r.specifics.map(s => `${s.k}: ${s.tier.weakest}`)).join(' + ');
+
+    inner += `
+      <p class="bridge">${esc(bridge)}</p>
+      <div class="walk">${rows}</div>
+      <div class="tierstrip">
+        ${tierChip(r.inherited, true)}
+        <span class="chip">&ldquo;${TIERS[r.inherited].phrase}&rdquo;</span>
+        ${r.specifics.some(s => s.observable) ? '<span class="chip">observable — no instrument</span>' : ''}
+        <span class="chip">composed, not authored</span>
+      </div>
+      <p class="tiernote">inherited = weakest of ( ${esc(derivation)} ) — a composition never outranks its weakest input.
+      Every sentence above is verbatim source text or fixed engine grammar.</p>`;
+  }
+
+  /* ---- the two source faces ---- */
+  const fa = `
+    <div class="face" style="--edge:var(--gold)">
+      <div class="faddr"><b>Face A</b> · The Master Translation Grid · Concept × Lens (pattern collapsed to universal)<br>
+      grid[&ldquo;${esc(c)}&rdquo;][${esc(l)}]</div>
+      <p class="raw">${esc(r.concept[l])}</p>
+    </div>`;
+  const anchorFields = t.anchor;
+  const fx = [['Center', anchorFields.center], ['Mode', anchorFields.mode], ['Core fear', anchorFields.core_fear],
+              ['Core desire', anchorFields.core_desire], ['Passion', anchorFields.passion], ['Virtue', anchorFields.virtue],
+              ['Defense', anchorFields.defense]]
+    .map(([k, v]) => `<div><span class="k">${k}</span><span class="v">${esc(v)}</span></div>`).join('');
+  const fb = `
+    <div class="face ${mode}">
+      <div class="faddr"><b>Face B</b> · The Archetype Matrix · Concept × Pattern (lens collapsed)<br>
+      matrix.types[${p}] · ${esc(t.name)} <i>(${esc(t.alt)})</i> · layers ${r.keys.length ? r.keys.map(k => `<b>${k}</b>`).join(', ') : '—'} → parent &ldquo;${esc(c)}&rdquo;</div>
+      <div class="fx">${fx}</div>
+      ${t.language_note ? `<p class="langnote">${esc(t.language_note)}</p>` : ''}
+      ${r.covered ? r.specifics.map(s => `
+        <div class="flayer">
+          <div class="faddr">layer ${s.k} · ${esc(s.name)} · ${esc(s.tierRaw)}</div>
+          <p class="raw">${fmtBody(s.text)}${s.note ? ` <span class="note" style="display:inline-block">[${esc(s.note)}]</span>` : ''}</p>
+        </div>`).join('')
+      : `<div class="flayer"><div class="faddr">no layers roll up to this concept</div></div>`}
+    </div>`;
+
+  inner += `<div class="facesHead">The two faces that fed this — any output traces back here</div>
+            <div class="facegrid">${fa}${fb}</div>`;
+  $('#stage').innerHTML = inner;
+}
+
+/* ---- sheet view ---- */
+function sheetCell(cName, n, lens, opts){
+  const r = compose(cName, n, lens);
+  const t = r.type;
+  if(!r.covered){
+    return `<button class="scell uni" data-c="${esc(cName)}" data-p="${n}" data-l="${lens}">
+      <span class="si">universal only</span>
+      <span class="sp">${esc(r.cell.display)}</span>
+      <span class="sfoot"><span class="mini ${TIERS[r.inherited].cls}">${r.inherited}</span><span class="mini">face A</span></span></button>`;
+  }
+  const first = r.specifics[0];
+  const bodyHtml = opts.full
+    ? `<em>${esc(r.cell.display)}</em><br>` +
+      r.specifics.map(s => `<b class="il">${s.k}</b> ${fmtBody(s.text)}`).join('<br>')
+    : fmtBody(first.text);
+  const introTxt = opts.full ? esc(BRIDGE[lens](t, r.cell.head, r.inherited)) : esc(INTRO[first.k][lens]);
+  return `<button class="scell ${modeCls(t)}" data-c="${esc(cName)}" data-p="${n}" data-l="${lens}">
+    <span class="si">${introTxt}</span>
+    <span class="sp">${bodyHtml}</span>
+    <span class="sfoot"><span class="mini ${TIERS[r.inherited].cls}">${r.inherited}</span>
+      <span class="mini">${r.keys.join('+')}</span>
+      ${r.specifics.length > 1 && !opts.full ? `<span class="mini">+${r.specifics.length - 1} more</span>` : ''}</span></button>`;
+}
+
+function renderSheet(){
+  const {fix, val, full} = state;
+  let head = '', rowsHtml = '', caption = '';
+  const opts = {full};
+
+  if(fix === 'lens'){
+    const lens = val;
+    caption = `Concept × Pattern, in one language — the ${LENS_LABEL[lens].toLowerCase()} lens. The first column is the authored universal (Face A); every cell after it is composed.`;
+    head = `<tr><th></th><th><b>Universal</b>face A · authored</th>` +
+      TYPES.map(t => `<th class="${modeCls(t)}"><b>${t.n} · ${esc(t.name)}</b>${esc(t.anchor.mode.split(' - ')[0])}</th>`).join('') + '</tr>';
+    let lastGroup = '';
+    rowsHtml = CONCEPTS.map(c => {
+      let g = '';
+      if(c.group !== lastGroup){ lastGroup = c.group;
+        g = `<tr><th class="grouph" colspan="${TYPES.length + 2}">${esc(c.group)}</th></tr>`; }
+      const uni = parseCell(c[lens]);
+      return g + `<tr><th class="rowh"><b>${esc(c.name)}</b></th>
+        <td><div class="scell uni" style="cursor:default"><span class="si">grid[&ldquo;${esc(c.name)}&rdquo;][${lens}]</span>
+          <span class="sp">${esc(uni.display)}</span>
+          <span class="sfoot"><span class="mini ${TIERS[uni.tier.weakest].cls}">${uni.tier.weakest}</span></span></div></td>` +
+        TYPES.map(t => `<td>${sheetCell(c.name, t.n, lens, opts)}</td>`).join('') + '</tr>';
+    }).join('');
+  }
+  else if(fix === 'pattern'){
+    const n = +val, t = TYPES.find(x => x.n === n);
+    caption = `Pattern ${n} — ${t.name} — across every concept and every lens. Rows are concepts; columns are the five languages.`;
+    head = `<tr><th></th>` + LENSES.map(l => `<th><b>${LENS_LABEL[l]}</b></th>`).join('') + '</tr>';
+    let lastGroup = '';
+    rowsHtml = CONCEPTS.map(c => {
+      let g = '';
+      if(c.group !== lastGroup){ lastGroup = c.group;
+        g = `<tr><th class="grouph" colspan="${LENSES.length + 1}">${esc(c.group)}</th></tr>`; }
+      return g + `<tr><th class="rowh"><b>${esc(c.name)}</b></th>` +
+        LENSES.map(l => `<td>${sheetCellLensVariant(c.name, n, l, opts)}</td>`).join('') + '</tr>';
+    }).join('');
+  }
+  else {
+    const cName = val;
+    caption = `&ldquo;${cName}&rdquo; through all nine patterns and all five lenses.`;
+    head = `<tr><th></th>` + LENSES.map(l => `<th><b>${LENS_LABEL[l]}</b></th>`).join('') + '</tr>';
+    rowsHtml = TYPES.map(t =>
+      `<tr><th class="rowh ${modeCls(t)}"><b>${t.n} · ${esc(t.name)}</b></th>` +
+      LENSES.map(l => `<td>${sheetCellLensVariant(cName, t.n, l, opts)}</td>`).join('') + '</tr>').join('');
+  }
+
+  $('#stage').innerHTML = `
+    <div class="addr">sheet · ${fix} fixed → ${esc(fix === 'lens' ? LENS_LABEL[val] : fix === 'pattern' ? 'Pattern ' + val : val)}</div>
+    <p class="sheetnote">${caption} A sheet is a downstream rendering — cells are previews; select any cell to open the full composition with its sources.</p>
+    <div class="gridwrap ${full ? 'fulltext' : ''}"><table class="sheet"><thead>${head}</thead><tbody>${rowsHtml}</tbody></table></div>`;
+
+  document.querySelectorAll('.scell[data-c]').forEach(b => b.addEventListener('click', () => {
+    state.view = 'cell'; state.c = b.dataset.c; state.p = +b.dataset.p; state.l = b.dataset.l;
+    writeHash(); render();
+    $('#stage').scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+}
+
+/* In lens-varying sheets the pattern content is constant along a row, so the
+   cell leads with what DOES vary: the lens's anchor and its register. */
+function sheetCellLensVariant(cName, n, lens, opts){
+  const r = compose(cName, n, lens);
+  if(!r.covered || opts.full) return sheetCell(cName, n, lens, opts);
+  const first = r.specifics[0];
+  return `<button class="scell ${modeCls(r.type)}" data-c="${esc(cName)}" data-p="${n}" data-l="${lens}">
+    <span class="si">${esc(INTRO[first.k][lens])}</span>
+    <span class="sp"><em>${esc(r.cell.display)}</em> — ${fmtBody(first.text)}</span>
+    <span class="sfoot"><span class="mini ${TIERS[r.inherited].cls}">${r.inherited}</span>
+      <span class="mini">${r.keys.join('+')}</span></span></button>`;
+}
+
+/* ============================================================
+   Guardrails drawer — the constraints, rendered from the data
+   files themselves plus the two source guardrail documents.
+   ============================================================ */
+let drawerBuilt = false;
+function toggleDrawer(){
+  const d = $('#drawer'), on = !d.classList.contains('on');
+  d.classList.toggle('on', on);
+  $('#grBtn').setAttribute('aria-pressed', on ? 'true' : 'false');
+  if(on && !drawerBuilt){ drawerBuilt = true; buildDrawer(); }
+}
+function buildDrawer(){
+  const m = MATRIX._meta;
+  const rows = [
+    ['The tiers — grammar is not optional', Object.entries(m.tiers).map(([k, v]) => `<b>[${k}]</b> — ${esc(v)}`).join('<br>')],
+    ['The observable filter — runs before the tiers', esc(m.observable_filter)],
+    ['The foundation rule', esc(m.foundation_rule)],
+    ['The 3×3 — a coherence check, never a generator', esc(m.roadmap_parked['3x3_grouping'])],
+    ['Geometry', esc(m.geometry)],
+    ['Inheritance rule (this engine)', 'A composed cell inherits the <b>weakest</b> tier of its inputs — never the strongest. Untagged content counts as [MODEL]. The engine adds connective grammar only: it can name, frame, and order; it cannot claim, and its own vocabulary is scanned for biometric terms at load.']
+  ].map(([k, v]) => `<div class="gr"><span class="gk">${k}</span><div class="gv">${v}</div></div>`).join('');
+
+  const offline = `<p class="gv" style="font-style:italic">Ships alongside this file; not reachable from here (file:// blocks fetch). Open it directly.</p>`;
+  const files = ['Source_Enneagram.md', 'Source_Neuroscience.md'].map((f, i) =>
+    `<details><summary>${f} — ${i === 0 ? 'the fixed anchors' : 'the precision ceiling'}</summary><div id="grf${i}">${offline}</div></details>`).join('');
+
+  const checksHtml = checks.map(c =>
+    `<span class="${c.ok ? 'ok' : 'bad'}">${c.ok ? '✓' : '✗'} ${esc(c.name)}${c.detail ? ' — ' + esc(c.detail) : ''}</span>`).join('<br>');
+
+  $('#drawer').innerHTML = `<h3>Guardrails</h3>${rows}
+    <div class="gr"><span class="gk">The two guardrail documents — loaded alongside</span>${files}</div>
+    <div class="gr"><span class="gk">Engine self-check, run at load</span><div class="gv mono" style="font-size:.78rem;line-height:2">${checksHtml}</div></div>`;
+
+  if(location.protocol !== 'file:')
+    ['Source_Enneagram.md', 'Source_Neuroscience.md'].forEach((f, i) =>
+      fetch(f).then(r => r.ok ? r.text() : Promise.reject())
+        .then(t => { $('#grf' + i).innerHTML = `<pre>${esc(t)}</pre>`; })
+        .catch(() => {}));
+}
+
+/* ============================================================
+   Self-checks — the engine proves its own constraints at load.
+   The 3×3 appears here in its one sanctioned role: a check.
+   ============================================================ */
+function runChecks(){
+  checks = [];
+  const add = (name, ok, detail) => checks.push({name, ok, detail});
+
+  add(`faces complete — ${CONCEPTS.length} concepts × ${LENSES.length} lenses, all cells present`,
+      CONCEPTS.every(c => LENSES.every(l => typeof c[l] === 'string' && c[l].length)), '');
+
+  const badParents = [];
+  for(const [k, parents] of Object.entries(MATRIX._meta.grid_concepts))
+    parents.split(' / ').forEach(p => { if(!CONCEPTS.some(c => c.name === p)) badParents.push(`${k}→${p}`); });
+  add('grid_concepts parents all resolve to grid concepts', badParents.length === 0, badParents.join(', '));
+
+  add(`matrix complete — ${TYPES.length} patterns × ${Object.keys(LAYERMETA).length} layers`,
+      TYPES.length === 9 && TYPES.every(t => Object.keys(LAYERMETA).every(k => t.layers[k] && t.layers[k].length)), '');
+
+  const CANON = {1:['Body','Compliant'],2:['Heart','Compliant'],3:['Heart','Assertive'],4:['Heart','Withdrawn'],
+                 5:['Head','Withdrawn'],6:['Head','Compliant'],7:['Head','Assertive'],8:['Body','Assertive'],9:['Body','Withdrawn']};
+  add('3×3 coherence — every anchor matches its canonical center × mode (check, never generator)',
+      TYPES.every(t => t.anchor.center.startsWith(CANON[t.n][0]) && t.anchor.mode.startsWith(CANON[t.n][1])), '');
+
+  const wx = compose('The Flinch', 3, 'spiritual');
+  add('worked example — The Flinch × Pattern 3 × Spiritual composes from layers b + d, inherits MODEL',
+      wx.keys.join(',') === 'b,d' && wx.inherited === 'MODEL', `got layers ${wx.keys.join(',')} · ${wx.inherited}`);
+
+  const BIOMETRIC = /\b(EDA|HRV|heart[- ]?rate|cortisol|electrodermal|MSNA|blood pressure|vagal|dopamine|serotonin|oxytocin|adrenal|neurotransmitter|amygdala|skin conductance)\b/i;
+  const engineVocab = JSON.stringify(INTRO) + Object.values(BRIDGE).map(f => f.toString()).join(' ');
+  add('engine vocabulary — 0 biometric terms in connective grammar (sources may cite; the engine may not)',
+      !BIOMETRIC.test(engineVocab), '');
+
+  const okAll = checks.every(c => c.ok);
+  $('#selfcheck').innerHTML = `self-check ${checks.filter(c => c.ok).length}/${checks.length} ` +
+    (okAll ? '<span class="ok">— all constraints hold</span>'
+           : '<span class="bad">— FAILURES: ' + checks.filter(c => !c.ok).map(c => esc(c.name)).join(' · ') + '</span>');
+}
+
+/* ============================================================
+   Loading — fetch first (any static host); if the browser blocks
+   local fetch (file://), fall back to a picker for the two faces.
+   ============================================================ */
+async function loadAll(){
+  if(location.protocol === 'file:'){ showDrop(); return; }
+  try {
+    const [g, m] = await Promise.all(['grid_data.json', 'matrix_data.json'].map(u =>
+      fetch(u).then(r => { if(!r.ok) throw new Error(u); return r.json(); })));
+    boot(g, m);
+  } catch(e){ showDrop(); }
+}
+
+function showDrop(){
+  const drop = $('#drop');
+  drop.hidden = false;
+  let got = {grid:null, matrix:null};
+  const paint = () => {
+    drop.innerHTML = `
+      <p>This page was opened straight from the filesystem, where the browser blocks <span class="mono">fetch()</span>.
+      Hand me the two faces and the engine runs entirely locally — nothing leaves this page.</p>
+      <div class="stat">
+        <span class="chip ${got.grid ? 't-EST' : ''}">${got.grid ? '✓' : '·'} grid_data.json — Face A</span>
+        <span class="chip ${got.matrix ? 't-EST' : ''}">${got.matrix ? '✓' : '·'} matrix_data.json — Face B</span>
+      </div>
+      <button class="filebtn" id="pick">Choose the two JSON files</button>
+      <input type="file" id="fin" accept=".json,application/json" multiple hidden>`;
+    $('#pick').addEventListener('click', () => $('#fin').click());
+    $('#fin').addEventListener('change', e => ingest(e.target.files));
+  };
+  const ingest = async files => {
+    for(const f of files){
+      try {
+        const j = JSON.parse(await f.text());
+        if(j.types && j._meta && j._meta.grid_concepts) got.matrix = j;
+        else if(j.core_systems && j.relational_mechanics) got.grid = j;
+      } catch(err){ /* not JSON — ignored */ }
+    }
+    if(got.grid && got.matrix){ drop.hidden = true; boot(got.grid, got.matrix); }
+    else paint();
+  };
+  ['dragover','dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+    e.preventDefault();
+    drop.classList.toggle('hot', ev === 'dragover');
+    if(ev === 'drop') ingest(e.dataTransfer.files);
+  }));
+  paint();
+}
+
+loadAll();
+</script>
+</body></html>

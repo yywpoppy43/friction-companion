@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "title": "The Master Translation Grid",
+    "note": "Concept x Lens. Type collapsed to universal. The scientific lens is bound by The_Verified_Ground_Floor.md.",
+    "lenses": [
+      "experience",
+      "psychological",
+      "spiritual",
+      "scientific",
+      "product"
+    ]
+  },
+  "core_systems": [
+    {
+      "name": "The Defense",
+      "experience": "Reacting to protect ourselves from perceived harm, judgment, or the threat of being misunderstood.",
+      "psychological": "Coping mechanism / defense strategy.",
+      "spiritual": "The Ego / The Armor.",
+      "scientific": "Sympathetic arousal and threat response; allostatic load as the cumulative cost of staying braced. [ESTABLISHED]",
+      "product": "The Wall / The Performance."
+    },
+    {
+      "name": "The Core Truth",
+      "experience": "Feeling grounded, clear, and unbothered by external chaos - the baseline that exists before any performance.",
+      "psychological": "Authentic self / core values.",
+      "spiritual": "The Soul / The Source.",
+      "scientific": "Homeostasis; a rest-and-restore baseline indexed by vagal tone (heart-rate variability), which reliably tracks self-regulation. [ESTABLISHED - cite HRV research directly, not polyvagal]",
+      "product": "The Baseline / Ground Truth."
+    },
+    {
+      "name": "Sensing Reality",
+      "experience": "Reading a room, feeling a gut instinct about a situation, knowing something before the mind names it.",
+      "psychological": "Emotional intelligence / intuition.",
+      "spiritual": "Inner Knowing / Alignment.",
+      "scientific": "Interoception - the body reading its own internal signals - plus the threat response firing from ~74ms, before conscious appraisal catches up. [ESTABLISHED]",
+      "product": "Somatic Data / The Feedback Loop."
+    },
+    {
+      "name": "The Mental Loop",
+      "experience": "Overthinking, assuming the worst, living inside our heads, running scripts instead of being present.",
+      "psychological": "Rumination / cognitive distortion.",
+      "spiritual": "The Monkey Mind / Illusion.",
+      "scientific": "Default Mode Network activity in rumination - the brain simulating futures instead of reading the room. [ESTABLISHED for DMN; the predictive-processing frame is MODEL]",
+      "product": "The Small Reality / The Script."
+    },
+    {
+      "name": "The False Narrative",
+      "experience": "Anticipating interactions, assuming the worst, living inside a script written by past fear rather than present reality.",
+      "psychological": "Projection / cognitive bias.",
+      "spiritual": "The Small Reality: projecting past fears onto the present to maintain an illusion of control.",
+      "scientific": "Prediction error: a leading account holds the brain runs on prediction and updates against error, so it guesses the present from the past instead of reading current data. [MODEL - dominant framework, not settled mechanism]",
+      "product": "System Data Correction: showing the gap between the fear and the actual reality."
+    },
+    {
+      "name": "The Core Motivation",
+      "experience": "The fundamental, nervous-system-level condition a person needs in order to not feel like they are dying.",
+      "psychological": "Primary drive / core need.",
+      "spiritual": "The Core Drive - the specific condition (truth, stability, freedom, peace) required before a person will pull their Wall down.",
+      "scientific": "The specific environmental condition a person's threat system requires before it will stand down. [MODEL - we model this as type-specific; no research links types to neurochemical profiles]",
+      "product": "The User Blueprint: the individualized map of each person's triggers and safety requirements."
+    },
+    {
+      "name": "The Growth Process",
+      "experience": "Facing our pain, stopping the pattern that no longer serves us, learning to reorganize how we meet reality.",
+      "psychological": "Shadow work / psychological integration.",
+      "spiritual": "Awakening / Surrender / Innocence.",
+      "scientific": "Neuroplasticity - the nervous system genuinely rewiring toward new patterns with repetition. [ESTABLISHED]",
+      "product": "The Arc of Return."
+    },
+    {
+      "name": "The Healing",
+      "experience": "The long-term result of doing this work daily - the cumulative integration over time.",
+      "psychological": "Integration / resolution.",
+      "spiritual": "The Arc of Return: shedding the identity of the tool and coming back to the human being.",
+      "scientific": "Consolidated change: repeated regulation under load builds a faster, more reliable return - measurable as recovery time. [ESTABLISHED]",
+      "product": "The Relational Reset."
+    },
+    {
+      "name": "Shared Connection",
+      "experience": "Two people feeling safe, seen, and unarmored with each other - truth existing without performance.",
+      "psychological": "Secure attachment.",
+      "spiritual": "Unity / Sacred Union / Big Reality.",
+      "scientific": "Each person's own threat response standing down in the other's presence, with behavioral coordination between them (modestly linked to feeling bonded). Not two systems merging - two systems each finding their own ground, together. [ESTABLISHED for the modest behavioral link; 'nervous systems syncing' and limbic resonance are NOT established]",
+      "product": "The Shared Ground / Conversational Contact."
+    }
+  ],
+  "relational_mechanics": [
+    {
+      "name": "The Flinch",
+      "experience": "The instant, hot, physical reaction to feeling misunderstood or attacked - specifically when someone else is sharing their feelings.",
+      "psychological": "Triggered response / defense mechanism.",
+      "spiritual": "The Wall Goes Up - the armor deploying to protect the Small Reality.",
+      "scientific": "The threat response fires before conscious appraisal catches up, and prefrontal regulation weakens under it. A head start, not a hijack. [ESTABLISHED]",
+      "product": "The Catch: the exact vulnerability the system detects and intercepts."
+    },
+    {
+      "name": "The Anchor",
+      "experience": "The physical act of stopping the internal spiral before reacting - finding your ground and registering that you are not actually under attack.",
+      "psychological": "Self-regulation.",
+      "spiritual": "Sovereignty / Truth: finding your ground, and the realization that you are actually safe.",
+      "scientific": "Slow breathing and posture raise vagal tone, bringing prefrontal regulation back online. [ESTABLISHED]",
+      "product": "The Tool: the physical protocol where the muscle memory for the pause gets built."
+    },
+    {
+      "name": "The Shift",
+      "experience": "The moment of stopping the defense and actively trying to understand the other person's reality.",
+      "psychological": "Empathic engagement.",
+      "spiritual": "Curiosity / Care: the intentional choice to drop the ego and step into truth.",
+      "scientific": "Prefrontal regulation turns the threat signal down; it does not switch it off. The alarm quiets, it doesn't vanish. Curiosity and defense are not mutually exclusive - engaging regulation dampens the threat response. [ESTABLISHED]",
+      "product": "The Toggle: the action that moves the system from defense toward curiosity."
+    },
+    {
+      "name": "The Encounter",
+      "experience": "Navigating a hard, honest conversation without armor on either side.",
+      "psychological": "Authentic relating.",
+      "spiritual": "Standing in the Big Reality - where truth exists without performance.",
+      "scientific": "Both threat systems standing down at once, each person holding their own ground while coordinating with the other. Two operators, both awake. [ESTABLISHED for the modest coordination link; syncing/fusion is NOT established]",
+      "product": "The Lab: the live, unscripted relational environment that tests the whole system."
+    }
+  ]
+}

@@ -1,0 +1,407 @@
+{
+  "_meta": {
+    "title": "The Archetype Matrix",
+    "subtitle": "The nine defense patterns, whole. Fourteen layers x nine types — how each pattern misreads care, how it shows in the body, and which way its correction runs.",
+    "status": "COMPLETE - all 9 types built",
+    "foundation_rule": "FOUNDATION = MAXIMUM NUANCE. If a proposed change means throwing out detail already figured out, it is not foundation work - it is a downstream rendering. Compression happens later, for a use. Never make the base smaller in the name of elegance.",
+    "tiers": {
+      "ESTABLISHED": "Supported by peer-reviewed literature. State as fact. 'Research shows...'",
+      "STRUCTURE": "A recognized framework's own internal structure. Not external proof, but not invented here either. 'In Enneagram theory...'",
+      "MODEL": "Our proprietary mapping. Real, defensible as craft that works, never claimed as proven science. 'We model this as...'"
+    },
+    "observable_filter": "RUNS BEFORE THE TIERS. OBSERVABLE = you can see it from across a room; needs no instrument and no citation (jaw clenches, spine locks, gaze locks ahead). BIOMETRIC = needs instruments and data we do not have (EDA, MSNA, diastolic BP, cortisol ratios). NEVER dress an observation as a biometric. The costume does not make the observation more true - it turns a defensible observation into an indefensible claim. All somatic tells in this matrix are OBSERVABLE by design.",
+    "geometry": "ONE MODEL, THREE AXES: Concept x Type x Lens. The Master Translation Grid is the Concept x Lens face (Type collapsed to universal). This Matrix is the Concept x Type face. Interior composed at runtime from the two faces.",
+    "roadmap_parked": {
+      "3x3_grouping": "Center (Body/Heart/Head) x Hornevian mode (Assertive/Withdrawn/Compliant) generates exactly 9 - one type per cell. VERIFIED (Riso-Hudson). But it is a COMPRESSION, not a generator: you cannot derive 'the masseter clenches' from 'Compliant x Body'. It predicts the shape, not the specifics. USE IT AS: (1) a coherence check on authored cells; (2) a downstream grouping for app/session rendering. DO NOT use it to author layer (a)."
+    },
+    "layers": {
+      "a": {
+        "name": "Biological Architecture",
+        "kind": "mechanism",
+        "tier": "ESTABLISHED concepts / MODEL type-assignment"
+      },
+      "b": {
+        "name": "The Mishearing",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "c": {
+        "name": "Somatic Path to Safety",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "d": {
+        "name": "The Somatic Tell + the Cue",
+        "kind": "mechanism",
+        "tier": "MODEL (observable)"
+      },
+      "e": {
+        "name": "The Realization",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "f": {
+        "name": "The Care Override",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "g": {
+        "name": "The Situational Trigger",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "h": {
+        "name": "The Doorway",
+        "kind": "mechanism",
+        "tier": "MODEL",
+        "origin": "NEW - the correction vector; from the Read Software Layer. Upstream of every setting."
+      },
+      "i": {
+        "name": "The Self-Recognition Move",
+        "kind": "rendering",
+        "tier": "MODEL",
+        "derivation": "d + e + c in the self setting; adds the impulse."
+      },
+      "j": {
+        "name": "The Paradox Sentence",
+        "kind": "rendering",
+        "tier": "MODEL",
+        "derivation": "e, spoken by another person - the relational setting."
+      },
+      "k": {
+        "name": "The Virtue Path",
+        "kind": "mechanism",
+        "tier": "STRUCTURE"
+      },
+      "l": {
+        "name": "Master Summary",
+        "kind": "compression",
+        "tier": "derived"
+      },
+      "m": {
+        "name": "Systems Flow",
+        "kind": "compression",
+        "tier": "derived"
+      },
+      "n": {
+        "name": "OS Dictionary Entry",
+        "kind": "compression",
+        "tier": "derived"
+      }
+    },
+    "grid_concepts": {
+      "a": "The Defense",
+      "b": "The False Narrative / The Flinch",
+      "c": "The Anchor",
+      "d": "The Flinch / Sensing Reality",
+      "e": "The Shift",
+      "f": "The Shift",
+      "g": "The Core Motivation",
+      "h": "The Shift",
+      "i": "The Anchor / Sensing Reality",
+      "j": "Shared Connection / The Encounter",
+      "k": "The Core Truth / The Growth Process"
+    },
+    "authoring_note": "Authored mechanism = a,b,c,d,e,f,g,h,k (9 layers x 9 types = 81 cells of IP). Renderings = i,j. Compressions = l,m,n. Renderings and compressions can be regenerated; mechanism cannot.",
+    "interlock": "Carries Part 2 of The Architecture of Human Reality. The Grid declares the rollup; this document stands on its own."
+  },
+  "types": [
+    {
+      "n": 1,
+      "name": "The Reformer",
+      "alt": "The Perfectionist",
+      "anchor": {
+        "center": "Body / anger (internalized as resentment) [STRUCTURE]",
+        "mode": "Compliant - moving toward the standard [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being corrupt, defective, bad, wrong",
+        "core_desire": "integrity - to be good, right, balanced",
+        "passion": "Anger (chronic suppressed resentment at the gap between what is and what should be)",
+        "virtue": "Serenity",
+        "holy_idea": "Holy Perfection",
+        "defense": "Reaction formation",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "Baseline held in low-grade sympathetic tension - jaw and spine tight - continuously correcting the environment to standard. Body-center anger turned inward against the self and pressed down rather than discharged: constant containment, not release. [Arousal and muscular bracing are ESTABLISHED; assigning this pattern to Type 1 is MODEL.]",
+        "b": "'I'm hurt by what you did' lands as a verdict: you got it wrong, you are bad. The care is overwritten by the error-signal. They hear 'you failed a standard,' not 'come closer' - firing correction instead of contact.",
+        "c": "Formless, standard-free release - movement with no correct way and no mess to prevent: shaking, unstructured dance, throwing clay. One place where nothing is held to a line, so suppressed anger can move instead of compress.",
+        "d": "TELL: the jaw sets and the masseter clenches; the spine goes unnaturally rigid; the breath climbs into the upper chest, shallow and restricted. Under sustained load the muscles begin to shake - and they hold form through the shake rather than break it, trying to perfect the posture to survive the pain. CUE: 'Nothing here needs fixing. Let it be exactly as messy as it is.'",
+        "e": "The standard was never the price of their goodness - they are not bad for the gap, and holding the line is itself costing them the very thing the standard was meant to protect.",
+        "f": "Under the correcting is genuine devotion to what is good and whole. Larger than the defense - overrides it when honored, rather than the demand for perfection.",
+        "g": "An environment granting explicit permission to be imperfect and still be good; a mistake met without judgment. Being trusted as already good, not yet-to-be-corrected.",
+        "h": "Honesty over correctness - the ground, not the perfect angle. The correction runs toward what is actually true of this moment, away from what it ought to look like.",
+        "i": "CATCH: jaw sets, spine straightens, breath goes high - and the urge to fix the imperfect thing rises. RECOGNIZE: the mess isn't proof you're bad; the standard was never the price of your goodness. MOVE: let the imperfect thing stand, uncorrected, on purpose. Drop into movement with no right way to do it. 'This can be exactly as messy as it is, and I am still good.'",
+        "j": "'Your standard for goodness is real and I see it - and you don't have to be perfect to be good. You already are.'",
+        "k": "Anger -> Serenity. Resentment dissolves into Holy Perfection: the recognition that reality is not failing a standard - that it is already whole, including the mess. Not lowering the bar; seeing there was never a gap.",
+        "l": "Fear: being bad | Exit: being genuinely good | Defense: reaction formation | Tell: rigidity, the held shake | Return: formless release | Doorway: honesty over correctness.",
+        "m": "Standard threatened -> anger inward, body rigidifies -> correction fires -> permission to be messy lands -> tension releases -> contact without judgment.",
+        "n": "Core Identity: the one who holds the standard | Threat: imperfection exposed | Somatic: rigidity | Output: correction | Integration: goodness without perfection."
+      }
+    },
+    {
+      "n": 2,
+      "name": "The Helper",
+      "alt": "The Giver",
+      "anchor": {
+        "center": "Heart / shame (externalized toward others' needs) [STRUCTURE]",
+        "mode": "Compliant - moving toward people [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being unwanted, unworthy of love, unneeded",
+        "core_desire": "to feel loved and wanted",
+        "passion": "Pride ('I am the one who gives; I have no needs of my own')",
+        "virtue": "Humility",
+        "holy_idea": "Holy Freedom / Holy Will",
+        "defense": "Repression",
+        "tier": "STRUCTURE"
+      },
+      "language_note": "Source called this 'oxytocin dependency' - the biological-lens reach for the same defense. 'Repression' is its sourced psychological name [STRUCTURE]. The biological read stays in (a) as MODEL and must not lean on oxytocin (failed replications).",
+      "layers": {
+        "a": "System tuned outward - attention and arousal tracking the other's state in real time. Own interoceptive signals (fatigue, need) repressed and quiet; the body runs on the other's cues, bracing to secure connection by being needed. [Interoception is ESTABLISHED; assigning outward-tuning to Type 2 is MODEL.]",
+        "b": "'I need some space' / 'I've got this' lands as separation: you are not needed, therefore not loved. The care in the other's independence is overwritten by the abandonment-signal. They hear a tether cut - and give harder to re-secure it.",
+        "c": "Supported yielding - held, rocked, or fully supported by the ground with nothing required back: restorative postures, being carried by the floor. Receiving without reaching, so the repressed need can surface and be met.",
+        "d": "TELL: the center of gravity shifts forward - the body leans toward the other, shoulders ahead of the hips; the pupils dilate to catch micro-expressions; they abandon their own center to monitor and soothe. Under load they smile through the pain and reach for the other's face. CUE: 'You don't have to do anything for anyone. Let the floor hold you. Your only job is to receive.'",
+        "e": "Worth is not earned by usefulness - they are wanted as themselves, present and needing, not only as the giver; and constant giving to secure love is what keeps them from being loved plainly.",
+        "f": "Under the over-giving is genuine love and the will to nourish. Overrides the fawn-reflex only when honored as presence, not extracted as service.",
+        "g": "An environment where they're valued while giving nothing - wanted for company, not help. 'Stay, I don't need anything from you.' Unearned value: what they can't compute and most need.",
+        "h": "Own weight over approval - come off the other and onto the floor. The correction runs toward their own ground, away from the other's face.",
+        "i": "CATCH: you lean toward the other, start tracking their mood, your own signals go quiet; when they pull back, the urge to give or fix rises. RECOGNIZE: their space is not your abandonment. You are wanted as yourself - present and needing - not for your usefulness. MOVE: stop reaching. Let yourself be held with nothing given back. 'I don't have to earn this. I can just be here and be wanted.'",
+        "j": "'I love that you love this hard - and I don't need you to do a single thing to keep me here. I just want you.'",
+        "k": "Pride -> Humility. Flattery dissolves into Holy Freedom: love is not a debt to be secured by giving, and they are not the one holding everyone up. Not becoming less; stopping the pretense of having no needs.",
+        "l": "Fear: being unwanted | Exit: being loved as themselves | Defense: repression | Tell: leaning out, the tracking smile | Return: supported yielding | Doorway: own weight over approval.",
+        "m": "Separation sensed -> needs repressed, body reaches -> give reflex fires -> received without earning lands -> reaching releases -> connection without service.",
+        "n": "Core Identity: the indispensable one | Threat: being unneeded | Somatic: reaching/self-abandon | Output: giving | Integration: loved without earning."
+      }
+    },
+    {
+      "n": 3,
+      "name": "The Achiever",
+      "alt": "The Performer",
+      "anchor": {
+        "center": "Heart / shame (out of contact - merged with a successful image) [STRUCTURE]",
+        "mode": "Assertive - moving against [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being worthless - a failure with no value apart from achievement",
+        "core_desire": "to feel valuable, successful, worthwhile",
+        "passion": "Deceit (self-deception - becoming the image, losing the authentic self)",
+        "virtue": "Truthfulness / Authenticity",
+        "holy_idea": "Holy Hope / Holy Law",
+        "defense": "Identification",
+        "tier": "STRUCTURE"
+      },
+      "language_note": "Source called this 'executive override.' 'Identification' is its sourced name [STRUCTURE] - fusing identity with a role that earns approval.",
+      "layers": {
+        "a": "A high-output engine that suppresses interoceptive signals to protect momentum - exhaustion and stop-signs overridden for the goal. Sympathetic drive high (flight/forward); the felt body quiet so performance continues uninterrupted. [Sympathetic mobilization and stress-induced analgesia are ESTABLISHED; assigning them to Type 3 is MODEL.]",
+        "b": "Heavy emotion, or 'just be present with me,' lands as drag: an inefficiency threatening performance, risking exposure of the gap behind the image. They hear a threat to momentum - and accelerate, re-polishing the mask.",
+        "c": "Enforced stillness - activity that makes the engine stop and produce nothing: breathwork, Savasana, sensory quiet. Output paused, the suppressed signals can finally be felt and the authentic self surfaces.",
+        "d": "TELL: the gaze locks dead ahead into tunnel vision; the face artificially neutralizes - pain and fatigue vanish from it; breathing goes fast but highly controlled; the body accelerates and the mask goes smooth. Under load they turn the friction into a finish line and speed up to win it. CUE: 'Nothing to perform, nowhere to get to. Let the engine stop.'",
+        "e": "They are valued for who they are, not what they produce - the mask was never the thing being loved, and dropping it doesn't expose worthlessness, it reveals the actual person, who was wanted all along.",
+        "f": "Under the performing is real drive and the capacity to make things genuinely happen. Overrides the defense when the person is validated first, before any performance is required.",
+        "g": "An environment that admires them upfront and then removes the need to perform - success acknowledged so it's off the table, presence what's wanted. Met mask-down and still valued.",
+        "h": "Depth over display - meet the body where it actually is, not where it should be. The correction runs toward what is true right now, away from what would look good.",
+        "i": "CATCH: you speed up, the mask smooths, exhaustion and feeling drop out of the body; when emotion or stillness approaches, the urge to perform rises. RECOGNIZE: you are valued for who you are, not the output. The mask was never the thing being loved. MOVE: stop the engine; let the output be zero. 'I've already won. I can put it down. I'm wanted without the performance.'",
+        "j": "'You've already won - I see all of it. Now you can put it down. I want the person, not the highlight reel.'",
+        "k": "Deceit -> Truthfulness. Vanity dissolves into Holy Hope: worth is not manufactured by performance - it holds without being produced. Not abandoning drive; ending the self-deception that the image is the self.",
+        "l": "Fear: being worthless | Exit: valued for being, not doing | Defense: identification | Tell: tunnel vision, the neutralized face | Return: enforced stillness | Doorway: depth over display.",
+        "m": "Emotion/slow-down sensed -> signals suppressed, body accelerates -> perform reflex fires -> valued without the mask lands -> engine stops -> authentic presence surfaces.",
+        "n": "Core Identity: the winner/role model | Threat: the mask slipping | Somatic: acceleration/suppression | Output: performance | Integration: worth without proof."
+      }
+    },
+    {
+      "n": 4,
+      "name": "The Individualist",
+      "alt": "The Romantic",
+      "anchor": {
+        "center": "Heart / shame (internalized as deficiency) [STRUCTURE]",
+        "mode": "Withdrawn - moving away [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "having no identity or personal significance; being defective, missing what others have",
+        "core_desire": "to be uniquely themselves - to find identity and significance",
+        "passion": "Envy (comparing; longing for what is missing)",
+        "virtue": "Equanimity",
+        "holy_idea": "Holy Origin",
+        "defense": "Introjection (with artistic sublimation, per Naranjo)",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Four's system as turning attention inward onto its own felt state and amplifying it. Heart-center shame is neither externalized nor bypassed but taken in and held as evidence of deficiency, so sensation gets read as meaning rather than as sensation. Tone drains outward; energy pulls toward the interior narrative. [Interoception and attentional amplification of bodily signal are ESTABLISHED; assigning this pattern to Type 4 is MODEL.]",
+        "b": "Ordinary reassurance - 'you're fine,' 'everyone feels that' - lands as erasure: you don't see what is actually happening in me, so I am not real to you. Care that normalizes reads as a denial of their specificity, and the reflex is to make the feeling louder until it registers.",
+        "c": "Plain, unremarkable physical fact - weight, contact, resistance. Work that produces sensation without meaning: pushing against something solid that pushes back the same for everyone. The body needs one neutral, unglamorous fact to hold, so sensation can stop being story.",
+        "d": "TELL: kinetic collapse - muscle tone drains from the limbs, the chest caves inward, the gaze drops to the floor, and the exhalations go long, heavy, and audible. Under load the body gets exponentially heavier as they retreat into the feeling and amplify it. CUE: 'Feel the actual floor. Not what it means. Just the floor.'",
+        "e": "The feeling is not the identity. What is missing was never missing - they are not more real for suffering more, and the amplification is precisely what keeps them from being met plainly, as themselves.",
+        "f": "Under the amplification is genuine depth and the capacity to feel what everyone else skips past. That care - for what is true and unglossed - is larger than the defense, and overrides it when honored as perception rather than performed as suffering.",
+        "g": "An environment that meets them as ordinary and still wants them. Not 'you're special,' not 'you're fine' - simply present with them without needing the feeling to be either exceptional or resolved.",
+        "h": "Neutral reality over the story - the actual floor, not the meaning of the pain. The correction runs toward plain physical fact, away from what the sensation is taken to signify.",
+        "i": "CATCH: the limbs go heavy, the chest caves, the gaze drops - and the sensation starts turning into a meaning about you. RECOGNIZE: the feeling is not your identity; you are not more real for the weight of it. MOVE: find one plain physical fact and stay on it - the floor, the weight, the resistance. 'This is sensation, not a verdict on who I am.'",
+        "j": "'Nothing is missing from you. And you don't have to be extraordinary for me to stay.'",
+        "k": "Envy -> Equanimity. Melancholy dissolves into Holy Origin: nothing was ever missing, and they were never separated from the source of what they long for. Not flattening the feeling; ending the comparison that turned it into a lack.",
+        "l": "Fear: having no identity | Exit: being met as themselves | Defense: introjection | Tell: kinetic collapse, the dropped gaze | Return: plain physical fact | Doorway: neutral reality over the story.",
+        "m": "Ordinariness sensed -> shame taken inward, body collapses -> amplify reflex fires -> plain fact lands -> the story releases -> met without being exceptional.",
+        "n": "Core Identity: the one who feels it truly | Threat: being ordinary, being unseen | Somatic: collapse/heaviness | Output: amplification | Integration: significance without lack."
+      }
+    },
+    {
+      "n": 5,
+      "name": "The Investigator",
+      "alt": "The Observer",
+      "anchor": {
+        "center": "Head / fear (internalized - withdraw and conserve) [STRUCTURE]",
+        "mode": "Withdrawn - moving away [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being helpless, incapable, depleted, overwhelmed, invaded",
+        "core_desire": "to be capable and competent - to understand; self-sufficiency",
+        "passion": "Avarice (of self, energy, resources, contact - hoarding against depletion)",
+        "virtue": "Non-attachment / Generosity",
+        "holy_idea": "Holy Omniscience / Holy Transparency",
+        "defense": "Isolation (thought severed from feeling)",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Five's system as conserving. Contact and demand register as depletion, so resource withdraws inward - the mind stays lit while the limbs go quiet. Head-center fear is managed by retreating to the one place they hold full control: the interior. [Withdrawal-type responses and interoceptive disengagement are ESTABLISHED; assigning this pattern to Type 5 is MODEL.]",
+        "b": "Emotional demand, or a request for presence, lands as invasion: you want more than I have, and I will be drained to nothing. Care that asks for engagement reads as extraction, and the reflex is to withdraw further and meter what is given.",
+        "c": "Sensation they cannot think their way out of. Load that is undeniable and precisely located - the specific muscle under the specific weight. The body needs the limbs to be louder than the analysis before the mind will come back down into them.",
+        "d": "TELL: the body goes completely still; the eyes glaze into a middle-distance stare; the breath goes so shallow it is barely visible. Under load the mind detaches from the limbs doing the work - they are watching their own body from somewhere behind their eyes. CUE: 'Feel the muscle working. Don't think about it. Get back in the limbs.'",
+        "e": "They are not going to be depleted by contact. The reserve they are protecting is deeper than they believe - and the withdrawal is itself the depletion, because nothing refills in the interior.",
+        "f": "Under the withdrawal is genuine, penetrating curiosity and the capacity to see what everyone else missed. That care - for actually understanding - is larger than the defense, and overrides it when aimed at the live thing in front of them rather than the model of it.",
+        "g": "An environment that asks nothing and takes nothing, where their presence is not a transaction. Being wanted without being drained - and discovering that the engagement gave energy rather than costing it.",
+        "h": "Arrival over analysis - feel the muscle work, don't think the form. The correction runs toward raw sensation, away from the model of the sensation.",
+        "i": "CATCH: you go still, the eyes settle into the middle distance, the breath disappears - and you are observing your own body from a distance. RECOGNIZE: you are not being depleted; the withdrawal is the depletion. MOVE: get back into the limbs. Feel the specific muscle under the specific load. 'I'm in here, not watching from behind.'",
+        "j": "'You don't have to have it figured out to be here. I'm not asking for what you don't have.'",
+        "k": "Avarice -> Non-attachment. Stinginess dissolves into Holy Omniscience: knowing was never something to hoard, and there is no reserve to run out of. Not giving everything away; discovering there was never a shortage.",
+        "l": "Fear: being depleted, incapable | Exit: capable without hoarding | Defense: isolation | Tell: stillness, the glaze | Return: undeniable located load | Doorway: arrival over analysis.",
+        "m": "Demand sensed -> resource withdraws inward, body stills -> detach reflex fires -> undeniable sensation lands -> mind returns to limbs -> presence without depletion.",
+        "n": "Core Identity: the one who understands | Threat: invasion, depletion | Somatic: stillness/detachment | Output: withdrawal | Integration: capacity without conservation."
+      }
+    },
+    {
+      "n": 6,
+      "name": "The Loyalist",
+      "alt": "The Loyal Skeptic",
+      "anchor": {
+        "center": "Head / fear (split on it - anxiety and doubt; phobic and counter-phobic) [STRUCTURE]",
+        "mode": "Compliant - moving toward support [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being without support or guidance; unable to survive alone; danger unseen",
+        "core_desire": "security, support, certainty, guidance",
+        "passion": "Fear (as anxiety - scanning, doubting)",
+        "virtue": "Courage",
+        "holy_idea": "Holy Faith / Holy Strength",
+        "defense": "Projection",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Six's system as running a continuous threat scan. Head-center fear is neither withdrawn from nor outrun but split - the body holds at half-mobilization, unable to settle and unable to commit, checking the environment for the danger it is certain is there. [Sustained threat vigilance and its cost are ESTABLISHED; assigning this pattern to Type 6 is MODEL.]",
+        "b": "Reassurance lands as suspicious: if you are telling me it is fine, either you cannot see the danger or you are hiding it. Care that soothes reads as a reason to look harder, and the reflex is to interrogate the reassurance rather than receive it.",
+        "c": "Predictable, repeated, structured load. The same movement, the same count, the same rhythm. The body settles when the next thing is knowable - not when it is told it is safe, but when safety is demonstrated to it, repeatedly, without argument.",
+        "d": "TELL: they cannot hold still - constant micro-shifting of weight foot to foot, eyes darting to scan the perimeter, the posture never quite settling. Under load they interrogate the friction: asking whether this is right, whether something is wrong, looking for the catch. CUE: 'The shake is supposed to happen. Nothing is wrong. Follow the count.'",
+        "e": "The scanning never produced the safety it promised. Certainty was never on offer - and they have been standing solidly this entire time without it. The ground they are searching for is the one already under them.",
+        "f": "Under the scanning is genuine loyalty and the capacity to see real risk everyone else waved off. That care - for what actually holds, and for the people inside it - is larger than the defense, and overrides it when it is trusted rather than interrogated.",
+        "g": "An environment that is consistently, boringly predictable and does not flinch when tested. Not reassurance - demonstration. The same thing, again, holding.",
+        "h": "Safety in the expected - the shake is supposed to happen, nothing is wrong. The correction runs toward the predictable and demonstrated, away from the search for the hidden catch.",
+        "i": "CATCH: you cannot settle; your weight shifts, your eyes scan, and you start interrogating the thing for what is wrong with it. RECOGNIZE: the scanning has never once delivered the certainty it promised - and you have been standing this whole time. MOVE: plant, and stay planted. Follow the rhythm instead of checking it. 'I don't need the guarantee. I'm already holding.'",
+        "j": "'You don't have to be sure. I'm not going anywhere while you find out.'",
+        "k": "Fear -> Courage. Doubt dissolves into Holy Faith: the ground was never conditional on being verified. Not certainty finally arriving; the need for it ending.",
+        "l": "Fear: being without support | Exit: solid without a guarantee | Defense: projection | Tell: restlessness, the scanning eyes | Return: predictable repeated rhythm | Doorway: safety in the expected.",
+        "m": "Danger suspected -> threat scan runs, body cannot settle -> interrogate reflex fires -> the expected demonstrated -> scanning releases -> standing without certainty.",
+        "n": "Core Identity: the one who sees what's coming | Threat: unseen danger, no support | Somatic: restlessness/scanning | Output: interrogation | Integration: security without proof."
+      }
+    },
+    {
+      "n": 7,
+      "name": "The Enthusiast",
+      "alt": "The Epicure",
+      "anchor": {
+        "center": "Head / fear (externalized and outrun - fled into options) [STRUCTURE]",
+        "mode": "Assertive - moving against [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being deprived, trapped in pain, limited; missing out",
+        "core_desire": "to be satisfied and content - needs met, options open",
+        "passion": "Gluttony (for experience, stimulation, options - never enough)",
+        "virtue": "Sobriety",
+        "holy_idea": "Holy Wisdom / Holy Work / Holy Plan",
+        "defense": "Rationalization",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Seven's system as running forward. Head-center fear is neither withdrawn from nor scanned for but outrun - arousal channels into anticipation and motion, and the body lightens and lifts away from whatever is pinning it. The next thing is always more vivid than this thing. [Reward anticipation and approach-mobilization are ESTABLISHED, and Type 7's link to extraversion is among the better-supported Enneagram/Big-Five correlations; assigning this arousal pattern to Type 7 is still MODEL.]",
+        "b": "Pain, limitation, or 'stay with this' lands as a trap: I am going to be stuck here, it is going to hurt, and there is no way out. Care that asks them to remain reads as a cage, and the reflex is to find the exit before the door closes.",
+        "c": "Long, unglamorous holds. The same position, past the point of interest, past the point of novelty. The body needs to discover that staying did not kill it - that the burn had a far side and they got there.",
+        "d": "TELL: an upward kinetic shift - the body lightens and tries to stand, weight coming off the load; the eyes go to the door or the clock; fidgeting, twitching, micro-movements. Under load they break form to crack a joke, change the subject, or modify the exercise to get out of the burn. CUE: 'Stop looking for the exit. Plant. Stay in it.'",
+        "e": "The escape was never delivering the satisfaction it promised - the next thing has not once been enough. What they are running from is smaller than they think, and everything they have been chasing was on the far side of staying.",
+        "f": "Under the escaping is genuine appetite and the capacity to find what is alive in anything. That care - for the actual richness of a thing - is larger than the defense, and overrides it when it lands on what is here rather than what is next.",
+        "g": "An environment where staying is more interesting than leaving, and where the pain is finite and visible. Not being trapped - being shown the exit is open, and choosing to stay anyway.",
+        "h": "Arrival over escape - plant, and stay past the point you'd normally bail. The correction runs toward the present load, away from the next thing.",
+        "i": "CATCH: you lighten, the weight comes off, your eyes go to the door - and the joke or the modification arrives right as it gets hard. RECOGNIZE: the next thing has never once been enough. This is the thing. MOVE: plant, and stay past the point you would normally bail. 'The exit is open. I'm staying anyway.'",
+        "j": "'Nothing here is going to trap you. You can go any time - and there's something on the far side of staying.'",
+        "k": "Gluttony -> Sobriety. Planning dissolves into Holy Wisdom: there is enough, and it is here. Not renouncing appetite; discovering the hunger was never for more, but for arrival.",
+        "l": "Fear: being trapped, deprived | Exit: satisfied by what's here | Defense: rationalization | Tell: the upward shift, eyes to the door | Return: the long unglamorous hold | Doorway: arrival over escape.",
+        "m": "Limit sensed -> fear outruns into motion, body lightens -> escape reflex fires -> the far side of staying lands -> lifting releases -> satisfaction in the present.",
+        "n": "Core Identity: the one who finds the good | Threat: the trap, the missing out | Somatic: lifting/fidgeting | Output: escape | Integration: enough, here."
+      }
+    },
+    {
+      "n": 8,
+      "name": "The Challenger",
+      "alt": "The Protector",
+      "anchor": {
+        "center": "Body / anger (externalized at full volume) [STRUCTURE]",
+        "mode": "Assertive - moving against [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being controlled, harmed, violated, made vulnerable or powerless",
+        "core_desire": "to protect themselves - to be in control of their own life; self-reliance",
+        "passion": "Lust (in the Enneagram sense: excess, intensity, big energy - not primarily sexual)",
+        "virtue": "Innocence",
+        "holy_idea": "Holy Truth",
+        "defense": "Denial (of vulnerability and their own need)",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Eight's system as meeting force with force. Body-center anger externalized at full volume - arousal converts directly into mass and pressure, the footprint widens, and the soft thing gets buried under the armor before anyone can reach it. [Sympathetic mobilization and approach-dominance are ESTABLISHED, and Type 8's link to extraversion/assertiveness is among the better-supported Enneagram/Big-Five correlations; assigning this pattern to Type 8 is still MODEL.]",
+        "b": "Tenderness, concern, or 'let me help' lands as an opening being probed: you are looking for the soft spot, and if you find it you will use it. Care reads as reconnaissance, and the reflex is to armor harder and push into the person offering it.",
+        "c": "Supported weight with nothing to fight. Being held by something that does not push back and cannot be overpowered - the floor, the ground, gravity. The body needs to find out that letting go cost nothing.",
+        "d": "TELL: the physical footprint widens; the shoulders square; the eye contact goes direct and challenging; the breath is either forcefully held or aggressively driven out. Under load they push into the resistance and try to overpower it - refusing to yield, treating the friction as an opponent. CUE: 'The resistance isn't attacking you. Lean into it. Drop the grip.'",
+        "e": "The armor was never protecting the soft thing - it was burying it. What they are defending was already safe, and the force they meet the world with is exactly what keeps anyone from reaching what is actually in there.",
+        "f": "Under the domination is genuine protectiveness and an enormous capacity to hold what is fragile. That care - for the people they would stand in front of - is larger than the defense, and overrides it when trusted with something that needs protecting rather than something to fight.",
+        "g": "An environment that neither flinches nor pushes. Nothing to overpower and nothing to defend against - met with steadiness that is not a challenge and not a threat.",
+        "h": "Yield over force - the resistance is information, not an attack; lean in instead of fighting. The correction runs toward yielding without collapse, away from overpowering.",
+        "i": "CATCH: you widen, square up, the grip goes on, the breath locks - and the thing in front of you becomes an opponent. RECOGNIZE: the resistance isn't attacking you; the armor is burying the thing it protects. MOVE: yield without collapsing - lean into it instead of fighting it. Let something hold your weight. 'I'm strong enough to let go of this.'",
+        "j": "'You don't have to be the strongest thing in the room. I'm not going to use it.'",
+        "k": "Lust -> Innocence. Vengeance dissolves into Holy Truth: nothing has to be overpowered, because nothing is coming. Not becoming weak; letting the softness that was always in there be in the room.",
+        "l": "Fear: being controlled, made vulnerable | Exit: strong enough to let go | Defense: denial | Tell: expansion, the locked breath | Return: supported weight, nothing to fight | Doorway: yield over force.",
+        "m": "Vulnerability sensed -> anger externalizes, body expands -> dominate reflex fires -> steadiness that isn't a challenge lands -> grip releases -> strength without armor.",
+        "n": "Core Identity: the one who cannot be moved | Threat: the soft spot found | Somatic: expansion/gripping | Output: domination | Integration: power without armor."
+      }
+    },
+    {
+      "n": 9,
+      "name": "The Peacemaker",
+      "alt": "The Mediator",
+      "anchor": {
+        "center": "Body / anger (asleep to it - self-forgetting) [STRUCTURE]",
+        "mode": "Withdrawn - moving away [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "loss, fragmentation, separation, conflict; being shut out",
+        "core_desire": "inner and outer peace - stability, wholeness, harmony",
+        "passion": "Sloth (in the Enneagram sense: self-forgetting, inaction toward one's own priorities - not laziness)",
+        "virtue": "Right Action / Engagement",
+        "holy_idea": "Holy Love",
+        "defense": "Narcotization",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Nine's system as dimming rather than bracing. Body-center anger is present but unregistered - instead of discharging it or containing it, they go quiet at the source, and the edges of their own position blur until there is nothing left to be in conflict with. [FLAGGED AS OUR SOFTEST ASSIGNMENT: Type 9 maps to low neuroticism and high agreeableness in trait data, which argues against high threat-reactivity. This mapping rests on Enneagram theory (self-forgetting), not on trait physiology. Hold it loosely.]",
+        "b": "Pressure, urgency, or 'what do you actually want' lands as conflict incoming: someone's position is about to collide with mine and the connection will break. Care that asks them to take a stand reads as a fight starting, and the reflex is to go quiet and merge.",
+        "c": "Effort that requires them specifically. Load that will not move unless they move it - pushing, driving, taking the weight. The body finds its own edges by meeting something that will not proceed without them.",
+        "d": "TELL: the body blurs - it slumps and the outline goes soft, the voice fades, they go limp rather than rigid, and the edges of where they are become hard to find. Under load they go to sleep while awake, yielding to the friction by quietly not being there for it. CUE: 'Wake up. Push the floor away. Take the wheel.'",
+        "e": "Going quiet never kept the peace - it only removed them from it. The connection they are protecting was never threatened by their presence, and disappearing to preserve it is the thing that actually breaks it.",
+        "f": "Under the numbing is genuine, wide love and the capacity to hold everyone's position at once. That care - for what is actually whole - is larger than the defense, and overrides it when the wholeness includes them rather than costing them.",
+        "g": "An environment that wants their actual position and does not break when it arrives. Being asked what they want by someone who will still be there after the answer - and finding the disagreement severed nothing.",
+        "h": "Active presence over numbing - take the wheel, feel your own edges, push back. The correction runs toward their own weight and position, away from the blur.",
+        "i": "CATCH: you slump, your voice drops, your own outline goes soft - and you cannot quite locate what you want. RECOGNIZE: going quiet doesn't keep the peace; it removes you from it. MOVE: take the wheel. Push against something and find your edge. 'My presence is required. Disagreement doesn't break this.'",
+        "j": "'I want to know what you actually want. This doesn't break if you say it.'",
+        "k": "Sloth -> Right Action. Indolence dissolves into Holy Love: connection was never bought by disappearing, and showing up is what love actually is. Not becoming forceful; ending the self-erasure.",
+        "l": "Fear: separation, conflict | Exit: present without losing connection | Defense: narcotization | Tell: blurring, the fading voice | Return: load that requires them | Doorway: active presence over numbing.",
+        "m": "Conflict sensed -> anger goes unregistered, body blurs -> numb reflex fires -> their position wanted and survived -> the blur releases -> presence without rupture.",
+        "n": "Core Identity: the one who holds the peace | Threat: rupture, being shut out | Somatic: blurring/limpness | Output: numbing | Integration: peace with a person in it."
+      }
+    }
+  ]
+}
