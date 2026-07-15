@@ -192,6 +192,18 @@ footer b{color:var(--dawn);font-weight:400}
 </footer>
 </div>
 
+<!-- ============================================================
+     Embedded data slots. Empty in the source file (which then reads
+     the sibling JSON files over HTTP). The build step fills these in
+     to produce the single self-contained file — composition-engine.html
+     — that runs from a link, a double-click, or any static host with
+     no companion files. See build-standalone.js.
+     ============================================================ -->
+<script type="application/json" id="grid-data"></script>
+<script type="application/json" id="matrix-data"></script>
+<script type="application/json" id="src-enneagram"></script>
+<script type="application/json" id="src-neuroscience"></script>
+
 <script>
 'use strict';
 /* ============================================================
@@ -646,11 +658,15 @@ function buildDrawer(){
     <div class="gr"><span class="gk">The two guardrail documents — loaded alongside</span>${files}</div>
     <div class="gr"><span class="gk">Engine self-check, run at load</span><div class="gv mono" style="font-size:.78rem;line-height:2">${checksHtml}</div></div>`;
 
-  if(location.protocol !== 'file:')
-    ['Source_Enneagram.md', 'Source_Neuroscience.md'].forEach((f, i) =>
-      fetch(f).then(r => r.ok ? r.text() : Promise.reject())
+  // Embedded (self-contained file) first; sibling fetch only if not embedded.
+  ['src-enneagram', 'src-neuroscience'].forEach((id, i) => {
+    const emb = embedded(id);
+    if(typeof emb === 'string' && emb.length){ $('#grf' + i).innerHTML = `<pre>${esc(emb)}</pre>`; return; }
+    if(location.protocol !== 'file:')
+      fetch(['Source_Enneagram.md', 'Source_Neuroscience.md'][i]).then(r => r.ok ? r.text() : Promise.reject())
         .then(t => { $('#grf' + i).innerHTML = `<pre>${esc(t)}</pre>`; })
-        .catch(() => {}));
+        .catch(() => {});
+  });
 }
 
 /* ============================================================
@@ -693,16 +709,32 @@ function runChecks(){
 }
 
 /* ============================================================
-   Loading — fetch first (any static host); if the browser blocks
-   local fetch (file://), fall back to a picker for the two faces.
+   Loading — three routes, in order of preference:
+   1. Embedded data (the built self-contained file / artifact) — no
+      network at all, works from a link or a double-click.
+   2. Sibling JSON files over HTTP (a static-host or dev deploy that
+      reads live data) — the empty-slot source file lands here.
+   3. A file picker (opened from disk with no embedded data) — last
+      resort so the engine still runs entirely locally.
    ============================================================ */
+function embedded(id){
+  const el = document.getElementById(id);
+  if(!el) return null;
+  const txt = el.textContent.trim();
+  if(!txt) return null;
+  try { return JSON.parse(txt); } catch(e){ return null; }
+}
 async function loadAll(){
-  if(location.protocol === 'file:'){ showDrop(); return; }
-  try {
-    const [g, m] = await Promise.all(['grid_data.json', 'matrix_data.json'].map(u =>
-      fetch(u).then(r => { if(!r.ok) throw new Error(u); return r.json(); })));
-    boot(g, m);
-  } catch(e){ showDrop(); }
+  const g0 = embedded('grid-data'), m0 = embedded('matrix-data');
+  if(g0 && m0){ boot(g0, m0); return; }
+  if(location.protocol !== 'file:'){
+    try {
+      const [g, m] = await Promise.all(['grid_data.json', 'matrix_data.json'].map(u =>
+        fetch(u).then(r => { if(!r.ok) throw new Error(u); return r.json(); })));
+      boot(g, m); return;
+    } catch(e){ /* fall through to picker */ }
+  }
+  showDrop();
 }
 
 function showDrop(){

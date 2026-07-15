@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Composition Engine · The Architecture of Human Reality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* the dawn end of the dusk-to-dawn system — same values as The_Architecture_of_Human_Reality.html */
+  --field:#f2e8cf; --surface:#faf4e4; --cream:#2b2216; --creamMid:#6f6047;
+  --sage:#4a6634; --gold:#96650f; --clay:#8f4c2c; --dawn:#171009;
+  --night:#2b2216; --night2:#e6dabc;
+  --line:rgba(43,34,22,.18); --lineSoft:rgba(43,34,22,.09);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{
+  background:radial-gradient(130% 90% at 78% -12%,rgba(150,101,15,.07),transparent 48%),
+             radial-gradient(120% 80% at 8% 118%,rgba(74,102,52,.06),transparent 52%),var(--field);
+  color:var(--cream); font-family:"Spectral",Georgia,serif; font-weight:400; line-height:1.62;
+  -webkit-font-smoothing:antialiased; min-height:100vh; padding:clamp(28px,5vw,72px) clamp(18px,5vw,56px) 96px;
+}
+.wrap{max-width:1120px;margin:0 auto}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--creamMid)}
+h1{font-weight:300;font-size:clamp(2.2rem,5.6vw,3.9rem);line-height:1.02;letter-spacing:-.015em;margin:.55rem 0 1rem}
+h1 em{font-style:italic;color:var(--gold)}
+.thesis{font-size:clamp(1rem,1.5vw,1.14rem);max-width:62ch;color:var(--creamMid)}
+.thesis b{color:var(--cream);font-weight:400}
+hr.dawn{height:1px;border:0;margin:2.4rem 0 1.8rem;background:linear-gradient(90deg,var(--sage),var(--gold) 52%,transparent);opacity:.55}
+.mono{font-family:"JetBrains Mono",monospace}
+
+/* ---- controls ---- */
+.tabs{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;border-bottom:1px solid var(--line);padding-bottom:.9rem}
+.tab{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  background:none;border:1px solid transparent;border-radius:20px;padding:.5em 1em;color:var(--creamMid);cursor:pointer;transition:.25s}
+.tab:hover{color:var(--cream)}
+.tab.on{color:var(--surface);background:var(--night);border-color:var(--night)}
+.tab:focus-visible,.src:focus-visible,select:focus-visible,.scell:focus-visible,.filebtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.src{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);border-radius:20px;padding:.5em .95em;color:var(--creamMid);cursor:pointer;transition:.25s}
+.src[aria-pressed="true"]{color:var(--gold);border-color:rgba(150,101,15,.45);background:rgba(150,101,15,.09)}
+
+.controls{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:flex-end;margin:1.5rem 0 0}
+.ctl{display:flex;flex-direction:column;gap:.3rem}
+.ctl label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--creamMid)}
+.selwrap{position:relative}
+.selwrap::after{content:"▾";position:absolute;right:.85em;top:50%;transform:translateY(-52%);color:var(--creamMid);pointer-events:none;font-size:.8em}
+select{appearance:none;-webkit-appearance:none;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;
+  color:var(--cream);background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:.55em 2.2em .55em .9em;cursor:pointer;max-width:min(78vw,340px)}
+select:hover{border-color:rgba(43,34,22,.38)}
+.check{display:flex;gap:.45rem;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--creamMid);cursor:pointer;padding-bottom:.55em}
+.check input{accent-color:var(--gold)}
+
+/* ---- composed cell ---- */
+#stage{margin-top:2.4rem;scroll-margin-top:1.5rem}
+.addr{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--creamMid)}
+.addr b{color:var(--edge,var(--gold));font-weight:500}
+.anchorcard{margin:1rem 0 0;padding:1.2rem 1.4rem;border-radius:12px;border:1px solid var(--gold);
+  background:linear-gradient(100deg,rgba(150,101,15,.09),transparent 72%)}
+.anchorcard .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--creamMid)}
+.anchorcard .v{font-size:clamp(1.15rem,2.2vw,1.45rem);font-weight:400;color:var(--dawn);margin-top:.35rem;font-style:italic;line-height:1.4}
+.bridge{margin:1.5rem 0 .2rem;font-size:1.05rem;font-style:italic;color:var(--creamMid)}
+.bridge b{color:var(--cream);font-weight:400;font-style:normal}
+
+.walk{margin-top:.6rem;display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:2.1rem 13.5rem 1fr;gap:1.1rem;padding:1.15rem 0;border-top:1px solid var(--lineSoft);align-items:start}
+.row:first-child{border-top:0}
+.row .lk{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--creamMid);padding-top:.28rem}
+.row .ln{font-size:.97rem;color:var(--cream);padding-top:.1rem}
+.row .lt{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--creamMid);opacity:.8;display:block;margin-top:.22rem}
+.body{font-size:1rem;line-height:1.62}
+.il{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--creamMid);font-weight:500;margin-right:.3rem}
+.note{font-family:"JetBrains Mono",monospace;font-size:10.5px;line-height:1.55;color:var(--creamMid);opacity:.9;margin-top:.6rem;padding-left:.75rem;border-left:1px solid var(--lineSoft)}
+.note.flagged{color:var(--clay);opacity:.95;border-left-color:var(--clay)}
+.langnote{font-size:.86rem;color:var(--creamMid);font-style:italic;margin-top:1rem;padding-left:.9rem;border-left:2px solid var(--lineSoft);max-width:78ch}
+.uncovered{border:1px dashed var(--line);border-radius:14px;padding:1.6rem 1.5rem;margin-top:1.4rem;color:var(--creamMid);font-style:italic;max-width:78ch}
+
+/* tiers */
+.tierstrip{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;margin-top:1.8rem;padding-top:1.1rem;border-top:1px solid var(--line)}
+.chip{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:20px;padding:.4em .85em;color:var(--creamMid);background:none}
+.chip.big{font-size:10.5px;font-weight:500}
+.t-EST{color:var(--sage);border-color:rgba(74,102,52,.5);background:rgba(74,102,52,.07)}
+.t-STR{color:var(--gold);border-color:rgba(150,101,15,.5);background:rgba(150,101,15,.08)}
+.t-MOD{color:var(--clay);border-color:rgba(143,76,44,.5);background:rgba(143,76,44,.07)}
+.tiernote{font-family:"JetBrains Mono",monospace;font-size:10px;line-height:1.6;color:var(--creamMid);margin-top:.7rem;max-width:88ch}
+
+/* ---- source faces ---- */
+.facesHead{margin-top:2.6rem;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--creamMid)}
+.facegrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.8rem;align-items:start}
+.face{position:relative;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.35));padding:1.15rem 1.25rem 1.1rem}
+.face::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--edge,var(--gold));opacity:.8}
+.face .faddr{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--creamMid);line-height:1.7}
+.face .faddr b{color:var(--edge,var(--gold));font-weight:500}
+.face .raw{font-size:.94rem;line-height:1.6;margin-top:.65rem}
+.face .fx{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.4rem 1.3rem;margin:.8rem 0 .2rem;border-top:1px solid var(--lineSoft);padding-top:.8rem}
+.face .fx .k{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--creamMid);display:block;margin-bottom:.14rem}
+.face .fx .v{font-size:.86rem;color:var(--cream);line-height:1.45}
+.face .flayer{border-top:1px solid var(--lineSoft);margin-top:.85rem;padding-top:.85rem}
+.m-Assertive{--edge:var(--gold)} .m-Withdrawn{--edge:var(--sage)} .m-Compliant{--edge:var(--clay)}
+
+/* ---- sheet ---- */
+.gridwrap{overflow-x:auto;padding-bottom:4px;margin-top:1.6rem}
+table.sheet{border-collapse:separate;border-spacing:7px;width:100%;min-width:1150px}
+table.sheet th{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--creamMid);font-weight:400;text-align:left;padding:0 .2rem .25rem;white-space:nowrap;vertical-align:bottom}
+table.sheet th b{display:block;font-weight:500;color:var(--cream);font-size:10.5px}
+table.sheet th.rowh{text-align:right;padding-right:.7rem;vertical-align:middle;max-width:11rem;white-space:normal}
+table.sheet th.rowh b{font-size:10px}
+table.sheet th.grouph{padding-top:1.1rem;text-align:left;letter-spacing:.26em;color:var(--creamMid);opacity:.85}
+.scell{position:relative;display:block;width:100%;min-width:12.5rem;text-align:left;color:inherit;font-family:inherit;cursor:pointer;
+  border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.35));
+  padding:.7rem .8rem .65rem;transition:border-color .25s,transform .25s}
+.scell::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--edge,var(--gold));opacity:.7}
+.scell:hover{transform:translateY(-2px);border-color:rgba(43,34,22,.38)}
+.scell .si{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--creamMid);display:block;margin-bottom:.3rem}
+.scell .sp{font-size:.85rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.fulltext .scell .sp{display:block;overflow:visible}
+.scell .sfoot{display:flex;gap:.35rem;align-items:center;margin-top:.5rem;flex-wrap:wrap}
+.scell .mini{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:14px;padding:.25em .6em;color:var(--creamMid)}
+.scell.uni{border-style:dashed}
+.scell.uni .sp{font-style:italic;color:var(--creamMid)}
+.sheetnote{font-size:.9rem;color:var(--creamMid);font-style:italic;margin-top:.9rem;max-width:70ch}
+
+/* ---- loader ---- */
+.drop{border:1px dashed var(--line);border-radius:14px;padding:2.6rem 1.5rem;text-align:center;color:var(--creamMid);margin-top:2.4rem}
+.drop.hot{border-color:var(--gold);background:rgba(150,101,15,.05)}
+.drop p{max-width:56ch;margin:0 auto;font-style:italic}
+.drop .stat{display:flex;gap:.5rem;justify-content:center;margin-top:1.1rem;flex-wrap:wrap}
+.filebtn{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);border-radius:20px;padding:.6em 1.2em;color:var(--cream);cursor:pointer;margin-top:1.2rem}
+.filebtn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ---- guardrails drawer ---- */
+#drawer{display:none;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:1.3rem 1.5rem;margin-top:1.4rem}
+#drawer.on{display:block}
+#drawer h3{font-weight:400;font-size:1.15rem;margin:.2rem 0 .5rem}
+#drawer .gr{border-top:1px solid var(--lineSoft);padding:.9rem 0}
+#drawer .gr:first-of-type{border-top:0;padding-top:.2rem}
+#drawer .gk{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--creamMid);display:block;margin-bottom:.3rem}
+#drawer .gv{font-size:.92rem;line-height:1.6;max-width:88ch}
+#drawer details{margin-top:.6rem}
+#drawer summary{cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--creamMid)}
+#drawer pre{white-space:pre-wrap;font-family:"Spectral",Georgia,serif;font-size:.88rem;line-height:1.55;color:var(--cream);
+  border-left:2px solid var(--lineSoft);padding-left:1rem;margin-top:.7rem;max-height:24rem;overflow-y:auto}
+.ok{color:var(--sage)} .bad{color:var(--clay)}
+
+footer{margin-top:4rem;border-top:1px solid var(--line);padding-top:1.5rem;font-size:.87rem;color:var(--creamMid);max-width:78ch}
+footer b{color:var(--dawn);font-weight:400}
+.stamp{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;margin-top:1.1rem}
+#selfcheck{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:.8rem;line-height:2}
+
+@media(max-width:760px){
+  .row{grid-template-columns:1.7rem 1fr;gap:.7rem}
+  .row .ln{grid-column:2} .row > div:last-child{grid-column:2}
+  .facegrid{grid-template-columns:1fr}
+}
+@media print{
+  body{padding:0;background:#fff}
+  .tabs,.controls,.filebtn,#drawer,.src{display:none!important}
+  .scell .sp{display:block;overflow:visible}
+  .scell:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style></head><body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">The Return · The Architecture of Human Reality · Composition Engine</div>
+  <h1>Nobody writes the <em>interior</em>.</h1>
+  <p class="thesis" id="thesis">Two faces of the cube are authored — Concept × Lens, and Concept × Pattern. Everything between them composes at runtime: <b>the pattern supplies the content, the lens supplies the voice,</b> and the tier rides along at its weakest.</p>
+  <hr class="dawn">
+</header>
+
+<nav class="tabs" role="tablist" id="viewtabs" hidden>
+  <button class="tab on" data-v="cell" role="tab" aria-selected="true">Single Cell</button>
+  <button class="tab" data-v="sheet" role="tab" aria-selected="false">Sheet</button>
+  <button class="src" id="grBtn" aria-pressed="false">Guardrails &amp; self-check</button>
+</nav>
+
+<div id="drawer"></div>
+<div id="controls"></div>
+<div id="stage"><div class="drop" id="drop" hidden></div></div>
+
+<footer>
+  <p>Every sentence in a composed cell is either <b>verbatim source text</b> from one of the two faces or <b>fixed connective grammar</b> from this engine — the engine can name, frame, and order; it cannot claim. A composed cell inherits the <b>weakest</b> tier of its inputs, never the strongest. No study has ever linked a pattern to a biometric measure; every somatic tell here is observable — visible from across a room, needing no instrument.</p>
+  <div id="selfcheck"></div>
+  <div class="stamp">Internal reference · not user-facing · pattern numbers and tier tags never surface downstream</div>
+</footer>
+</div>
+
+<!-- ============================================================
+     Embedded data slots. Empty in the source file (which then reads
+     the sibling JSON files over HTTP). The build step fills these in
+     to produce the single self-contained file — composition-engine.html
+     — that runs from a link, a double-click, or any static host with
+     no companion files. See build-standalone.js.
+     ============================================================ -->
+<script type="application/json" id="grid-data">{
+  "_meta": {
+    "title": "The Master Translation Grid",
+    "note": "Concept x Lens. Type collapsed to universal. The scientific lens is bound by The_Verified_Ground_Floor.md.",
+    "lenses": [
+      "experience",
+      "psychological",
+      "spiritual",
+      "scientific",
+      "product"
+    ]
+  },
+  "core_systems": [
+    {
+      "name": "The Defense",
+      "experience": "Reacting to protect ourselves from perceived harm, judgment, or the threat of being misunderstood.",
+      "psychological": "Coping mechanism / defense strategy.",
+      "spiritual": "The Ego / The Armor.",
+      "scientific": "Sympathetic arousal and threat response; allostatic load as the cumulative cost of staying braced. [ESTABLISHED]",
+      "product": "The Wall / The Performance."
+    },
+    {
+      "name": "The Core Truth",
+      "experience": "Feeling grounded, clear, and unbothered by external chaos - the baseline that exists before any performance.",
+      "psychological": "Authentic self / core values.",
+      "spiritual": "The Soul / The Source.",
+      "scientific": "Homeostasis; a rest-and-restore baseline indexed by vagal tone (heart-rate variability), which reliably tracks self-regulation. [ESTABLISHED - cite HRV research directly, not polyvagal]",
+      "product": "The Baseline / Ground Truth."
+    },
+    {
+      "name": "Sensing Reality",
+      "experience": "Reading a room, feeling a gut instinct about a situation, knowing something before the mind names it.",
+      "psychological": "Emotional intelligence / intuition.",
+      "spiritual": "Inner Knowing / Alignment.",
+      "scientific": "Interoception - the body reading its own internal signals - plus the threat response firing from ~74ms, before conscious appraisal catches up. [ESTABLISHED]",
+      "product": "Somatic Data / The Feedback Loop."
+    },
+    {
+      "name": "The Mental Loop",
+      "experience": "Overthinking, assuming the worst, living inside our heads, running scripts instead of being present.",
+      "psychological": "Rumination / cognitive distortion.",
+      "spiritual": "The Monkey Mind / Illusion.",
+      "scientific": "Default Mode Network activity in rumination - the brain simulating futures instead of reading the room. [ESTABLISHED for DMN; the predictive-processing frame is MODEL]",
+      "product": "The Small Reality / The Script."
+    },
+    {
+      "name": "The False Narrative",
+      "experience": "Anticipating interactions, assuming the worst, living inside a script written by past fear rather than present reality.",
+      "psychological": "Projection / cognitive bias.",
+      "spiritual": "The Small Reality: projecting past fears onto the present to maintain an illusion of control.",
+      "scientific": "Prediction error: a leading account holds the brain runs on prediction and updates against error, so it guesses the present from the past instead of reading current data. [MODEL - dominant framework, not settled mechanism]",
+      "product": "System Data Correction: showing the gap between the fear and the actual reality."
+    },
+    {
+      "name": "The Core Motivation",
+      "experience": "The fundamental, nervous-system-level condition a person needs in order to not feel like they are dying.",
+      "psychological": "Primary drive / core need.",
+      "spiritual": "The Core Drive - the specific condition (truth, stability, freedom, peace) required before a person will pull their Wall down.",
+      "scientific": "The specific environmental condition a person's threat system requires before it will stand down. [MODEL - we model this as type-specific; no research links types to neurochemical profiles]",
+      "product": "The User Blueprint: the individualized map of each person's triggers and safety requirements."
+    },
+    {
+      "name": "The Growth Process",
+      "experience": "Facing our pain, stopping the pattern that no longer serves us, learning to reorganize how we meet reality.",
+      "psychological": "Shadow work / psychological integration.",
+      "spiritual": "Awakening / Surrender / Innocence.",
+      "scientific": "Neuroplasticity - the nervous system genuinely rewiring toward new patterns with repetition. [ESTABLISHED]",
+      "product": "The Arc of Return."
+    },
+    {
+      "name": "The Healing",
+      "experience": "The long-term result of doing this work daily - the cumulative integration over time.",
+      "psychological": "Integration / resolution.",
+      "spiritual": "The Arc of Return: shedding the identity of the tool and coming back to the human being.",
+      "scientific": "Consolidated change: repeated regulation under load builds a faster, more reliable return - measurable as recovery time. [ESTABLISHED]",
+      "product": "The Relational Reset."
+    },
+    {
+      "name": "Shared Connection",
+      "experience": "Two people feeling safe, seen, and unarmored with each other - truth existing without performance.",
+      "psychological": "Secure attachment.",
+      "spiritual": "Unity / Sacred Union / Big Reality.",
+      "scientific": "Each person's own threat response standing down in the other's presence, with behavioral coordination between them (modestly linked to feeling bonded). Not two systems merging - two systems each finding their own ground, together. [ESTABLISHED for the modest behavioral link; 'nervous systems syncing' and limbic resonance are NOT established]",
+      "product": "The Shared Ground / Conversational Contact."
+    }
+  ],
+  "relational_mechanics": [
+    {
+      "name": "The Flinch",
+      "experience": "The instant, hot, physical reaction to feeling misunderstood or attacked - specifically when someone else is sharing their feelings.",
+      "psychological": "Triggered response / defense mechanism.",
+      "spiritual": "The Wall Goes Up - the armor deploying to protect the Small Reality.",
+      "scientific": "The threat response fires before conscious appraisal catches up, and prefrontal regulation weakens under it. A head start, not a hijack. [ESTABLISHED]",
+      "product": "The Catch: the exact vulnerability the system detects and intercepts."
+    },
+    {
+      "name": "The Anchor",
+      "experience": "The physical act of stopping the internal spiral before reacting - finding your ground and registering that you are not actually under attack.",
+      "psychological": "Self-regulation.",
+      "spiritual": "Sovereignty / Truth: finding your ground, and the realization that you are actually safe.",
+      "scientific": "Slow breathing and posture raise vagal tone, bringing prefrontal regulation back online. [ESTABLISHED]",
+      "product": "The Tool: the physical protocol where the muscle memory for the pause gets built."
+    },
+    {
+      "name": "The Shift",
+      "experience": "The moment of stopping the defense and actively trying to understand the other person's reality.",
+      "psychological": "Empathic engagement.",
+      "spiritual": "Curiosity / Care: the intentional choice to drop the ego and step into truth.",
+      "scientific": "Prefrontal regulation turns the threat signal down; it does not switch it off. The alarm quiets, it doesn't vanish. Curiosity and defense are not mutually exclusive - engaging regulation dampens the threat response. [ESTABLISHED]",
+      "product": "The Toggle: the action that moves the system from defense toward curiosity."
+    },
+    {
+      "name": "The Encounter",
+      "experience": "Navigating a hard, honest conversation without armor on either side.",
+      "psychological": "Authentic relating.",
+      "spiritual": "Standing in the Big Reality - where truth exists without performance.",
+      "scientific": "Both threat systems standing down at once, each person holding their own ground while coordinating with the other. Two operators, both awake. [ESTABLISHED for the modest coordination link; syncing/fusion is NOT established]",
+      "product": "The Lab: the live, unscripted relational environment that tests the whole system."
+    }
+  ]
+}</script>
+<script type="application/json" id="matrix-data">{
+  "_meta": {
+    "title": "The Archetype Matrix",
+    "subtitle": "The nine defense patterns, whole. Fourteen layers x nine types — how each pattern misreads care, how it shows in the body, and which way its correction runs.",
+    "status": "COMPLETE - all 9 types built",
+    "foundation_rule": "FOUNDATION = MAXIMUM NUANCE. If a proposed change means throwing out detail already figured out, it is not foundation work - it is a downstream rendering. Compression happens later, for a use. Never make the base smaller in the name of elegance.",
+    "tiers": {
+      "ESTABLISHED": "Supported by peer-reviewed literature. State as fact. 'Research shows...'",
+      "STRUCTURE": "A recognized framework's own internal structure. Not external proof, but not invented here either. 'In Enneagram theory...'",
+      "MODEL": "Our proprietary mapping. Real, defensible as craft that works, never claimed as proven science. 'We model this as...'"
+    },
+    "observable_filter": "RUNS BEFORE THE TIERS. OBSERVABLE = you can see it from across a room; needs no instrument and no citation (jaw clenches, spine locks, gaze locks ahead). BIOMETRIC = needs instruments and data we do not have (EDA, MSNA, diastolic BP, cortisol ratios). NEVER dress an observation as a biometric. The costume does not make the observation more true - it turns a defensible observation into an indefensible claim. All somatic tells in this matrix are OBSERVABLE by design.",
+    "geometry": "ONE MODEL, THREE AXES: Concept x Type x Lens. The Master Translation Grid is the Concept x Lens face (Type collapsed to universal). This Matrix is the Concept x Type face. Interior composed at runtime from the two faces.",
+    "roadmap_parked": {
+      "3x3_grouping": "Center (Body/Heart/Head) x Hornevian mode (Assertive/Withdrawn/Compliant) generates exactly 9 - one type per cell. VERIFIED (Riso-Hudson). But it is a COMPRESSION, not a generator: you cannot derive 'the masseter clenches' from 'Compliant x Body'. It predicts the shape, not the specifics. USE IT AS: (1) a coherence check on authored cells; (2) a downstream grouping for app/session rendering. DO NOT use it to author layer (a)."
+    },
+    "layers": {
+      "a": {
+        "name": "Biological Architecture",
+        "kind": "mechanism",
+        "tier": "ESTABLISHED concepts / MODEL type-assignment"
+      },
+      "b": {
+        "name": "The Mishearing",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "c": {
+        "name": "Somatic Path to Safety",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "d": {
+        "name": "The Somatic Tell + the Cue",
+        "kind": "mechanism",
+        "tier": "MODEL (observable)"
+      },
+      "e": {
+        "name": "The Realization",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "f": {
+        "name": "The Care Override",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "g": {
+        "name": "The Situational Trigger",
+        "kind": "mechanism",
+        "tier": "MODEL"
+      },
+      "h": {
+        "name": "The Doorway",
+        "kind": "mechanism",
+        "tier": "MODEL",
+        "origin": "NEW - the correction vector; from the Read Software Layer. Upstream of every setting."
+      },
+      "i": {
+        "name": "The Self-Recognition Move",
+        "kind": "rendering",
+        "tier": "MODEL",
+        "derivation": "d + e + c in the self setting; adds the impulse."
+      },
+      "j": {
+        "name": "The Paradox Sentence",
+        "kind": "rendering",
+        "tier": "MODEL",
+        "derivation": "e, spoken by another person - the relational setting."
+      },
+      "k": {
+        "name": "The Virtue Path",
+        "kind": "mechanism",
+        "tier": "STRUCTURE"
+      },
+      "l": {
+        "name": "Master Summary",
+        "kind": "compression",
+        "tier": "derived"
+      },
+      "m": {
+        "name": "Systems Flow",
+        "kind": "compression",
+        "tier": "derived"
+      },
+      "n": {
+        "name": "OS Dictionary Entry",
+        "kind": "compression",
+        "tier": "derived"
+      }
+    },
+    "grid_concepts": {
+      "a": "The Defense",
+      "b": "The False Narrative / The Flinch",
+      "c": "The Anchor",
+      "d": "The Flinch / Sensing Reality",
+      "e": "The Shift",
+      "f": "The Shift",
+      "g": "The Core Motivation",
+      "h": "The Shift",
+      "i": "The Anchor / Sensing Reality",
+      "j": "Shared Connection / The Encounter",
+      "k": "The Core Truth / The Growth Process"
+    },
+    "authoring_note": "Authored mechanism = a,b,c,d,e,f,g,h,k (9 layers x 9 types = 81 cells of IP). Renderings = i,j. Compressions = l,m,n. Renderings and compressions can be regenerated; mechanism cannot.",
+    "interlock": "Carries Part 2 of The Architecture of Human Reality. The Grid declares the rollup; this document stands on its own."
+  },
+  "types": [
+    {
+      "n": 1,
+      "name": "The Reformer",
+      "alt": "The Perfectionist",
+      "anchor": {
+        "center": "Body / anger (internalized as resentment) [STRUCTURE]",
+        "mode": "Compliant - moving toward the standard [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being corrupt, defective, bad, wrong",
+        "core_desire": "integrity - to be good, right, balanced",
+        "passion": "Anger (chronic suppressed resentment at the gap between what is and what should be)",
+        "virtue": "Serenity",
+        "holy_idea": "Holy Perfection",
+        "defense": "Reaction formation",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "Baseline held in low-grade sympathetic tension - jaw and spine tight - continuously correcting the environment to standard. Body-center anger turned inward against the self and pressed down rather than discharged: constant containment, not release. [Arousal and muscular bracing are ESTABLISHED; assigning this pattern to Type 1 is MODEL.]",
+        "b": "'I'm hurt by what you did' lands as a verdict: you got it wrong, you are bad. The care is overwritten by the error-signal. They hear 'you failed a standard,' not 'come closer' - firing correction instead of contact.",
+        "c": "Formless, standard-free release - movement with no correct way and no mess to prevent: shaking, unstructured dance, throwing clay. One place where nothing is held to a line, so suppressed anger can move instead of compress.",
+        "d": "TELL: the jaw sets and the masseter clenches; the spine goes unnaturally rigid; the breath climbs into the upper chest, shallow and restricted. Under sustained load the muscles begin to shake - and they hold form through the shake rather than break it, trying to perfect the posture to survive the pain. CUE: 'Nothing here needs fixing. Let it be exactly as messy as it is.'",
+        "e": "The standard was never the price of their goodness - they are not bad for the gap, and holding the line is itself costing them the very thing the standard was meant to protect.",
+        "f": "Under the correcting is genuine devotion to what is good and whole. Larger than the defense - overrides it when honored, rather than the demand for perfection.",
+        "g": "An environment granting explicit permission to be imperfect and still be good; a mistake met without judgment. Being trusted as already good, not yet-to-be-corrected.",
+        "h": "Honesty over correctness - the ground, not the perfect angle. The correction runs toward what is actually true of this moment, away from what it ought to look like.",
+        "i": "CATCH: jaw sets, spine straightens, breath goes high - and the urge to fix the imperfect thing rises. RECOGNIZE: the mess isn't proof you're bad; the standard was never the price of your goodness. MOVE: let the imperfect thing stand, uncorrected, on purpose. Drop into movement with no right way to do it. 'This can be exactly as messy as it is, and I am still good.'",
+        "j": "'Your standard for goodness is real and I see it - and you don't have to be perfect to be good. You already are.'",
+        "k": "Anger -> Serenity. Resentment dissolves into Holy Perfection: the recognition that reality is not failing a standard - that it is already whole, including the mess. Not lowering the bar; seeing there was never a gap.",
+        "l": "Fear: being bad | Exit: being genuinely good | Defense: reaction formation | Tell: rigidity, the held shake | Return: formless release | Doorway: honesty over correctness.",
+        "m": "Standard threatened -> anger inward, body rigidifies -> correction fires -> permission to be messy lands -> tension releases -> contact without judgment.",
+        "n": "Core Identity: the one who holds the standard | Threat: imperfection exposed | Somatic: rigidity | Output: correction | Integration: goodness without perfection."
+      }
+    },
+    {
+      "n": 2,
+      "name": "The Helper",
+      "alt": "The Giver",
+      "anchor": {
+        "center": "Heart / shame (externalized toward others' needs) [STRUCTURE]",
+        "mode": "Compliant - moving toward people [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being unwanted, unworthy of love, unneeded",
+        "core_desire": "to feel loved and wanted",
+        "passion": "Pride ('I am the one who gives; I have no needs of my own')",
+        "virtue": "Humility",
+        "holy_idea": "Holy Freedom / Holy Will",
+        "defense": "Repression",
+        "tier": "STRUCTURE"
+      },
+      "language_note": "Source called this 'oxytocin dependency' - the biological-lens reach for the same defense. 'Repression' is its sourced psychological name [STRUCTURE]. The biological read stays in (a) as MODEL and must not lean on oxytocin (failed replications).",
+      "layers": {
+        "a": "System tuned outward - attention and arousal tracking the other's state in real time. Own interoceptive signals (fatigue, need) repressed and quiet; the body runs on the other's cues, bracing to secure connection by being needed. [Interoception is ESTABLISHED; assigning outward-tuning to Type 2 is MODEL.]",
+        "b": "'I need some space' / 'I've got this' lands as separation: you are not needed, therefore not loved. The care in the other's independence is overwritten by the abandonment-signal. They hear a tether cut - and give harder to re-secure it.",
+        "c": "Supported yielding - held, rocked, or fully supported by the ground with nothing required back: restorative postures, being carried by the floor. Receiving without reaching, so the repressed need can surface and be met.",
+        "d": "TELL: the center of gravity shifts forward - the body leans toward the other, shoulders ahead of the hips; the pupils dilate to catch micro-expressions; they abandon their own center to monitor and soothe. Under load they smile through the pain and reach for the other's face. CUE: 'You don't have to do anything for anyone. Let the floor hold you. Your only job is to receive.'",
+        "e": "Worth is not earned by usefulness - they are wanted as themselves, present and needing, not only as the giver; and constant giving to secure love is what keeps them from being loved plainly.",
+        "f": "Under the over-giving is genuine love and the will to nourish. Overrides the fawn-reflex only when honored as presence, not extracted as service.",
+        "g": "An environment where they're valued while giving nothing - wanted for company, not help. 'Stay, I don't need anything from you.' Unearned value: what they can't compute and most need.",
+        "h": "Own weight over approval - come off the other and onto the floor. The correction runs toward their own ground, away from the other's face.",
+        "i": "CATCH: you lean toward the other, start tracking their mood, your own signals go quiet; when they pull back, the urge to give or fix rises. RECOGNIZE: their space is not your abandonment. You are wanted as yourself - present and needing - not for your usefulness. MOVE: stop reaching. Let yourself be held with nothing given back. 'I don't have to earn this. I can just be here and be wanted.'",
+        "j": "'I love that you love this hard - and I don't need you to do a single thing to keep me here. I just want you.'",
+        "k": "Pride -> Humility. Flattery dissolves into Holy Freedom: love is not a debt to be secured by giving, and they are not the one holding everyone up. Not becoming less; stopping the pretense of having no needs.",
+        "l": "Fear: being unwanted | Exit: being loved as themselves | Defense: repression | Tell: leaning out, the tracking smile | Return: supported yielding | Doorway: own weight over approval.",
+        "m": "Separation sensed -> needs repressed, body reaches -> give reflex fires -> received without earning lands -> reaching releases -> connection without service.",
+        "n": "Core Identity: the indispensable one | Threat: being unneeded | Somatic: reaching/self-abandon | Output: giving | Integration: loved without earning."
+      }
+    },
+    {
+      "n": 3,
+      "name": "The Achiever",
+      "alt": "The Performer",
+      "anchor": {
+        "center": "Heart / shame (out of contact - merged with a successful image) [STRUCTURE]",
+        "mode": "Assertive - moving against [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being worthless - a failure with no value apart from achievement",
+        "core_desire": "to feel valuable, successful, worthwhile",
+        "passion": "Deceit (self-deception - becoming the image, losing the authentic self)",
+        "virtue": "Truthfulness / Authenticity",
+        "holy_idea": "Holy Hope / Holy Law",
+        "defense": "Identification",
+        "tier": "STRUCTURE"
+      },
+      "language_note": "Source called this 'executive override.' 'Identification' is its sourced name [STRUCTURE] - fusing identity with a role that earns approval.",
+      "layers": {
+        "a": "A high-output engine that suppresses interoceptive signals to protect momentum - exhaustion and stop-signs overridden for the goal. Sympathetic drive high (flight/forward); the felt body quiet so performance continues uninterrupted. [Sympathetic mobilization and stress-induced analgesia are ESTABLISHED; assigning them to Type 3 is MODEL.]",
+        "b": "Heavy emotion, or 'just be present with me,' lands as drag: an inefficiency threatening performance, risking exposure of the gap behind the image. They hear a threat to momentum - and accelerate, re-polishing the mask.",
+        "c": "Enforced stillness - activity that makes the engine stop and produce nothing: breathwork, Savasana, sensory quiet. Output paused, the suppressed signals can finally be felt and the authentic self surfaces.",
+        "d": "TELL: the gaze locks dead ahead into tunnel vision; the face artificially neutralizes - pain and fatigue vanish from it; breathing goes fast but highly controlled; the body accelerates and the mask goes smooth. Under load they turn the friction into a finish line and speed up to win it. CUE: 'Nothing to perform, nowhere to get to. Let the engine stop.'",
+        "e": "They are valued for who they are, not what they produce - the mask was never the thing being loved, and dropping it doesn't expose worthlessness, it reveals the actual person, who was wanted all along.",
+        "f": "Under the performing is real drive and the capacity to make things genuinely happen. Overrides the defense when the person is validated first, before any performance is required.",
+        "g": "An environment that admires them upfront and then removes the need to perform - success acknowledged so it's off the table, presence what's wanted. Met mask-down and still valued.",
+        "h": "Depth over display - meet the body where it actually is, not where it should be. The correction runs toward what is true right now, away from what would look good.",
+        "i": "CATCH: you speed up, the mask smooths, exhaustion and feeling drop out of the body; when emotion or stillness approaches, the urge to perform rises. RECOGNIZE: you are valued for who you are, not the output. The mask was never the thing being loved. MOVE: stop the engine; let the output be zero. 'I've already won. I can put it down. I'm wanted without the performance.'",
+        "j": "'You've already won - I see all of it. Now you can put it down. I want the person, not the highlight reel.'",
+        "k": "Deceit -> Truthfulness. Vanity dissolves into Holy Hope: worth is not manufactured by performance - it holds without being produced. Not abandoning drive; ending the self-deception that the image is the self.",
+        "l": "Fear: being worthless | Exit: valued for being, not doing | Defense: identification | Tell: tunnel vision, the neutralized face | Return: enforced stillness | Doorway: depth over display.",
+        "m": "Emotion/slow-down sensed -> signals suppressed, body accelerates -> perform reflex fires -> valued without the mask lands -> engine stops -> authentic presence surfaces.",
+        "n": "Core Identity: the winner/role model | Threat: the mask slipping | Somatic: acceleration/suppression | Output: performance | Integration: worth without proof."
+      }
+    },
+    {
+      "n": 4,
+      "name": "The Individualist",
+      "alt": "The Romantic",
+      "anchor": {
+        "center": "Heart / shame (internalized as deficiency) [STRUCTURE]",
+        "mode": "Withdrawn - moving away [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "having no identity or personal significance; being defective, missing what others have",
+        "core_desire": "to be uniquely themselves - to find identity and significance",
+        "passion": "Envy (comparing; longing for what is missing)",
+        "virtue": "Equanimity",
+        "holy_idea": "Holy Origin",
+        "defense": "Introjection (with artistic sublimation, per Naranjo)",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Four's system as turning attention inward onto its own felt state and amplifying it. Heart-center shame is neither externalized nor bypassed but taken in and held as evidence of deficiency, so sensation gets read as meaning rather than as sensation. Tone drains outward; energy pulls toward the interior narrative. [Interoception and attentional amplification of bodily signal are ESTABLISHED; assigning this pattern to Type 4 is MODEL.]",
+        "b": "Ordinary reassurance - 'you're fine,' 'everyone feels that' - lands as erasure: you don't see what is actually happening in me, so I am not real to you. Care that normalizes reads as a denial of their specificity, and the reflex is to make the feeling louder until it registers.",
+        "c": "Plain, unremarkable physical fact - weight, contact, resistance. Work that produces sensation without meaning: pushing against something solid that pushes back the same for everyone. The body needs one neutral, unglamorous fact to hold, so sensation can stop being story.",
+        "d": "TELL: kinetic collapse - muscle tone drains from the limbs, the chest caves inward, the gaze drops to the floor, and the exhalations go long, heavy, and audible. Under load the body gets exponentially heavier as they retreat into the feeling and amplify it. CUE: 'Feel the actual floor. Not what it means. Just the floor.'",
+        "e": "The feeling is not the identity. What is missing was never missing - they are not more real for suffering more, and the amplification is precisely what keeps them from being met plainly, as themselves.",
+        "f": "Under the amplification is genuine depth and the capacity to feel what everyone else skips past. That care - for what is true and unglossed - is larger than the defense, and overrides it when honored as perception rather than performed as suffering.",
+        "g": "An environment that meets them as ordinary and still wants them. Not 'you're special,' not 'you're fine' - simply present with them without needing the feeling to be either exceptional or resolved.",
+        "h": "Neutral reality over the story - the actual floor, not the meaning of the pain. The correction runs toward plain physical fact, away from what the sensation is taken to signify.",
+        "i": "CATCH: the limbs go heavy, the chest caves, the gaze drops - and the sensation starts turning into a meaning about you. RECOGNIZE: the feeling is not your identity; you are not more real for the weight of it. MOVE: find one plain physical fact and stay on it - the floor, the weight, the resistance. 'This is sensation, not a verdict on who I am.'",
+        "j": "'Nothing is missing from you. And you don't have to be extraordinary for me to stay.'",
+        "k": "Envy -> Equanimity. Melancholy dissolves into Holy Origin: nothing was ever missing, and they were never separated from the source of what they long for. Not flattening the feeling; ending the comparison that turned it into a lack.",
+        "l": "Fear: having no identity | Exit: being met as themselves | Defense: introjection | Tell: kinetic collapse, the dropped gaze | Return: plain physical fact | Doorway: neutral reality over the story.",
+        "m": "Ordinariness sensed -> shame taken inward, body collapses -> amplify reflex fires -> plain fact lands -> the story releases -> met without being exceptional.",
+        "n": "Core Identity: the one who feels it truly | Threat: being ordinary, being unseen | Somatic: collapse/heaviness | Output: amplification | Integration: significance without lack."
+      }
+    },
+    {
+      "n": 5,
+      "name": "The Investigator",
+      "alt": "The Observer",
+      "anchor": {
+        "center": "Head / fear (internalized - withdraw and conserve) [STRUCTURE]",
+        "mode": "Withdrawn - moving away [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being helpless, incapable, depleted, overwhelmed, invaded",
+        "core_desire": "to be capable and competent - to understand; self-sufficiency",
+        "passion": "Avarice (of self, energy, resources, contact - hoarding against depletion)",
+        "virtue": "Non-attachment / Generosity",
+        "holy_idea": "Holy Omniscience / Holy Transparency",
+        "defense": "Isolation (thought severed from feeling)",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Five's system as conserving. Contact and demand register as depletion, so resource withdraws inward - the mind stays lit while the limbs go quiet. Head-center fear is managed by retreating to the one place they hold full control: the interior. [Withdrawal-type responses and interoceptive disengagement are ESTABLISHED; assigning this pattern to Type 5 is MODEL.]",
+        "b": "Emotional demand, or a request for presence, lands as invasion: you want more than I have, and I will be drained to nothing. Care that asks for engagement reads as extraction, and the reflex is to withdraw further and meter what is given.",
+        "c": "Sensation they cannot think their way out of. Load that is undeniable and precisely located - the specific muscle under the specific weight. The body needs the limbs to be louder than the analysis before the mind will come back down into them.",
+        "d": "TELL: the body goes completely still; the eyes glaze into a middle-distance stare; the breath goes so shallow it is barely visible. Under load the mind detaches from the limbs doing the work - they are watching their own body from somewhere behind their eyes. CUE: 'Feel the muscle working. Don't think about it. Get back in the limbs.'",
+        "e": "They are not going to be depleted by contact. The reserve they are protecting is deeper than they believe - and the withdrawal is itself the depletion, because nothing refills in the interior.",
+        "f": "Under the withdrawal is genuine, penetrating curiosity and the capacity to see what everyone else missed. That care - for actually understanding - is larger than the defense, and overrides it when aimed at the live thing in front of them rather than the model of it.",
+        "g": "An environment that asks nothing and takes nothing, where their presence is not a transaction. Being wanted without being drained - and discovering that the engagement gave energy rather than costing it.",
+        "h": "Arrival over analysis - feel the muscle work, don't think the form. The correction runs toward raw sensation, away from the model of the sensation.",
+        "i": "CATCH: you go still, the eyes settle into the middle distance, the breath disappears - and you are observing your own body from a distance. RECOGNIZE: you are not being depleted; the withdrawal is the depletion. MOVE: get back into the limbs. Feel the specific muscle under the specific load. 'I'm in here, not watching from behind.'",
+        "j": "'You don't have to have it figured out to be here. I'm not asking for what you don't have.'",
+        "k": "Avarice -> Non-attachment. Stinginess dissolves into Holy Omniscience: knowing was never something to hoard, and there is no reserve to run out of. Not giving everything away; discovering there was never a shortage.",
+        "l": "Fear: being depleted, incapable | Exit: capable without hoarding | Defense: isolation | Tell: stillness, the glaze | Return: undeniable located load | Doorway: arrival over analysis.",
+        "m": "Demand sensed -> resource withdraws inward, body stills -> detach reflex fires -> undeniable sensation lands -> mind returns to limbs -> presence without depletion.",
+        "n": "Core Identity: the one who understands | Threat: invasion, depletion | Somatic: stillness/detachment | Output: withdrawal | Integration: capacity without conservation."
+      }
+    },
+    {
+      "n": 6,
+      "name": "The Loyalist",
+      "alt": "The Loyal Skeptic",
+      "anchor": {
+        "center": "Head / fear (split on it - anxiety and doubt; phobic and counter-phobic) [STRUCTURE]",
+        "mode": "Compliant - moving toward support [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being without support or guidance; unable to survive alone; danger unseen",
+        "core_desire": "security, support, certainty, guidance",
+        "passion": "Fear (as anxiety - scanning, doubting)",
+        "virtue": "Courage",
+        "holy_idea": "Holy Faith / Holy Strength",
+        "defense": "Projection",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Six's system as running a continuous threat scan. Head-center fear is neither withdrawn from nor outrun but split - the body holds at half-mobilization, unable to settle and unable to commit, checking the environment for the danger it is certain is there. [Sustained threat vigilance and its cost are ESTABLISHED; assigning this pattern to Type 6 is MODEL.]",
+        "b": "Reassurance lands as suspicious: if you are telling me it is fine, either you cannot see the danger or you are hiding it. Care that soothes reads as a reason to look harder, and the reflex is to interrogate the reassurance rather than receive it.",
+        "c": "Predictable, repeated, structured load. The same movement, the same count, the same rhythm. The body settles when the next thing is knowable - not when it is told it is safe, but when safety is demonstrated to it, repeatedly, without argument.",
+        "d": "TELL: they cannot hold still - constant micro-shifting of weight foot to foot, eyes darting to scan the perimeter, the posture never quite settling. Under load they interrogate the friction: asking whether this is right, whether something is wrong, looking for the catch. CUE: 'The shake is supposed to happen. Nothing is wrong. Follow the count.'",
+        "e": "The scanning never produced the safety it promised. Certainty was never on offer - and they have been standing solidly this entire time without it. The ground they are searching for is the one already under them.",
+        "f": "Under the scanning is genuine loyalty and the capacity to see real risk everyone else waved off. That care - for what actually holds, and for the people inside it - is larger than the defense, and overrides it when it is trusted rather than interrogated.",
+        "g": "An environment that is consistently, boringly predictable and does not flinch when tested. Not reassurance - demonstration. The same thing, again, holding.",
+        "h": "Safety in the expected - the shake is supposed to happen, nothing is wrong. The correction runs toward the predictable and demonstrated, away from the search for the hidden catch.",
+        "i": "CATCH: you cannot settle; your weight shifts, your eyes scan, and you start interrogating the thing for what is wrong with it. RECOGNIZE: the scanning has never once delivered the certainty it promised - and you have been standing this whole time. MOVE: plant, and stay planted. Follow the rhythm instead of checking it. 'I don't need the guarantee. I'm already holding.'",
+        "j": "'You don't have to be sure. I'm not going anywhere while you find out.'",
+        "k": "Fear -> Courage. Doubt dissolves into Holy Faith: the ground was never conditional on being verified. Not certainty finally arriving; the need for it ending.",
+        "l": "Fear: being without support | Exit: solid without a guarantee | Defense: projection | Tell: restlessness, the scanning eyes | Return: predictable repeated rhythm | Doorway: safety in the expected.",
+        "m": "Danger suspected -> threat scan runs, body cannot settle -> interrogate reflex fires -> the expected demonstrated -> scanning releases -> standing without certainty.",
+        "n": "Core Identity: the one who sees what's coming | Threat: unseen danger, no support | Somatic: restlessness/scanning | Output: interrogation | Integration: security without proof."
+      }
+    },
+    {
+      "n": 7,
+      "name": "The Enthusiast",
+      "alt": "The Epicure",
+      "anchor": {
+        "center": "Head / fear (externalized and outrun - fled into options) [STRUCTURE]",
+        "mode": "Assertive - moving against [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being deprived, trapped in pain, limited; missing out",
+        "core_desire": "to be satisfied and content - needs met, options open",
+        "passion": "Gluttony (for experience, stimulation, options - never enough)",
+        "virtue": "Sobriety",
+        "holy_idea": "Holy Wisdom / Holy Work / Holy Plan",
+        "defense": "Rationalization",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Seven's system as running forward. Head-center fear is neither withdrawn from nor scanned for but outrun - arousal channels into anticipation and motion, and the body lightens and lifts away from whatever is pinning it. The next thing is always more vivid than this thing. [Reward anticipation and approach-mobilization are ESTABLISHED, and Type 7's link to extraversion is among the better-supported Enneagram/Big-Five correlations; assigning this arousal pattern to Type 7 is still MODEL.]",
+        "b": "Pain, limitation, or 'stay with this' lands as a trap: I am going to be stuck here, it is going to hurt, and there is no way out. Care that asks them to remain reads as a cage, and the reflex is to find the exit before the door closes.",
+        "c": "Long, unglamorous holds. The same position, past the point of interest, past the point of novelty. The body needs to discover that staying did not kill it - that the burn had a far side and they got there.",
+        "d": "TELL: an upward kinetic shift - the body lightens and tries to stand, weight coming off the load; the eyes go to the door or the clock; fidgeting, twitching, micro-movements. Under load they break form to crack a joke, change the subject, or modify the exercise to get out of the burn. CUE: 'Stop looking for the exit. Plant. Stay in it.'",
+        "e": "The escape was never delivering the satisfaction it promised - the next thing has not once been enough. What they are running from is smaller than they think, and everything they have been chasing was on the far side of staying.",
+        "f": "Under the escaping is genuine appetite and the capacity to find what is alive in anything. That care - for the actual richness of a thing - is larger than the defense, and overrides it when it lands on what is here rather than what is next.",
+        "g": "An environment where staying is more interesting than leaving, and where the pain is finite and visible. Not being trapped - being shown the exit is open, and choosing to stay anyway.",
+        "h": "Arrival over escape - plant, and stay past the point you'd normally bail. The correction runs toward the present load, away from the next thing.",
+        "i": "CATCH: you lighten, the weight comes off, your eyes go to the door - and the joke or the modification arrives right as it gets hard. RECOGNIZE: the next thing has never once been enough. This is the thing. MOVE: plant, and stay past the point you would normally bail. 'The exit is open. I'm staying anyway.'",
+        "j": "'Nothing here is going to trap you. You can go any time - and there's something on the far side of staying.'",
+        "k": "Gluttony -> Sobriety. Planning dissolves into Holy Wisdom: there is enough, and it is here. Not renouncing appetite; discovering the hunger was never for more, but for arrival.",
+        "l": "Fear: being trapped, deprived | Exit: satisfied by what's here | Defense: rationalization | Tell: the upward shift, eyes to the door | Return: the long unglamorous hold | Doorway: arrival over escape.",
+        "m": "Limit sensed -> fear outruns into motion, body lightens -> escape reflex fires -> the far side of staying lands -> lifting releases -> satisfaction in the present.",
+        "n": "Core Identity: the one who finds the good | Threat: the trap, the missing out | Somatic: lifting/fidgeting | Output: escape | Integration: enough, here."
+      }
+    },
+    {
+      "n": 8,
+      "name": "The Challenger",
+      "alt": "The Protector",
+      "anchor": {
+        "center": "Body / anger (externalized at full volume) [STRUCTURE]",
+        "mode": "Assertive - moving against [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "being controlled, harmed, violated, made vulnerable or powerless",
+        "core_desire": "to protect themselves - to be in control of their own life; self-reliance",
+        "passion": "Lust (in the Enneagram sense: excess, intensity, big energy - not primarily sexual)",
+        "virtue": "Innocence",
+        "holy_idea": "Holy Truth",
+        "defense": "Denial (of vulnerability and their own need)",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Eight's system as meeting force with force. Body-center anger externalized at full volume - arousal converts directly into mass and pressure, the footprint widens, and the soft thing gets buried under the armor before anyone can reach it. [Sympathetic mobilization and approach-dominance are ESTABLISHED, and Type 8's link to extraversion/assertiveness is among the better-supported Enneagram/Big-Five correlations; assigning this pattern to Type 8 is still MODEL.]",
+        "b": "Tenderness, concern, or 'let me help' lands as an opening being probed: you are looking for the soft spot, and if you find it you will use it. Care reads as reconnaissance, and the reflex is to armor harder and push into the person offering it.",
+        "c": "Supported weight with nothing to fight. Being held by something that does not push back and cannot be overpowered - the floor, the ground, gravity. The body needs to find out that letting go cost nothing.",
+        "d": "TELL: the physical footprint widens; the shoulders square; the eye contact goes direct and challenging; the breath is either forcefully held or aggressively driven out. Under load they push into the resistance and try to overpower it - refusing to yield, treating the friction as an opponent. CUE: 'The resistance isn't attacking you. Lean into it. Drop the grip.'",
+        "e": "The armor was never protecting the soft thing - it was burying it. What they are defending was already safe, and the force they meet the world with is exactly what keeps anyone from reaching what is actually in there.",
+        "f": "Under the domination is genuine protectiveness and an enormous capacity to hold what is fragile. That care - for the people they would stand in front of - is larger than the defense, and overrides it when trusted with something that needs protecting rather than something to fight.",
+        "g": "An environment that neither flinches nor pushes. Nothing to overpower and nothing to defend against - met with steadiness that is not a challenge and not a threat.",
+        "h": "Yield over force - the resistance is information, not an attack; lean in instead of fighting. The correction runs toward yielding without collapse, away from overpowering.",
+        "i": "CATCH: you widen, square up, the grip goes on, the breath locks - and the thing in front of you becomes an opponent. RECOGNIZE: the resistance isn't attacking you; the armor is burying the thing it protects. MOVE: yield without collapsing - lean into it instead of fighting it. Let something hold your weight. 'I'm strong enough to let go of this.'",
+        "j": "'You don't have to be the strongest thing in the room. I'm not going to use it.'",
+        "k": "Lust -> Innocence. Vengeance dissolves into Holy Truth: nothing has to be overpowered, because nothing is coming. Not becoming weak; letting the softness that was always in there be in the room.",
+        "l": "Fear: being controlled, made vulnerable | Exit: strong enough to let go | Defense: denial | Tell: expansion, the locked breath | Return: supported weight, nothing to fight | Doorway: yield over force.",
+        "m": "Vulnerability sensed -> anger externalizes, body expands -> dominate reflex fires -> steadiness that isn't a challenge lands -> grip releases -> strength without armor.",
+        "n": "Core Identity: the one who cannot be moved | Threat: the soft spot found | Somatic: expansion/gripping | Output: domination | Integration: power without armor."
+      }
+    },
+    {
+      "n": 9,
+      "name": "The Peacemaker",
+      "alt": "The Mediator",
+      "anchor": {
+        "center": "Body / anger (asleep to it - self-forgetting) [STRUCTURE]",
+        "mode": "Withdrawn - moving away [STRUCTURE: Riso-Hudson Hornevian]",
+        "core_fear": "loss, fragmentation, separation, conflict; being shut out",
+        "core_desire": "inner and outer peace - stability, wholeness, harmony",
+        "passion": "Sloth (in the Enneagram sense: self-forgetting, inaction toward one's own priorities - not laziness)",
+        "virtue": "Right Action / Engagement",
+        "holy_idea": "Holy Love",
+        "defense": "Narcotization",
+        "tier": "STRUCTURE"
+      },
+      "language_note": null,
+      "layers": {
+        "a": "We model the Nine's system as dimming rather than bracing. Body-center anger is present but unregistered - instead of discharging it or containing it, they go quiet at the source, and the edges of their own position blur until there is nothing left to be in conflict with. [FLAGGED AS OUR SOFTEST ASSIGNMENT: Type 9 maps to low neuroticism and high agreeableness in trait data, which argues against high threat-reactivity. This mapping rests on Enneagram theory (self-forgetting), not on trait physiology. Hold it loosely.]",
+        "b": "Pressure, urgency, or 'what do you actually want' lands as conflict incoming: someone's position is about to collide with mine and the connection will break. Care that asks them to take a stand reads as a fight starting, and the reflex is to go quiet and merge.",
+        "c": "Effort that requires them specifically. Load that will not move unless they move it - pushing, driving, taking the weight. The body finds its own edges by meeting something that will not proceed without them.",
+        "d": "TELL: the body blurs - it slumps and the outline goes soft, the voice fades, they go limp rather than rigid, and the edges of where they are become hard to find. Under load they go to sleep while awake, yielding to the friction by quietly not being there for it. CUE: 'Wake up. Push the floor away. Take the wheel.'",
+        "e": "Going quiet never kept the peace - it only removed them from it. The connection they are protecting was never threatened by their presence, and disappearing to preserve it is the thing that actually breaks it.",
+        "f": "Under the numbing is genuine, wide love and the capacity to hold everyone's position at once. That care - for what is actually whole - is larger than the defense, and overrides it when the wholeness includes them rather than costing them.",
+        "g": "An environment that wants their actual position and does not break when it arrives. Being asked what they want by someone who will still be there after the answer - and finding the disagreement severed nothing.",
+        "h": "Active presence over numbing - take the wheel, feel your own edges, push back. The correction runs toward their own weight and position, away from the blur.",
+        "i": "CATCH: you slump, your voice drops, your own outline goes soft - and you cannot quite locate what you want. RECOGNIZE: going quiet doesn't keep the peace; it removes you from it. MOVE: take the wheel. Push against something and find your edge. 'My presence is required. Disagreement doesn't break this.'",
+        "j": "'I want to know what you actually want. This doesn't break if you say it.'",
+        "k": "Sloth -> Right Action. Indolence dissolves into Holy Love: connection was never bought by disappearing, and showing up is what love actually is. Not becoming forceful; ending the self-erasure.",
+        "l": "Fear: separation, conflict | Exit: present without losing connection | Defense: narcotization | Tell: blurring, the fading voice | Return: load that requires them | Doorway: active presence over numbing.",
+        "m": "Conflict sensed -> anger goes unregistered, body blurs -> numb reflex fires -> their position wanted and survived -> the blur releases -> presence without rupture.",
+        "n": "Core Identity: the one who holds the peace | Threat: rupture, being shut out | Somatic: blurring/limpness | Output: numbing | Integration: peace with a person in it."
+      }
+    }
+  ]
+}</script>
+<script type="application/json" id="src-enneagram">"# CANONICAL ENNEAGRAM ANCHORS — Sourced Foundation\n\n*The fixed ground for the Archetype Matrix. Every cell in the build must be consistent with this. Nothing here is invented.*\n\n**Tier: [STRUCTURE] — not [ESTABLISHED].** This is the Enneagram's own internal structure (Ichazo → Naranjo → Riso-Hudson / Palmer / Maitri / Almaas), cross-checked across professional sources. It is not external validation, and it is not invented here either. The distinction matters: peer-reviewed neuroscience and established Enneagram theory are *not the same epistemic object*, and collapsing them into one \"sourced\" tag is exactly the move that gets a foundation pulled apart.\n\n**What the empirical record actually says** (so nobody is surprised): Hook et al., *Journal of Clinical Psychology* (2021), 77(4):865–883 — 104 independent samples, mixed evidence for reliability and validity. Factor analysis typically recovers **fewer than nine factors**, and no study has used clustering to derive the nine types. Subscales do correlate sensibly with the Big Five. So: the nine-ness has never been empirically recovered. That is fine — it is [STRUCTURE], and we say so. It is not fine to imply otherwise.\n\n---\n\n## The triad structure (governs the whole matrix)\n\nNine types, three centers, by how each relates to a core emotion:\n\n- **Body / Gut center (8, 9, 1) — core emotion: anger.** 8 externalizes anger; 1 internalizes it as resentment; 9 numbs/falls asleep to it. Concern: control, autonomy, resistance. Get \"stuck in the body.\"\n- **Heart / Image center (2, 3, 4) — core emotion: shame.** 2 externalizes shame (focus on others); 3 loses contact with it (merges with a role); 4 internalizes it as deficiency. Concern: identity, image, worth in others' eyes.\n- **Head center (5, 6, 7) — core emotion: fear.** 5 internalizes fear (withdraws to gather resources); 6 splits on it (anxiety/doubt); 7 externalizes/outruns it (into options and plans). Concern: security, anxiety-management, mental orientation.\n\nThis is load-bearing: the center tells you *which* raw emotion the defense is managing, and that must stay consistent per type through every layer.\n\n---\n\n## The Hornevian groups — social style [STRUCTURE]\n\n*Karen Horney's three social strategies, applied to the Enneagram by Riso & Hudson. Where the Center says what a type **wants**, the Hornevian group says **how it goes and gets it**.*\n\n- **Assertive — moving *against* (3, 7, 8).** Insist or demand. Under friction: mobilize, drive into it.\n- **Withdrawn — moving *away* (4, 5, 9).** Move away from engagement. Under friction: pull back, go quiet.\n- **Compliant / Dutiful — moving *toward* (1, 2, 6).** Do what is expected or required. Under friction: track, manage, keep the surface right.\n\n**The honest caveats, both real:**\n- This is the **Riso-Hudson** assignment specifically. **Naranjo sorts differently** (Against 1-3-8, Toward 7-9-2, Away 5-6-4), and at least one source argues Naranjo's is *more faithful to Horney's original*. We use Riso-Hudson; we say which we use, and we never call the alignment \"independent\" — if you used Naranjo's, it wouldn't align.\n- The Hornevian groups are an Enneagram sub-theory. [STRUCTURE], never [ESTABLISHED].\n\n**The 3×3 that falls out.** Each Hornevian group contains exactly one type from each Center:\n\n| | Body (anger) | Heart (shame) | Head (fear) |\n|---|---|---|---|\n| **Assertive** *(against)* | **8** | **3** | **7** |\n| **Withdrawn** *(away)* | **9** | **4** | **5** |\n| **Compliant** *(toward)* | **1** | **2** | **6** |\n\nCenter × Hornevian fills all nine cells, no duplicates. **Use this as a coherence check, never as a generator** — it predicts the *shape* of a type's signature, not its *specifics*. You cannot derive \"the masseter clenches\" from \"Compliant × Body.\" Compressing the nine into 3×3 for authoring would cost exactly the nuance that makes a type recognizable in a room.\n\nIt also disambiguates the thing that reads wrong: **Type 1 in a \"Compliant/affiliative\" mode looks incoherent** until you add the Center. Type 1 moves toward *the standard*; Type 2 moves toward *people*. Body-center compliance and Heart-center compliance are not the same animal.\n\n---\n\n## The nine types — canonical fields\n\nFormat per type: **Name (Riso-Hudson) · classical/alternate name · Center · Core Fear · Core Desire · Passion (vice) · Virtue · Fixation · Holy Idea · Classical ego defense.** All fields sourced.\n\n### Type 1 — The Reformer (a.k.a. The Perfectionist)\n- **Center:** Body / anger (internalized as resentment)\n- **Core Fear:** being corrupt, defective, bad, wrong\n- **Core Desire:** to have integrity, to be good, right, balanced\n- **Passion:** Anger (as chronic, suppressed resentment at the gap between what is and what should be)\n- **Virtue:** Serenity\n- **Fixation:** Resentment\n- **Holy Idea:** Holy Perfection\n- **Ego defense:** **Reaction formation** (expressing the opposite of a forbidden impulse — e.g. masking anger with extreme politeness/correctness)\n\n### Type 2 — The Helper (a.k.a. The Giver)\n- **Center:** Heart / shame (externalized — focus on others' needs)\n- **Core Fear:** being unwanted, unworthy of love, unneeded\n- **Core Desire:** to feel loved, wanted\n- **Passion:** Pride (\"I am the one who can help you; I don't have needs\")\n- **Virtue:** Humility\n- **Fixation:** Flattery / Ingratiation\n- **Holy Idea:** Holy Freedom / Holy Will\n- **Ego defense:** **Repression** (of one's own needs and \"unacceptable\" feelings, replaced with an acceptable helpful emotion)\n\n### Type 3 — The Achiever (a.k.a. The Performer)\n- **Center:** Heart / shame (out of contact — merges with a successful image)\n- **Core Fear:** being worthless, a failure, without value apart from achievement\n- **Core Desire:** to feel valuable, successful, worthwhile\n- **Passion:** Deceit (in the Enneagram sense: self-deception — becoming the image, losing the authentic self; not primarily lying to others)\n- **Virtue:** Truthfulness / Authenticity\n- **Fixation:** Vanity\n- **Holy Idea:** Holy Hope / Holy Law\n- **Ego defense:** **Identification** (fusing identity with a role/image that earns approval)\n\n### Type 4 — The Individualist (a.k.a. The Romantic)\n- **Center:** Heart / shame (internalized as a sense of deficiency)\n- **Core Fear:** having no identity or personal significance; being defective, missing something others have\n- **Core Desire:** to be uniquely themselves, to find identity and significance\n- **Passion:** Envy (comparing, longing for what is missing/what others have)\n- **Virtue:** Equanimity\n- **Fixation:** Melancholy\n- **Holy Idea:** Holy Origin\n- **Ego defense:** **Introjection** (taking in criticism/the negative and turning it inward; also artistic **sublimation** per Naranjo)\n\n### Type 5 — The Investigator (a.k.a. The Observer)\n- **Center:** Head / fear (internalized — withdraw and conserve)\n- **Core Fear:** being helpless, incapable, depleted, overwhelmed; invaded/engulfed\n- **Core Desire:** to be capable and competent; to understand; self-sufficiency\n- **Passion:** Avarice (of self, energy, resources, contact — hoarding to not be depleted)\n- **Virtue:** Non-attachment / Generosity\n- **Fixation:** Stinginess / Retention\n- **Holy Idea:** Holy Omniscience / Holy Transparency\n- **Ego defense:** **Isolation** (isolating thought from feeling; compartmentalizing to avoid being flooded)\n\n### Type 6 — The Loyalist (a.k.a. The Skeptic / Loyal Skeptic)\n- **Center:** Head / fear (splits on it — anxiety and doubt; phobic and counter-phobic)\n- **Core Fear:** being without support or guidance; unable to survive on one's own; danger\n- **Core Desire:** to have security, support, certainty, guidance\n- **Passion:** Fear (as anxiety — scanning for threat, doubting)\n- **Virtue:** Courage\n- **Fixation:** Cowardice / Doubt\n- **Holy Idea:** Holy Faith / Holy Strength\n- **Ego defense:** **Projection** (attributing inner doubt/threat onto the outer world and testing it)\n\n### Type 7 — The Enthusiast (a.k.a. The Epicure)\n- **Center:** Head / fear (externalized/outrun — flee pain into options)\n- **Core Fear:** being deprived, trapped in pain, limited; missing out\n- **Core Desire:** to be satisfied, content; to have needs met and keep options open\n- **Passion:** Gluttony (for experience, stimulation, options — never enough)\n- **Virtue:** Sobriety\n- **Fixation:** Planning / Anticipation\n- **Holy Idea:** Holy Wisdom / Holy Work / Holy Plan\n- **Ego defense:** **Rationalization** (reframing pain/limits into positives; explaining away)\n\n### Type 8 — The Challenger (a.k.a. The Protector)\n- **Center:** Body / anger (externalized — full force)\n- **Core Fear:** being controlled, harmed, violated, made vulnerable/powerless\n- **Core Desire:** to protect themselves; to be in control of their own life and destiny; self-reliance\n- **Passion:** Lust (in the Enneagram sense: excess, intensity, big energy — not primarily sexual)\n- **Virtue:** Innocence\n- **Fixation:** Vengeance / Objectification\n- **Holy Idea:** Holy Truth\n- **Ego defense:** **Denial** (of vulnerability, weakness, and their own softness/need)\n\n### Type 9 — The Peacemaker (a.k.a. The Mediator)\n- **Center:** Body / anger (asleep to it — self-forgetting)\n- **Core Fear:** loss, fragmentation, separation, conflict; being shut out\n- **Core Desire:** inner and outer peace, stability, wholeness, harmony\n- **Passion:** Sloth (in the Enneagram sense: self-forgetting, inaction toward one's own priorities — not physical laziness)\n- **Virtue:** Right Action / Engagement\n- **Fixation:** Indolence / Daydreaming\n- **Holy Idea:** Holy Love\n- **Ego defense:** **Narcotization** (numbing/dissociating — dulling inner life with routine, comfort, merging)\n\n---\n\n## Notes for the build\n\n1. **Center consistency is the top constraint.** Every layer for a type must trace back to the right core emotion (8/9/1 anger, 2/3/4 shame, 5/6/7 fear). If a cell drifts (e.g. describes a Head-type mechanism for a Body type), it's wrong.\n2. **Passions/vices carry non-obvious meaning.** \"Lust\" (8) = intensity, \"Sloth\" (9) = self-forgetting, \"Deceit\" (3) = self-deception, \"Gluttony\" (7) = experiential hunger. Use the Enneagram meaning, never the plain-English one.\n3. **The ego defense is the professional replacement for the document's invented mechanism-names.** Where Pillar 2 said \"Oxytocin Dependency\" (Type 2) → the real construct is **repression**; \"Executive Override\" (Type 3) → **identification**. These sourced defenses anchor Layer (a)/(i) mechanism language.\n4. **This file is the reference, not a deliverable.** It feeds the matrix; it doesn't get shipped on its own.\n\n*Sourced foundation locked. Build the matrix on top of this.*\n"</script>
+<script type="application/json" id="src-neuroscience">"# The Verified Ground Floor — Material Layer\n\n*The neuroscience The Return can actually stand on, stated at the precision the evidence supports. Every claim here has passed a live-source check. No before/after — just the usable form, its source, and how much weight it can bear.*\n\n**This is the neuroscience guardrail.** It governs one domain: any claim about the body or brain. Its companion, `Source_Enneagram.md`, governs the other: any claim about the nine patterns. Together they are the two sources every [ESTABLISHED] and [STRUCTURE] tag in the knowledge base points back to.\n\n**The tiers, same vocabulary as the knowledge base:**\n- **[ESTABLISHED]** — supported by peer-reviewed literature. State as fact. *\"Research shows…\"*\n- **[MODEL]** — real and useful, but framed as a model, never as established mechanism. *\"We model this as…\"*\n- **[DO NOT STATE]** — tested and it did not survive. Keep out of the material layer entirely.\n\n*(There is no [STRUCTURE] tier here. That tier belongs to the Enneagram guardrail — it means \"a recognized framework's own internal structure,\" which is what the Enneagram is and what neuroscience is not.)*\n\n*Grab and go. This is ground truth for any chat, any draft, any conversation about the build.*\n\n---\n\n## The one discipline underneath all of it\n\nThe material layer was chosen because it is **un-arguable**. Overstating a true thing quietly converts a claim a knowledgeable reader would nod at into one they can argue with — and the argument then lands on the foundation. Every line below is written to survive a knowledgeable skeptic. The strength is in the precision, not the reach.\n\n---\n\n## Neural substrate — how threat and regulation actually work\n\n**The amygdala reacts before deliberate appraisal.** **[ESTABLISHED]**\nThe threat response begins before conscious thought catches up — the amygdala responds to threat cues within roughly 74 ms, while conscious awareness arrives hundreds of milliseconds later. It's a matter of timing, not a hardwired \"fear shortcut.\"\nSource: Méndez-Bértolo et al., *Nature Neuroscience* (2016).\n\n**The amygdala detects threat — it is not the \"fear center.\"** **[ESTABLISHED]**\nThe amygdala detects threat and fires the body's defensive response; the conscious *feeling* of fear is constructed higher up, in cortical circuits. People with amygdala damage still feel fear. Say \"threat detector,\" not \"where fear lives.\"\nSource: LeDoux (2015–2019); Feinstein et al., *Nature Neuroscience* (2013).\n\n**The prefrontal cortex can turn the amygdala's alarm down.** **[ESTABLISHED]** *(the load-bearing one)*\nThe prefrontal cortex down-regulates the amygdala; under threat, that regulation weakens. This is graded down-regulation, **not a toggle** — the two can co-activate, and the PFC exerts both excitatory and inhibitory influence. High anxiety shows a higher-amygdala / lower-PFC pattern (d ≈ 0.99). \"Curiosity and defense can't coexist\" is false; \"engaging regulation dampens the threat response\" is true.\nSource: prefrontal-tDCS + fMRI in trait anxiety (2017–2019).\n\n---\n\n## The body — interoception\n\n**Interoception is a real, measurable sense tied to regulation.** **[ESTABLISHED]** *(with one honest edge)*\nInteroception (the felt sense of internal bodily state) is real and measurable, tracks with the right anterior insula, and correlates with emotion regulation and stress resilience. The honest edge: evidence that accuracy can be *trained* is early and mixed — a reasonable design bet, not a settled result — and \"anxious people have poor interoception\" is not clean (heartbeat perception isn't systematically impaired in anxiety). So: assert the sense and its link to regulation; frame trainability as promising, not proven.\nSource: Critchley et al. (2004); interoceptive-training review, *Frontiers in Neuroscience* (2022).\n\n---\n\n## How the mind models the world — predictive coding\n\n**The brain runs on prediction.** **[MODEL]**\nA leading model of perception holds that the brain doesn't passively receive the world — it predicts and updates against error. Use it as a lens for why the mind leaves the present to simulate the future. Frame it as \"a leading model,\" not settled fact: its definitions vary and its neural implementation is still debated.\nSource: Rao & Ballard (1999); *Annual Review of Neuroscience* (2026).\n\n---\n\n## Autonomic state — polyvagal\n\n**Vagal tone is real; polyvagal's evolutionary story is not.** **[MODEL]** *(handle with care)*\nCardiac vagal tone (heart-rate variability) is a real, measurable index tied to self-regulation — assert that freely, citing HRV research directly. Polyvagal Theory's *state map* (safety / mobilization / shutdown) can be used as a clinical metaphor, but its core evolutionary and anatomical claims — a myelinated \"ventral vagus\" as uniquely mammalian and the biological seat of connection — are disputed and, per a 39-author expert consensus, refuted (myelinated vagal fibers exist across many non-mammals). Never present the phylogenetic story as fact.\nSource: Grossman et al., *Clinical Neuropsychiatry* (2026, \"untenable\"); Porges (2026, rebuttal); Taylor et al., *Biological Psychology* (2022). For the real part, cite Thayer & Lane / HRV meta-analyses, **not** polyvagal.\n\n---\n\n## Body-based trauma work — Somatic Experiencing\n\n**A body therapy with early evidence; its \"discharge\" mechanism is metaphor.** **[MODEL]**\nSomatic Experiencing has preliminary randomized-trial evidence of benefit for PTSD symptoms (one supportive RCT with large effects but a small waitlist sample; a larger, more rigorous trial found no SE-specific advantage). Its mechanism — \"trapped survival energy discharged from the body\" — is a clinical metaphor with no physiological measurement behind it. You may reference the *practice* and its early evidence; do not assert the *mechanism* as real.\nSource: Brom et al., *Journal of Traumatic Stress* (2017); Andersen et al. (2020); Kuhfuß et al. (2021, review).\n\n---\n\n## Connection between people — synchrony / \"limbic resonance\"\n\n**Behavioral coordination modestly tracks feeling connected. The rest does not hold.** **[DO NOT STATE]** *(the strong version)*\nPeople who interact often coordinate their behavior, and behavioral synchrony is *modestly* associated with feeling connected and acting prosocially (bonding ≈ .17, prosocial ≈ .28). That much is real and small. Everything beyond it fails: \"limbic resonance\" is a literary metaphor with no measurement basis; interpersonal *physiological* synchrony has an ambiguous meaning and near-null, direction-inconsistent links to relationship quality; and there is no evidence that two nervous systems \"syncing\" causes bonding, oxytocin, or dopamine — the oxytocin \"bonding hormone\" story itself rests on failed replications and unreliable measurement. If connection is discussed, use **coherence** language and keep it to the modest behavioral finding.\nSource: Mogan et al. (2017); Gordon & Bartsch, *Nature Reviews Psychology* (2026); Nave et al. (2015, oxytocin).\n\n---\n\n## The black-box line (unchanged)\n\nNone of the internal read-in — the element/type dialect, the type→neurotransmitter or type→brain-region mappings from Pillar 2 — appears here or anywhere user-facing. Those stay black box: they carry no citation burden *because they never surface*. What surfaces is only the material layer above, stated at evidence-precision.\n\n---\n\n*Ground floor locked. Eight claims, all source-checked. Build on the ones marked STATE AS SCIENCE; frame the LABELED MODELs as models; leave DO NOT STATE out.*\n"</script>
+
+<script>
+'use strict';
+/* ============================================================
+   The Composition Engine
+   interior(concept, pattern, lens) — composed at runtime from
+   grid_data.json  (Face A · Concept × Lens · pattern collapsed)
+   matrix_data.json (Face B · Concept × Pattern · lens collapsed)
+   Rule: the lens supplies vocabulary and audience; the pattern
+   supplies content; the universal statement anchors; the tier
+   inherited is the WEAKEST of the inputs. Nothing is authored.
+   ============================================================ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---- tiers: rank, grammar, chip class ---- */
+const TIERS = {
+  ESTABLISHED: {rank:3, phrase:'research shows',       cls:'t-EST'},
+  STRUCTURE:   {rank:2, phrase:'in Enneagram theory',  cls:'t-STR'},
+  MODEL:       {rank:1, phrase:'we model this as',     cls:'t-MOD'}
+};
+
+/* Parse a tier out of a bracket tag or a layer-meta tier string.
+   Weakest-component rule: if MODEL appears anywhere in a mixed tag,
+   the input counts as MODEL for inheritance. Untagged content is MODEL. */
+function tierOf(tag){
+  if(!tag || !/(ESTABLISHED|STRUCTURE|\bMODEL\b)/.test(tag))
+    return {weakest:'MODEL', label: tag || 'untagged — defaults to MODEL', tagged:false};
+  const weakest = /\bMODEL\b/.test(tag) ? 'MODEL' : (/\bSTRUCTURE\b/.test(tag) ? 'STRUCTURE' : 'ESTABLISHED');
+  return {weakest, label: tag, tagged:true};
+}
+
+/* Grid cell text → display text, trailing [tag], head term for bridges */
+function parseCell(text){
+  const m = String(text).match(/\s*\[([^\][]+)\]\s*$/);
+  const tag = m ? m[1] : null;
+  const display = (m ? text.slice(0, m.index) : text).trim();
+  return {display, tag, tier: tierOf(tag), head: headOf(display)};
+}
+function headOf(t){
+  let cut = t.length;
+  for(const ix of [t.indexOf(' - '), t.indexOf(': ')]) if(ix > -1) cut = Math.min(cut, ix);
+  const dot = t.search(/\.(\s|$)/); if(dot > -1) cut = Math.min(cut, dot);
+  const h = t.slice(0, cut).trim();
+  return (h.length >= 2 && h.length <= 48) ? h : null;
+}
+/* Matrix layer text → body text + trailing [bracketed note] */
+function splitNote(text){
+  const m = String(text).match(/\s*\[([^\][]+)\]\s*$/);
+  return m ? {text: text.slice(0, m.index).trim(), note: m[1]} : {text: String(text).trim(), note: null};
+}
+function fmtBody(t){
+  return esc(t).replace(/\b(TELL|CUE|CATCH|RECOGNIZE|MOVE):\s*/g, '<b class="il">$1</b> ');
+}
+
+/* ============================================================
+   Engine vocabulary — the ONLY text the engine itself adds.
+   Connective grammar per (layer role × lens): names the layer's
+   role in the lens's register. It frames; it never claims.
+   ============================================================ */
+const INTRO = {
+  a: {experience:'What the body is doing underneath', psychological:'The baseline coping posture',            spiritual:'How the armor sits on the body',                      scientific:'The modeled baseline state',                    product:"The system's resting configuration"},
+  b: {experience:'How care actually lands',           psychological:'The characteristic misappraisal',        spiritual:'How the armor mishears love',                         scientific:'The modeled appraisal error',                   product:'The false positive to catch'},
+  c: {experience:'What actually helps',               psychological:'The regulation route',                   spiritual:'Where the body remembers the ground',                 scientific:'The modeled route to down-regulation',          product:'The reset protocol'},
+  d: {experience:'What you can see, and what to say', psychological:'Observable presentation, and the cue',   spiritual:'The armor made visible — and the words that reach it', scientific:'The observable tell (no instrument), and the cue', product:'The detection signature, and the intervention copy'},
+  e: {experience:'The thing that finally lands',      psychological:'The corrective insight',                 spiritual:'The truth under the fear',                            scientific:'The modeled belief update',                     product:'The data correction'},
+  f: {experience:"What's real underneath it",         psychological:'The intact capacity beneath the defense',spiritual:'The love the armor was built around',                 scientific:'The modeled override condition',                product:'The asset under the wall'},
+  g: {experience:'The situation that opens the door', psychological:'The disconfirming environment',          spiritual:'The room where the wall can come down',               scientific:'The modeled stand-down condition',              product:'The environment spec'},
+  h: {experience:'Which way out',                     psychological:'The direction of correction',            spiritual:'Which way the return runs',                           scientific:'The modeled correction vector',                 product:'The routing rule'},
+  i: {experience:'Catching yourself in the act',      psychological:'The self-monitoring sequence',           spiritual:'Waking up mid-pattern',                               scientific:'The modeled self-interruption sequence',        product:'The self-serve flow'},
+  j: {experience:'What to say to them',               psychological:'The relational intervention, spoken',    spiritual:'The sentence that disarms',                           scientific:'The modeled relational input',                  product:'The partner-facing copy'},
+  k: {experience:"Where it's all headed",             psychological:'The integration trajectory',             spiritual:'The passion dissolving into the virtue',              scientific:'The traditional trajectory',                    product:'The long-arc outcome'}
+};
+
+/* Bridge sentence per lens — the turn from the universal anchor to the
+   pattern's specifics. Scientific bridges speak the inherited tier's grammar. */
+const BRIDGE = {
+  experience: (t) => `Through Pattern ${t.n} — ${t.name} — it lands like this:`,
+  psychological: (t) => {
+    const d = t.anchor.defense ? t.anchor.defense.charAt(0).toLowerCase() + t.anchor.defense.slice(1) : '';
+    return `In Pattern ${t.n} (${t.name}) the presentation is specific — its defense is ${d}:`;
+  },
+  spiritual: (t, head) => head ? `For Pattern ${t.n}, ${head} takes this shape:` : `For Pattern ${t.n}, it takes this shape:`,
+  scientific: (t, head, inherited) => inherited === 'STRUCTURE'
+    ? `In Enneagram theory, Pattern ${t.n}'s (${t.name}) form of this runs:`
+    : `We model Pattern ${t.n}'s (${t.name}) version of this as:`,
+  product: (t) => `Configured for Pattern ${t.n} (${t.name}):`
+};
+
+const LENS_LABEL = {experience:'Experience', psychological:'Psychological', spiritual:'Spiritual', scientific:'Scientific', product:'Product'};
+
+/* ---- state ---- */
+let GRID = null, MATRIX = null;
+let LENSES = [], CONCEPTS = [], TYPES = [], LAYERMETA = {}, CONCEPT_LAYERS = {};
+let state = {view:'cell', c:'The Flinch', p:3, l:'spiritual', fix:'lens', val:'spiritual', full:false};
+let checks = [];
+
+function boot(grid, matrix){
+  GRID = grid; MATRIX = matrix;
+  LENSES = grid._meta.lenses;
+  CONCEPTS = [
+    ...grid.core_systems.map(c => ({...c, group:'Core Systems'})),
+    ...grid.relational_mechanics.map(c => ({...c, group:'Relational Mechanics'}))
+  ];
+  TYPES = matrix.types;
+  LAYERMETA = matrix._meta.layers;
+  CONCEPT_LAYERS = {};
+  CONCEPTS.forEach(c => CONCEPT_LAYERS[c.name] = []);
+  for(const [k, parents] of Object.entries(matrix._meta.grid_concepts))
+    parents.split(' / ').forEach(p => { if(CONCEPT_LAYERS[p]) CONCEPT_LAYERS[p].push(k); });
+  Object.values(CONCEPT_LAYERS).forEach(a => a.sort());
+
+  const covered = CONCEPTS.filter(c => CONCEPT_LAYERS[c.name].length).length;
+  const nC = CONCEPTS.length, nP = TYPES.length, nL = LENSES.length;
+  $('#thesis').innerHTML =
+    `Two faces of the cube are authored — Concept × Lens (${nC}×${nL} = ${nC*nL} cells), and Concept × Pattern `+
+    `(${nP} patterns × ${Object.keys(LAYERMETA).length} layers = ${nP*Object.keys(LAYERMETA).length} cells). The interior — `+
+    `<b>${nC*nP*nL} coordinates</b> — is never authored: <b>the pattern supplies the content, the lens supplies the voice,</b> `+
+    `and the tier rides along at its weakest. ${covered*nP*nL} coordinates compose from both faces; `+
+    `${(nC-covered)*nP*nL} stay honestly universal where no layer rolls up.`;
+
+  $('#viewtabs').hidden = false;
+  buildControls();
+  readHash();
+  runChecks();
+  render();
+  window.addEventListener('hashchange', () => { readHash(); render(); });
+}
+
+/* ---- composition: the core function ---- */
+function compose(conceptName, n, lens){
+  const c = CONCEPTS.find(x => x.name === conceptName);
+  const cell = parseCell(c[lens]);
+  const type = TYPES.find(x => x.n === n);
+  const keys = CONCEPT_LAYERS[conceptName] || [];
+  const specifics = keys.map(k => {
+    const meta = LAYERMETA[k];
+    const {text, note} = splitNote(type.layers[k]);
+    return {k, name: meta.name, kind: meta.kind, tierRaw: meta.tier, tier: tierOf(meta.tier),
+            observable: /observable/i.test(meta.tier), text, note};
+  });
+  const inputs = [{who:'anchor', tier:cell.tier}, ...specifics.map(s => ({who:s.k, tier:s.tier}))];
+  const inherited = inputs.reduce((w, x) => TIERS[x.tier.weakest].rank < TIERS[w].rank ? x.tier.weakest : w, 'ESTABLISHED');
+  return {concept:c, cell, type, lens, keys, specifics, inherited, covered: keys.length > 0};
+}
+
+/* ---- controls ---- */
+function buildControls(){
+  const conceptOpts = ['Core Systems','Relational Mechanics'].map(g =>
+    `<optgroup label="${g}">` + CONCEPTS.filter(c => c.group === g).map(c =>
+      `<option value="${esc(c.name)}">${esc(c.name)}${CONCEPT_LAYERS[c.name].length ? '' : ' · universal only'}</option>`).join('') + '</optgroup>').join('');
+  const patternOpts = TYPES.map(t => `<option value="${t.n}">Pattern ${t.n} — ${esc(t.name)}</option>`).join('');
+  const lensOpts = LENSES.map(l => `<option value="${l}">${LENS_LABEL[l] || l}</option>`).join('');
+  $('#controls').innerHTML = `
+    <div class="controls" id="cellCtl">
+      <div class="ctl"><label for="selC">Concept</label><span class="selwrap"><select id="selC">${conceptOpts}</select></span></div>
+      <div class="ctl"><label for="selP">Pattern</label><span class="selwrap"><select id="selP">${patternOpts}</select></span></div>
+      <div class="ctl"><label for="selL">Lens</label><span class="selwrap"><select id="selL">${lensOpts}</select></span></div>
+    </div>
+    <div class="controls" id="sheetCtl" hidden>
+      <div class="ctl"><label for="selFix">Fixed axis</label><span class="selwrap"><select id="selFix">
+        <option value="lens">Fix the lens → Concept × Pattern</option>
+        <option value="pattern">Fix the pattern → Concept × Lens</option>
+        <option value="concept">Fix the concept → Pattern × Lens</option>
+      </select></span></div>
+      <div class="ctl"><label for="selVal" id="selValLab">Lens</label><span class="selwrap"><select id="selVal"></select></span></div>
+      <label class="check"><input type="checkbox" id="chkFull"> full text</label>
+    </div>`;
+  $('#selC').addEventListener('change', e => { state.c = e.target.value; writeHash(); render(); });
+  $('#selP').addEventListener('change', e => { state.p = +e.target.value; writeHash(); render(); });
+  $('#selL').addEventListener('change', e => { state.l = e.target.value; writeHash(); render(); });
+  $('#selFix').addEventListener('change', e => {
+    state.fix = e.target.value;
+    state.val = state.fix === 'lens' ? state.l : state.fix === 'pattern' ? String(state.p) : state.c;
+    writeHash(); render();
+  });
+  $('#selVal').addEventListener('change', e => { state.val = e.target.value; writeHash(); render(); });
+  $('#chkFull').addEventListener('change', e => { state.full = e.target.checked; writeHash(); render(); });
+
+  document.querySelectorAll('#viewtabs .tab').forEach(t => t.addEventListener('click', () => {
+    state.view = t.dataset.v; writeHash(); render();
+  }));
+  $('#grBtn').addEventListener('click', toggleDrawer);
+}
+
+function syncControls(){
+  document.querySelectorAll('#viewtabs .tab').forEach(t => {
+    const on = t.dataset.v === state.view;
+    t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  $('#cellCtl').hidden = state.view !== 'cell';
+  $('#sheetCtl').hidden = state.view !== 'sheet';
+  if(state.view === 'cell'){
+    $('#selC').value = state.c; $('#selP').value = String(state.p); $('#selL').value = state.l;
+  } else {
+    $('#selFix').value = state.fix;
+    const lab = {lens:'Lens', pattern:'Pattern', concept:'Concept'}[state.fix];
+    $('#selValLab').textContent = lab;
+    const opts = state.fix === 'lens'
+      ? LENSES.map(l => `<option value="${l}">${LENS_LABEL[l] || l}</option>`)
+      : state.fix === 'pattern'
+        ? TYPES.map(t => `<option value="${t.n}">Pattern ${t.n} — ${esc(t.name)}</option>`)
+        : CONCEPTS.map(c => `<option value="${esc(c.name)}">${esc(c.name)}</option>`);
+    $('#selVal').innerHTML = opts.join('');
+    $('#selVal').value = state.val;
+    $('#chkFull').checked = state.full;
+  }
+}
+
+/* ---- hash state ---- */
+function writeHash(){
+  const q = new URLSearchParams();
+  q.set('v', state.view);
+  if(state.view === 'cell'){ q.set('c', state.c); q.set('p', state.p); q.set('l', state.l); }
+  else { q.set('fix', state.fix); q.set('val', state.val); if(state.full) q.set('full','1'); }
+  history.replaceState(null, '', '#' + q.toString());
+}
+function readHash(){
+  if(!location.hash) return;
+  const q = new URLSearchParams(location.hash.slice(1));
+  if(q.get('v')) state.view = q.get('v') === 'sheet' ? 'sheet' : 'cell';
+  if(q.get('c') && CONCEPTS.some(c => c.name === q.get('c'))) state.c = q.get('c');
+  if(q.get('p') && TYPES.some(t => t.n === +q.get('p'))) state.p = +q.get('p');
+  if(q.get('l') && LENSES.includes(q.get('l'))) state.l = q.get('l');
+  if(q.get('fix')) state.fix = ['lens','pattern','concept'].includes(q.get('fix')) ? q.get('fix') : 'lens';
+  if(q.get('val')) state.val = q.get('val');
+  state.full = q.get('full') === '1';
+  const valid = state.fix === 'lens' ? LENSES.includes(state.val)
+    : state.fix === 'pattern' ? TYPES.some(t => String(t.n) === String(state.val))
+    : CONCEPTS.some(c => c.name === state.val);
+  if(!valid) state.val = state.fix === 'lens' ? state.l : state.fix === 'pattern' ? String(state.p) : state.c;
+}
+
+/* ---- render dispatch ---- */
+function render(){
+  syncControls();
+  if(state.view === 'cell') renderCell(); else renderSheet();
+}
+
+function tierChip(name, big){
+  return `<span class="chip ${big ? 'big ' : ''}${TIERS[name].cls}">${name}</span>`;
+}
+function modeCls(type){ return 'm-' + (type.anchor.mode.split(' ')[0].replace(/[^A-Za-z]/g,'')); }
+
+/* ---- single-cell view ---- */
+function renderCell(){
+  const {c, p, l} = state;
+  const r = compose(c, p, l);
+  const t = r.type;
+  const mode = modeCls(t);
+  const anchorNote = r.cell.tag
+    ? `<p class="note">[${esc(r.cell.tag)}]</p>`
+    : `<p class="note">untagged — defaults to MODEL</p>`;
+
+  let inner = `
+    <div class="addr">interior · ${esc(c)} × <b>Pattern ${p}</b> × ${esc(LENS_LABEL[l] || l)}</div>
+    <div class="anchorcard">
+      <div class="k">The universal anchor — Face A · grid[&ldquo;${esc(c)}&rdquo;][${esc(l)}]</div>
+      <div class="v">${esc(r.cell.display)}</div>
+      ${anchorNote}
+    </div>`;
+
+  if(!r.covered){
+    inner += `
+      <div class="uncovered">No matrix layer rolls up to &ldquo;${esc(c)}&rdquo;. Its pattern axis is universal by
+      construction — the engine composes nothing here, and invents nothing. What you see above is the authored face itself.</div>
+      <div class="tierstrip">${tierChip(r.inherited, true)}
+        <span class="chip">&ldquo;${TIERS[r.inherited].phrase}&rdquo;</span>
+        <span class="chip">anchor only — no pattern inputs</span></div>`;
+  } else {
+    const bridge = BRIDGE[l](t, r.cell.head, r.inherited);
+    const rows = r.specifics.map(s => `
+      <div class="row">
+        <div class="lk">${s.k}</div>
+        <div><div class="ln">${esc(INTRO[s.k][l])}</div>
+             <span class="lt">${esc(s.name)} · ${esc(s.tierRaw)}</span></div>
+        <div><p class="body">${fmtBody(s.text)}</p>
+             ${s.note ? `<p class="note${/^FLAGGED/.test(s.note) ? ' flagged' : ''}">${esc(s.note)}</p>` : ''}</div>
+      </div>`).join('');
+
+    const derivation = [`anchor: ${r.cell.tier.weakest}${r.cell.tier.tagged ? '' : ' (untagged)'}`]
+      .concat(r.specifics.map(s => `${s.k}: ${s.tier.weakest}`)).join(' + ');
+
+    inner += `
+      <p class="bridge">${esc(bridge)}</p>
+      <div class="walk">${rows}</div>
+      <div class="tierstrip">
+        ${tierChip(r.inherited, true)}
+        <span class="chip">&ldquo;${TIERS[r.inherited].phrase}&rdquo;</span>
+        ${r.specifics.some(s => s.observable) ? '<span class="chip">observable — no instrument</span>' : ''}
+        <span class="chip">composed, not authored</span>
+      </div>
+      <p class="tiernote">inherited = weakest of ( ${esc(derivation)} ) — a composition never outranks its weakest input.
+      Every sentence above is verbatim source text or fixed engine grammar.</p>`;
+  }
+
+  /* ---- the two source faces ---- */
+  const fa = `
+    <div class="face" style="--edge:var(--gold)">
+      <div class="faddr"><b>Face A</b> · The Master Translation Grid · Concept × Lens (pattern collapsed to universal)<br>
+      grid[&ldquo;${esc(c)}&rdquo;][${esc(l)}]</div>
+      <p class="raw">${esc(r.concept[l])}</p>
+    </div>`;
+  const anchorFields = t.anchor;
+  const fx = [['Center', anchorFields.center], ['Mode', anchorFields.mode], ['Core fear', anchorFields.core_fear],
+              ['Core desire', anchorFields.core_desire], ['Passion', anchorFields.passion], ['Virtue', anchorFields.virtue],
+              ['Defense', anchorFields.defense]]
+    .map(([k, v]) => `<div><span class="k">${k}</span><span class="v">${esc(v)}</span></div>`).join('');
+  const fb = `
+    <div class="face ${mode}">
+      <div class="faddr"><b>Face B</b> · The Archetype Matrix · Concept × Pattern (lens collapsed)<br>
+      matrix.types[${p}] · ${esc(t.name)} <i>(${esc(t.alt)})</i> · layers ${r.keys.length ? r.keys.map(k => `<b>${k}</b>`).join(', ') : '—'} → parent &ldquo;${esc(c)}&rdquo;</div>
+      <div class="fx">${fx}</div>
+      ${t.language_note ? `<p class="langnote">${esc(t.language_note)}</p>` : ''}
+      ${r.covered ? r.specifics.map(s => `
+        <div class="flayer">
+          <div class="faddr">layer ${s.k} · ${esc(s.name)} · ${esc(s.tierRaw)}</div>
+          <p class="raw">${fmtBody(s.text)}${s.note ? ` <span class="note" style="display:inline-block">[${esc(s.note)}]</span>` : ''}</p>
+        </div>`).join('')
+      : `<div class="flayer"><div class="faddr">no layers roll up to this concept</div></div>`}
+    </div>`;
+
+  inner += `<div class="facesHead">The two faces that fed this — any output traces back here</div>
+            <div class="facegrid">${fa}${fb}</div>`;
+  $('#stage').innerHTML = inner;
+}
+
+/* ---- sheet view ---- */
+function sheetCell(cName, n, lens, opts){
+  const r = compose(cName, n, lens);
+  const t = r.type;
+  if(!r.covered){
+    return `<button class="scell uni" data-c="${esc(cName)}" data-p="${n}" data-l="${lens}">
+      <span class="si">universal only</span>
+      <span class="sp">${esc(r.cell.display)}</span>
+      <span class="sfoot"><span class="mini ${TIERS[r.inherited].cls}">${r.inherited}</span><span class="mini">face A</span></span></button>`;
+  }
+  const first = r.specifics[0];
+  const bodyHtml = opts.full
+    ? `<em>${esc(r.cell.display)}</em><br>` +
+      r.specifics.map(s => `<b class="il">${s.k}</b> ${fmtBody(s.text)}`).join('<br>')
+    : fmtBody(first.text);
+  const introTxt = opts.full ? esc(BRIDGE[lens](t, r.cell.head, r.inherited)) : esc(INTRO[first.k][lens]);
+  return `<button class="scell ${modeCls(t)}" data-c="${esc(cName)}" data-p="${n}" data-l="${lens}">
+    <span class="si">${introTxt}</span>
+    <span class="sp">${bodyHtml}</span>
+    <span class="sfoot"><span class="mini ${TIERS[r.inherited].cls}">${r.inherited}</span>
+      <span class="mini">${r.keys.join('+')}</span>
+      ${r.specifics.length > 1 && !opts.full ? `<span class="mini">+${r.specifics.length - 1} more</span>` : ''}</span></button>`;
+}
+
+function renderSheet(){
+  const {fix, val, full} = state;
+  let head = '', rowsHtml = '', caption = '';
+  const opts = {full};
+
+  if(fix === 'lens'){
+    const lens = val;
+    caption = `Concept × Pattern, in one language — the ${LENS_LABEL[lens].toLowerCase()} lens. The first column is the authored universal (Face A); every cell after it is composed.`;
+    head = `<tr><th></th><th><b>Universal</b>face A · authored</th>` +
+      TYPES.map(t => `<th class="${modeCls(t)}"><b>${t.n} · ${esc(t.name)}</b>${esc(t.anchor.mode.split(' - ')[0])}</th>`).join('') + '</tr>';
+    let lastGroup = '';
+    rowsHtml = CONCEPTS.map(c => {
+      let g = '';
+      if(c.group !== lastGroup){ lastGroup = c.group;
+        g = `<tr><th class="grouph" colspan="${TYPES.length + 2}">${esc(c.group)}</th></tr>`; }
+      const uni = parseCell(c[lens]);
+      return g + `<tr><th class="rowh"><b>${esc(c.name)}</b></th>
+        <td><div class="scell uni" style="cursor:default"><span class="si">grid[&ldquo;${esc(c.name)}&rdquo;][${lens}]</span>
+          <span class="sp">${esc(uni.display)}</span>
+          <span class="sfoot"><span class="mini ${TIERS[uni.tier.weakest].cls}">${uni.tier.weakest}</span></span></div></td>` +
+        TYPES.map(t => `<td>${sheetCell(c.name, t.n, lens, opts)}</td>`).join('') + '</tr>';
+    }).join('');
+  }
+  else if(fix === 'pattern'){
+    const n = +val, t = TYPES.find(x => x.n === n);
+    caption = `Pattern ${n} — ${t.name} — across every concept and every lens. Rows are concepts; columns are the five languages.`;
+    head = `<tr><th></th>` + LENSES.map(l => `<th><b>${LENS_LABEL[l]}</b></th>`).join('') + '</tr>';
+    let lastGroup = '';
+    rowsHtml = CONCEPTS.map(c => {
+      let g = '';
+      if(c.group !== lastGroup){ lastGroup = c.group;
+        g = `<tr><th class="grouph" colspan="${LENSES.length + 1}">${esc(c.group)}</th></tr>`; }
+      return g + `<tr><th class="rowh"><b>${esc(c.name)}</b></th>` +
+        LENSES.map(l => `<td>${sheetCellLensVariant(c.name, n, l, opts)}</td>`).join('') + '</tr>';
+    }).join('');
+  }
+  else {
+    const cName = val;
+    caption = `&ldquo;${cName}&rdquo; through all nine patterns and all five lenses.`;
+    head = `<tr><th></th>` + LENSES.map(l => `<th><b>${LENS_LABEL[l]}</b></th>`).join('') + '</tr>';
+    rowsHtml = TYPES.map(t =>
+      `<tr><th class="rowh ${modeCls(t)}"><b>${t.n} · ${esc(t.name)}</b></th>` +
+      LENSES.map(l => `<td>${sheetCellLensVariant(cName, t.n, l, opts)}</td>`).join('') + '</tr>').join('');
+  }
+
+  $('#stage').innerHTML = `
+    <div class="addr">sheet · ${fix} fixed → ${esc(fix === 'lens' ? LENS_LABEL[val] : fix === 'pattern' ? 'Pattern ' + val : val)}</div>
+    <p class="sheetnote">${caption} A sheet is a downstream rendering — cells are previews; select any cell to open the full composition with its sources.</p>
+    <div class="gridwrap ${full ? 'fulltext' : ''}"><table class="sheet"><thead>${head}</thead><tbody>${rowsHtml}</tbody></table></div>`;
+
+  document.querySelectorAll('.scell[data-c]').forEach(b => b.addEventListener('click', () => {
+    state.view = 'cell'; state.c = b.dataset.c; state.p = +b.dataset.p; state.l = b.dataset.l;
+    writeHash(); render();
+    $('#stage').scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+}
+
+/* In lens-varying sheets the pattern content is constant along a row, so the
+   cell leads with what DOES vary: the lens's anchor and its register. */
+function sheetCellLensVariant(cName, n, lens, opts){
+  const r = compose(cName, n, lens);
+  if(!r.covered || opts.full) return sheetCell(cName, n, lens, opts);
+  const first = r.specifics[0];
+  return `<button class="scell ${modeCls(r.type)}" data-c="${esc(cName)}" data-p="${n}" data-l="${lens}">
+    <span class="si">${esc(INTRO[first.k][lens])}</span>
+    <span class="sp"><em>${esc(r.cell.display)}</em> — ${fmtBody(first.text)}</span>
+    <span class="sfoot"><span class="mini ${TIERS[r.inherited].cls}">${r.inherited}</span>
+      <span class="mini">${r.keys.join('+')}</span></span></button>`;
+}
+
+/* ============================================================
+   Guardrails drawer — the constraints, rendered from the data
+   files themselves plus the two source guardrail documents.
+   ============================================================ */
+let drawerBuilt = false;
+function toggleDrawer(){
+  const d = $('#drawer'), on = !d.classList.contains('on');
+  d.classList.toggle('on', on);
+  $('#grBtn').setAttribute('aria-pressed', on ? 'true' : 'false');
+  if(on && !drawerBuilt){ drawerBuilt = true; buildDrawer(); }
+}
+function buildDrawer(){
+  const m = MATRIX._meta;
+  const rows = [
+    ['The tiers — grammar is not optional', Object.entries(m.tiers).map(([k, v]) => `<b>[${k}]</b> — ${esc(v)}`).join('<br>')],
+    ['The observable filter — runs before the tiers', esc(m.observable_filter)],
+    ['The foundation rule', esc(m.foundation_rule)],
+    ['The 3×3 — a coherence check, never a generator', esc(m.roadmap_parked['3x3_grouping'])],
+    ['Geometry', esc(m.geometry)],
+    ['Inheritance rule (this engine)', 'A composed cell inherits the <b>weakest</b> tier of its inputs — never the strongest. Untagged content counts as [MODEL]. The engine adds connective grammar only: it can name, frame, and order; it cannot claim, and its own vocabulary is scanned for biometric terms at load.']
+  ].map(([k, v]) => `<div class="gr"><span class="gk">${k}</span><div class="gv">${v}</div></div>`).join('');
+
+  const offline = `<p class="gv" style="font-style:italic">Ships alongside this file; not reachable from here (file:// blocks fetch). Open it directly.</p>`;
+  const files = ['Source_Enneagram.md', 'Source_Neuroscience.md'].map((f, i) =>
+    `<details><summary>${f} — ${i === 0 ? 'the fixed anchors' : 'the precision ceiling'}</summary><div id="grf${i}">${offline}</div></details>`).join('');
+
+  const checksHtml = checks.map(c =>
+    `<span class="${c.ok ? 'ok' : 'bad'}">${c.ok ? '✓' : '✗'} ${esc(c.name)}${c.detail ? ' — ' + esc(c.detail) : ''}</span>`).join('<br>');
+
+  $('#drawer').innerHTML = `<h3>Guardrails</h3>${rows}
+    <div class="gr"><span class="gk">The two guardrail documents — loaded alongside</span>${files}</div>
+    <div class="gr"><span class="gk">Engine self-check, run at load</span><div class="gv mono" style="font-size:.78rem;line-height:2">${checksHtml}</div></div>`;
+
+  // Embedded (self-contained file) first; sibling fetch only if not embedded.
+  ['src-enneagram', 'src-neuroscience'].forEach((id, i) => {
+    const emb = embedded(id);
+    if(typeof emb === 'string' && emb.length){ $('#grf' + i).innerHTML = `<pre>${esc(emb)}</pre>`; return; }
+    if(location.protocol !== 'file:')
+      fetch(['Source_Enneagram.md', 'Source_Neuroscience.md'][i]).then(r => r.ok ? r.text() : Promise.reject())
+        .then(t => { $('#grf' + i).innerHTML = `<pre>${esc(t)}</pre>`; })
+        .catch(() => {});
+  });
+}
+
+/* ============================================================
+   Self-checks — the engine proves its own constraints at load.
+   The 3×3 appears here in its one sanctioned role: a check.
+   ============================================================ */
+function runChecks(){
+  checks = [];
+  const add = (name, ok, detail) => checks.push({name, ok, detail});
+
+  add(`faces complete — ${CONCEPTS.length} concepts × ${LENSES.length} lenses, all cells present`,
+      CONCEPTS.every(c => LENSES.every(l => typeof c[l] === 'string' && c[l].length)), '');
+
+  const badParents = [];
+  for(const [k, parents] of Object.entries(MATRIX._meta.grid_concepts))
+    parents.split(' / ').forEach(p => { if(!CONCEPTS.some(c => c.name === p)) badParents.push(`${k}→${p}`); });
+  add('grid_concepts parents all resolve to grid concepts', badParents.length === 0, badParents.join(', '));
+
+  add(`matrix complete — ${TYPES.length} patterns × ${Object.keys(LAYERMETA).length} layers`,
+      TYPES.length === 9 && TYPES.every(t => Object.keys(LAYERMETA).every(k => t.layers[k] && t.layers[k].length)), '');
+
+  const CANON = {1:['Body','Compliant'],2:['Heart','Compliant'],3:['Heart','Assertive'],4:['Heart','Withdrawn'],
+                 5:['Head','Withdrawn'],6:['Head','Compliant'],7:['Head','Assertive'],8:['Body','Assertive'],9:['Body','Withdrawn']};
+  add('3×3 coherence — every anchor matches its canonical center × mode (check, never generator)',
+      TYPES.every(t => t.anchor.center.startsWith(CANON[t.n][0]) && t.anchor.mode.startsWith(CANON[t.n][1])), '');
+
+  const wx = compose('The Flinch', 3, 'spiritual');
+  add('worked example — The Flinch × Pattern 3 × Spiritual composes from layers b + d, inherits MODEL',
+      wx.keys.join(',') === 'b,d' && wx.inherited === 'MODEL', `got layers ${wx.keys.join(',')} · ${wx.inherited}`);
+
+  const BIOMETRIC = /\b(EDA|HRV|heart[- ]?rate|cortisol|electrodermal|MSNA|blood pressure|vagal|dopamine|serotonin|oxytocin|adrenal|neurotransmitter|amygdala|skin conductance)\b/i;
+  const engineVocab = JSON.stringify(INTRO) + Object.values(BRIDGE).map(f => f.toString()).join(' ');
+  add('engine vocabulary — 0 biometric terms in connective grammar (sources may cite; the engine may not)',
+      !BIOMETRIC.test(engineVocab), '');
+
+  const okAll = checks.every(c => c.ok);
+  $('#selfcheck').innerHTML = `self-check ${checks.filter(c => c.ok).length}/${checks.length} ` +
+    (okAll ? '<span class="ok">— all constraints hold</span>'
+           : '<span class="bad">— FAILURES: ' + checks.filter(c => !c.ok).map(c => esc(c.name)).join(' · ') + '</span>');
+}
+
+/* ============================================================
+   Loading — three routes, in order of preference:
+   1. Embedded data (the built self-contained file / artifact) — no
+      network at all, works from a link or a double-click.
+   2. Sibling JSON files over HTTP (a static-host or dev deploy that
+      reads live data) — the empty-slot source file lands here.
+   3. A file picker (opened from disk with no embedded data) — last
+      resort so the engine still runs entirely locally.
+   ============================================================ */
+function embedded(id){
+  const el = document.getElementById(id);
+  if(!el) return null;
+  const txt = el.textContent.trim();
+  if(!txt) return null;
+  try { return JSON.parse(txt); } catch(e){ return null; }
+}
+async function loadAll(){
+  const g0 = embedded('grid-data'), m0 = embedded('matrix-data');
+  if(g0 && m0){ boot(g0, m0); return; }
+  if(location.protocol !== 'file:'){
+    try {
+      const [g, m] = await Promise.all(['grid_data.json', 'matrix_data.json'].map(u =>
+        fetch(u).then(r => { if(!r.ok) throw new Error(u); return r.json(); })));
+      boot(g, m); return;
+    } catch(e){ /* fall through to picker */ }
+  }
+  showDrop();
+}
+
+function showDrop(){
+  const drop = $('#drop');
+  drop.hidden = false;
+  let got = {grid:null, matrix:null};
+  const paint = () => {
+    drop.innerHTML = `
+      <p>This page was opened straight from the filesystem, where the browser blocks <span class="mono">fetch()</span>.
+      Hand me the two faces and the engine runs entirely locally — nothing leaves this page.</p>
+      <div class="stat">
+        <span class="chip ${got.grid ? 't-EST' : ''}">${got.grid ? '✓' : '·'} grid_data.json — Face A</span>
+        <span class="chip ${got.matrix ? 't-EST' : ''}">${got.matrix ? '✓' : '·'} matrix_data.json — Face B</span>
+      </div>
+      <button class="filebtn" id="pick">Choose the two JSON files</button>
+      <input type="file" id="fin" accept=".json,application/json" multiple hidden>`;
+    $('#pick').addEventListener('click', () => $('#fin').click());
+    $('#fin').addEventListener('change', e => ingest(e.target.files));
+  };
+  const ingest = async files => {
+    for(const f of files){
+      try {
+        const j = JSON.parse(await f.text());
+        if(j.types && j._meta && j._meta.grid_concepts) got.matrix = j;
+        else if(j.core_systems && j.relational_mechanics) got.grid = j;
+      } catch(err){ /* not JSON — ignored */ }
+    }
+    if(got.grid && got.matrix){ drop.hidden = true; boot(got.grid, got.matrix); }
+    else paint();
+  };
+  ['dragover','dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+    e.preventDefault();
+    drop.classList.toggle('hot', ev === 'dragover');
+    if(ev === 'drop') ingest(e.dataTransfer.files);
+  }));
+  paint();
+}
+
+loadAll();
+</script>
+</body></html>
