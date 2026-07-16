@@ -1,0 +1,1041 @@
+{
+  "_meta": {
+    "title": "The Nine Defenses",
+    "subtitle": "What each defense is, what trips it, how it converts any signal into threat, what it costs, and where it defeats itself.",
+    "governing_statement": "Everything in this document is the Enneagram's own account of the nine defenses, drawn from its primary literature. It is stated flatly because a knowledge base asserts; it does not report. Attribution lives in Source_Ledger.md, keyed by type and field. The only fields that are ours are marked OURS.",
+    "diagnostic_rule": "DIAGNOSTIC ONLY. This describes what is. It prescribes nothing. No cue, no intervention, no somatic prediction, no sentence spoken to a person - those are the product, and the product is downstream.",
+    "the_biology": "There is no type-specific biology in this document, and there will not be: no study has ever linked a type to a biometric measure. The biology is universal and is set out in The Core Systems — the threat response firing before appraisal, prefrontal regulation, interoception. It joins this document at the concept level, not the type level: the physics is the same in every body, and what differs by type is what sets it off.",
+    "the_vertical": "Nine internal levels per type — 1-3 healthy, 4-6 average, 7-9 unhealthy. They measure one thing: how much of themselves a person has let go of. At Level 2 they identify with part of their own qualities and dis-identify with the rest — and the basic desire is the shape of what was let go. Everything below is that split widening. Level 1 is taking it back, and discovering they already possessed what they were seeking. The level names are universal; only the expression is type-specific. All nine levels are described. Levels 7-9 are clinical territory and outside the reach of any non-clinical product.",
+    "fields": {
+      "triad_relation": "How this type handles its centre's shared problem",
+      "engine": "What the passion is actually doing - the strategy underneath",
+      "trigger": "What trips the defense. DIAGNOSTIC - the instances, not the rule.",
+      "filter": "How any input gets converted into threat. The rule, not the instances.",
+      "wake_up": "The specific fear at the top of average that starts the descent",
+      "cost": "What running this defense takes from them",
+      "contradiction": "How the defense destroys the thing it protects. LOAD-BEARING - it is why the wall is droppable at all.",
+      "same_energy": "The gift and the flaw are one power, differently aimed",
+      "doorway": "Which way the correction runs",
+      "doorway_short": "The vector. OURS.",
+      "destination": "Passion to virtue; fixation to holy idea",
+      "levels": "The vertical. Nine cells per type, three lines each. TEXT = what this level looks like (sourced). SHIFT = what gave way to arrive here from the level above — this is the recognition handle: a state description cannot be placed ('am I self-absorbed?' — everyone says yes), but a move can ('did I start using imagination to keep a feeling from stopping?'). AIM = where the type's one power is pointed now; read the aim column alone and the nine levels resolve into a single motion. Shift and aim are DERIVED from the level text, not invented — the derivation is showable.",
+      "clinical_at_9": "What the tradition maps Level 9 onto. Inconsistently, and softer than it looks — see the ledger. Present so the edge of the product's reach is knowable, not so the product uses it.",
+      "faculty": "The type's one power, named. The aim column shows this same faculty at nine different targets — that is the same-energy law, made visible as motion."
+    },
+    "the_split": "Level 2 is where the wound opens. The person identifies with part of their own qualities and sets the rest down — and the basic desire is the shape of what got set down. The Eight sets down the part that can be hurt, and wants never to be controlled. The Two sets down their own needing, and wants to be loved. Level 1 is picking it back up, and finding they always had what they were looking for. This is why the flaw and the gift are one power: nothing is added at Level 1. Something is returned.",
+    "parents": {
+      "triad_relation": "The Defense",
+      "engine": "The Defense",
+      "trigger": "The Flinch",
+      "filter": "The False Narrative",
+      "wake_up": "The Core Motivation",
+      "cost": "The Defense",
+      "contradiction": "The False Narrative",
+      "same_energy": "The Core Truth",
+      "doorway": "The Shift",
+      "destination": "The Growth Process"
+    },
+    "the_joint": "Each type-field hangs off a universal concept. Eight of them sit in The Core Systems; two sit in The Relational Mechanics — the TRIGGER hangs off The Flinch, and the DOORWAY off The Shift. Those two are the most product-relevant fields in this document, and both have relational-mechanics parents rather than core-system ones. The mapping is shared by all nine types, because the physics is the same in every body: the Eight's trigger and the Four's trigger both hang off The Flinch, and what differs is only what sets it off. To compose a cell that nobody wrote: universal[concept][lens] + type[field]. A composed cell inherits the weaker register of its two inputs, never the stronger — a fact combined with a model produces a model."
+  },
+  "types": [
+    {
+      "n": 1,
+      "name": "The Reformer",
+      "alt": "The Perfectionist",
+      "anchor": {
+        "center": "Body / anger",
+        "mode": "Compliant — moving toward the standard",
+        "core_fear": "being corrupt, defective, bad, wrong",
+        "core_desire": "integrity — to be good, right, balanced",
+        "passion": "Anger",
+        "virtue": "Serenity",
+        "holy_idea": "Holy Perfection",
+        "defense": "Reaction formation"
+      },
+      "triad_relation": "The Body centre's problem is aggression and repression. The One **sublimates** it — the irrational side, the instinctual impulses, the personal desires get pressed down and redirected into a quest for perfection.",
+      "engine": "**The One is not an aggressive type. The One is compliant** — to an ideal, to a superego that supplies the yardstick everything is measured against, themselves first. The anger is not aggression; it is the reading on the gauge when something falls short. And they measure two distances at once: between themselves and the ideal, and between who they are now and who they used to be. **Everything must be making progress.**",
+      "trigger": "Anything that blocks or frustrates progress toward the ideal. Disorder. Sloppiness. Someone not taking it seriously. Their own impulse surfacing. **And most reliably: their own failure**, which produces anger they cannot aim at themselves, so it goes outward.",
+      "filter": "Input is graded against the standard before it is heard. **A remark is not information — it is a measurement.** Whatever falls short registers as something to be corrected, including the person who said it.",
+      "wake_up": "They begin to fear **that others are indifferent to their principles — that their efforts are not even making a dent.** The answer is a still higher standard, and the conviction that **they alone have the answer.** Conscience hardens into obligation.",
+      "cost": "They vent anger most unfairly at others precisely when they are angry at themselves. Perfection is a load human nature cannot carry — the irrational part cannot be perfected the way the rational part can, and they try anyway, denying everything base and human in themselves. **They end up feeling guilty for being human, and afraid of condemnation for not being angels.** Life becomes a tightrope over a chasm: one slip and they are doomed.",
+      "contradiction": "**They want integrity above everything — congruency of thought, word and deed. But integrity means integrated. Whole. And the moment they judge a part of themselves unacceptable and repress it, they have already lost their wholeness — which is to say, they have already lost their integrity.** The pursuit destroys the thing pursued.",
+      "same_energy": "At their clearest they are the most discerning, moral and reasonable — concerned with justice for everyone, not only themselves. The unhealthy version is not a different faculty. **It is that same discernment, turned into a caricature of itself.**",
+      "doorway": "**Not by judging and evaluating themselves** — that only produces more division. The way back to wholeness is acceptance: **that here and now, who they are is good enough.** Beyond the superego's rules is a quieter wisdom — a living relationship to the truth of this moment, which no principle can supply.",
+      "doorway_short": "Good enough, here and now",
+      "destination": "Anger → Serenity. Resentment dissolves into Holy Perfection.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "They accept what is — and that makes them more useful, not less. Seeing the situation itself rather than the gap between it and the ideal, they know what this moment actually needs. Wise, humane, and hopeful about it.",
+          "available": 100,
+          "shift": "Nothing gave way. The standard dissolved into seeing.",
+          "aim": "at what this moment actually needs"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Conviction without rigidity. An intense sense of right and wrong, held reasonably — disciplined, moderate, wanting to be fair more than wanting to be right.",
+          "available": 82,
+          "shift": "They took hold of a conviction — and set down the impulse that argued with it.",
+          "aim": "at their own conduct"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Principle becomes vocation. Fair, objective, ethical; truth and justice are the working values. The sense of higher purpose makes them teachers, and the people you go to when you want the truth.",
+          "available": 70,
+          "shift": "The conviction became a duty they were glad to carry.",
+          "aim": "at truth, for everyone"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "Reality disappoints, and the improving begins. Idealists with causes now — crusaders, advocates, critics — explaining to everyone how things ought to be. And the hardening underneath: they alone have the answer.",
+          "available": 55,
+          "shift": "Reality failed to meet the standard, and they decided that was theirs to fix.",
+          "aim": "at everything that falls short"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "The fear of error takes over and everything must line up. Order arrives and warmth leaves: organized, distant, austere, the feelings and impulses pinned flat. Often working themselves into the ground — punctual, exact, fastidious about everything.",
+          "available": 38,
+          "shift": "Fixing the world proved too big, so they turned the discipline inward and clamped down.",
+          "aim": "at their own imperfection"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "The correcting turns outward and does not stop. Picky, judgmental, opinionated about all of it — badgering people toward the right thing as they define it. Impatient. Nothing acceptable unless done to specification. Scolding, abrasive, permanently indignant.",
+          "available": 24,
+          "shift": "The clamp could not hold everything, so the pressure went outward as correction of everyone else.",
+          "aim": "at everyone else's errors"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Absolutes. They alone know the truth and everyone else is wrong. Dogmatic, intolerant, inflexible — severe in judging others while quietly rationalizing whatever they do themselves.",
+          "available": 14,
+          "shift": "Correcting stopped working, so they stopped admitting anyone else could be right.",
+          "aim": "at defending the absolute"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Fixated on imperfection and other people's wrongdoing — and doing the opposite of what they preach without registering the contradiction.",
+          "available": 7,
+          "shift": "Certainty needed defending, so their own conduct quietly stopped counting.",
+          "aim": "at other people's wrongdoing"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Condemnation becomes the project: punitive, cruel, out to rid the world of the wrong. Depression and breakdown are likely.",
+          "available": 2,
+          "shift": "There was nothing left to do with the wrongness but punish it.",
+          "aim": "at punishment"
+        }
+      ],
+      "clinical_at_9": "obsessive-compulsive and depressive personality disorders",
+      "faculty": "The discernment"
+    },
+    {
+      "n": 2,
+      "name": "The Helper",
+      "alt": "The Giver",
+      "anchor": {
+        "center": "Heart / shame",
+        "mode": "Compliant — moving toward people",
+        "core_fear": "being unwanted, unworthy of love",
+        "core_desire": "to feel loved and wanted",
+        "passion": "Pride",
+        "virtue": "Humility",
+        "holy_idea": "Holy Freedom",
+        "defense": "Repression"
+      },
+      "triad_relation": "The Heart centre's problem is hostility and identity. The Two **denies hostility entirely** — concealing it not only from others but from themselves. They can act aggressively only while convinced it is for someone else's good.",
+      "engine": "**Egocentric generosity.** Fearing they are unlovable, they spend their lives trying to make people love them — and the giving is not the gift it appears to be. It is a claim being staked. **Love has to be earned; it is never simply given**, which means it can never simply be received either.",
+      "trigger": "Independence. *I need some space. I've got this.* Being thanked and then not needed again. **Anyone managing without them.** And the sharpest one: **being offered something without having earned it** — which does not land as generosity but as a debt they cannot compute.",
+      "filter": "**They decide in advance what counts as love, and anything arriving in another form does not register.** They watch for specific signs; other indications do not count. So they must work out what kind of person to be to elicit the responses that qualify. **Someone can be loving them the whole time and it will not land.**",
+      "wake_up": "A reverse gear engages: attention that ran outward turns back on themselves. The specific fear — **they are not doing enough to really win people over.** And the tell: genuine appreciation deteriorates into flattery, **whose purpose is not to appreciate the other but that the flatterer be appreciated for the praise.**",
+      "cost": "Looking outward for evidence of their value, **they cannot be fully aware of their own feelings — and cannot recognize the lovable qualities already in them.** The repressed aggression does not vanish: it surfaces as psychosomatic complaint and physical illness, **which compels others to provide care.** The need gets met; they never have to admit having one.",
+      "contradiction": "**They want to be loved and end up unwanted.** If they force love on people, they prove that what they are forcing **is not love** — and for that reason it fails. As soon as ego masquerades behind love, love is tainted.",
+      "same_energy": "**The nurturing is real** — an extraordinary skill, not a performance. It is aimed at the wrong target.",
+      "doorway": "Recognize how completely they ignore their own needs, their grief, their shame. **Then apply that extraordinary nurturing to someone who desperately needs it — themselves.** The gift is not taken away. It gets a new target.",
+      "doorway_short": "Nurture yourself",
+      "destination": "Pride → Humility. Flattery dissolves into Holy Freedom.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Unselfish and humble, loving without a claim attached — and on the same terms toward themselves. Being in someone's life registers as a privilege rather than a position.",
+          "available": 100,
+          "shift": "Nothing gave way. They stopped keeping score.",
+          "aim": "at whoever is in front of them, free"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "They feel with people. Compassionate, warm, thoughtful, forgiving — genuinely interested in what someone needs, rather than in being the one who provides it.",
+          "available": 82,
+          "shift": "They found they could feel with people — and set down their own needing.",
+          "aim": "at what someone actually needs"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Encouraging and appreciative, able to see the good in people and say so. Service matters, and so do they — nurturing and generous without going bankrupt doing it.",
+          "available": 70,
+          "shift": "Feeling with people became something they were good at.",
+          "aim": "at nourishing people"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "They want to be closer, so the pleasing starts. Overly friendly, demonstrative, full of good intentions. The attention turns seductive — approval, strokes, flattery. Love becomes the supreme value and they will not stop talking about it.",
+          "available": 55,
+          "shift": "Being good at it stopped being enough — they needed to be close, so the pleasing started.",
+          "aim": "at winning them over"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "Intimacy becomes intrusion. They need to be needed, so they hover and meddle and manage, in love's name. They want dependence: giving, but with an invoice attached, sending two messages at once. Enveloping, possessive — exhausting themselves for everyone, and inventing needs so there is something left to meet.",
+          "available": 38,
+          "shift": "Closeness could not be relied on, so they engineered dependence instead.",
+          "aim": "at making themselves necessary"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Self-important now, and satisfied about it. Indispensable in their own account, and overrating everything they have done. Illness arrives. Martyrdom arrives. Overbearing, patronizing, presumptuous.",
+          "available": 24,
+          "shift": "Dependence still did not feel like love, so they started charging for it.",
+          "aim": "at being owed"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Manipulation with a smile: instilling guilt by tallying what they are owed and making people feel the weight of it. Food and medication to press the feelings down and draw sympathy. Undermining people in small remarks. And profoundly self-deceived about any of it.",
+          "available": 14,
+          "shift": "The bill went unpaid, so they made people feel the debt.",
+          "aim": "at collecting the debt"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Domineering and coercive. Entitled to collect — old debts, money, sexual favours, whatever they have decided is owed.",
+          "available": 7,
+          "shift": "Guilt stopped working, so they simply took.",
+          "aim": "at taking what is owed"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Everything excused, everything rationalized, because they feel abused. Bitterly resentful. The aggression goes into the body as chronic illness — and they are vindicated at last by falling apart and making everyone carry it.",
+          "available": 2,
+          "shift": "Nothing came back, so the body became the argument.",
+          "aim": "at proving the injury"
+        }
+      ],
+      "clinical_at_9": "histrionic personality disorder and factitious disorder",
+      "faculty": "The nurturing"
+    },
+    {
+      "n": 3,
+      "name": "The Achiever",
+      "alt": "The Performer",
+      "anchor": {
+        "center": "Heart / shame",
+        "mode": "Assertive — moving against",
+        "core_fear": "being worthless, without value apart from achievement",
+        "core_desire": "to feel valuable and worthwhile",
+        "passion": "Deceit (self-deception)",
+        "virtue": "Truthfulness",
+        "holy_idea": "Holy Hope",
+        "defense": "Identification"
+      },
+      "triad_relation": "The Heart centre's problem is hostility and identity. Where the Two denies hostility and the Four routes it indirectly, **the Three is directly hostile**: arrogant distancing, snide humour, sarcasm, sabotage. It compensates for felt inadequacy and clears away anyone who threatens the self-esteem — **including people they admire.**",
+      "engine": "**Success through appearances.** They are not in love with themselves — **they are in love with the inflated image**, which bears little resemblance to the person underneath. The self-esteem rests not on developed capacity but on the ability to capture attention, which means everything is done for affirmation rather than out of commitment.",
+      "trigger": "Emotion — theirs or anyone's. Being asked to slow down or simply be present. **Someone else's accomplishment.** Any pause long enough for the gap behind the image to show. And failure, which does not read as a setback but as exposure.",
+      "filter": "**Feelings are a distraction** — something that interferes with functioning, with staying on track. And the reason is the sharp part: *it is difficult to stay focused on goals when your own heart does not support them.* **Their interior is dissenting, and the dissent is in the way.**",
+      "wake_up": "The hinge: it stops being about working hard to feel worthwhile. **Now they want to be noticed.** The fear that flips it — **being overshadowed by others' accomplishments.** Comparison starts, competition follows, and they create rivalries where none existed.",
+      "cost": "They put themselves in competition with **the very people whose regard they need.** Their talent for sensing people gets repurposed into sizing others by prestige: *how can you help me? are you worth pursuing?* Diplomacy arrives, and with it the drift from authentic expression — speaking to produce a response rather than to say what is true. And underneath, the thing the image forbids them to admit: **a deep dependency on others. They cannot live with people and cannot live without them.**",
+      "contradiction": "**They fear being worthless — and end up cut off from the only source of true value a human being has: their own inner life.** More and more dependent on others to affirm their value, **when there is progressively less and less of value to affirm.**",
+      "same_energy": "**The talent is real.** The qualities they develop are genuine — they are **parts, not the whole.** One aspect of the physique, trained at the expense of the balance.",
+      "doorway": "**Brave the fear of worthlessness, stop the performance, and show the simple, vulnerable human actually there — and become profoundly affecting and powerful.** The impact is not lost by dropping the image. It becomes available for the first time, because admiration landing on a mask could never nourish anyone.",
+      "doorway_short": "Stop the performance",
+      "destination": "Deceit → Truthfulness. Vanity dissolves into Holy Hope.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Self-accepting and inner-directed — actually the thing they appear to be. Modest, charitable, funny about themselves. A fullness of heart, with nothing to prove using it.",
+          "available": 100,
+          "shift": "Nothing gave way. The audience became unnecessary.",
+          "aim": "at what is worth doing"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Real self-esteem: they believe in themselves and their own value, and it does not require an audience. Adaptable, charming, gracious.",
+          "available": 82,
+          "shift": "They found they had value — and set down whatever in them was not valuable.",
+          "aim": "at their own development"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Ambitious to become the best of themselves — often becoming outstanding, embodying what their culture admires. Highly effective, and other people are moved to develop themselves too.",
+          "available": 70,
+          "shift": "Standing on it, they went out to develop it.",
+          "aim": "at excellence others can use"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "Performance takes over. Driving toward goals as though worth depended on the result. Terrified of failure. Comparing constantly, hunting status. Careerists — invested in being the best, and in the exclusivity of it.",
+          "available": 55,
+          "shift": "Developing stopped feeling like proof, so the goal became the verdict on their worth.",
+          "aim": "at winning the verdict"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "The image becomes the work. Packaging themselves to expectation, to whatever success requires. Efficient and premeditated — and losing contact with their own feelings under the smooth surface. Intimacy gets difficult; the word phoniness starts appearing.",
+          "available": 38,
+          "shift": "The results were not enough, so they started managing the perception of them.",
+          "aim": "at the image"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Now they need you to know they are superior. Self-promoting without pause, sounding better than they are. Grandiose about their own talents. Exhibitionistic, seductive — look at me. And the contempt for other people is a lid held down on envy of them.",
+          "available": 24,
+          "shift": "Managing perception required an audience, so they started demanding one.",
+          "aim": "at the audience"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Fear of failure turns exploitative. Covetous of everyone else's success, willing to do anything at all to keep the illusion of standing above it.",
+          "available": 14,
+          "shift": "The audience began looking elsewhere, so they went after whoever had it.",
+          "aim": "at whoever has what they want"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Deceptive, so the failures stay buried. Untrustworthy — betraying and sabotaging people in order to win against them. Delusional in the jealousy.",
+          "available": 7,
+          "shift": "Losing meant exposure, so the lying started.",
+          "aim": "at concealment"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Out to ruin other people's happiness. Relentless, obsessive about destroying whatever reminds them of their own failure.",
+          "available": 2,
+          "shift": "There was nothing left to win, so ruining became the point.",
+          "aim": "at ruining the reminder"
+        }
+      ],
+      "clinical_at_9": "narcissistic personality disorder",
+      "faculty": "The drive"
+    },
+    {
+      "n": 4,
+      "name": "The Individualist",
+      "alt": "The Romantic",
+      "anchor": {
+        "center": "Heart / shame",
+        "mode": "Withdrawn — moving away",
+        "core_fear": "having no identity or personal significance",
+        "core_desire": "to be uniquely themselves; to find identity",
+        "passion": "Envy",
+        "virtue": "Equanimity",
+        "holy_idea": "Holy Origin",
+        "defense": "Introjection"
+      },
+      "triad_relation": "The Heart centre's problem is hostility and identity. The Four is **indirectly** hostile — and carries the identity problem at its most acute: the sense of self is never solid enough to sustain them.",
+      "engine": "**Seeking happiness through pain.** This is the engine, and it is not a symptom — **it is the route.** The Four goes toward what they want *by way of* suffering, because pain is the one thing that reliably proves they are real. Their feelings change so readily that identity cannot rest on them; they feel like a gathering cloud that may produce something of great power or dissipate in the next breeze. **Something is missing in the self — something they cannot name but feel the absence of constantly.** Suffering is the one experience dense enough to hold still.",
+      "trigger": "Being treated as ordinary. Being cheerfully reassured. Someone else having what they lack. **And the counterintuitive one: being understood.** Comfort does not comfort a Four — it threatens the specificity their identity is made of.",
+      "filter": "**Feeling different and misunderstood *is* the identity** — as central to the Four as being good is to the One. And the traits function **by negation**: *they may not know who they are, but they are certain who they are not.* So being met, normalized, included — **threatens to dissolve them.**",
+      "wake_up": "They begin to fear **they cannot sustain the flow of feelings and impressions their identity is built from** — that creativity, and under it the self, will not survive unless felt more intensely and more consistently. So imagination gets used to stir feeling up and hold moods in place. The line: **at their clearest they are artistic; here they think of themselves as artistic.**",
+      "cost": "They relate to fantasies rather than reality. Relationships play out almost entirely in the imagination — which heightens the charge **while sparing them exposure and rejection** — and real people inevitably turn out different. Enormous weight goes onto small traits until they paint themselves into a corner and refuse things their life requires.",
+      "contradiction": "**They equate themselves with their feelings** — and believe they must work through the negative ones before they can act. So the bad drives out the good, and the idealized self-image drifts so far from reality that **they reject positive qualities they actually possess.** The precise turn: *the pity is not that they always were as damaged as they feel — it is that they have become profoundly damaged because they hate themselves.* **A self-fulfilling prophecy.**",
+      "same_energy": "**The intuition is real.** It deteriorates into unlimited imagination as a way of **making up to themselves for experiences they are not actually having.**",
+      "doorway": "**A leap of faith: they will discover themselves most surely by acting positively toward others.** Love others without waiting to feel adequately loved — and self-esteem follows the loving, not the other way round. And then the thing that dissolves the envy entirely: **because they can love, they must have learned it somewhere. What they were given has perhaps been enough after all.**",
+      "doorway_short": "Love outward",
+      "destination": "Envy → Equanimity. Melancholy dissolves into Holy Origin.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Profoundly creative, saying the personal and the universal in one breath. Self-renewing — able to take any experience, the bad ones included, and turn it into something of value. They make themselves.",
+          "available": 100,
+          "shift": "Nothing gave way. The lack turned out never to have been there.",
+          "aim": "at what is real"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Self-aware and introspective, genuinely searching. Alert to feeling and impulse in themselves and in everyone else — gentle, tactful, compassionate.",
+          "available": 82,
+          "shift": "They turned to look at themselves honestly — and set down the ordinary.",
+          "aim": "at their own truth"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Personal, individual, true to themselves. Self-revealing and emotionally honest. Ironic about themselves and about life — capable of being serious and funny, vulnerable and strong, at once.",
+          "available": 70,
+          "shift": "Looking honestly, they let themselves be seen.",
+          "aim": "at showing it"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "The romantic orientation arrives. Building a beautiful environment to keep the feeling going. Reality heightened through fantasy and passionate feeling, because the ordinary version will not sustain them.",
+          "available": 55,
+          "shift": "Being seen did not settle it, so they began using imagination to keep the feeling from stopping.",
+          "aim": "at heightening the feeling"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "To stay in contact with feeling, they take everything personally and turn it inward. Self-absorbed, moody, hypersensitive — unable to be spontaneous or get out from under themselves. Withdrawing to protect the self-image and to buy time to sort things out.",
+          "available": 38,
+          "shift": "The manufactured feeling needed protecting, so they took everything inward.",
+          "aim": "at protecting the self-image"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "They decide they are different, and exempt. Dreamers living in a world they built — disdainful, decadent, sensual. Self-pity and envy turn into self-indulgence, and they become steadily less able to do anything practical.",
+          "available": 24,
+          "shift": "Inward was unbearable as an equal, so they decided they were exempt.",
+          "aim": "at being the exception"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "The dreams fail. Self-inhibiting and angry at themselves, depressed, alienated from everyone including themselves. Blocked and emotionally frozen. Ashamed, exhausted, unable to function.",
+          "available": 14,
+          "shift": "Exemption failed to arrive as a life, and the anger turned on themselves.",
+          "aim": "at themselves, as blame"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Tormented by self-hatred. Self-reproach, morbid thought, everything a source of pain. Blaming others — and driving away anyone who tries to reach them.",
+          "available": 7,
+          "shift": "Self-blame needed a witness, so everyone became the reason.",
+          "aim": "at everyone who failed them"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Despair. Hopeless and self-destructive, possibly using substances to get out. At the extreme, collapse.",
+          "available": 2,
+          "shift": "There was nothing left to feel with.",
+          "aim": "at their own erasure"
+        }
+      ],
+      "clinical_at_9": "avoidant, depressive and narcissistic personality disorders",
+      "faculty": "The intuition"
+    },
+    {
+      "n": 5,
+      "name": "The Investigator",
+      "alt": "The Observer",
+      "anchor": {
+        "center": "Head / fear",
+        "mode": "Withdrawn — moving away",
+        "core_fear": "being helpless, incapable, overwhelmed",
+        "core_desire": "to be capable and competent; to understand",
+        "passion": "Avarice",
+        "virtue": "Non-attachment",
+        "holy_idea": "Holy Omniscience",
+        "defense": "Isolation"
+      },
+      "triad_relation": "The Head centre's problem is anxiety. The Five **displaces** it by distancing themselves from their own experience. (The Seven does the near-exact opposite.)",
+      "engine": "**Seeking wholeness through isolation.** They believe their resources and capacities are finite and small, so they answer anxiety by **downscaling** — the more anxious, the more they minimize their needs, sometimes to the point of living in conditions no one requires them to live in. Not-giving is not meanness. **It is triage on a supply they believe is running out.**",
+      "trigger": "Demand. Being expected to give more than they have. Emotional intensity aimed at them. Someone needing a response now. **Being asked to act before they have worked it out.** And influence itself — an idea arriving from outside, which reads as an incursion.",
+      "filter": "They fear that others' agendas will overwhelm them, that more powerful people will control or possess them — so nothing is permitted to influence their thinking. **But the exception is the tell: a Five is perfectly willing to be possessed by an idea, provided it originated with them.** The gate is not on the input. It is on the authorship.",
+      "wake_up": "**They begin to fear they do not know enough to act.** More study, more practice, better technique, another test. The distinction that marks the line: **at their clearest they use knowledge; here they are in pursuit of it.** They retreat into the one place they feel in control — their minds — and get stuck in preparation. *I need a little more time.*",
+      "cost": "**They identify with their minds and their imaginations, not with their bodies** — which is why they will spend on equipment and not on their own comfort. Withdrawing heightens the fear that they cannot cope. And relying only on their own untested perceptions, they drift out of touch with reality **while believing the opposite**, because the drifting feels like rigour.",
+      "contradiction": "**They fear being helpless and incompetent — and become helpless and incompetent precisely because they rejected attachment to everything.** Intensifying their involvement with their own mental processes, instead of producing security and power, produced their insecurity and powerlessness. And in defending against everything harmful, **they excluded the good too** — until there is nothing left to attach to.",
+      "same_energy": "At their clearest they see reality as it is and grasp complex things at a glance — **and the reason is contact: they are participating in life and testing their perceptions.** The capacity is real. It requires the thing they are avoiding in order to work.",
+      "doorway": "**Jump in.** The easiest way to learn to dance is to start moving — but the Five will not enter until they have worked it out, **and the dance is over by the time they are done figuring it out.** Arrival over analysis.",
+      "doorway_short": "Jump in",
+      "destination": "Avarice → Non-attachment. Stinginess dissolves into Holy Omniscience.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Visionaries — grasping the whole while going all the way down into it. Open-minded, seeing things in their real context. The discoveries are pioneering and the ways of seeing are new.",
+          "available": 100,
+          "shift": "Nothing gave way. The reserve turned out to be bottomless.",
+          "aim": "at reality, whole"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Perceptiveness at full range. Mentally alert, curious, searching — nothing gets past them. They see what is coming. And they can concentrate until they disappear into the thing.",
+          "available": 82,
+          "shift": "They found their attention was enough to see with — and set down the body that has to act.",
+          "aim": "at what is actually there"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Real mastery of whatever caught them. Excited by knowing, often expert. Innovative — producing work that is genuinely original. Independent, idiosyncratic, and a little strange about it.",
+          "available": 70,
+          "shift": "Seeing became mastery of one thing.",
+          "aim": "at mastering something real"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "The preparing starts. Everything conceptualized and refined before acting — models built, technique acquired, resources gathered. Specialized now, often intellectual, often quietly challenging how everyone else does it.",
+          "available": 55,
+          "shift": "Mastery of one thing did not feel like enough to act on, so preparing replaced acting.",
+          "aim": "at getting ready"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "Detachment deepens as the ideas grow more elaborate. Preoccupied with their own interpretation rather than the thing itself. Drawn to the off-beat, the esoteric, the dark. The mind has come loose from the practical world — and it is not calm up there. High-strung, intense, alone with itself.",
+          "available": 38,
+          "shift": "Preparing had no end, so the inner world became more real than the outer one.",
+          "aim": "at the model instead of the thing"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Anything that would intrude on the inner world gets treated as an enemy. Provocative, abrasive, deliberately extreme. Cynical and argumentative.",
+          "available": 24,
+          "shift": "The inner world needed defending, so anything outside became an intrusion.",
+          "aim": "at what might intrude"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Reclusive and cut off from reality. Eccentric, nihilistic, unstable, terrified of aggression — rejecting people and every attachment to them.",
+          "available": 14,
+          "shift": "Intrusion was everywhere, so they cut every line.",
+          "aim": "at the threat in everything"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Obsessed by their own frightening ideas and unable to look away. Horrified, delirious, prey to distortion and phobia.",
+          "available": 7,
+          "shift": "Alone with their own mind, the mind turned on them.",
+          "aim": "at their own terror"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Seeking oblivion. Deranged, explosively self-destructive, losing hold.",
+          "available": 2,
+          "shift": "There was nothing left to hold onto.",
+          "aim": "at oblivion"
+        }
+      ],
+      "clinical_at_9": "schizoid avoidant and schizotypal personality disorders",
+      "faculty": "The seeing"
+    },
+    {
+      "n": 6,
+      "name": "The Loyalist",
+      "alt": "The Loyal Skeptic",
+      "anchor": {
+        "center": "Head / fear",
+        "mode": "Compliant — moving toward support",
+        "core_fear": "being without support or guidance; unable to survive alone",
+        "core_desire": "security, support, guidance",
+        "passion": "Fear",
+        "virtue": "Courage",
+        "holy_idea": "Holy Faith",
+        "defense": "Projection"
+      },
+      "triad_relation": "The Head centre's problem is anxiety — and the Six is **the primary type**, the one with the greatest problem with it. **They are anxious that they are anxious.** Where the Five displaces it and the Seven outruns it, the Six is conscious of it: sometimes resisting, sometimes succumbing.",
+      "engine": "**The persecuted persecutor.** At the root is a continuous feeling of being unsupported — **and most fundamentally, the doubt that they can support themselves.** Everything else is downstream of that one doubt. And the loop closes: the one who feels persecuted, defending against it, **becomes the thing they feared.**",
+      "trigger": "Reassurance without evidence. Being asked to commit. Ambiguity about where they stand with someone. **Anything going too well** — which reads as a setup. And authority: both magnetically and suspiciously, often at once.",
+      "filter": "**They react to their feelings — particularly anxiety — and communicate the reaction rather than the feeling.** So what you are shown is never the thing. And the deep irony: **they must have danger on their mind in order to feel safe.** The more paranoid, the more completely defended they try to be. Phobic and counterphobic are not two kinds of Six — **they alternate, level by level, in the same person.**",
+      "wake_up": "Once committed to a person or a group, **they begin to fear doing anything that would jeopardize the stability** — afraid of rocking the boat, of moving strongly in any direction. So they take on more commitments and obligations to make the position secure.",
+      "cost": "Self-reliance disappears. They look for answers in precedents, authoritative texts, rules — **and then second-guess their reading of those too**, checking in to make sure their interpretation is on track. They resent others deciding for them **and cannot decide alone**, so every significant choice costs a storm of anxiety, consultation and doubt.",
+      "contradiction": "**They ruin the security they exist to seek.** Persisting in self-defeating behaviour, they drive away everyone they depend on — and end up abandoned and alone, **the very thing they most fear.**",
+      "same_energy": "**The vigilance is real** — extraordinary, and aimed at anticipating what could go wrong before it does. It is the same faculty at every level: at their clearest it sees what is actually true; at the bottom it sees threat in everyone. **And the loyalty is real too, and nearly boundless** — their commitments last because they are not superficial choices but deep identifications that become part of who the Six is.",
+      "doorway": "**They do not have to react to people, or depend on them, if they trust themselves. And they can trust themselves only by discovering they already have a quiet source of inner guidance.** Trusting that, they find the security, support and direction they have been looking for outside.",
+      "doorway_short": "Trust your own guidance",
+      "destination": "Fear → Courage. Doubt dissolves into Holy Faith.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Self-affirming, trusting themselves and other people at once. Independent and interdependent without contradiction. Believing in themselves produces real courage — and leadership, and a voice.",
+          "available": 100,
+          "shift": "Nothing gave way. The ground turned out to be under them.",
+          "aim": "at what they know to be true"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "They draw strong feeling from people: appealing, endearing, affectionate. Trust is the currency — bonding, building alliances meant to last.",
+          "available": 82,
+          "shift": "They trusted someone — and set down their own knowing.",
+          "aim": "at the people they trust"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Dedicated to the people and the causes they believe in. Community builders — responsible, reliable, hard-working, persevering. They create stability around themselves, and a spirit of cooperation inside it.",
+          "available": 70,
+          "shift": "Trust became commitment, and commitment became a place to stand.",
+          "aim": "at the thing worth building"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "Investing in whatever looks safe. Organizing, structuring, looking to alliances and authorities for continuity. Constantly vigilant, running ahead to find the problem before it finds them.",
+          "available": 55,
+          "shift": "The place to stand felt fragile, so they started fortifying it against everything.",
+          "aim": "at securing the position"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "To stop the demands, they resist sideways. Evasive, indecisive, cautious, ambivalent, endlessly postponing. Reactive and anxious, sending contradictory signals — the confusion inside makes them unpredictable outside.",
+          "available": 38,
+          "shift": "Fortifying became a burden, so they resisted sideways instead of saying no.",
+          "aim": "at every possible demand"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Compensation turns hard. Sarcastic, belligerent, blaming — a tough line toward anyone outside. Dividing the world into friends and enemies while scanning for the threat. Authoritarian and afraid of authority at once. Suspicious, conspiratorial, and frightening other people in order to quiet their own fear.",
+          "available": 24,
+          "shift": "Sideways resistance did not stop the fear, so it went outward as attack.",
+          "aim": "at the enemy they have identified"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Convinced they have wrecked their own security: panicky, volatile, self-disparaging, feeling acutely inferior. Defenceless in their own eyes, so they go looking for a stronger authority to fix everything. Divisive, berating.",
+          "available": 14,
+          "shift": "Attacking cost them their supports, and the panic arrived.",
+          "aim": "at finding someone stronger"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Feeling persecuted — that people are out to get them — they lash out irrationally, and bring about exactly the thing they feared. Fanaticism. Violence.",
+          "available": 7,
+          "shift": "Panicking, they struck first — and made the enemy real.",
+          "aim": "at threat in everyone"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Hysterical, trying to escape a punishment nobody assigned, and turning all of it on themselves.",
+          "available": 2,
+          "shift": "The punishment they feared, they administered themselves.",
+          "aim": "at themselves"
+        }
+      ],
+      "clinical_at_9": "passive-aggressive and paranoid personality disorders",
+      "faculty": "The vigilance"
+    },
+    {
+      "n": 7,
+      "name": "The Enthusiast",
+      "alt": "The Epicure",
+      "anchor": {
+        "center": "Head / fear",
+        "mode": "Assertive — moving against",
+        "core_fear": "being deprived, trapped in pain",
+        "core_desire": "to be satisfied and content",
+        "passion": "Gluttony",
+        "virtue": "Sobriety",
+        "holy_idea": "Holy Wisdom",
+        "defense": "Rationalization"
+      },
+      "triad_relation": "The Head centre's problem is anxiety. **The Seven is the near-exact opposite of the Five.** The Five is anxious about coping with the outer environment and retreats from it; **the Seven is anxious about coping with the inner one — grief, loss, anxiety — and flees outward into the world to avoid it.**",
+      "engine": "**Opportunistic idealism** — and the word that belongs in it is **fraudulence**. The optimism has a con in it: not merely escaping pain but **selling the escape**, to others and to themselves. Anxiety gets managed by keeping attention on what is coming. Every time it surfaces, there is something ready to look forward to.",
+      "trigger": "Limits. Pain that will not resolve. Being pinned to one thing. **Being asked to stay.** And silence — any gap long enough for the inner environment to make itself heard.",
+      "filter": "**They are usually unaware of their anxiety and label it boredom.** When a Seven says they are bored, what they often mean is that there is not enough stimulation to keep them from feeling anxious — **painful feelings are threatening to surface, so the scenery has to change.** *I'm bored* means *something is about to reach me.*",
+      "wake_up": "**They begin to fear that focusing on one or two things means missing out on others.** Appetites widen. The line: **at their clearest they are interested in producing and creating; here, in consuming and entertaining themselves.**",
+      "cost": "**The more they fill their minds with the fun ahead, the less they are in contact with what they are having** — so the experience cannot affect them and cannot satisfy them, which leaves them hungrier, which speeds them up. **Their minds walk two or three steps ahead of them.** They arrive at the pyramids already thinking about dinner, and miss the pyramids.",
+      "contradiction": "**They fear deprivation — and are deprived of the happiness they seek**, not because the world frustrates them but because they have not trusted life enough. And the sharper turn: **because they are aggressive they usually get what they want — and precisely because they are aggressive they go overboard, ruining themselves through excess and destroying the possibility of the happiness they were chasing.**",
+      "same_energy": "**The capacity for enjoyment is real** and it is genuinely good company. It curdles only when appetite outruns assimilation — consumers rather than connoisseurs.",
+      "doorway": "**Experience their experiences.** Not staying — **interiorizing.** The most exquisite possessions and the most potent experiences mean nothing if they are not assimilated. Unless the Seven internalizes what happens to them, they bar themselves from the most sublime things life offers — **trading true gold for lead.**",
+      "doorway_short": "Let it land",
+      "destination": "Gluttony → Sobriety. Planning dissolves into Holy Wisdom.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "They assimilate what happens to them, all the way down — and it makes them grateful. Awed by ordinary things. Joyous, and not performing it.",
+          "available": 100,
+          "shift": "Nothing gave way. What was here turned out to be enough.",
+          "aim": "at what is happening now"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Highly responsive and excitable, alive to sensation. The most extroverted of the types: stimulus gets an immediate answer and everything is invigorating. Lively, eager, spontaneous, resilient.",
+          "available": 82,
+          "shift": "They found the world responded — and set down the part that hurts.",
+          "aim": "at everything, freshly"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Accomplished generalists who do many things well. Practical, productive, prolific — and cross-pollinating between the things they know.",
+          "available": 70,
+          "shift": "Answering everything turned into doing many things well.",
+          "aim": "at making things"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "Restlessness rises and they want options. Adventurous and worldly, but less focused — always after something new. The connoisseur, and then the consumer. Variety matters, and so does being current.",
+          "available": 55,
+          "shift": "Doing began to feel like missing out, so options started mattering more than any one of them.",
+          "aim": "at keeping the options open"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "Unable to tell what they actually need, they go hyperactive — unable to refuse themselves anything. Uninhibited: storytelling, exaggerating, wise-cracking, performing. Terrified of boredom, in perpetual motion, doing far too many things. Many ideas, almost no follow-through.",
+          "available": 38,
+          "shift": "Options did not satisfy either, so the speed went up.",
+          "aim": "at outrunning the gap"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Excess in every available form. Self-centred, materialistic, greedy — never enough. Demanding and pushy, and somehow jaded at the same time. Addictive, hardened, insensitive.",
+          "available": 24,
+          "shift": "Speed did not satisfy, so the quantity went up.",
+          "aim": "at more, of anything"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Desperate to quiet the anxiety: impulsive, infantile, not knowing when to stop. The excess collects its bill. Dissipated escapists, offensive and abusive.",
+          "available": 14,
+          "shift": "Quantity did not satisfy, so nothing was refused at all.",
+          "aim": "at anything that stops the feeling"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "In flight from themselves, acting out rather than feeling anything. Out of control — erratic swings, compulsive action.",
+          "available": 7,
+          "shift": "There was no gap left to feel anything in.",
+          "aim": "at escape from themselves"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "The energy finally runs out. Claustrophobic, panic-stricken. Often giving up on themselves entirely — deep depression, despair.",
+          "available": 2,
+          "shift": "The engine ran out.",
+          "aim": "at nothing"
+        }
+      ],
+      "clinical_at_9": "bipolar disorder and histrionic personality disorder",
+      "faculty": "The appetite"
+    },
+    {
+      "n": 8,
+      "name": "The Challenger",
+      "alt": "The Leader",
+      "anchor": {
+        "center": "Body / anger",
+        "mode": "Assertive — moving against",
+        "core_fear": "being harmed, controlled, violated, made vulnerable",
+        "core_desire": "to protect themselves; control of their own life and destiny",
+        "passion": "Lust (excess, intensity)",
+        "virtue": "Innocence",
+        "holy_idea": "Holy Truth",
+        "defense": "Denial"
+      },
+      "triad_relation": "The Body centre's problem is aggression and repression. The Eight **expresses** the aggression at full volume — and represses something else entirely.",
+      "engine": "**Coming on strong** — lust as an appetite for excess, intensity pursued through any available channel: speed, volume, risk, argument, work. And the appetite has a job. **The intensity is there to drown out an inner deadness the Eight will not feel.** The mechanism is desensitization: the Eight raises their own pain threshold — **an act of sadism turned against the self.** Before the Eight stops feeling you, they have stopped feeling themselves.",
+      "trigger": "Being told what to do. Being managed. Tenderness aimed at them. **Anyone locating the soft spot, including by accident.** Their own fatigue. And the one they will not name: **their own fear surfacing**, which is the greatest threat to their independence and so must be repressed.",
+      "filter": "**Anything touching the soft thing converts into reconnaissance** — not *someone is being kind* but *someone is finding the seam.* And what is being protected is specific: **their innate sensitivity and gentleness, and their own fear.** Beneath the surface they are as afraid as everyone else. **A Body type whose defense is the repression of fear.**",
+      "wake_up": "**Once they have taken on the big challenges they set themselves, there is always the possibility they will not achieve them** — and underneath the bold exterior, little fears and doubts about pulling it off begin to nag. That is the fear that starts the descent.",
+      "cost": "Beneath the tough façade is vulnerability, covered by layers of emotional armour — so they are industrious **at the price of losing emotional contact with the people in their lives.** And because they fear rejection, **they reject others first.** They become blocked in the capacity to love, since love hands the other person power and wakes the core fear. The origin is remembered: **most Eights recall a pivotal childhood moment when they realized they could no longer afford to be open — and feel it as one of the great tragedies of their lives.**",
+      "contradiction": "**The harder they work at being impervious, the more they shut down and harden.** The armour built to prevent the wound produces the shutdown that *is* the wound. And at the far end: **they bring about the very thing they most feared** — having destroyed all they could, they deplete their resources and become vulnerable to exactly the retaliation they were guarding against. **A self-fulfilling prophecy.**",
+      "same_energy": "**The strength is real.** At their clearest they use it to empower rather than dominate. The force that flattens a room and the force that would stand in front of someone are one power — **only the direction differs.**",
+      "doorway": "**They discover that it is in their most profound self-interest to love others.** Power used for others turns destructive the moment it is used against them. And the Eight who opens themselves performs **an extraordinary act of heroism — putting themselves in a humble yet exalted position.** Not yielding as defeat. **Yielding as the only move that gets them what force never could.**",
+      "doorway_short": "Love is the self-interest",
+      "destination": "Lust → Innocence. Vengeance dissolves into Holy Truth.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Self-restraint arrives, and mercy with it. They master themselves by surrendering to something larger — and will put themselves in real danger for it. Heroism is available here, and so is lasting influence.",
+          "available": 100,
+          "shift": "Nothing gave way. Strength stopped needing to prove itself.",
+          "aim": "at something larger than themselves"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Self-assertive and strong: they have learned to stand up for what they need. Resourceful, capable, driven from inside, needing nobody's permission.",
+          "available": 82,
+          "shift": "They found they could stand up for themselves — and set down the part that can be hurt.",
+          "aim": "at their own life"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "The natural leader. Decisive, authoritative, commanding — taking initiative and making things happen. Championing people, providing, protecting. Others are carried by their strength.",
+          "available": 70,
+          "shift": "Standing up for themselves became standing up for others.",
+          "aim": "at the people in their charge"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "Self-sufficiency becomes the whole concern: resources, independence, having enough. Enterprising and pragmatic, dealing and building, taking risks, working hard. And no longer admitting they have emotional needs at all.",
+          "available": 55,
+          "shift": "Protecting others meant needing enough to do it — and the need for enough closed over the emotional needs.",
+          "aim": "at building what cannot be taken"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "The domination starts — of the environment, then of the people in it. They want everyone behind them. Swaggering, expansive, boastful. The boss whose word settles it. Proud, egocentric, imposing their will on everything, and no longer treating anyone as an equal.",
+          "available": 38,
+          "shift": "Self-sufficiency was not safety, so the environment had to be controlled too.",
+          "aim": "at controlling the room"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Combative. Everything is a test of wills and they will not back down. Threats and reprisals to force obedience — which makes people fear them, resent them, and eventually band together against them.",
+          "available": 24,
+          "shift": "Control was not obedience, so the threats started.",
+          "aim": "at anyone who might be a threat"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Defying any attempt at control, they go ruthless. Dictatorial. Force decides. The outlaw, the renegade, the con-artist. Hard-hearted, and capable of violence.",
+          "available": 14,
+          "shift": "Threats were resisted, so the restraint came off.",
+          "aim": "at the world"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Delusions of their own power. Megalomania — omnipotent, untouchable, no limit applying to them. Recklessly over-extended.",
+          "available": 7,
+          "shift": "Nothing had stopped them yet, so nothing could.",
+          "aim": "at proving the invulnerability"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Cornered, they will destroy whatever refused to submit rather than surrender to anyone. Vengeful. Barbaric.",
+          "available": 2,
+          "shift": "Rather than yield, they would end it.",
+          "aim": "at destruction"
+        }
+      ],
+      "clinical_at_9": "antisocial personality disorder",
+      "faculty": "The strength"
+    },
+    {
+      "n": 9,
+      "name": "The Peacemaker",
+      "alt": "The Mediator",
+      "anchor": {
+        "center": "Body / anger",
+        "mode": "Withdrawn — moving away",
+        "core_fear": "loss, fragmentation, separation, conflict",
+        "core_desire": "inner and outer peace; wholeness",
+        "passion": "Sloth (self-forgetting)",
+        "virtue": "Right Action",
+        "holy_idea": "Holy Love",
+        "defense": "Narcotization"
+      },
+      "triad_relation": "The Body centre's problem is aggression and repression. The Nine **represses** it — specifically, **they have repressed the ability to assert the self, in order to be more receptive to the other.**",
+      "engine": "**Going with the stream** — accidia, the passion for comfort, the overadjusted disposition. **They equate self-assertion with aggression**, as though having a position automatically threatens the relationship. And there is a second reason underneath: **asserting themselves lets powerful feelings surge through, and powerful feelings will not keep the peace.** So the aggression gets repressed until they are no longer aware of having any. They solve the problem of having aggressions by *ignoring them out of existence.*",
+      "trigger": "Being asked what they want. Pressure. Urgency. Conflict starting anywhere in the room. **Their own preference surfacing** — which reads as the opening move of a fight. And being made to matter, which is the same threat from the other direction.",
+      "filter": "Anything requiring a position reads as conflict beginning. And the thing they cannot see: **the passivity, the denials, the inattention, the disengagement are themselves forms of aggression** — passive resistance, an aggressive withholding of themselves from reality. **They are far more aggressive than they think they are.**",
+      "wake_up": "**They begin to fear that asserting themselves or their desires will create conflict and spoil the peace.** So they subordinate themselves to roles and social conventions — **and the role is created by others, and exists to fulfil their expectations.** Where the Three wants to be outstanding in their role, **the Nine does not want to stand out, lest they draw fire.**",
+      "cost": "**They seek peace at any price — and the price is contact with everyone and everything, including themselves.** They idealize whoever they identify with, which feels like connection and is self-forgetting. To keep the peace **they have dissociated themselves from themselves — and from reality.** And it backfires immediately: people want a response, the input does not come, **and that generates the very conflicts they were avoiding.**",
+      "contradiction": "**They fear loss and separation — and become fragmented: not only separated from others but separated from themselves**, profoundly alienated from and terrified of their own lives.",
+      "same_energy": "At their clearest they are the most contented and receptive people imaginable — **and the peace is mature enough to admit conflict, separation and individuality into it.** The receptivity is real. It only costs them when it excludes them.",
+      "doorway": "**Accept suffering — consciously.** Suffering, consciously accepted, has the power to **catalyze** — to shock a person into awareness. And it compels a choice about what it means. **When we choose a meaning for our experience, we create ourselves.** The Nine who uses suffering actively is both the self who suffers and the self who transcends it — **and in that moment the self is aware and unified.**",
+      "doorway_short": "Meet the suffering",
+      "destination": "Sloth → Right Action. Indolence dissolves into Holy Love.",
+      "levels": [
+        {
+          "n": 1,
+          "zone": "Healthy",
+          "name": "Liberation",
+          "text": "Self-possessed, autonomous, fulfilled — with real equanimity, because they are present to themselves. At one with themselves, and therefore capable of deeper contact with anyone else. Intensely alive.",
+          "available": 100,
+          "shift": "Nothing gave way. They arrived where they already were.",
+          "aim": "at being here, fully"
+        },
+        {
+          "n": 2,
+          "zone": "Healthy",
+          "name": "Psychological Capacity",
+          "text": "Deeply receptive and accepting, unselfconscious, serene. Trusting themselves and other people, at ease with life. Innocent, patient, unpretentious, genuinely good-natured.",
+          "available": 82,
+          "shift": "They let the world in without bracing — and set down their own position.",
+          "aim": "at receiving what comes"
+        },
+        {
+          "n": 3,
+          "zone": "Healthy",
+          "name": "Social Value",
+          "text": "Optimistic, reassuring, supportive — a calming influence that heals things. Harmonizing groups, bringing people together. A real mediator.",
+          "available": 70,
+          "shift": "Letting it in, they could hold it together for everyone.",
+          "aim": "at holding people together"
+        },
+        {
+          "n": 4,
+          "zone": "Average",
+          "name": "Imbalance · Social Role",
+          "text": "Conflict becomes the thing to avoid, so they shrink. Accommodating, idealizing others, going along, saying yes to what they do not want. Falling into conventional roles. Stock phrases and borrowed philosophies used to deflect people.",
+          "available": 55,
+          "shift": "Holding it together felt threatened by their own wanting, so they set the wanting down.",
+          "aim": "at keeping the peace"
+        },
+        {
+          "n": 5,
+          "zone": "Average",
+          "name": "Interpersonal Control",
+          "text": "Active but not present. Disengaged, unreflective, inattentive. Refusing to be affected — unresponsive, complacent, walking away from problems. Thinking goes hazy and ruminative, mostly comforting fantasy, as reality gets tuned out. Unwilling to exert themselves. Indifferent.",
+          "available": 38,
+          "shift": "Without their own wanting, there was nothing to be present with — so they went vague.",
+          "aim": "at not being affected"
+        },
+        {
+          "n": 6,
+          "zone": "Average",
+          "name": "Overcompensation",
+          "text": "Problems shrunk until they are manageable. Everyone appeased. Peace bought at whatever it costs. Stubborn, fatalistic, resigned — as though nothing could change anything. Wishful thinking and magical solutions. And everyone around them frustrated and angry at the unresponsiveness.",
+          "available": 24,
+          "shift": "Vagueness did not stop the demands, so they dug in and stopped moving.",
+          "aim": "at making it all smaller"
+        },
+        {
+          "n": 7,
+          "zone": "Unhealthy",
+          "name": "Violation",
+          "text": "Repressed and ineffectual, incapable of facing anything. Obstinate. Dissociated from all conflict. Neglectful — and dangerous by the neglect.",
+          "available": 14,
+          "shift": "Not moving was not enough; they had to stop registering it at all.",
+          "aim": "at nothing getting through"
+        },
+        {
+          "n": 8,
+          "zone": "Unhealthy",
+          "name": "Delusion & Compulsion",
+          "text": "Blocking out anything that could reach them, dissociating so completely they eventually cannot function. Numb. Depersonalized.",
+          "available": 7,
+          "shift": "Registering nothing, they went numb through.",
+          "aim": "at feeling nothing"
+        },
+        {
+          "n": 9,
+          "zone": "Unhealthy",
+          "name": "Pathological Destructiveness",
+          "text": "Severely disoriented, abandoning themselves. A shattered shell.",
+          "available": 2,
+          "shift": "There was no one left at the address.",
+          "aim": "at their own disappearance"
+        }
+      ],
+      "clinical_at_9": "schizoid and dependent personality disorders",
+      "faculty": "The receptivity"
+    }
+  ]
+}
