@@ -250,15 +250,21 @@ changes only universal lines; next-door cycle correct on all nine; back gesture 
 previous screen on phone; deep links restore state; no horizontal scroll at 390px; fonts
 render with zero network; no console errors.
 
-## 12 · Open decisions (owner)
+## 12 · Decisions — RESOLVED by the owner (2026-07-17)
 
-- **D1 — The Moment with "who's in the room?"** (0/1/2 people). Recommended: yes — it is
-  the product's actual scene, and the two-person case is why the material exists.
-- **D2 — "How deep does it go?"** (levels 1–6 + edge card, collapsed). Recommended: yes —
-  it is a third of the authored material and the shift lines were written as recognition
-  handles; collapsed keeps it out of the casual path.
-- **D3 — Home doors as the 3×3 map** with plain axis labels (vs. v1's flat list).
-  Recommended: yes — the arrangement teaches the deepest structure at zero reading cost.
+- **D1 — The Moment with "who's in the room?"** → **YES**, built. 0/1/2 people; person
+  blocks are placement of authored `trigger`/`doorway` text only; nothing generated
+  about the pair.
+- **D2 — The vertical** → **AMENDED by the owner: all NINE levels, as a spectrum,
+  one level at a time** (not a grid, not capped at 6). Built as a slider on a
+  light-to-dark band (the reference document's own idiom — the page loses light as the
+  level deepens); levels 7–9 show their authored text with a standing flag
+  ("Clinical territory — outside this guide's reach; the guide shows the shape of the
+  slide here; it does not interpret it") and **no diagnostic labels** (`clinical_at_9`
+  is never displayed in this product). This matches the internal reference's own
+  presentation of the vertical, with the reader-facing safeguard kept.
+- **D3 — Home doors as the 3×3 map** → **YES**, built; collapses to
+  centre-grouped list on phones.
 
-Versioning per the house rule: v1 keeps its URL; v2 publishes at a new URL; both stay
-side by side until the owner retires one.
+Implemented as `The_Field_Guide_II.html` (v2), published at its own URL per the house
+rule; v1 and the Composition Engine keep their URLs, all three side by side.

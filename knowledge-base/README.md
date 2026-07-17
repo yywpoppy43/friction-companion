@@ -5,7 +5,8 @@ The runtime interior of the three-axis knowledge base: **Concept × Type × Lens
 | File | What it is |
 |---|---|
 | `The_Composition_Engine.html` | The specialist version. One self-contained file — open it straight from the filesystem, or drop this folder on any static host unchanged. No build step, no dependencies beyond the fonts already in use. |
-| `The_Field_Guide.html` | The reader-facing version of the same knowledge base: enter through a type, read its material as a guided journey, switch the language with one control. Same data, same composition rules, phone-friendly, fonts embedded (fully self-contained — no network needed at all). |
+| `The_Field_Guide.html` | The reader-facing version, v1: enter through a type, read its material as a guided journey, switch the language with one control. Same data, same composition rules, phone-friendly, fonts embedded (fully self-contained — no network needed at all). |
+| `The_Field_Guide_II.html` | The reader-facing version, v2, built to `FIELD_GUIDE_SPEC.md`: the Moment as a walkable four-step scene with one or two people plugged in (placement of authored text only — nothing generated about the pair), the nine doors as the tradition's 3×3 map, all nine levels as a light-to-dark spectrum with clinical territory marked from level 7 (no diagnostic labels), and per-type centre-sibling contrasts quoted from the sources. Fully self-contained. |
 | `grid_data.json` | The authored **Concept × Lens** face: thirteen universal concepts (nine core systems, four relational mechanics), each in five lenses, each carrying its register (`established` / `model`). |
 | `types_data.json` | The authored **Concept × Type** face: the nine defenses, field by field. `_meta.parents` is the joint — it maps each type-field to its universal concept. |
 

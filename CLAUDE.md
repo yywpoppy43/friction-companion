@@ -27,7 +27,8 @@ Keep them side by side; neither replaces the other.
 | File | Audience | Live link |
 |---|---|---|
 | `The_Composition_Engine.html` | Specialist: three selectors, source cells, registers, grid sheets | https://claude.ai/code/artifact/84553294-5b0f-4265-8904-933d68e7cbb9 |
-| `The_Field_Guide.html` | Reader/presenter: enter through a type, guided journey, language switcher, phone-friendly | https://claude.ai/code/artifact/c2f36d0d-6a64-4ba5-9461-7299a3fc1ae1 |
+| `The_Field_Guide.html` | Reader/presenter, v1: enter through a type, guided journey, language switcher, phone-friendly | https://claude.ai/code/artifact/c2f36d0d-6a64-4ba5-9461-7299a3fc1ae1 |
+| `The_Field_Guide_II.html` | Reader/presenter, v2 (built to `FIELD_GUIDE_SPEC.md`): the Moment with who's-in-the-room (0/1/2 people), 3×3 door map, nine-level spectrum with the clinical edge marked, centre-sibling contrasts | https://claude.ai/code/artifact/5bfca5bd-ec99-4992-a2f7-13bbd8ce66c1 |
 
 Both compose at runtime from `grid_data.json` (Concept × Lens) and
 `types_data.json` (Concept × Type, joined by `_meta.parents`). The interior of
