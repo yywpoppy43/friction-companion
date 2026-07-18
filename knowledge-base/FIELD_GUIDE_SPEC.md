@@ -268,3 +268,37 @@ render with zero network; no console errors.
 
 Implemented as `The_Field_Guide_II.html` (v2), published at its own URL per the house
 rule; v1 and the Composition Engine keep their URLs, all three side by side.
+
+## 13 · v3 addendum — The Loop (owner request: "show how they interact")
+
+Implemented as `The_Field_Guide_III.html` ("Guide 3"), keeping everything in v2.
+
+**The honest boundary, stated first.** The sources contain no authored content about
+specific pairs beyond seven sentences (below). Therefore v3 builds no compatibility
+model, no scores, no "when an X meets a Y" prose — that would be fabrication.
+
+**What the data does license — the circuit.** The `filter` field is authored as
+*"how ANY input gets converted into threat"*; in a two-person room, the other person's
+move IS the input. Each type's move under friction is authored in `anchor.mode`
+(*moving against / moving away / moving toward the standard/people/support*). So the
+interaction composes as a feedback loop of verbatim parts:
+A's mode-move → B's filter → B's mode-move → A's filter → …
+The wiring is the universal Flinch physics; every node is source text. v3 draws it:
+two nodes, two arrows (solid gold = against, sage pointing out of the field = away,
+dashed clay = toward), each labelled with its authored mode phrase, above the two
+verbatim filters. One inventoried bridge line, used once: *"Each one's defense is the
+other's input."* The panel closes with the authored counter-statement from Shared
+Connection: *"Not two systems merging — two systems each finding their own ground,
+together."* The loop appears only when both people are chosen, between the Flinch and
+the Anchor; the geometry is left to speak — the engine never names the combined pattern.
+
+**The seven authored pair contrasts** (the only pair-specific content that exists;
+surfaced verbatim when the pair is chosen): 5-7 (Type 7 triad_relation), 3-9 (Type 9
+wake_up), 2-3 / 3-4 / 2-4 (Type 3 triad_relation names all three Heart types),
+5-6 / 6-7 (Type 6 triad_relation names all three Head types). Same-centre pairs with
+no cross-quote (the Body pairs) show the shared problem sentence instead. Person
+blocks additionally carry the authored raw feeling (*underneath, anger/shame/fear*).
+
+**Copy-inventory additions (v3):** "The loop", "two people" (chip), "Each one's
+defense is the other's input.", "The filter — how input becomes threat", "underneath,",
+"The tradition itself draws this contrast". Nothing else was added.
