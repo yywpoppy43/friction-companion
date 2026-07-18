@@ -302,3 +302,40 @@ blocks additionally carry the authored raw feeling (*underneath, anger/shame/fea
 **Copy-inventory additions (v3):** "The loop", "two people" (chip), "Each one's
 defense is the other's input.", "The filter — how input becomes threat", "underneath,",
 "The tradition itself draws this contrast". Nothing else was added.
+
+
+## 14 · v3.1 addendum — everything else the current data licenses
+
+Four additions built into `The_Field_Guide_III.html` (same file, same URL), exhausting
+what the two authored faces support without new source material:
+
+- **The nine ways back** (new screen): all nine `destination` arcs, `doorway_short`
+  hooks and faculties on one page — the whole map's direction of travel. Pure placement;
+  lens strip hidden there because nothing on it is lensed.
+- **Find your door by feel** (home, collapsed): the nine authored `trigger` texts as
+  browsable entry cards, framed explicitly as *"Not a test. Read, and notice which one
+  lands."* No scoring, no verdict — the guardrails' own psychometrics note rules out a
+  typing instrument, so recognition-by-reading is the honest ceiling.
+- **The whole slide** (spectrum): the nine authored `available` numbers drawn as a
+  curve with the current level marked, replacing the single-value meter.
+- **If the loop keeps running** (loop, collapsed): the two `contradiction` fields
+  verbatim, labeled "The trap — how it defeats itself".
+
+Copy-inventory additions: "The nine ways back", "Every correction on one page — the
+whole map's direction of travel", "Not sure which door? Read what sets each one off",
+"Not a test. Read, and notice which one lands.", "— what sets it off", "If the loop
+keeps running", "The trap — how it defeats itself", "Of themselves, available — the
+whole slide", "the one power; only its aim changes". Nothing else.
+
+**What the next steps need from the owner** (recorded so the asks survive sessions):
+1. **The symbol's arrows** — each type's integration (growth) and disintegration
+   (stress) point from the same primary literature → unlocks real between-type arrows
+   on the map and "under pressure, this door borrows that one's pattern" cards.
+2. **Pair material** — the tradition's type-combination writings (45 pairs) or an
+   owner-authored pairs face (`pairs_data.json`: one cell per pair, tier [STRUCTURE])
+   → turns the Loop from adjacency into a true pair engine.
+3. **Wings** and **the 27 subtypes** → neighborhoods on the map; a third axis per door.
+4. **The Anchor protocol** (the Tool's actual steps, stated at Source_Neuroscience
+   precision) → a "do this now" card at the Moment's step 2.
+5. **Source_Ledger.md** → specialist attribution panel in the Composition Engine.
+6. **Richer lens text** → drop-in replacement; every version re-renders unchanged.

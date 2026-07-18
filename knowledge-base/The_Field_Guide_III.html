@@ -235,6 +235,29 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .loopfoot{margin-top:1.05rem;padding:.6rem 0 .6rem 1rem;border-left:2px solid rgba(150,101,15,.45);background:linear-gradient(90deg,rgba(150,101,15,.06),transparent 72%);border-radius:0 6px 6px 0;font-size:.92rem;color:var(--mid)}
 .loopfoot .uk{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.25rem}
 .pblock .under{font-family:"Spectral",Georgia,serif;font-style:italic;color:var(--mid);font-weight:400;margin-left:.45em;text-transform:none;letter-spacing:0;font-size:1.05em}
+.wrow{position:relative;display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.35));padding:1rem 1.15rem .95rem;transition:.22s;margin-top:.6rem}
+.wrow::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--edge);opacity:.8}
+.wrow:hover{transform:translateY(-2px);border-color:rgba(43,34,22,.38)}
+.wrow .wk{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--edge);display:block}
+.wrow .wd{display:block;font-size:1.04rem;line-height:1.6;margin-top:.4rem}
+.wrow .ww{display:block;font-size:.95rem;font-style:italic;color:var(--gold);margin-top:.35rem}
+.wrow .wf{display:block;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);margin-top:.45rem;opacity:.85}
+.reveal{margin-top:1.05rem;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);border:1px solid var(--line);border-radius:20px;padding:.5em 1em;transition:.2s;min-height:30px}
+.reveal:hover{color:var(--ink)}
+.reveal[aria-expanded="true"]{color:var(--gold);border-color:rgba(150,101,15,.45);background:rgba(150,101,15,.07)}
+.revealbody{display:none}
+.revealbody.on{display:block}
+.feelwrap{display:none;margin-top:1rem}
+.feelwrap.on{display:block}
+.feelintro{font-size:.92rem;font-style:italic;color:var(--mid)}
+.feelcard{position:relative;display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,var(--surface),rgba(255,255,255,.35));padding:.95rem 1.1rem;transition:.22s;margin-top:.6rem}
+.feelcard::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;border-radius:2px;background:var(--edge);opacity:.8}
+.feelcard:hover{transform:translateY(-2px);border-color:rgba(43,34,22,.38)}
+.feelcard .fk{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--edge);display:block;margin-bottom:.35rem}
+.feelcard .ft{font-size:.95rem;line-height:1.6;color:var(--ink)}
+.vcurve{margin-top:1.2rem}
+.vcurve .k{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:.8}
+.vcurve svg{width:100%;max-width:360px;height:auto;display:block;margin-top:.4rem}
 footer{margin-top:3.6rem;border-top:1px solid var(--line);padding-top:1.4rem;font-size:.88rem;color:var(--mid);max-width:66ch}
 footer b{color:var(--deep);font-weight:500}
 footer p+p{margin-top:.6rem}
@@ -1533,7 +1556,7 @@ function readHash(){
  if(!location.hash)return;
  try{
   const p=new URLSearchParams(location.hash.slice(1));
-  const s=p.get('s');if(['home','moment','type','ground'].includes(s))S.screen=s;
+  const s=p.get('s');if(['home','moment','type','ground','ways'].includes(s))S.screen=s;
   const iv=(k,lo,hi,d)=>{const v=parseInt(p.get(k),10);return v>=lo&&v<=hi?v:d};
   S.t=iv('t',1,9,S.t);S.room=iv('room',0,2,S.room);S.pa=iv('pa',0,9,S.pa);S.pb=iv('pb',0,9,S.pb);S.lv=iv('lv',1,9,S.lv);
   const l=p.get('l');if(l&&LENSES.some(x=>x.k===l))S.l=l;
@@ -1548,16 +1571,18 @@ function renderBar(){
  bar.className='bar';
  const crumb=S.screen==='moment'?'Field Guide · The moment'
    :S.screen==='type'?`Field Guide · ${typeByN(S.t).name}`
+   :S.screen==='ways'?'Field Guide · The nine ways back'
    :'Field Guide · True of everyone';
  const l=lensOf(S.l);
+ const showLens=['moment','type','ground'].includes(S.screen);
  bar.innerHTML=`<div class="barrow">
    <button class="back" id="backbtn">&#8592; Back</button>
    <span class="crumb" id="crumbhome" role="link" tabindex="0">${esc(crumb)}</span></div>
-  <div class="lensbar">
+  ${showLens?`<div class="lensbar">
    <div class="lenses">${LENSES.map(x=>`<button class="lens${x.k===S.l?' on':''}" data-l="${x.k}" aria-pressed="${x.k===S.l}">${x.name}</button>`).join('')}</div>
    <div class="lensdesc">${esc(l.desc)}</div>
    ${S.l==='scientific'?`<div class="scinote">${esc(SCI_NOTE)}</div>`:''}
-  </div>`;
+  </div>`:''}`;
  document.getElementById('backbtn').addEventListener('click',()=>{
   if(history.length>1)history.back();else nav({screen:'home'},true);
  });
@@ -1599,13 +1624,25 @@ function renderHome(el){
   <div class="shead">Or enter through a door</div>
   <div class="mapdesk">${desk}</div>
   <div class="mapphone">${phone}</div>
-  <button class="everyone" id="gouni">
+  <button class="everyone" id="feelt" aria-expanded="false" style="margin-top:1.2rem">
+   <span class="nm">Not sure which door? Read what sets each one off</span>
+   <span class="sub">Not a test. Read, and notice which one lands.</span>
+  </button>
+  <div class="feelwrap" id="feelw">${TYPES.map(t=>`<button class="feelcard m-${modeWord(t)}" data-t="${t.n}"><span class="fk">${t.n} · ${esc(t.name)} — what sets it off</span><span class="ft">${md(t.trigger)}</span></button>`).join('')}</div>
+  <button class="everyone" id="goways" style="margin-top:.6rem">
+   <span class="nm">The nine ways back</span>
+   <span class="sub">Every correction on one page — the whole map&#x27;s direction of travel.</span>
+  </button>
+  <button class="everyone" id="gouni" style="margin-top:.6rem">
    <span class="nm">What is true of everyone</span>
    <span class="sub">The thirteen universals underneath all nine doors — the same physics in every body.</span>
   </button>`;
- el.querySelectorAll('.door').forEach(d=>d.addEventListener('click',()=>nav({screen:'type',t:+d.dataset.t},true)));
+ el.querySelectorAll('.door,.feelcard').forEach(d=>d.addEventListener('click',()=>nav({screen:'type',t:+d.dataset.t},true)));
  document.getElementById('gomoment').addEventListener('click',()=>nav({screen:'moment'},true));
  document.getElementById('gouni').addEventListener('click',()=>nav({screen:'ground'},true));
+ document.getElementById('goways').addEventListener('click',()=>nav({screen:'ways'},true));
+ const ft=document.getElementById('feelt');
+ ft.addEventListener('click',()=>{const w=document.getElementById('feelw');const o=w.classList.toggle('on');ft.setAttribute('aria-expanded',o?'true':'false')});
 }
 
 /* ---------- the moment ---------- */
@@ -1657,6 +1694,8 @@ function loopCard(){
    <p class="loopsub">Each one&#x27;s defense is the other&#x27;s input.</p>
    <div class="loopsvg">${svgCircuit(A,B,'You','The other person')}</div>
    ${filters}
+   <button class="reveal" id="looprun" aria-expanded="false">If the loop keeps running</button>
+   <div class="revealbody" id="looprunb">${[{who:'You',t:A},{who:'The other person',t:B}].map(p=>personBlock(p.who,p.t.n,'contradiction','The trap — how it defeats itself')).join('')}</div>
    ${pq?`<div class="pairq"><span class="pk2">The tradition itself draws this contrast</span>&ldquo;${esc(pq)}&rdquo;</div>`:''}
    ${sharedLine?`<div class="pairq"><span class="pk2">Same problem, different strategy</span>${esc(sharedLine)}</div>`:''}
    <div class="loopfoot"><span class="uk">True of everyone · Shared Connection</span>Not two systems merging — two systems each finding their own ground, together.</div>
@@ -1706,6 +1745,8 @@ function renderMoment(el){
   <div class="linkrow">
    <button class="nextlink" id="goall"><span class="k">The nine patterns</span>Enter through a door — each one&#x27;s full story</button>
   </div>`;
+ const lr=document.getElementById('looprun');
+ if(lr)lr.addEventListener('click',()=>{const b=document.getElementById('looprunb');const o=b.classList.toggle('on');lr.setAttribute('aria-expanded',o?'true':'false')});
  el.querySelectorAll('[data-room]').forEach(b=>b.addEventListener('click',()=>{
   const r=+b.dataset.room;
   nav({room:r,pa:r>=1?S.pa:0,pb:r===2?S.pb:0},false);
@@ -1717,6 +1758,16 @@ function renderMoment(el){
 }
 
 /* ---------- a type ---------- */
+function curveSvg(t){
+ const pts=t.levels.map((L,i)=>[14+i*34,10+(100-L.available)*0.42]);
+ const line=pts.map(p=>p[0]+','+p[1]).join(' ');
+ const cur=pts[S.lv-1],av=t.levels[S.lv-1].available;
+ return `<svg viewBox="0 0 300 64" role="img" aria-label="How much of themselves is available, across the nine levels">
+  <polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/>
+  ${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${i+1===S.lv?4:2}" fill="currentColor" opacity="${i+1===S.lv?'1':'.5'}"/>`).join('')}
+  <text x="${cur[0]+(S.lv>6?-9:9)}" y="${cur[1]+3}" text-anchor="${S.lv>6?'end':'start'}" font-family="JetBrains Mono,monospace" font-size="10" fill="currentColor">${av}%</text>
+ </svg>`;
+}
 function renderSpectrum(t){
  const L=t.levels[S.lv-1];
  const clinical=S.lv>=7;
@@ -1729,7 +1780,7 @@ function renderSpectrum(t){
    <div class="vshift"><span class="k">What gave way</span><span class="s" id="vshift">${md(L.shift)}</span></div>
    <div class="vtx" id="vtx">${md(L.text)}</div>
    <div class="vaim"><b id="vfac">${esc(t.faculty)}, aimed</b> <i id="vaim">${esc(L.aim)}</i></div>
-   <div class="vmeter"><span class="k">Of themselves, available</span><div class="vbar"><span id="vbar" style="width:${L.available}%"></span></div></div>
+   <div class="vcurve"><span class="k">Of themselves, available — the whole slide</span><div id="vcw">${curveSvg(t)}</div></div>
    <div class="vflag${clinical?' on':''}" id="vflag"><b>Outside this guide&#x27;s reach</b>Clinical territory. The guide shows the shape of the slide here; it does not interpret it.</div>
   </div>`;
 }
@@ -1747,7 +1798,7 @@ function wireSpectrum(t){
   document.getElementById('vshift').innerHTML=md(L.shift);
   document.getElementById('vtx').innerHTML=md(L.text);
   document.getElementById('vaim').textContent=L.aim;
-  document.getElementById('vbar').style.width=L.available+'%';
+  document.getElementById('vcw').innerHTML=curveSvg(t);
   document.getElementById('vflag').classList.toggle('on',clinical);
  });
 }
@@ -1809,6 +1860,24 @@ function renderType(el){
  document.getElementById('gouni2').addEventListener('click',()=>nav({screen:'ground'},true));
 }
 
+/* ---------- the nine ways back ---------- */
+function renderWays(el){
+ const rows=TYPES.map(t=>`<button class="wrow m-${modeWord(t)}" data-t="${t.n}">
+   <span class="wk">${t.n} · ${esc(t.name)}</span>
+   <span class="wd">${md(t.destination)}</span>
+   <span class="ww">The way back: &ldquo;${esc(t.doorway_short)}&rdquo;</span>
+   <span class="wf">${esc(t.faculty)} — the one power; only its aim changes</span>
+  </button>`).join('');
+ el.innerHTML=`
+  <header class="uhead">
+   <div class="tnum" style="--edge:var(--gold)">The Return</div>
+   <h2 class="tname" style="font-size:clamp(1.8rem,6vw,2.5rem)">The nine ways back.</h2>
+   <p class="lede" style="font-size:.98rem">Every door&#x27;s correction on one page — what each passion dissolves into, and the direction the way back runs.</p>
+  </header>
+  <div style="margin-top:1.4rem">${rows}</div>`;
+ el.querySelectorAll('.wrow').forEach(b=>b.addEventListener('click',()=>nav({screen:'type',t:+b.dataset.t},true)));
+}
+
 /* ---------- ground floor ---------- */
 function renderGround(el){
  const per=new Set(Object.values(PARENTS));
@@ -1841,6 +1910,7 @@ function update(){
  if(S.screen==='home')renderHome(el);
  else if(S.screen==='moment')renderMoment(el);
  else if(S.screen==='type')renderType(el);
+ else if(S.screen==='ways')renderWays(el);
  else renderGround(el);
 }
 
