@@ -544,3 +544,72 @@ opens to the full text, word for word.", row labels (Your/Their tripwires, Your/
 way back, Where it rubs, What each brings, Ground any time), "Read in full"/"Show
 less", steady step names (Ground/Name it/The turn/Return) and pacer strings, walk-back
 question labels, and the footer. Nothing else.
+
+## 20 · The Mix — the resonance walk (new deliverable, own name and URL)
+
+Owner: "I want to mix the fourth choice, Resonance Walk … rather than ask them
+questions … how do they actually handle it in real life? That is from real data …
+I think I want you to build it first before I can decide."
+
+**What it is.** `The_Mix.html` — the honest alternative to a typing quiz. A quiz
+self-report fails here by construction: the thing it would measure is a defense, and
+a defense hides best from its owner. So The Mix never types anyone. Twelve forced
+choices produce a **reading order** ("start reading here"), never a verdict.
+
+**The four moves (design law, shown to the walker on the home screen):**
+1. **Moves, not adjectives** — the owner's "real life" principle. Cards are the
+   authored `trigger` (tripwires), `filter` (the mishearing), `engine` (the strategy)
+   and `cost` (the price) fields: concrete moments and moves, never trait adjectives.
+2. **The forced choice** — two cards at a time, both plausible, neither flattering;
+   no "neither" button, by design and said so.
+3. **The wince** — three rounds ask which card you'd *least* want true; recoil is
+   treated as evidence, disclosed as such.
+4. **The mirror** — optional second pass by someone who knows the walker; the two
+   walks are compared, and divergence is framed as the most useful page, not an error.
+   Mirror wince asks it straight ("Which do you most see them paying?") — the
+   informant has no recoil to read, so observation replaces it.
+
+**The deck (equal-exposure law).** Nine scene rounds pair commonly-confused
+neighbours in one closed cycle — 1-8, 8-3, 3-7, 7-2, 2-9, 9-6, 6-5, 5-4, 4-1 — so both
+cards are live options. Each type appears in **exactly two scene rounds**, with a
+**different field each time** (edge 3-colouring: trigger/filter/engine repeating), and
+in **exactly one wince round** (its centre triad: 8-9-1, 2-3-4, 5-6-7, on `cost`).
+Every pick weighs the same. No type can lead through exposure, and no card repeats.
+Card order within a round is shuffled per pass.
+
+**Blindness.** During the walk: no type names or numbers anywhere, and no mode
+colours — the walk is deliberately colourless; the mode edges return only at the
+reveal. One disclosed transformation, the only one ever applied to authored text:
+pattern names *inside* a card are masked as ‹this pattern› / ‹another pattern›
+(visibly a redaction — mono, dotted underline). Seven cards carry masks (9 tokens
+total). The receipt at the end lifts every mask: all twelve rounds, who was chosen
+over whom, by name.
+
+**Scoring and display.** A pick = one mark to that card's type; marks render as dots
+(each dot literally one choice), never digits, never percentages. Bands by count:
+"Start reading here" (max), "Then these" (rest > 0), "Further off, today" (0). Ties
+share the top band ("start with whichever stings"). Provenance phrases under each row
+name the walker's actual choices. Every row links into Guide 3's chapter
+(`#s=type&t=N`). Nothing is stored — no localStorage, no network send; closing the
+page forgets the walk (stated in the footer and on the home screen).
+
+**Copy inventory (the Mix; everything else on screen is authored data):** eyebrow
+"twelve choices · a few minutes", title/subline, lede, "How it stays honest — the
+four moves" + four move texts + mask note, "Walk it", "cards drawn verbatim · nothing
+generated", phase labels "the moment"/"the wince", field keys (the tripwires / the
+mishearing / the strategy underneath / the price), four stems + self/mirror question
+pairs, "The recoil is the data.", "tap the closer one — closer is enough", back
+labels, mirror chip "the mirror — answering about them", result eyebrow/heading/lede,
+band labels, tie note, provenance phrases (self and mirror), "Read the chapter →",
+receipt labels and row template, mirror block heading/text/buttons, compare
+eyebrow/heading/lede/legend, the two gap callouts, "Start over", footer.
+
+**Verification.** 109 automated checks (verify_mix.mjs): deck reconstructed from the
+driven UI matches the design (fields order, type slots, equal exposure), mask counts
+per round [0,0,0,0,0,0,0,3,3,1,0,0], blind rule (no names, no "Type N", no capitalized
+number-words, no stray asterisks) on every round, tap targets, wince question
+variants, scoring/bands/dots/receipt/links, mirror flow + both gap callouts on the
+right rows, back-gesture history, fetch-blocked and file:// embed fallback, embedded
+fonts, nothing stored, no "%" anywhere.
+
+**Live:** https://claude.ai/code/artifact/1bb8ef18-f28a-4de1-8138-a8724206a13d
