@@ -339,3 +339,43 @@ whole slide", "the one power; only its aim changes". Nothing else.
    precision) → a "do this now" card at the Moment's step 2.
 5. **Source_Ledger.md** → specialist attribution panel in the Composition Engine.
 6. **Richer lens text** → drop-in replacement; every version re-renders unchanged.
+
+
+## 15 · v3.2 addendum — the first two research layers wired in
+
+The research pipeline (RESEARCH_PROMPTS.md) returned prompts 1 and 4; both passed
+validation with zero material conflicts and entered as two new [STRUCTURE] data faces:
+
+- **`arrows_data.json`** — Directions of Integration/Disintegration (Riso-Hudson).
+  Validation performed: all 9 pairs matched an independently hardcoded canon table;
+  both circuits re-traced from the data itself (integration 1-7-5-8-2-4 + 9-3-6;
+  disintegration 1-4-2-8-5-7 + 9-6-3); no body/science vocabulary; page-level
+  citations honestly marked CANNOT VERIFY by the researcher, not fabricated.
+- **`wings_data.json`** — the 18 Riso-Hudson wing subtypes. Validation: all 18 names
+  matched an independently hardcoded canon list (including "The Maverick" for 8w7 —
+  the researcher correctly rejected the widely mis-attributed "The Independent");
+  adjacency verified; no body claims; the inflection prose is flagged by the
+  researcher as synthesized from the corpus rather than page-pinned — acceptable at
+  [STRUCTURE], upgradeable later.
+
+**In the product (Guide 3, type pages, between the spectrum and the neighbors):**
+- **"Where it moves"** — two clickable cards per type: "In growth → n · Name" and
+  "Under stress → n · Name" with the validated texts; sub-line carries the school's
+  asymmetry ("growth is chosen; stress is automatic"). Cards are colored by the
+  target door's mode and navigate to it.
+- **"The two flavors"** — the type's two wings as static cards colored by the
+  neighbor's mode, each with name, inflection text, and contrast line; sub-line
+  carries the one-dominant-vs-both-wings school caveat in one clause.
+
+Both sections sit under the type page's existing sourcing line (tradition's account),
+so no new register machinery was needed. Data loading: the app now fetch-first loads
+four faces and falls back to four embedded snapshots; if the new faces are absent the
+sections simply do not render.
+
+Copy-inventory additions: "Where it moves", "Two arrows, one asymmetry — growth is
+chosen; stress is automatic.", "In growth →", "Under stress →", "The two flavors",
+"A neighbor's color on the core type — one wing usually leads; some schools say you
+carry both." Nothing else.
+
+Still pending from the pipeline: prompt 2 (pairs), prompt 3 (anchor protocol),
+prompt 5 (subtypes).

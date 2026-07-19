@@ -32,7 +32,10 @@ Keep them side by side; neither replaces the other.
 | `The_Field_Guide_III.html` | Reader/presenter, v3 ("Guide 3"): everything in v2 plus **The Loop** — in two-people mode the Moment draws the circuit between the two defenses (each one's authored mode-move is the other's filter's input), with the seven source-drawn pair contrasts surfacing. No pair-specific text is ever generated; no compatibility claims. | https://claude.ai/code/artifact/100ea721-39c2-41e0-ab68-558fa3e19246 |
 
 Both compose at runtime from `grid_data.json` (Concept × Lens) and
-`types_data.json` (Concept × Type, joined by `_meta.parents`). The interior of
+`types_data.json` (Concept × Type, joined by `_meta.parents`). Guide III additionally
+reads `arrows_data.json` and `wings_data.json` — validated [STRUCTURE] faces produced
+via `knowledge-base/RESEARCH_PROMPTS.md`; pairs, anchor-protocol and subtypes faces
+are expected from the same pipeline. The interior of
 the Concept × Type × Lens cube is never authored. The non-negotiable rules
 (weaker register wins; no body predictions; centre × mode generates nothing;
 attribution stays in the ledger; the clinical vertical is out of reach) are

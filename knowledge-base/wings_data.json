@@ -1,0 +1,158 @@
+{
+ "_meta": {
+  "school": "Riso-Hudson",
+  "wing_theory_note": "Riso-Hudson treat the wing as a single dominant, secondary modifier of the core type: everyone has access to both adjacent types, but one predominates and names the subtype. This is the model under which these 18 epithets were coined. Other schools differ — a 'both-wings' view holds that each person carries and can develop both adjacent wings, dominance being a leaning rather than an either/or, and some teachers (e.g. Stabile) hold the dominant wing can shift across a lifetime; the instinctual-subtype traditions (Naranjo lineage, Narrative Tradition) tend to de-emphasize wings in favor of the 27 type-by-instinct subtypes. Tier [STRUCTURE], not [ESTABLISHED]; wings are not empirically recovered as discrete constructs.",
+  "sources": [
+   "Riso, D. R., & Hudson, R. — The Wisdom of the Enneagram (Bantam, 1999) and Personality Types (rev. Houghton Mifflin, 1996): origin of the 18 wing subtype epithets and descriptions.",
+   "The Enneagram Institute (enneagraminstitute.com), Riso-Hudson's own organization: type pages. Type 8 verified directly — 8w7 'The Maverick', 8w9 'The Bear'.",
+   "Depth Profile (depthprofile.com/blog/enneagram-wings, 2026): consolidated wing descriptions using the Riso-Hudson names; source for paraphrased inflection prose.",
+   "Corroborating name lists: jobcannon.io, Enneagram Academy, Psychologia. Contaminated/mis-attributing lists observed (see conflicts): Pinnacle Leadership Associates, lisanotes.com (8w7 mis-named 'The Independent'), therationalastrologer.substack.com (multiple names shifted/substituted)."
+  ]
+ },
+ "wings": [
+  {
+   "n": 1,
+   "wing": 9,
+   "name": "The Idealist",
+   "text": "The Nine wing cools the One's urgency with a pull toward peace and detachment. Standards stay firm but are carried quietly — reserved, patient, leading by example rather than pressing others, and needing more solitude than most Ones.",
+   "contrast": "Withdrawn and example-led, where 1w2 engages people directly and pushes them toward the standard.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 1,
+   "wing": 2,
+   "name": "The Advocate",
+   "text": "The Two wing warms the One and turns the reforming drive outward toward people — more openly expressive about its values, more willing to confront or mentor, and more prone to resentment when its help goes unappreciated. Common among activists, teachers, reformers.",
+   "contrast": "Crusades toward people, where 1w9 keeps its standards private and detached.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 2,
+   "wing": 1,
+   "name": "The Servant",
+   "text": "The One wing gives a conscientious, principled edge: helps because it is right, not only to earn love. More self-critical, anchored in quiet duty and values, often in service roles where integrity weighs as much as warmth.",
+   "contrast": "Serves from duty and stays understated, where 2w3 helps in the open and wants to be seen doing it.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 2,
+   "wing": 3,
+   "name": "The Host/Hostess",
+   "text": "The Three wing adds ambition, social ease, and image-awareness — outgoing and charming, wanting to be seen as both helpful and impressive. Shadow: generosity can turn strategic, a route to status, with less self-honesty about motive.",
+   "contrast": "Seeks admiration through helping, where 2w1 seeks rightness through it.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999). Published form 'The Host/Hostess'; often shortened to 'The Host'. Inflection via depthprofile (2026)."
+  },
+  {
+   "n": 3,
+   "wing": 2,
+   "name": "The Charmer",
+   "text": "The Two wing makes the Three relationship-driven — achieving through people, building networks, inspiring teams, with genuine warmth as part of the strategy. Highly likable; the risk is confusing being liked with being loved and reshaping the self to win approval.",
+   "contrast": "Achieves through people and warmth, where 3w4 achieves through craft and needs the success to mean something.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 3,
+   "wing": 4,
+   "name": "The Professional",
+   "text": "The Four wing adds introspection and creative depth — still wants success, but needs it to be a true expression of self, not a performance. Drawn to fields where excellence has an aesthetic edge; more private, caught between fitting in and standing out.",
+   "contrast": "Inward and craft-driven, where 3w2 is outward and audience-driven.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 4,
+   "wing": 3,
+   "name": "The Aristocrat",
+   "text": "The Three wing pushes the Four's depth outward into performance and achievement — wanting both to be uniquely oneself and recognized for it. More ambitious and expressive; the strain is that the drive to succeed can feel like selling out, resolved by making the authentic self the brand.",
+   "contrast": "Turns depth outward into a public identity, where 4w5 turns it inward into private understanding.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 4,
+   "wing": 5,
+   "name": "The Bohemian",
+   "text": "The Five wing turns the Four's depth inward, adding intellectual rigor and a preference for withdrawal — reclusive, philosophical, more interested in understanding the inner world than performing it. Produces original work slowly and privately; relationships feel essential yet depleting.",
+   "contrast": "Withdraws into thought and solitude, where 4w3 reaches outward for expression and recognition.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 5,
+   "wing": 4,
+   "name": "The Iconoclast",
+   "text": "The Four wing adds emotional complexity and aesthetic sensibility — the Five seeks not just to understand systems but to understand meaning. Output is personal even when abstract; can feel like an outsider in both intellectual and emotional worlds.",
+   "contrast": "Aims its analysis at meaning and the personal, where 5w6 aims it at practical, reliable systems.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 5,
+   "wing": 6,
+   "name": "The Problem Solver",
+   "text": "The Six wing adds loyalty and a focus on real-world application — gravitates to systems that work (engineering, law, medicine, data), more socially functional and more willing to operate inside institutions, building loyal bonds with trusted people.",
+   "contrast": "Builds reliable systems within institutions, where 5w4 builds original meaning at the margins.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999). Published form 'The Problem-Solver'. Inflection via depthprofile (2026)."
+  },
+  {
+   "n": 6,
+   "wing": 5,
+   "name": "The Defender",
+   "text": "The Five wing makes the Six self-sufficient, analytical, and withdrawn — meeting anxiety by gathering information and building competence rather than seeking reassurance. Private, intellectually oriented, wary of groups.",
+   "contrast": "Manages fear by withdrawing into competence, where 6w7 manages it by reaching for people and reframing.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 6,
+   "wing": 7,
+   "name": "The Buddy",
+   "text": "The Seven wing adds warmth, humor, and sociability — handling anxiety through connection and positive reframing. Outgoing and playful, leaning on community under threat, usually cheerful with anxiety surfacing mainly under real stress.",
+   "contrast": "Outruns fear toward people and optimism, where 6w5 contains it in analysis and distance.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 7,
+   "wing": 6,
+   "name": "The Entertainer",
+   "text": "The Six wing adds responsibility, relational depth, and a thread of anxiety — wanting to share experience with people it cares about rather than accumulate it solo. Warmer and more committed than 7w8; anxiety shows as second-guessing and loyalty conflicts.",
+   "contrast": "Relational and loyalty-bound, where 7w8 is assertive and appetite-driven.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 7,
+   "wing": 8,
+   "name": "The Realist",
+   "text": "The Eight wing adds assertiveness, worldly ambition, and a harder edge — pursuing what it wants with more intensity and less apology, more decisive and risk-comfortable, often a larger-than-life presence. The flight from limitation gains real force.",
+   "contrast": "Chases experience with power and drive, where 7w6 chases it with warmth and caution.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 8,
+   "wing": 7,
+   "name": "The Maverick",
+   "text": "The Seven wing adds energy, vision, and appetite for adventure — more extraverted and entrepreneurial, driven by the thrill of new territory, wanting to dominate and explore at once with little interest in maintaining what exists. Classic founder-disruptor energy.",
+   "contrast": "Power that runs wide, fast, and expansive, where 8w9's runs deep, slow, and steady.",
+   "source": "Name verified at enneagraminstitute.com/type-8 as 'The Maverick'; alt-name 'The Independent' is mis-attributed to Riso-Hudson (see Conflicts). Inflection via depthprofile (2026)."
+  },
+  {
+   "n": 8,
+   "wing": 9,
+   "name": "The Bear",
+   "text": "The Nine wing adds patience, steadiness, and protective calm — power that is deep rather than wide, exercised in a measured way, comfortable with silence, capable of real warmth and loyalty. Often the most grounding presence in a room.",
+   "contrast": "Contained, patient, and grounding, where 8w7 is expansive, restless, and driving.",
+   "source": "Riso-Hudson (Enneagram Institute, type-8 page, 'The Bear'; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 9,
+   "wing": 8,
+   "name": "The Referee",
+   "text": "The Eight wing adds assertiveness, stubbornness, and earthy groundedness — willing to push back when genuinely threatened, more decisive and present than 9w1. Conflict-avoidance is selective: holds the peace until something truly matters, then holds its ground.",
+   "contrast": "Grounds its calm in latent force, where 9w1 grounds it in principle and ideals.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  },
+  {
+   "n": 9,
+   "wing": 1,
+   "name": "The Dreamer",
+   "text": "The One wing adds principled idealism and a quiet drive toward improvement — seeking not just peace but the right kind of peace, grounded in values. Subtly perfectionistic in some areas while accommodating in others; often carries a visionary sense of how things should be.",
+   "contrast": "Seeks a principled, ideal peace, where 9w8 seeks a grounded, defensible one.",
+   "source": "Riso-Hudson (Enneagram Institute; Wisdom of the Enneagram, 1999); inflection via depthprofile (2026)."
+  }
+ ]
+}

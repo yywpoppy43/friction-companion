@@ -1,0 +1,88 @@
+{
+ "_meta": {
+  "school": "Riso-Hudson",
+  "terminology": "Direction of Integration (growth) and Direction of Disintegration (stress). Movement is keyed to the Levels of Development: healthy-level traits are taken on toward the integration point; average-to-unhealthy-level traits are taken on toward the disintegration point. Integration is framed as conscious and chosen; disintegration as involuntary and stress-driven. Distinct from the 'security point / stress point' language used by Palmer and others, and from Naranjo's differing group assignments.",
+  "tier": "STRUCTURE",
+  "arrow_geometry": "1-4-2-8-5-7 hexad (from the repeating decimal of 1/7) run one way for disintegration and reversed for integration, plus the 3-6-9 triangle run in opposite directions.",
+  "sources": [
+   "Riso, Don Richard, & Hudson, Russ. Personality Types: Using the Enneagram for Self-Discovery. Rev. ed. Houghton Mifflin, 1996.",
+   "Riso, Don Richard, & Hudson, Russ. The Wisdom of the Enneagram. Bantam, 1999.",
+   "The Enneagram Institute, type descriptions, enneagraminstitute.com.",
+   "Page-level citations CANNOT VERIFY without the physical texts; not fabricated."
+  ]
+ },
+ "arrows": [
+  {
+   "n": 1,
+   "integration": 7,
+   "disintegration": 4,
+   "integration_text": "The self-controlled, resentful One relaxes its inner critic and becomes spontaneous, joyful, and open to pleasure and experience, accepting life as it is.",
+   "disintegration_text": "Under stress the One takes on average-to-unhealthy Four traits: moody, self-absorbed, self-pitying, sinking into melancholy and feeling misunderstood.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 2,
+   "integration": 4,
+   "disintegration": 8,
+   "integration_text": "The prideful, self-effacing Two turns inward and owns its own emotions and needs, nurturing itself instead of living through others.",
+   "disintegration_text": "Under stress the Two takes on average-to-unhealthy Eight traits: repressed anger and entitlement erupt as aggression, coercion, and open demand.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 3,
+   "integration": 6,
+   "disintegration": 9,
+   "integration_text": "The image-driven Three moves from self-interest into genuine commitment, cooperation, and loyalty to something beyond personal success.",
+   "disintegration_text": "Under stress the Three takes on average-to-unhealthy Nine traits: disengaged, numb, apathetic, procrastinating and dissociating when achievement stalls.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 4,
+   "integration": 1,
+   "disintegration": 2,
+   "integration_text": "The volatile, self-absorbed Four becomes objective, principled, and disciplined, translating vision into concrete work and tolerating structure.",
+   "disintegration_text": "Under stress the Four takes on average-to-unhealthy Two traits: clinging, dependent, and over-involved, seeking love by being needed and losing itself.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 5,
+   "integration": 8,
+   "disintegration": 7,
+   "integration_text": "The withdrawn Five moves from thought into action, grounding in the body and engaging the world with confidence and decisive authority.",
+   "disintegration_text": "Under stress the Five takes on average-to-unhealthy Seven traits: scattered, hyperactive, and impulsive, jumping between distractions to escape emptiness.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 6,
+   "integration": 9,
+   "disintegration": 3,
+   "integration_text": "The anxious, reactive Six settles into trust and inner steadiness, its faith in itself and in life stabilizing what was restless.",
+   "disintegration_text": "Under stress the Six takes on average-to-unhealthy Three traits: competitive, image-conscious, and driven, overcompensating insecurity through performance.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 7,
+   "integration": 5,
+   "disintegration": 1,
+   "integration_text": "The scattered, acquisitive Seven becomes focused and deep, staying with one thing and finding satisfaction in depth rather than in more.",
+   "disintegration_text": "Under stress the Seven takes on average-to-unhealthy One traits: critical, perfectionistic, impatient, and rigid as options close and pain cannot be outrun.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 8,
+   "integration": 2,
+   "disintegration": 5,
+   "integration_text": "The domineering, self-protective Eight lets the guard drop and turns its strength toward others, allowing care, generosity, and an open heart.",
+   "disintegration_text": "Under stress the Eight takes on average-to-unhealthy Five traits: withdrawn, secretive, and isolated, retreating and conserving instead of confronting.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  },
+  {
+   "n": 9,
+   "integration": 3,
+   "disintegration": 6,
+   "integration_text": "The self-forgetting Nine invests in itself, shows up with energy and focus, and acts on its own priorities rather than merging with others'.",
+   "disintegration_text": "Under stress the Nine takes on average-to-unhealthy Six traits: anxious, doubting, defensive, and dependent, clinging to support rather than staying asleep.",
+   "source": "Riso & Hudson, Personality Types (rev. 1996) & The Wisdom of the Enneagram (1999); enneagraminstitute.com. [STRUCTURE]. Exact pages CANNOT VERIFY."
+  }
+ ]
+}
