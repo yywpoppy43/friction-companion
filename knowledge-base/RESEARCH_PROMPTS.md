@@ -276,3 +276,52 @@ Hand me each output file. For each one I will:
 The tier rules travel with the data: everything from prompts 1, 2, 4, 5 enters as the
 tradition's account and can never display as science; prompt 3's material enters at
 exactly the evidence precision it arrives with.
+
+
+---
+
+## PROMPT 6 — Pair repair, second school (David Daniels) — OPTIONAL layer
+
+**Attach: `Source_Enneagram.md`**
+
+*Why this exists: the Riso-Hudson pair pages (prompt 2) contain no "what helps" section,
+so the pairs face honestly carries `repair: ""` in all 45 cells. Explicit repair guidance
+exists in a DIFFERENT school — David Daniels' 45-combination material. This prompt
+fetches it as a clearly-tagged second voice; it must never be blended into the
+Riso-Hudson account.*
+
+```
+You are researching for an existing, rule-bound Enneagram knowledge base. The attached
+file is its fixed anchor reference. Same rules as always:
+
+- Consistency with the attached anchors (type numbers, names, centres, passions);
+  flag conflicts, never silently resolve them.
+- PARAPHRASE ONLY; exact source (page/URL) per pair; tier [STRUCTURE]; no science
+  claims; no compatibility scores or rankings; CANNOT VERIFY beats invention.
+- SCHOOL DISCIPLINE (the point of this prompt): this material is the David Daniels
+  lineage (Stanford; The Essential Enneagram; his type-combination/relationship
+  material, e.g. the drdaviddaniels.com archive), which is a DIFFERENT school from
+  Riso-Hudson. Every cell you produce will live in a separate field tagged to
+  Daniels. Never present it as Riso-Hudson, and never merge the two accounts.
+
+THE TASK: For all 45 type combinations (36 cross-type + 9 same-type), from the
+Daniels material: what the pairing needs to work — what each side must own, what
+each must appreciate in the other, and the key awareness or task for building the
+relationship. Paraphrase into one tight passage per pair (3-6 sentences).
+
+WORK IN BATCHES of 9 with a running 45-row checklist; continue until all 45 are done.
+
+DELIVERABLE — one downloadable markdown file with:
+Part A — checklist + per-pair notes with citations.
+Part B — one valid JSON code block, exactly this schema:
+{
+  "_meta": { "school": "David Daniels", "tier": "structure", "sources": ["..."] },
+  "repairs": [
+    { "a": 1, "b": 1, "repair_daniels": "...", "source": "..." }
+  ]
+}
+(45 entries; a <= b; if the Daniels material genuinely lacks a pair, set
+repair_daniels to "" and note it in Part C — never fill the gap from another school.)
+Part C — Conflicts & uncertainties (including anywhere Daniels' account tensions
+with the Riso-Hudson pair material we already hold).
+```
