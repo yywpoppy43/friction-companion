@@ -613,3 +613,66 @@ right rows, back-gesture history, fetch-blocked and file:// embed fallback, embe
 fonts, nothing stored, no "%" anywhere.
 
 **Live:** https://claude.ai/code/artifact/1bb8ef18-f28a-4de1-8138-a8724206a13d
+
+## 21 · The Daniels repair layer — second school wired in (2026-07-19)
+
+The prompt-6 research returned: all 45 pairings covered by a single genuinely
+Daniels-authored source (his Relationship Matrix; anchors and passions matched the
+canon exactly; no compatibility scores anywhere — Daniels refuses ranking outright).
+Validation before merge: 45/45 keys `a<=b`, non-empty, screened for ranking/score/
+percentage and body-claim language — clean. Merged into `pairs_data.json` as
+`repair_daniels` with `_meta.second_school` recording school, source, tier
+([STRUCTURE]) and the never-blend rule. The Riso-Hudson `repair` field stays empty —
+that school still has none, and the two accounts are never mixed.
+
+Guide 3's pairing card now shows it as a visibly separate block: "What helps — a
+second school", clay-labelled, divided from the Riso-Hudson material, with the
+provenance line "David Daniels' account — a different teacher than the lines above,
+kept separate on purpose. He refuses to say which types belong together: any two
+people doing this work get along." Guide 3 suite: 132 checks pass (the old
+"no repair section" guard now asserts the sharper rule: first-school repair still
+absent, Daniels block present and labelled, no ranking language).
+
+## 22 · The Mix II — the owner's voice ruling and the rewrite
+
+Owner feedback on The Mix v1 (2026-07-19): verbatim source paragraphs fail as
+choice cards — "so stiff, it's not really an answer that can be true"; third-person
+"they" text confuses a first-person walk ("the 'you' and 'they' get all mixed up");
+"I would definitely not keep this version… but the shape of it, the idea of it, is
+interesting." And the capability question answered: the rewrite is in-house work —
+no outside research needed.
+
+**The ruling this build follows.** The Source Ledger's copyright rule is the
+licence: *"Everything in the base is the tradition's finding restated in our
+language."* So The Mix II keeps v1's architecture unchanged (same cycle, same
+3-colouring, same equal-exposure law, wince triads, mirror, reading-order-never-
+verdict, colourless walk, no storage) and replaces every card with a **restatement
+of exactly one authored line**, written short (2–3 sentences) and in the right
+voice: `self` ("I…") for the walker's pass, `other` ("they…") for the mirror pass —
+the cards literally switch voice when the phone changes hands. One card, one source
+line, nothing invented. The masks are gone because restated cards contain no type
+names; the walker still chooses blind.
+
+**Governance.** The deck constant in `The_Mix_II.html` is the copy inventory:
+27 cards × 2 voices, each keyed `{t, f}` to its source field (trigger / filter /
+engine / cost). Faithfulness rule: every sentence in a card must map to a sentence
+of its source line; no claim appears in a card that is not in the line. The receipt
+now names the source line behind every choice ("restated from its trigger line")
+and points to the full originals in Guide 3.
+
+**Stems (ours, voice-neutral so both passes share them):** tripwires "Everyone has
+tripwires — the moments that snag." · mishearing "A remark arrives out of nowhere —
+a note on the work, a pause, a tone." · engine "Zoom out. Underneath a normal month,
+a strategy is running." · price "Every defense charges a price. Here are three."
+Questions per pass as in the FIELDS constant.
+
+**Verification.** 155 automated checks (verify_mix2.mjs): deck slots and equal
+exposure reconstructed from the driven UI; per-round voice checks (self cards free
+of their/them/themselves, mirror cards free of I/my/me, quoted speech excluded);
+blind rule; card length bounds (80–420 chars); wince variants; scoring, bands,
+choice-dots, provenance, receipt source-lines; mirror flow and both gap callouts;
+history back-gesture; fonts; file:// with zero page errors; nothing stored; no
+percentages; home no longer claims "verbatim".
+
+**Live:** https://claude.ai/code/artifact/ad8fa52d-e2a2-4152-9845-8b620d58aaed
+(The Mix v1 stays at its URL as the superseded first build, per the versioning rule.)

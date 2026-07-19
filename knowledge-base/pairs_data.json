@@ -1,373 +1,427 @@
 {
- "_meta": {
-  "school": "Riso-Hudson / Enneagram Institute",
-  "tier": "structure",
-  "sources": [
-   "The Enneagram Institute — The Enneagram Type Combinations (index): https://www.enneagraminstitute.com/the-enneagram-type-combinations/",
-   "Per-pair pages at https://www.enneagraminstitute.com/relationship-type-{a}-with-type-{b} (a<=b); each pair's URL is in its 'source' field.",
-   "Note: one school's account only. 'repair' is empty where the source has no what-helps section (its pages carry only 'What Each Type Brings' and 'Potential Trouble Spots'). No science, no compatibility scores, no ranking."
+  "_meta": {
+    "school": "Riso-Hudson / Enneagram Institute",
+    "tier": "structure",
+    "sources": [
+      "The Enneagram Institute — The Enneagram Type Combinations (index): https://www.enneagraminstitute.com/the-enneagram-type-combinations/",
+      "Per-pair pages at https://www.enneagraminstitute.com/relationship-type-{a}-with-type-{b} (a<=b); each pair's URL is in its 'source' field.",
+      "Note: one school's account only. 'repair' is empty where the source has no what-helps section (its pages carry only 'What Each Type Brings' and 'Potential Trouble Spots'). No science, no compatibility scores, no ranking."
+    ],
+    "second_school": {
+      "school": "David Daniels (Narrative Tradition)",
+      "field": "repair_daniels",
+      "tier": "structure",
+      "sources": [
+        "https://drdaviddaniels.com/enneagram-types-in-relationship/ (Enneagram Relationships Interactive Matrix; identical to the 51-page PDF 'The Enneagram Types Relationship Matrix', David Daniels, MD)"
+      ],
+      "rule": "Never blend with the Riso-Hudson fields. Daniels rejects compatibility ranking outright; this field carries mutual-awareness/repair material only."
+    }
+  },
+  "pairs": [
+    {
+      "a": 1,
+      "b": 1,
+      "brings": "Two Ones share fairness, honesty, kept agreements, and mutual respect; responsibility and correctness come before leisure, and each takes the adult role, producing a competent, principled, unsentimental partnership sustained by shared ideals and admired character.",
+      "trouble": "A strong right/wrong sense breeds formality and low tolerance for anything read as sloppy or childish; anger leaks as sarcasm and stored grievances that erupt, and each can make the other an endless improvement project or the pair turns criticism outward and grows superior, isolated, and coldly tolerant.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-1",
+      "repair_daniels": "Own perfectionism/judging mind/moral superiority and difficulty voicing positives; appreciate shared high standards, fairness, industry; task: accept differing-content standards, know correction reads as criticism, schedule pleasure, release the judging mind."
+    },
+    {
+      "a": 1,
+      "b": 2,
+      "brings": "A complementary service pairing on shared values; Twos add warmth, nurturing, and social ease that soften the One's reserve, while Ones add integrity, consistency, and reliable commitment that leave the Two feeling secure and unlikely to be abandoned.",
+      "trouble": "Both tend others' needs but struggle to voice their own, filling the bond with unstated wants and hidden agendas; Ones tire of the Two's over-giving and scattered time, Twos read the One as impersonal and short on real compassion, and suppressed anger escalates into mutual criticism.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-2",
+      "repair_daniels": "1 owns judgmentalness/suppressed pleasure/inflexibility, 2 owns over-giving/over-connection/not-receiving; 1 appreciates 2's caring adaptability, 2 appreciates 1's standards/self-reliance; task: 1 shows appreciation and flexibility, 2 practices steadiness and respects 1's separateness; both name their difficulty expressing needs."
+    },
+    {
+      "a": 1,
+      "b": 3,
+      "brings": "A highly task-driven, accomplished pairing of serious, disciplined, excellence-seeking partners who split work by strength; Ones ground Threes in principle and realism while Threes loosen the One's perfectionism, both preferring discussion over emotional bickering.",
+      "trouble": "Friction arises over time, thin emotional attachment, and competition; Ones see Threes as image-obsessed and ethically loose, Threes see Ones as rigid and nitpicking over results; avoidance triggers the One's abandonment fears and eroding respect, sometimes leaving only a useful professional marriage.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-3",
+      "repair_daniels": "1 owns criticality/one-right-way, 3 owns image-preoccupation/shortcuts; 1 appreciates 3's efficiency/positivity, 3 appreciates 1's integrity/standards; task: 1 grows flexible and drops minutiae, 3 slows and attends to detail; both make time for relationship and feelings they tend to avoid."
+    },
+    {
+      "a": 1,
+      "b": 4,
+      "brings": "Two idealists wanting to bring something good and beautiful into being; Ones offer discipline, structure, objectivity, and grounded counsel while Fours offer creativity, emotional intensity, and spontaneity, each supplying qualities the other lacks.",
+      "trouble": "They separate like oil and water across an objective-versus-subjective divide, with the central clash between self-discipline and self-indulgence; Ones read Fours as self-absorbed and undisciplined, Fours read Ones as rigid and cold, and both grow condescending, score-keeping, and bitterly disappointed.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-4",
+      "repair_daniels": "1 owns feeling-judged sensitivity/molding the 4, 4 owns mood swings/idealism/focus on what's missing; 1 appreciates 4's depth/creativity/empathy, 4 appreciates 1's practicality/conviction; task: 1 expresses desires and accepts moods, 4 cultivates steadiness and takes criticism as non-personal."
+    },
+    {
+      "a": 1,
+      "b": 5,
+      "brings": "Two cerebral, reserved, boundary-respecting types who prize objectivity and share wide intellectual interests, debate, and unexpected humour; Ones add order and a drive to improve their surroundings, Fives add curiosity and comfort with disorder and the unconventional.",
+      "trouble": "A deep split divides them: Ones believe in an attainable objective truth held almost as a duty, while Fives are skeptics who see only interpretations and enjoy deflating certainty; neither shifts their worldview, and over-respected boundaries turn the bond cool, distant, analytic, and quietly isolated for years.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-5",
+      "repair_daniels": "Both restrained/boundaried; 1 owns reading silence as criticism/judging, 5 owns intrusion-sensitivity/feeling-avoidance/withdrawal; 1 appreciates 5's boundaries/intellect, 5 appreciates 1's dependability/care-through-improvement; task: 1 expresses feelings and stops intruding, 5 moves toward feeling and enlivens the relationship."
+    },
+    {
+      "a": 1,
+      "b": 6,
+      "brings": "Two conscientious, duty-bound types often mistaken for each other, sharing purpose and concern for truth and service; Ones bring decisiveness and clarity and often lead, while Sixes bring warmth, availability, generosity, and playfulness, forming a stable team when beliefs align.",
+      "trouble": "Under stress Ones turn critical and joyless while Sixes turn anxious, reactive, and insecure; meeting fault-finding instead of stability, Sixes grow defensive, evasive, and unreliable and doubt the relationship's future, which fuels the One's resentment and spirals into anger, accusations, and name-calling.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-6",
+      "repair_daniels": "1 owns anxiety-about-being-wrong/criticism of doubting, 6 owns magnified negatives/contrary doubting mind; 1 appreciates 6's loyalty/warmth/questioning, 6 appreciates 1's ethics/dependability; task: 1 reassures rather than corrects and lightens up, 6 grows trusting and accepts criticism without magnifying."
+    },
+    {
+      "a": 1,
+      "b": 7,
+      "brings": "A complementary opposites pairing that can spur growth; Ones bring order, methodical follow-through, and high standards while Sevens bring spontaneity, energy, and fun, with Ones keeping Sevens on track and giving them purpose while Sevens keep Ones light and refreshed.",
+      "trouble": "Under stress Ones become critical and rigid about the one right way, reading Sevens as scattered, over-committed, and childish, while Sevens read Ones as prissy, tight-fisted, and joyless; conflict clusters around organisation and money, and Sevens tire of criticism and seek options rather than feel trapped, breeding mutual contempt.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-7",
+      "repair_daniels": "Opposite types; 1 owns pleasure-judgment/inflexibility/righteousness, 7 owns limit-resistance/rationalizing/self-serving; 1 appreciates 7's spontaneity/optimism, 7 appreciates 1's self-control/industry; task: 1 lightens up and prioritizes pleasure, 7 grounds, self-disciplines, welcomes feedback."
+    },
+    {
+      "a": 1,
+      "b": 8,
+      "brings": "Both action-oriented crusaders for truth and justice who sacrifice to right wrongs, sharing directness, perseverance, and a central concern with fairness; the Eight's passion counterbalances the One's restraint, Ones find Eights exciting and earthy, and Eights admire the One's unbendable conviction.",
+      "trouble": "What attracts also breaks them as opposites (fire and ice) in a rare, difficult romance; both want charge and clash on means, Ones judging the Eight as selfish and corrupt while Eights see Ones as self-righteous hypocrites and provoke them, both meeting hurt with anger and risking violent ruptures hard to repair once abuse is crossed.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-8",
+      "repair_daniels": "Polarity of opposites; 1 owns oppositional good/bad rigidity/propriety, 8 owns excess/impulse-to-action/all-or-nothing/impact; 1 appreciates 8's strength/directness/generosity, 8 appreciates 1's ethics/fairness/detail; task: 1 gets spontaneous and voices anger yet holds core values, 8 moderates impulsivity/impact; both work the polarity."
+    },
+    {
+      "a": 1,
+      "b": 9,
+      "brings": "Two self-recognising idealists able to defer reward for a long-term good; Ones bring clarity, standards, and inspiring articulation of purpose while Nines bring gentle, accepting, undemanding steadiness that softens the One's criticality and prefers harmony to being right.",
+      "trouble": "Their core clash is opposite stress responses: Ones grow frustrated, prickly, and fault-finding while Nines shut down and insist nothing is wrong; pushing for responsibility drives the Nine into passive-aggression that reads as negligence, until the couple freezes in mutual anger with no way to melt the impasse.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-9",
+      "repair_daniels": "1 owns obsessive detail/impatience/criticism, 9 owns comfort-diversion/indecision/stubborn passive resistance; 1 appreciates 9's patience/acceptance/empathy, 9 appreciates 1's structure/clarity/conscientiousness; task: 1 builds acceptance and flexibility, 9 picks up pace, takes positions, faces conflict; both learn their own needs."
+    },
+    {
+      "a": 2,
+      "b": 2,
+      "brings": "Two healthy Twos give warmth, affection, sensitivity, and constant checking-in while respecting each other's independence; since neither is used to being nurtured, the growth edge is learning to receive care, and when they manage it the bond becomes a base of abundance and a welcoming chosen family.",
+      "trouble": "Two validation-seeking feelers can make better friends than intimates, prone to hidden jealousy and competition over who is more loved or central; some compete through charm, others neglect self-care and seek consolation elsewhere or in food, sliding into enmeshment or repulsion, boundary problems, depression, blame, and deepening loneliness.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-2",
+      "repair_daniels": "Own giving-pride/difficulty receiving/inattention to own needs/approval-seeking; appreciate shared care/relationship-orientation/positivity; task: develop independent self, support each other's autonomy, express needs directly, and get into the flow of giving AND receiving."
+    },
+    {
+      "a": 2,
+      "b": 3,
+      "brings": "Both are feeling- and attention-driven and people-oriented, making a socially magnetic, high-impact, widely admired pairing; Twos add personal warmth and follow-through while Threes add flexibility, practicality, and vision, with the Two content behind the throne and the Three in the spotlight, each wanting to make the other proud.",
+      "trouble": "The conspicuous star-power turns comparative: Twos grow jealous and possessive with an 'I made you, you owe me' resentment while Threes struggle to share credit and recoil from criticism; both carry hidden shame and neither is introspective, so they assume alignment until they drift, the Two feeling career comes before home and the Three feeling smothered, decaying into bickering and hostility.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-3",
+      "repair_daniels": "2 owns emotionality/not-knowing-needs/pride-in-helping, 3 owns feeling-inattention/recognition-hunger; both share approval/image focus; 2 appreciates 3's accomplishment/support, 3 appreciates 2's care/sensitivity; task: balance relationship and goals, moderate fast pace, allow feelings, express deeper needs, develop present-moment receptivity."
+    },
+    {
+      "a": 2,
+      "b": 4,
+      "brings": "A warm, sometimes passionate pairing once past early intimacy hurdles, each a safe place to share fears; Twos bring sociability, energy, and encouragement that build the Four's confidence while Fours bring creativity, humour, emotional honesty, beauty, and depth, each quietly drawing the other toward emotional maturity and away from others' opinions.",
+      "trouble": "Usually better as friends and surprisingly rare romantically because of excess emotionality and unspoken demand; Twos read Fours as moody and self-absorbed while Fours read Twos as saccharine, insincere, and secretly needy and grow envious of their social ease, shared shame eroding it until it founders on the Four's abandonment fears or the Two's sense of being unappreciated.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-4",
+      "repair_daniels": "2 owns over-helping/keeping-life-up/need for approval, 4 owns need-to-be-special/self-absorption/feeling-amplification; 2 appreciates 4's depth/authenticity/empathy, 4 appreciates 2's care/enthusiasm/flexibility; task: both steady emotions; 2 holds ground and reminds 4 of the present, 4 helps 2 know its needs and shows gratitude."
+    },
+    {
+      "a": 2,
+      "b": 5,
+      "brings": "Double opposites, a people-person feeler paired with a private thinker, whose difference creates an intense mutual pull; Twos take initiative and bring warmth, physical ease, and thoughtful care that improves the Five's life, while Fives bring loyalty, calm, dispassionate judgment, and undivided listening that steady the Two, each secretly nourished by the other.",
+      "trouble": "Friction centers on boundaries: the Five's slow or absent response reads as rejection and triggers the Two's fear of being unwanted, so the Two intrudes to seek reassurance while the Five withdraws, detaches, loses confidence under too much help, and may fear the Two or turn cynical and disappear for years, the added distance only intensifying the Two's pursuit toward disaster or loneliness.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-5",
+      "repair_daniels": "Attraction of opposites; 2 owns intrusive over-emotionality/approval-need, 5 owns privacy-need/disconnection/trivializing feeling; 2 appreciates 5's autonomy/objectivity, 5 appreciates 2's warmth/engagement; task: 2 builds own inner life and respects 5's space, 5 moves into feeling, allows nurturance, shows appreciation."
+    },
+    {
+      "a": 2,
+      "b": 6,
+      "brings": "Both highly dutiful and serious about their responsibilities, the Two leaning toward warmth and intimacy and the Six toward security and a dependable foundation; both put others first and foster family and community, with Sixes prizing the Two's generosity and loyalty and Twos admiring the Six's steadfastness, often a bond of steadiness and respect more than chemistry.",
+      "trouble": "The core tension is control versus autonomy: under pressure the Six grows anxious, indecisive, and reactive while the Two offers more help, advice, or orders that the Six experiences as intrusion undermining their confidence; cycles of anxiety, acting out, reunion, and renewed distance wear it down, the Two wanting ever more closeness while the Six pushes and pulls ambivalently, sometimes hardening into a punishing-parent drama.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-6",
+      "repair_daniels": "2 owns over-helping/intrusiveness/hidden dependence, 6 owns need-ambivalence/doubting-intent/magnifying-worst-case/control; 2 appreciates 6's skepticism/loyalty/warmth, 6 appreciates 2's positivity/genuine caring; task: 2 sees doubting isn't neediness and moderates emotional claims, 6 claims own authority and states real needs."
+    },
+    {
+      "a": 2,
+      "b": 7,
+      "brings": "The two can look alike, outgoing, funny, high-energy, optimistic company that reframes setbacks and loves pleasure; Twos add depth of feeling and care for others while Sevens add fast-generating possibility and an aura of adventure, the Seven reminding the Two toward self-care and a healthy Two easing the Seven's urge to wander, together an unusually warm and generous couple.",
+      "trouble": "The Two wants ever more intimacy and pushes to settle down while the Seven resists limiting options and feels trapped by the hovering; as the Two presses, the Seven grows bored and reads the bond as stale, the Two seeing an untrustworthy playboy and the Seven seeing a possessive guilt-tripper, until the Two feels used and compensates by withholding or through overeating and health complaints, a stalemate punctuated by loud scenes.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-7",
+      "repair_daniels": "2 owns disowned needs/connection-preoccupation/emotional control, 7 owns pain-avoidance/limit-difficulty/commitment-avoidance; 2 appreciates 7's ideas/self-interest/idealism, 7 appreciates 2's caring/relationship focus; task: 2 develops autonomy and gives space, 7 commits while asserting boundaries and attends to 2's needs; both slow pace."
+    },
+    {
+      "a": 2,
+      "b": 8,
+      "brings": "More alike than they appear, both action-oriented for real impact, both hiding a soft side, and both able to play caretaker while denying their own needs; both bring passion, vitality, and generosity, differing in emphasis (the Two on others' welfare, the Eight on impact), with roles dividing cleanly into powerful, mutually admiring allies.",
+      "trouble": "Their values and styles diverge sharply, the Two empathetic and indirect against the Eight self-interested, direct, and proudly unsentimental; they battle over whose philosophy prevails, and rather than lose the bond the Two may slip into codependency and enable the Eight's bad behaviour, until the Eight loses respect for the Two as manipulative and the Two loses respect for the Eight as domineering, both coarsening with overtones of paranoia and revenge.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-8",
+      "repair_daniels": "2 owns not-expressing-needs/altering-to-please/manipulative-emotionality, 8 owns feeling-insensitivity/vulnerability-avoidance/quick anger; 2 appreciates 8's strength/directness/protectiveness, 8 appreciates 2's care/sensitivity/energy; task: 2 holds ground and accepts the 8, 8 allows vulnerability and manages energy/boundaries."
+    },
+    {
+      "a": 2,
+      "b": 9,
+      "brings": "Similar across many reactions, both nurturing and optimistic, giving an outstandingly warm, hospitable, undemanding pairing; Twos bring the more outward, engaging energy and add new people and momentum while Nines bring quiet steadiness and uncomplicated acceptance that calms the Two, much of their best communication nonverbal, a mellow, healing couple built around home and nature.",
+      "trouble": "Both give away power and defer, yet someone must take charge, which grates as each fears being cast the resented bad guy; the Two can quietly take over, turning domineering while rationalising itself as loving, and when the Nine finally speaks up the Two hears ingratitude and turns it back, so the Nine retreats into passive-aggressive silence while the Two feels unappreciated, the surface kept calm as warmth thins and the bond ends through attrition.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-9",
+      "repair_daniels": "Both pleasing/accommodating; 2 owns impatience/intrusiveness, 9 owns stubbornness/inessential-diversion/inertia/merging; 2 appreciates 9's steadiness/patience/empathy, 9 appreciates 2's care/liveliness; task: 2 moderates emotion/advice and develops separate self, 9 works own priorities/boundaries and confronts intrusion."
+    },
+    {
+      "a": 3,
+      "b": 3,
+      "brings": "Two Threes share a drive for achievement, excellence, and being a credit to the relationship, hardworking, sociable, charming, and image-conscious even toward each other; they form a highly effective team that coaches each other to higher performance while giving space and avoiding drama, asking mainly respect for each other's accomplishments.",
+      "trouble": "Health-level dependent: when it slips, comparison and one-upmanship poison the mutual pride as each measures income, prestige, and advancement and resents the relationship costing their career momentum; neither is aware of their real feelings or knows how to voice them, treating emotion as a distraction or shame, so intimacy wanes into trophy-hood, alienation, depression, drifting, or affairs.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-3",
+      "repair_daniels": "Own feeling/relationship-inattention/work-focus/recognition-hunger/fast pace; appreciate shared accomplishment orientation/enthusiasm/mutual goal support; task: moderate pace, allow receptive force, encourage feelings, create non-work time, recognize love comes from being not doing."
+    },
+    {
+      "a": 3,
+      "b": 4,
+      "brings": "A complementary pairing where each supplies what the other lacks: Fours teach Threes to slow down, feel, and find their heart's desire and bring sensitivity, beauty, style, and depth, while Threes bring tact for the Four's wounded feelings plus hope, ambition, goal-setting, and coaching, both image-aware with a soul-mate sense of connection.",
+      "trouble": "Both carry self-esteem and identity issues, hidden shame, and a habit of secret comparison and competition; the Four feels overshadowed by the energetic Three and wants far more intimacy than the Three can give, and neither sees the other clearly (the Three as rescuer, the Four as an exotic trophy), so unmet needs bring hostile rages, sarcasm, gossip, and covert sabotage until admiration turns to contempt.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-4",
+      "repair_daniels": "3 owns feeling-inattention/competition/action-bias/disdain-for-inaction, 4 owns focus-on-missing/feeling-over-doing/wanting-special-treatment; 3 appreciates 4's idealism/depth/creativity, 4 appreciates 3's action-support/practicality/competence; task: 3 slows and understands non-judgmentally, 4 sticks with goals and stays present."
+    },
+    {
+      "a": 3,
+      "b": 5,
+      "brings": "A frequent if unexpected combination: Fives give Threes depth, expertise, credibility, and creative spark while Threes give Fives confidence, presentation skill, and communication awareness; both center on work and competency, support each other there superbly, and respect each other's space, potentially a brilliant, well-respected couple whose quiet feeling deepens over time.",
+      "trouble": "The shared work emphasis breeds friction since both stake self-esteem on their work: contests erupt over who first had an idea and deserves credit, the practical Three grows impatient with the Five's long fine-tuning and inaction while the Five loses respect for the Three's corner-cutting, and neither voices misgivings until both turn sarcastic and icy, the Three seeming shallow and the Five off-putting, hard to reverse given both types' cynicism.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-5",
+      "repair_daniels": "3 owns move-ahead pressure/corner-cutting, 5 owns retraction/over-analysis/withdrawal; 3 appreciates 5's analysis/calm, 5 appreciates 3's competence/enthusiasm/care-through-doing; task: 3 allows reflection and respects boundaries, 5 stays engaged and declares alone-time needs; both address shared feeling-avoidance."
+    },
+    {
+      "a": 3,
+      "b": 6,
+      "brings": "Surprisingly uncommon but a strong team: Threes bring hard work, optimism, energy, and buoyant confidence while Sixes bring grounding, perseverance, loyalty, warmth, practical sense, and compassion the Three can learn from; both are doers fostering equality, the Three bolstering the Six's confidence and the Six supporting the Three without smothering and drawing them into something larger than themselves.",
+      "trouble": "Each has what the other needs, but unhealthy they draw out the worst, sharing competitiveness, workaholism, external reassurance-seeking over secret inferiority, conformism, and avoidance of deeper feeling; their coping styles grate (the Three seeming grandiose, the Six a nervous reactive loose cannon), decaying at worst into evasive, robotic functioning with separate social lives behind a bland mask of normalcy.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-6",
+      "repair_daniels": "3 owns corner-cutting/over-optimism/dismissing-negatives/impatience, 6 owns hazard-magnifying/doubt/procrastination; 3 appreciates 6's loyalty/skepticism/big-picture, 6 appreciates 3's optimism/goal-focus; task: 3 respects downside and really listens, 6 trusts positive action and reduces defer-or-challenge."
+    },
+    {
+      "a": 3,
+      "b": 7,
+      "brings": "A highly complementary, self-assertive, high-energy, outgoing pair, optimistic and future-oriented, likely the highest-energy combination and vivacious company diving into plans and adventures; Threes bring people-sensitivity, propriety, and the focus to finish goals while Sevens bring fun, adventure, resilience, breadth, and spontaneity that loosens the self-conscious Three.",
+      "trouble": "Extremely volatile with pressure to live up to their own hype, their high-energy routines causing unnoticed hurts that back up; the Three can become a career-obsessed workaholic while the Seven takes work lightly, the secretly-less-confident Three envying the Seven's ease and the Seven feeling enjoyment is sacrificed and that they only prop the Three up, until a health or career crisis surfaces it and the break can be abrupt and permanent.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-7",
+      "repair_daniels": "Both avoid pain/negatives; 3 owns recognition-dependence/image/workaholism, 7 owns fun-seeking/drudge-avoidance/excuse-making; 3 appreciates 7's inventiveness/possibility, 7 appreciates 3's discipline/practicality; task: both allow painful feelings, slow pace, accept limits, come into the present."
+    },
+    {
+      "a": 3,
+      "b": 8,
+      "brings": "Powerful, effective, and often passionate, both assertive types who go after what they want and stand out, forming either an enhancing alliance or a competition; the Eight's strength gives the Three safety to be heartfelt while the Three's competence lets the Eight relax, both action-oriented and pragmatic, the Three adding diplomacy and the Eight adding forthright vigour, and notably they tend not to compete with each other.",
+      "trouble": "Both are workaholics under tremendous self-imposed stress that can turn support into a contest; the Eight controls openly while the Three controls covertly, arousing distrust, and once trust breaks the Eight turns jealous and possessive, demanding loyalty and even obedience while the Three feels used and reduced to an appendage; both then turn manipulative and guarded, the Eight seeing the Three as deceitful and the Three seeing the Eight as vengeful, ending in a nasty, very personal breakup.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-8",
+      "repair_daniels": "Control/competition unbuffered by soft feelings; 3 owns competing-to-win/altering-to-look-good/anger-difficulty, 8 owns image-disdain/all-or-nothing/confronting/impact; 3 appreciates 8's directness/courage, 8 appreciates 3's drive/flexibility; task: 3 welcomes challenge and true feelings, 8 softens confrontation and allows softer feelings."
+    },
+    {
+      "a": 3,
+      "b": 9,
+      "brings": "A fairly common pairing: Nines bring enormous support, encouragement, safety, steadiness, and the assurance that the Three is loved for itself and not just achievements, while Threes bring energy, ambition, flexibility, and excitement that draw the Nine toward valuing itself; Nines help Threes relax and both avoid conflict and spin things positively, sharing sociability and a wish for a comfortable, attractive home.",
+      "trouble": "Almost too much of a good thing, with so much attachment to comfort and positive values that questioning the status quo is hard and neither raises conflicts, the Nine to avoid endangering the bond and the Three to avoid rejection or exposing fragility; things coast even when essentially over until the Three feels unseen and abandoned as the Nine grows emotionally absent, the Three becoming depressed and feeling stifled while the Nine finds the Three demanding and spoiled, cycling through breakups until unresolved problems undermine it.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-9",
+      "repair_daniels": "3 owns success-preoccupation/fast pace/feeling-inattention, 9 owns stubbornness/inessential-diversion/indecision/self-forgetting; 3 appreciates 9's steadiness/empathy/balancing pace, 9 appreciates 3's focus/competence/hope; task: 3 moderates pace and attends to 9's priorities, 9 claims own voice and insists on being heard."
+    },
+    {
+      "a": 4,
+      "b": 4,
+      "brings": "Two Fours make deep friends who bring that friendship into intimacy, feeling a special mutual understanding against a shared sense of being misunderstood; they share childhood wounds and private dreams, offer each other the mirroring they crave, respect each other's individuality, and can build an operatic, romantic grand passion marked by candour.",
+      "trouble": "The relationship's own emotional instability is the core risk: each is self-absorbed and acutely aware of what they are or aren't getting, both wanting to be the emotional focus and resenting the other's identical claim, even staging 'who's more damaged' contests; Fours withdraw and distrust even the partner, so testing, eggshells, moodiness, and disdain set in until heat-of-the-moment words spiral past repair and hope dies.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-4",
+      "repair_daniels": "Own self-preoccupation/desire-to-be-special/focus-on-missing/push-pull emotion; appreciate shared intensity/depth/idealism/aesthetic flair/authenticity; task: understand rather than be understood, stay steady/present in strong emotion, value the ordinary, focus on what is present."
+    },
+    {
+      "a": 4,
+      "b": 5,
+      "brings": "Both are private, depth-loving types who savour exploring experience and respect the other's intensity; Fours bring artistic and emotional temperament, introspection, and aesthetic sensitivity while Fives bring inquiring intellect, questioning, and unconventional range, with wide-ranging conversation, shared outsider humour, Fives opening new perspectives and Fours keeping Fives in contact with feeling.",
+      "trouble": "The central discord is contact versus space: the emotional Four pushes for intimacy and can become demanding while the thinking Five pushes for detachment and grows reclusive; Fours feel analysed rather than met and find Fives unavailable, while Fives feel drained by bottomless need and read the Four's emotionality as unstable, so the Four provokes, the Five retreats, and florid emotion meeting cool analysis reaches an impasse that can spiral into a breakup.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-5",
+      "repair_daniels": "4 wants more, 5 wants less; 4 owns feeling/attention-hunger/dissatisfaction/self-orientation, 5 owns mind-detachment/over-intellectualizing/pulling-away; 4 appreciates 5's dispassion/steadiness/boundaries, 5 appreciates 4's depth/empathy; task: 4 softens claims and shows gratitude, 5 stays present and expresses feeling."
+    },
+    {
+      "a": 4,
+      "b": 6,
+      "brings": "Natural affinities: both highly emotional and often insecure, acting on immediate feeling and feeling like kindred 'orphans in the storm' connected by abandonment fears (Sixes even misidentify as Fours); when healthy they stabilise each other as a sounding board, the Four bringing sensitivity, sensuality, and voiced emotion while the Six brings hard work, loyalty, practicality, security, and playfulness plus a platform for the Four's creativity.",
+      "trouble": "Both carry abandonment issues and, when unhealthy, turn reactive, critical, and overwhelmed, testing each other's loyalty and withdrawing affection preemptively in a self-fulfilling way that can lock into codependency without growth; change tolerance splits them, the self-exploring Four feeling stifled by the conservative Six while the Six finds the Four undependable and whim-driven, both mistrustful and quick to escalate misunderstandings into projection and over-reaction.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-6",
+      "repair_daniels": "4 owns self-centeredness/changeability/contrariness/wanting-more, 6 owns feeling-mistrust/testing/worst-case/reassurance-need; 4 appreciates 6's loyalty/imagination/humor, 6 appreciates 4's depth/authenticity/curiosity; task: 4 steadies feeling and affirms commitment, 6 accepts shifts and seeks to understand not doubt."
+    },
+    {
+      "a": 4,
+      "b": 7,
+      "brings": "A case of opposites attracting, the quiet, self-doubting, emotional, pessimistic Four against the outgoing, self-confident, mental, optimistic Seven; Sevens help Fours past shyness while Fours help Sevens honour their feelings, and the charge of their differences makes each fascinating, both sharing joy, spontaneity, lively conversation, and a love of life's finer things, the Four adding depth and the Seven adding fun and resilience.",
+      "trouble": "Being so different they need strong attraction or they fail to connect, and any deep early conflict flies them apart; both are impulsive, easily frustrated, and stingy with second chances, the Four tiring of the Seven's relentless pace as noisy and insensitive while the Seven sees the Four as hypersensitive and self-absorbed, and as it worsens the Four snipes from a distance while the Seven turns abrasive and moves on, leaving problems unresolved until everything once admired becomes insufferable.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-7",
+      "repair_daniels": "Depth-vs-upbeat polarity; 4 owns self-centeredness/intensity-preoccupation/focus-on-missing, 7 owns difficulty-with-deep-feeling/fear-of-restriction/future-living; 4 appreciates 7's optimism/adventurousness, 7 appreciates 4's depth/empathy/creativity; task: 4 appreciates lightness and isn't ruled by feeling, 7 explores emotional depth and returns to the present."
+    },
+    {
+      "a": 4,
+      "b": 8,
+      "brings": "One of the most creative and most volatile couplings: both intense, strongly emotional, reaction-seeking, and dominating (the Eight socially, the Four emotionally), drawn to each other's storminess, vulnerability, and hidden qualities, both highly intuitive and prone to thrilling risk; the Four leans on the Eight's practicality and protection while the Eight is drawn to the Four's emotional world it cannot conquer, both making each other feel more alive.",
+      "trouble": "Both take pride in a larger-than-life quality and demand freedom from control, so sensing control from the other enrages both and triggers enormous battles and intrigues; both are stormy and prone to rage and acting out, so arguing replaces connection and fighting (potentially physical, both ways) becomes routine, and they can get hooked on fighting and making up, punishing with withholding and public put-downs until it deteriorates into abuse, retaliation, and obsession.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-8",
+      "repair_daniels": "Shared intensity/immoderation both bonds and inflames; 4 owns emotional extremes/wanting-special/deficiency-with-powerful-others, 8 owns feeling-avoidance/impulsivity/anger/my-way/control; 4 appreciates 8's strength/directness/protectiveness, 8 appreciates 4's sensitivity/idealism/genuineness; task: 4 sustains action and steadies emotion, 8 allows vulnerability and moderates impact."
+    },
+    {
+      "a": 4,
+      "b": 9,
+      "brings": "Paradoxically both comfortable and exciting: both withdrawn, private, sensitive, and empathetic, wanting deep connection yet insisting on autonomy, both creative and supportive of the other's space, idealistic soul-mate seekers sharing a notable sensuality and love of comfort; Fours make Nines more expressive while Nines let Fours feel understood and accepted, even relishing the Four's emotional storms, much of the pleasure nonverbal.",
+      "trouble": "The core clash is opposite stress responses: Fours become volatile and demanding while Nines become disengaged and unreachable, the Four reading as unstable and moody and the Nine as inert and uncommunicative; the Nine resents the Four's entitlement and the Four resents the Nine's irresponsibility, and as the Nine shuts down communication stops until the Four feels like playing tennis alone, contempt for the boring, ineffectual Nine ending it while at low functioning neither energises the other.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-9",
+      "repair_daniels": "4 owns self-centeredness/devaluing-9/spurning-ordinary, 9 owns not-knowing-priorities/conflict-avoidance/comfort/stubbornness; 4 appreciates 9's steadiness/acceptance/support, 9 appreciates 4's flair/depth/authenticity; task: 4 makes 9 of equal importance and values the ordinary, 9 makes own priorities equal and speaks up; both avoid withdrawing into deficiency."
+    },
+    {
+      "a": 5,
+      "b": 5,
+      "brings": "To a Five, another Five is close to the ideal companion, well-informed, independent, imaginative, fact-oriented, and non-intrusive; wanting neither control nor to be too known, they grant abundant space with distance, courtesy, and few demands as hallmarks, rarely initiating on personal matters but capable of quick secret attachment, long silences punctuated by intense bursts of communication.",
+      "trouble": "The pair can over-intellectualise the relationship and compartmentalise into separate worlds, both turning secretive to avoid being engulfed and sliding into competitive intellectual bickering; the core danger is too much distance and reticence eroding intimacy into a mere professional-respect association, then dry indifference, burying themselves in work until they risk becoming eccentric recluses cut off from each other and the world.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-5",
+      "repair_daniels": "Own retraction/emotional-disconnection/time-energy-overprotection/intellectualizing; appreciate shared self-reliance/dispassion/analysis/boundary-respect; task: move into contact and feelings, self-disclose, take initiative while respecting boundaries, realize they nurture not drain each other."
+    },
+    {
+      "a": 5,
+      "b": 6,
+      "brings": "Both mental types who respect each other's intellect and expertise, often starting as colleagues, valuing detail, accuracy, and unbiased analysis and handling crises well; Fives add calm, detached objectivity and penetrating curiosity while Sixes add strong values, more passion, and a warmer human quality, looking to trusted authorities while the authority-skeptical Five thinks independently, a symbiotic exchange of doubt and decision given unshakable trust.",
+      "trouble": "They tend to think in opposite ways and land on opposite conclusions, generating tension: Sixes lean on precedent and marshalled facts while Fives take imaginative leaps and ignore received wisdom, and when trust breaks the Five sees the Six as conservative, indecisive, and authority-pleasing while the Six sees the Five as provocative and impractical, each feeding the other's powerlessness until they feel better off as colleagues than partners.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-6",
+      "repair_daniels": "Shared analysis/boundaries; 5 owns retraction/reassurance-difficulty, 6 owns doubting/trust-difficulty/proof-hunger; 5 appreciates 6's warmth/loyalty/initiative, 6 appreciates 5's objectivity/calm/steadiness; task: 5 opens and reassures the 6, 6 welcomes uncertainty and develops inner authority; both ground to open the heart."
+    },
+    {
+      "a": 5,
+      "b": 7,
+      "brings": "Two thinking types bringing mental energy and love of ideas in a complementary mix: Fives bring depth, observation, self-reliance, and offbeat humour while Sevens bring quickness of mind and spirit, generosity, extravagance, and gregarious optimism; the frugal, private Five grounds and focuses the Seven while the Seven draws the Five into new experiences and social contact, balancing 'don't expect too much' against 'try it all,' each usefully checking the other.",
+      "trouble": "Under stress the two split hard: the Five, seeing scarcity, withdraws into a reclusive hard-to-reach mind while the Seven goes into hyper-drive with more activity, talk, and possibly substances, which makes the Five retreat further; at lower Levels the Five sees the Seven as escapist and coarse while the Seven finds the Five cold, style clashes making both dig in until the Seven's attention-getting closes the Five's door and both take extreme, well-defended positions.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-7",
+      "repair_daniels": "5 owns contact-difficulty/criticizing-claims/scarcity, 7 owns impatience/over-booking/limit-resistance/fleeing-pain; 5 appreciates 7's optimism/abundance/engagement, 7 appreciates 5's reliability/focus/discretion; task: 5 takes initiative and stays grounded, 7 grounds, settles the mind, practices restraint and attends to 5's life."
+    },
+    {
+      "a": 5,
+      "b": 8,
+      "brings": "Complementary talents each needs: the Five can learn from the Eight to inhabit body, instinct, and power and engage the practical world while the Eight can learn from the Five to weigh consequences before acting; both insist on independence and non-interference, enjoy debate, feel like misfits and grasp each other's core wordlessly, seeing the person behind the defense and relating to hidden vulnerability, together combining power and brains as formidable mutual protectors.",
+      "trouble": "The mind-identified Five takes pride in doing without the earthly goals the Eight prizes while the Eight takes pride in conquest and intimidation, and as insecurity rises they react oppositely, the Five shutting down secretive and isolated while the Eight grows confrontational and enraged; at lower Levels they physically separate and communication stops, both attacking each other's vulnerabilities, and being rejection-sensitive the Five collapses into cynicism while the Eight retaliates, the breakup confirming both types' darkest views.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-8",
+      "repair_daniels": "Complementary restraint/expansiveness; both value autonomy; 5 owns retraction/need-minimizing/energy-guarding, 8 owns exuberant energy/boundary-insensitivity/tender-feeling-avoidance/impact; 5 appreciates 8's energy/directness/spontaneity, 8 appreciates 5's analysis/moderation; task: 5 comes forward and sets limits without withdrawing, 8 notices impact, gives space, listens."
+    },
+    {
+      "a": 5,
+      "b": 9,
+      "brings": "A pairing of abundant space where neither hovers yet connection and interest remain, marked by quiet, spaciousness, and respect for boundaries; the more emotional but self-unsure Nine appreciates the Five drawing them out of inner fuzziness plus the Five's sharpness and patience, while the dry, cut-off Five finds warmth, unquestioned acceptance, and sensual comfort that lets them deeply relax, together a stimulating couple of wit and understatement initiating each other into different worldviews.",
+      "trouble": "Tension grows from all the space each gives: both so boundary-aware that neither easily initiates, stays decisive, or knows their own feelings, so with rapport present but feeling cut off they may not know if they are in love; the emotionally fluid Nine idealises the Five when together but slips into out of sight, out of mind, and the frustrated Five turns cynical and dissects the relationship as a defense, both living in projection until the Nine's inertia mixes with the Five's detachment and it withers.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-9",
+      "repair_daniels": "Both steady/conflict-avoidant; 5 owns mind-retreat/silence/merging-avoidance, 9 owns self-expression-difficulty/agenda-merging/hidden anger; 5 appreciates 9's kindness/adaptability/empathy, 9 appreciates 5's clarity/boundaries; task: 5 sustains contact and initiates, 9 develops own priorities and speaks up; 5 softens boundaries while 9 firms them."
+    },
+    {
+      "a": 6,
+      "b": 6,
+      "brings": "Two Sixes bond fast as kindred spirits into a playful, bantering, buddies-in-arms collusion, sharing secrets and values; trust is paramount and once established lets them relax, think aloud, and offer unhesitating mutual support and protection, feelings shown mostly in steadfast action as each works for the other's welfare more than their own.",
+      "trouble": "Both emotionally reactive, once negativity enters their fears feed off each other into worst-case catastrophizing until they feel doomed, acting impulsively or freezing into indecisive stalemate and blaming each other in a ping-pong that keeps connection; it can become a keyed-up, semi-hysterical pairing hard to break because fears are irrational and future-based, wearing each other out with worry and eventual mistrust and accusations of betrayal.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-6",
+      "repair_daniels": "Own worst-case-magnifying/fear-projection/doubt-then-blame/certainty-hunger; appreciate shared loyalty/perseverance/warmth/imagination/underdog commitment; task: reality-check each other, acknowledge positives, watch for collusion and polarization, trust more, ground in the body (counterphobic confronts, phobic withdraws)."
+    },
+    {
+      "a": 6,
+      "b": 7,
+      "brings": "Two mental types with plenty of stimulation who reinforce and counterbalance each other: Sevens entertain and lift the Six's spirits and generate big-picture ideas while Sixes master the practical steps, a stimulator-regulator team; Sixes bring commitment, loyalty, and groundedness while Sevens bring optimism, energy, and fearlessness about failure, teaching Sixes resilience while Sixes teach the difference between optimism and pipedreams.",
+      "trouble": "At lower Levels the fit shifts fast: the security-seeking, past-aware, commitment-wanting Six foresees problems and limits while the happiness-seeking, future-oriented Seven wants new things now and commits reluctantly; Sixes see Sevens as too hedonistic and unreliable while Sevens see Sixes as anxiety-ridden worriers who oppose everything and live by self-imposed limits, opposing philosophies that unless reconciled make the couple hard to hold together.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-7",
+      "repair_daniels": "Negative-vs-positive reads balance; 6 owns hazard-magnifying/certainty-hunger/limit-wanting, 7 owns over-optimism/pain-avoidance/superiority/limit-resistance; 6 appreciates 7's optimism/inventiveness/enthusiasm, 7 appreciates 6's skepticism/loyalty/foresight; task: 6 asserts needs and builds trust, 7 takes concerns seriously, accepts limits, sticks with agreements; both develop receptivity."
+    },
+    {
+      "a": 6,
+      "b": 8,
+      "brings": "A potentially strong, lasting bond built on a shared defensive worldview where one guards one's own interests (the Eight) and secures strong allies (the Six); both carry deep trust issues, so after a testing period the alliance runs deep, both prizing strength, honour, loyalty, and protectiveness, the Six bringing warmth and analytic foresight as advisor-lieutenant while the Eight supplies vision, audacity, and decisiveness, the Six looking up to the Eight as a hero.",
+      "trouble": "Both are emotional but hide it (the Eight under bravado, the Six under bluster) and counterattack when threatened; the Eight expects to lead and be obeyed, which suits the Six except when it must push back, sparking power struggles, counterphobic Sixes fighting openly while phobic Sixes turn covertly passive-aggressive, and the Eight grows contemptuous if the Six seems weak, its rages and threats to the Six's security ending it quickly once trust crumbles.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-8",
+      "repair_daniels": "6 owns questioning/defy-or-defer-authority/trust-difficulty/(phobic)fearfulness, 8 owns challenging-6's-fears/over-protection/intimidating energy/danger-minimizing; 6 appreciates 8's strength/directness/protectiveness/generosity, 8 appreciates 6's caution/analysis/loyalty/courage; task: 6 develops assertiveness and acts as own authority, 8 moderates confrontation and expresses own vulnerability as strength."
+    },
+    {
+      "a": 6,
+      "b": 9,
+      "brings": "One of the most stable and common pairings wanting similar things (security and predictability for the Six, stability and autonomy for the Nine), both dutiful, middle-of-the-road, and rule-abiding; the Six brings an active, questioning, safety-alert, skeptical mind while the sunny, trusting, steady Nine offers non-threatening acceptance, the Six seeing exceptions while the Nine sees what works, greasing each other's wheels and bolstering confidence without crowding, often feeling like a dream come true.",
+      "trouble": "Both find it hard to say what's really on their minds, so they clam up, go silently stubborn, and make the other guess, falling into a stalemate held at arm's length, sometimes with health complaints binding them in concern; both disappear too completely into social roles and dread change, equating familiarity with security, so they postpone confrontation until the Six's shorter fuse either gives up on the Nine or erupts with a backlog of hostility, often doing permanent damage.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-9",
+      "repair_daniels": "Both go-along-to-get-along; 6 owns doubting-love/provoking/certainty-hunger, 9 owns blaming-others/complaining/submerged anger/over-compliance; 6 appreciates 9's acceptance/steadiness/reliability, 9 appreciates 6's loyalty/courage/alertness/wit; task: 6 accepts 9's slower pace and builds trust, 9 takes responsibility, speaks up, and offers reassurance/own truth."
+    },
+    {
+      "a": 7,
+      "b": 7,
+      "brings": "Two Sevens bring high energy, spontaneity, travel, and appetite for anything new; when healthy a radiant joyousness and abundance permeates and spills onto everyone, thoughtful, idealistic, hospitable, and generous, each bringing a strong spirit of personal freedom that refuses to tie the other down, optimistic and resilient with gratitude for finding each other as the guiding spirit.",
+      "trouble": "The main pitfall is impatience, wanting the bond more complete than it is and drifting to work or other involvements as novelty fades; both believe the perfect person exists elsewhere and dread missing out, so commitment feels limiting and one must risk it first, and both are impulsive and irreverent, saying unretractable things in arguments and craving constant stimulation until separate interests and friends pull their social lives apart and someone feels left out.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-7-with-type-7",
+      "repair_daniels": "Own dark-side-avoidance/positive-only focus/self-centeredness/limit-difficulty/not-listening; appreciate shared vision/inventiveness/optimism/resilience/love-of-life; task: self-discipline, help each other stay with pain, keep assurances and accept limits, attend equally to the other, ground and really listen."
+    },
+    {
+      "a": 7,
+      "b": 8,
+      "brings": "Both highly self-assertive, independent, strong-willed, and resistant to control, practical and here-and-now oriented, unwilling to postpone satisfaction, both overspending on a generous lifestyle and loving to entertain; high-energy and adventuresome, the Seven adds lightness, fun, and engaging storytelling as the more talkative one while the more reserved, moody Eight relies on the Seven to lighten things and brings directness, decisiveness, and determination.",
+      "trouble": "The productive pairing sours if that energy lacks constructive outlets, turning destructive or into a dark collusion; both resist the other's control and taunt its lack of influence, the Eight turning authoritarian and bullying while the Seven evades and grows contemptuous, both flaunting the other's failure to prevail and both intensely selfish, their crude fights becoming gargantuan brawls with possible violence, both addicted to the adrenaline of recklessness until they push the limits once too far.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-7-with-type-8",
+      "repair_daniels": "Both want to be own authority; 7 owns rationalizing/pain-avoidance/control-sensitivity/excess, 8 owns aggressiveness/control-wanting/impatience-with-excuses/my-way/excess; 7 appreciates 8's justice/purpose/directness/generosity, 8 appreciates 7's inventiveness/playfulness/resilience; task: 7 keeps agreements and stays present under confrontation, 8 self-limits, accepts differences, allows vulnerability; both moderate excess and listen."
+    },
+    {
+      "a": 7,
+      "b": 9,
+      "brings": "One of the most common pairings mixing similar and opposite qualities: both positive-outlook, optimistic, conflict-avoiding, friendly types who forgive and make the best of limitations; the more active, self-assertive Seven takes initiative, makes plans, and supplies fun, sparkle, and adventure while the Nine brings steadiness, support, acceptance, and soft-hearted sympathy, the Seven providing stimulation and the Nine the audience, a good balance of energy and relaxation if neither exploits the other.",
+      "trouble": "Neither is adept at working through the painful, both keeping things positive and at most blaming the other under stress rather than processing their own feelings, blind to their own share; the Nine collapses under the Seven's angry demands into silence and stubbornness while the more talkative Seven impulsively lashes into verbal abuse, feeling the Nine too checked-out and ineffectual, its contempt only making the Nine retreat further, turning one of the sunniest couples into one of the most tortured.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-7-with-type-9",
+      "repair_daniels": "7 provides agenda, 9 goes along, both conflict-avoidant; 7 owns insatiability/overrunning-others/fast pace/self-centeredness, 9 owns not-making-self-important/going-along-then-resisting/passivity; 7 appreciates 9's patience/adaptability/steadiness, 9 appreciates 7's ideas/positivity/adventure; task: 7 grounds, makes 9 equal, moderates pace, 9 represents self, takes initiative; both face conflict."
+    },
+    {
+      "a": 8,
+      "b": 8,
+      "brings": "Two Eights bring enormous energy, vitality, and passion with strong willpower, decisiveness, and a drive to make things happen; well matched they paradoxically stimulate and relax each other, each feeling their energy finally met and confident the other is strong enough to depend on, so quiet confidence ('we've got it covered') is the real hallmark, breeding deep mutual respect, direct communication, and clean quick resolution, able to build an empire and be generous with others.",
+      "trouble": "A double Eight is extremely volatile with lots of ego, tests of will, and jockeying for control since neither will look weak, both struggling to dominate; both can have hair-trigger tempers and creeping paranoia even toward the partner, upping the ante emotionally, sexually, and financially, neither backing down or apologising yet both surprisingly thin-skinned and easily hurt, needing a lot of room until too much bluntness escalates into outright battles and revenge that wears them down to a final straw.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-8-with-type-8",
+      "repair_daniels": "Own power/control issues/vulnerability-denial/excess/impact-minimizing/confusing-own-truth-with-objective; appreciate shared robust energy/loyal friendship/protectiveness/directness/courage; task: moderate energy and self-restrain, treat vulnerability as strength, relinquish control, appreciate the other's truth, listen (no internal counterforce otherwise)."
+    },
+    {
+      "a": 8,
+      "b": 9,
+      "brings": "The Eight brings take-charge leadership, self-confidence, and vitality the Nine admires and gravitates toward while giving the Eight an appreciative audience, and the Nine brings calm, stability, and a safe harbour where the fighter Eight can drop its guard; they teach each other what they lack, the Eight lending assertion and the Nine teaching which battles are worth it, a fire-and-water, active-and-receptive pairing with an archetypal feel, well-defined complementary roles, and a shared love of comfort and a safe retreat.",
+      "trouble": "As they deteriorate their defenses go opposite ways, the Eight pushing harder while the Nine shuts down, going on emotional strike and passive-aggressively sabotaging plans, driving the Eight to escalate berating and threats until it loses interest feeling obstructed; the Nine comes to see the Eight as bossy and controlling and goes stubborn when directed, the Eight startled by the depth of that stubbornness, the relationship often foundering on open or covert rage that at worst becomes a domestic battlefield with abuse.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-8-with-type-9",
+      "repair_daniels": "8 leads, 9 goes along then resists; 8 owns aggressive over-exuberance/impact-insensitivity/devaluing-compromise/own-truth-only/impulsiveness, 9 owns confrontation-discomfort/self-assertion-difficulty/over-accommodation/digging-in; 8 appreciates 9's steadiness/adaptability/all-sides view, 9 appreciates 8's power/directness/support/underlying vulnerability; task: 8 defers/moderates impact and listens, 9 asserts, sets boundaries, states own truth, values self equally; both balance heart and head."
+    },
+    {
+      "a": 9,
+      "b": 9,
+      "brings": "One of the most common same-type pairs, quiet, gentle, mutually supportive, comfortable, and hospitable, easy-going people who don't let irritations get to them and look positively on their circumstances; patient and quick to forgive, they give each other abundant space, undemanding attention, and affection, each a kindred spirit, enjoying regularity and the familiar, surprisingly domestic and protective of their private haven, above all feeling unpressured in a low-stress mellowness that is the main draw.",
+      "trouble": "That very steadiness is the Achilles' heel, a fear of rocking the boat that leaves them stuck in doldrums, dropping social connections, and unable to raise important issues, so they may love each other while almost no real communication happens; as they deteriorate they idealise each other rather than relate to the real person, letting passive-aggression, worry, and blame build, subtly suppressing each other into a deadening of vitality and masked depression, often settling into a mutual non-aggression pact with joy long evaporated into entrenched routine.",
+      "repair": "",
+      "source": "https://www.enneagraminstitute.com/relationship-type-9-with-type-9",
+      "repair_daniels": "Own deferring/indecision/passive resistance/not-knowing-priorities/conflict-avoidance/comfort-seeking/complaint-blaming; appreciate shared patience/steadiness/acceptance/empathy/blending; task: build decisiveness, view self as being-and-cause, take initiative, encourage priorities/boundaries, notice the tendency to blame the other for lack of fulfillment."
+    }
   ]
- },
- "pairs": [
-  {
-   "a": 1,
-   "b": 1,
-   "brings": "Two Ones share fairness, honesty, kept agreements, and mutual respect; responsibility and correctness come before leisure, and each takes the adult role, producing a competent, principled, unsentimental partnership sustained by shared ideals and admired character.",
-   "trouble": "A strong right/wrong sense breeds formality and low tolerance for anything read as sloppy or childish; anger leaks as sarcasm and stored grievances that erupt, and each can make the other an endless improvement project or the pair turns criticism outward and grows superior, isolated, and coldly tolerant.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-1"
-  },
-  {
-   "a": 1,
-   "b": 2,
-   "brings": "A complementary service pairing on shared values; Twos add warmth, nurturing, and social ease that soften the One's reserve, while Ones add integrity, consistency, and reliable commitment that leave the Two feeling secure and unlikely to be abandoned.",
-   "trouble": "Both tend others' needs but struggle to voice their own, filling the bond with unstated wants and hidden agendas; Ones tire of the Two's over-giving and scattered time, Twos read the One as impersonal and short on real compassion, and suppressed anger escalates into mutual criticism.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-2"
-  },
-  {
-   "a": 1,
-   "b": 3,
-   "brings": "A highly task-driven, accomplished pairing of serious, disciplined, excellence-seeking partners who split work by strength; Ones ground Threes in principle and realism while Threes loosen the One's perfectionism, both preferring discussion over emotional bickering.",
-   "trouble": "Friction arises over time, thin emotional attachment, and competition; Ones see Threes as image-obsessed and ethically loose, Threes see Ones as rigid and nitpicking over results; avoidance triggers the One's abandonment fears and eroding respect, sometimes leaving only a useful professional marriage.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-3"
-  },
-  {
-   "a": 1,
-   "b": 4,
-   "brings": "Two idealists wanting to bring something good and beautiful into being; Ones offer discipline, structure, objectivity, and grounded counsel while Fours offer creativity, emotional intensity, and spontaneity, each supplying qualities the other lacks.",
-   "trouble": "They separate like oil and water across an objective-versus-subjective divide, with the central clash between self-discipline and self-indulgence; Ones read Fours as self-absorbed and undisciplined, Fours read Ones as rigid and cold, and both grow condescending, score-keeping, and bitterly disappointed.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-4"
-  },
-  {
-   "a": 1,
-   "b": 5,
-   "brings": "Two cerebral, reserved, boundary-respecting types who prize objectivity and share wide intellectual interests, debate, and unexpected humour; Ones add order and a drive to improve their surroundings, Fives add curiosity and comfort with disorder and the unconventional.",
-   "trouble": "A deep split divides them: Ones believe in an attainable objective truth held almost as a duty, while Fives are skeptics who see only interpretations and enjoy deflating certainty; neither shifts their worldview, and over-respected boundaries turn the bond cool, distant, analytic, and quietly isolated for years.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-5"
-  },
-  {
-   "a": 1,
-   "b": 6,
-   "brings": "Two conscientious, duty-bound types often mistaken for each other, sharing purpose and concern for truth and service; Ones bring decisiveness and clarity and often lead, while Sixes bring warmth, availability, generosity, and playfulness, forming a stable team when beliefs align.",
-   "trouble": "Under stress Ones turn critical and joyless while Sixes turn anxious, reactive, and insecure; meeting fault-finding instead of stability, Sixes grow defensive, evasive, and unreliable and doubt the relationship's future, which fuels the One's resentment and spirals into anger, accusations, and name-calling.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-6"
-  },
-  {
-   "a": 1,
-   "b": 7,
-   "brings": "A complementary opposites pairing that can spur growth; Ones bring order, methodical follow-through, and high standards while Sevens bring spontaneity, energy, and fun, with Ones keeping Sevens on track and giving them purpose while Sevens keep Ones light and refreshed.",
-   "trouble": "Under stress Ones become critical and rigid about the one right way, reading Sevens as scattered, over-committed, and childish, while Sevens read Ones as prissy, tight-fisted, and joyless; conflict clusters around organisation and money, and Sevens tire of criticism and seek options rather than feel trapped, breeding mutual contempt.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-7"
-  },
-  {
-   "a": 1,
-   "b": 8,
-   "brings": "Both action-oriented crusaders for truth and justice who sacrifice to right wrongs, sharing directness, perseverance, and a central concern with fairness; the Eight's passion counterbalances the One's restraint, Ones find Eights exciting and earthy, and Eights admire the One's unbendable conviction.",
-   "trouble": "What attracts also breaks them as opposites (fire and ice) in a rare, difficult romance; both want charge and clash on means, Ones judging the Eight as selfish and corrupt while Eights see Ones as self-righteous hypocrites and provoke them, both meeting hurt with anger and risking violent ruptures hard to repair once abuse is crossed.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-8"
-  },
-  {
-   "a": 1,
-   "b": 9,
-   "brings": "Two self-recognising idealists able to defer reward for a long-term good; Ones bring clarity, standards, and inspiring articulation of purpose while Nines bring gentle, accepting, undemanding steadiness that softens the One's criticality and prefers harmony to being right.",
-   "trouble": "Their core clash is opposite stress responses: Ones grow frustrated, prickly, and fault-finding while Nines shut down and insist nothing is wrong; pushing for responsibility drives the Nine into passive-aggression that reads as negligence, until the couple freezes in mutual anger with no way to melt the impasse.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-1-with-type-9"
-  },
-  {
-   "a": 2,
-   "b": 2,
-   "brings": "Two healthy Twos give warmth, affection, sensitivity, and constant checking-in while respecting each other's independence; since neither is used to being nurtured, the growth edge is learning to receive care, and when they manage it the bond becomes a base of abundance and a welcoming chosen family.",
-   "trouble": "Two validation-seeking feelers can make better friends than intimates, prone to hidden jealousy and competition over who is more loved or central; some compete through charm, others neglect self-care and seek consolation elsewhere or in food, sliding into enmeshment or repulsion, boundary problems, depression, blame, and deepening loneliness.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-2"
-  },
-  {
-   "a": 2,
-   "b": 3,
-   "brings": "Both are feeling- and attention-driven and people-oriented, making a socially magnetic, high-impact, widely admired pairing; Twos add personal warmth and follow-through while Threes add flexibility, practicality, and vision, with the Two content behind the throne and the Three in the spotlight, each wanting to make the other proud.",
-   "trouble": "The conspicuous star-power turns comparative: Twos grow jealous and possessive with an 'I made you, you owe me' resentment while Threes struggle to share credit and recoil from criticism; both carry hidden shame and neither is introspective, so they assume alignment until they drift, the Two feeling career comes before home and the Three feeling smothered, decaying into bickering and hostility.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-3"
-  },
-  {
-   "a": 2,
-   "b": 4,
-   "brings": "A warm, sometimes passionate pairing once past early intimacy hurdles, each a safe place to share fears; Twos bring sociability, energy, and encouragement that build the Four's confidence while Fours bring creativity, humour, emotional honesty, beauty, and depth, each quietly drawing the other toward emotional maturity and away from others' opinions.",
-   "trouble": "Usually better as friends and surprisingly rare romantically because of excess emotionality and unspoken demand; Twos read Fours as moody and self-absorbed while Fours read Twos as saccharine, insincere, and secretly needy and grow envious of their social ease, shared shame eroding it until it founders on the Four's abandonment fears or the Two's sense of being unappreciated.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-4"
-  },
-  {
-   "a": 2,
-   "b": 5,
-   "brings": "Double opposites, a people-person feeler paired with a private thinker, whose difference creates an intense mutual pull; Twos take initiative and bring warmth, physical ease, and thoughtful care that improves the Five's life, while Fives bring loyalty, calm, dispassionate judgment, and undivided listening that steady the Two, each secretly nourished by the other.",
-   "trouble": "Friction centers on boundaries: the Five's slow or absent response reads as rejection and triggers the Two's fear of being unwanted, so the Two intrudes to seek reassurance while the Five withdraws, detaches, loses confidence under too much help, and may fear the Two or turn cynical and disappear for years, the added distance only intensifying the Two's pursuit toward disaster or loneliness.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-5"
-  },
-  {
-   "a": 2,
-   "b": 6,
-   "brings": "Both highly dutiful and serious about their responsibilities, the Two leaning toward warmth and intimacy and the Six toward security and a dependable foundation; both put others first and foster family and community, with Sixes prizing the Two's generosity and loyalty and Twos admiring the Six's steadfastness, often a bond of steadiness and respect more than chemistry.",
-   "trouble": "The core tension is control versus autonomy: under pressure the Six grows anxious, indecisive, and reactive while the Two offers more help, advice, or orders that the Six experiences as intrusion undermining their confidence; cycles of anxiety, acting out, reunion, and renewed distance wear it down, the Two wanting ever more closeness while the Six pushes and pulls ambivalently, sometimes hardening into a punishing-parent drama.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-6"
-  },
-  {
-   "a": 2,
-   "b": 7,
-   "brings": "The two can look alike, outgoing, funny, high-energy, optimistic company that reframes setbacks and loves pleasure; Twos add depth of feeling and care for others while Sevens add fast-generating possibility and an aura of adventure, the Seven reminding the Two toward self-care and a healthy Two easing the Seven's urge to wander, together an unusually warm and generous couple.",
-   "trouble": "The Two wants ever more intimacy and pushes to settle down while the Seven resists limiting options and feels trapped by the hovering; as the Two presses, the Seven grows bored and reads the bond as stale, the Two seeing an untrustworthy playboy and the Seven seeing a possessive guilt-tripper, until the Two feels used and compensates by withholding or through overeating and health complaints, a stalemate punctuated by loud scenes.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-7"
-  },
-  {
-   "a": 2,
-   "b": 8,
-   "brings": "More alike than they appear, both action-oriented for real impact, both hiding a soft side, and both able to play caretaker while denying their own needs; both bring passion, vitality, and generosity, differing in emphasis (the Two on others' welfare, the Eight on impact), with roles dividing cleanly into powerful, mutually admiring allies.",
-   "trouble": "Their values and styles diverge sharply, the Two empathetic and indirect against the Eight self-interested, direct, and proudly unsentimental; they battle over whose philosophy prevails, and rather than lose the bond the Two may slip into codependency and enable the Eight's bad behaviour, until the Eight loses respect for the Two as manipulative and the Two loses respect for the Eight as domineering, both coarsening with overtones of paranoia and revenge.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-8"
-  },
-  {
-   "a": 2,
-   "b": 9,
-   "brings": "Similar across many reactions, both nurturing and optimistic, giving an outstandingly warm, hospitable, undemanding pairing; Twos bring the more outward, engaging energy and add new people and momentum while Nines bring quiet steadiness and uncomplicated acceptance that calms the Two, much of their best communication nonverbal, a mellow, healing couple built around home and nature.",
-   "trouble": "Both give away power and defer, yet someone must take charge, which grates as each fears being cast the resented bad guy; the Two can quietly take over, turning domineering while rationalising itself as loving, and when the Nine finally speaks up the Two hears ingratitude and turns it back, so the Nine retreats into passive-aggressive silence while the Two feels unappreciated, the surface kept calm as warmth thins and the bond ends through attrition.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-2-with-type-9"
-  },
-  {
-   "a": 3,
-   "b": 3,
-   "brings": "Two Threes share a drive for achievement, excellence, and being a credit to the relationship, hardworking, sociable, charming, and image-conscious even toward each other; they form a highly effective team that coaches each other to higher performance while giving space and avoiding drama, asking mainly respect for each other's accomplishments.",
-   "trouble": "Health-level dependent: when it slips, comparison and one-upmanship poison the mutual pride as each measures income, prestige, and advancement and resents the relationship costing their career momentum; neither is aware of their real feelings or knows how to voice them, treating emotion as a distraction or shame, so intimacy wanes into trophy-hood, alienation, depression, drifting, or affairs.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-3"
-  },
-  {
-   "a": 3,
-   "b": 4,
-   "brings": "A complementary pairing where each supplies what the other lacks: Fours teach Threes to slow down, feel, and find their heart's desire and bring sensitivity, beauty, style, and depth, while Threes bring tact for the Four's wounded feelings plus hope, ambition, goal-setting, and coaching, both image-aware with a soul-mate sense of connection.",
-   "trouble": "Both carry self-esteem and identity issues, hidden shame, and a habit of secret comparison and competition; the Four feels overshadowed by the energetic Three and wants far more intimacy than the Three can give, and neither sees the other clearly (the Three as rescuer, the Four as an exotic trophy), so unmet needs bring hostile rages, sarcasm, gossip, and covert sabotage until admiration turns to contempt.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-4"
-  },
-  {
-   "a": 3,
-   "b": 5,
-   "brings": "A frequent if unexpected combination: Fives give Threes depth, expertise, credibility, and creative spark while Threes give Fives confidence, presentation skill, and communication awareness; both center on work and competency, support each other there superbly, and respect each other's space, potentially a brilliant, well-respected couple whose quiet feeling deepens over time.",
-   "trouble": "The shared work emphasis breeds friction since both stake self-esteem on their work: contests erupt over who first had an idea and deserves credit, the practical Three grows impatient with the Five's long fine-tuning and inaction while the Five loses respect for the Three's corner-cutting, and neither voices misgivings until both turn sarcastic and icy, the Three seeming shallow and the Five off-putting, hard to reverse given both types' cynicism.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-5"
-  },
-  {
-   "a": 3,
-   "b": 6,
-   "brings": "Surprisingly uncommon but a strong team: Threes bring hard work, optimism, energy, and buoyant confidence while Sixes bring grounding, perseverance, loyalty, warmth, practical sense, and compassion the Three can learn from; both are doers fostering equality, the Three bolstering the Six's confidence and the Six supporting the Three without smothering and drawing them into something larger than themselves.",
-   "trouble": "Each has what the other needs, but unhealthy they draw out the worst, sharing competitiveness, workaholism, external reassurance-seeking over secret inferiority, conformism, and avoidance of deeper feeling; their coping styles grate (the Three seeming grandiose, the Six a nervous reactive loose cannon), decaying at worst into evasive, robotic functioning with separate social lives behind a bland mask of normalcy.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-6"
-  },
-  {
-   "a": 3,
-   "b": 7,
-   "brings": "A highly complementary, self-assertive, high-energy, outgoing pair, optimistic and future-oriented, likely the highest-energy combination and vivacious company diving into plans and adventures; Threes bring people-sensitivity, propriety, and the focus to finish goals while Sevens bring fun, adventure, resilience, breadth, and spontaneity that loosens the self-conscious Three.",
-   "trouble": "Extremely volatile with pressure to live up to their own hype, their high-energy routines causing unnoticed hurts that back up; the Three can become a career-obsessed workaholic while the Seven takes work lightly, the secretly-less-confident Three envying the Seven's ease and the Seven feeling enjoyment is sacrificed and that they only prop the Three up, until a health or career crisis surfaces it and the break can be abrupt and permanent.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-7"
-  },
-  {
-   "a": 3,
-   "b": 8,
-   "brings": "Powerful, effective, and often passionate, both assertive types who go after what they want and stand out, forming either an enhancing alliance or a competition; the Eight's strength gives the Three safety to be heartfelt while the Three's competence lets the Eight relax, both action-oriented and pragmatic, the Three adding diplomacy and the Eight adding forthright vigour, and notably they tend not to compete with each other.",
-   "trouble": "Both are workaholics under tremendous self-imposed stress that can turn support into a contest; the Eight controls openly while the Three controls covertly, arousing distrust, and once trust breaks the Eight turns jealous and possessive, demanding loyalty and even obedience while the Three feels used and reduced to an appendage; both then turn manipulative and guarded, the Eight seeing the Three as deceitful and the Three seeing the Eight as vengeful, ending in a nasty, very personal breakup.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-8"
-  },
-  {
-   "a": 3,
-   "b": 9,
-   "brings": "A fairly common pairing: Nines bring enormous support, encouragement, safety, steadiness, and the assurance that the Three is loved for itself and not just achievements, while Threes bring energy, ambition, flexibility, and excitement that draw the Nine toward valuing itself; Nines help Threes relax and both avoid conflict and spin things positively, sharing sociability and a wish for a comfortable, attractive home.",
-   "trouble": "Almost too much of a good thing, with so much attachment to comfort and positive values that questioning the status quo is hard and neither raises conflicts, the Nine to avoid endangering the bond and the Three to avoid rejection or exposing fragility; things coast even when essentially over until the Three feels unseen and abandoned as the Nine grows emotionally absent, the Three becoming depressed and feeling stifled while the Nine finds the Three demanding and spoiled, cycling through breakups until unresolved problems undermine it.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-3-with-type-9"
-  },
-  {
-   "a": 4,
-   "b": 4,
-   "brings": "Two Fours make deep friends who bring that friendship into intimacy, feeling a special mutual understanding against a shared sense of being misunderstood; they share childhood wounds and private dreams, offer each other the mirroring they crave, respect each other's individuality, and can build an operatic, romantic grand passion marked by candour.",
-   "trouble": "The relationship's own emotional instability is the core risk: each is self-absorbed and acutely aware of what they are or aren't getting, both wanting to be the emotional focus and resenting the other's identical claim, even staging 'who's more damaged' contests; Fours withdraw and distrust even the partner, so testing, eggshells, moodiness, and disdain set in until heat-of-the-moment words spiral past repair and hope dies.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-4"
-  },
-  {
-   "a": 4,
-   "b": 5,
-   "brings": "Both are private, depth-loving types who savour exploring experience and respect the other's intensity; Fours bring artistic and emotional temperament, introspection, and aesthetic sensitivity while Fives bring inquiring intellect, questioning, and unconventional range, with wide-ranging conversation, shared outsider humour, Fives opening new perspectives and Fours keeping Fives in contact with feeling.",
-   "trouble": "The central discord is contact versus space: the emotional Four pushes for intimacy and can become demanding while the thinking Five pushes for detachment and grows reclusive; Fours feel analysed rather than met and find Fives unavailable, while Fives feel drained by bottomless need and read the Four's emotionality as unstable, so the Four provokes, the Five retreats, and florid emotion meeting cool analysis reaches an impasse that can spiral into a breakup.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-5"
-  },
-  {
-   "a": 4,
-   "b": 6,
-   "brings": "Natural affinities: both highly emotional and often insecure, acting on immediate feeling and feeling like kindred 'orphans in the storm' connected by abandonment fears (Sixes even misidentify as Fours); when healthy they stabilise each other as a sounding board, the Four bringing sensitivity, sensuality, and voiced emotion while the Six brings hard work, loyalty, practicality, security, and playfulness plus a platform for the Four's creativity.",
-   "trouble": "Both carry abandonment issues and, when unhealthy, turn reactive, critical, and overwhelmed, testing each other's loyalty and withdrawing affection preemptively in a self-fulfilling way that can lock into codependency without growth; change tolerance splits them, the self-exploring Four feeling stifled by the conservative Six while the Six finds the Four undependable and whim-driven, both mistrustful and quick to escalate misunderstandings into projection and over-reaction.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-6"
-  },
-  {
-   "a": 4,
-   "b": 7,
-   "brings": "A case of opposites attracting, the quiet, self-doubting, emotional, pessimistic Four against the outgoing, self-confident, mental, optimistic Seven; Sevens help Fours past shyness while Fours help Sevens honour their feelings, and the charge of their differences makes each fascinating, both sharing joy, spontaneity, lively conversation, and a love of life's finer things, the Four adding depth and the Seven adding fun and resilience.",
-   "trouble": "Being so different they need strong attraction or they fail to connect, and any deep early conflict flies them apart; both are impulsive, easily frustrated, and stingy with second chances, the Four tiring of the Seven's relentless pace as noisy and insensitive while the Seven sees the Four as hypersensitive and self-absorbed, and as it worsens the Four snipes from a distance while the Seven turns abrasive and moves on, leaving problems unresolved until everything once admired becomes insufferable.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-7"
-  },
-  {
-   "a": 4,
-   "b": 8,
-   "brings": "One of the most creative and most volatile couplings: both intense, strongly emotional, reaction-seeking, and dominating (the Eight socially, the Four emotionally), drawn to each other's storminess, vulnerability, and hidden qualities, both highly intuitive and prone to thrilling risk; the Four leans on the Eight's practicality and protection while the Eight is drawn to the Four's emotional world it cannot conquer, both making each other feel more alive.",
-   "trouble": "Both take pride in a larger-than-life quality and demand freedom from control, so sensing control from the other enrages both and triggers enormous battles and intrigues; both are stormy and prone to rage and acting out, so arguing replaces connection and fighting (potentially physical, both ways) becomes routine, and they can get hooked on fighting and making up, punishing with withholding and public put-downs until it deteriorates into abuse, retaliation, and obsession.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-8"
-  },
-  {
-   "a": 4,
-   "b": 9,
-   "brings": "Paradoxically both comfortable and exciting: both withdrawn, private, sensitive, and empathetic, wanting deep connection yet insisting on autonomy, both creative and supportive of the other's space, idealistic soul-mate seekers sharing a notable sensuality and love of comfort; Fours make Nines more expressive while Nines let Fours feel understood and accepted, even relishing the Four's emotional storms, much of the pleasure nonverbal.",
-   "trouble": "The core clash is opposite stress responses: Fours become volatile and demanding while Nines become disengaged and unreachable, the Four reading as unstable and moody and the Nine as inert and uncommunicative; the Nine resents the Four's entitlement and the Four resents the Nine's irresponsibility, and as the Nine shuts down communication stops until the Four feels like playing tennis alone, contempt for the boring, ineffectual Nine ending it while at low functioning neither energises the other.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-4-with-type-9"
-  },
-  {
-   "a": 5,
-   "b": 5,
-   "brings": "To a Five, another Five is close to the ideal companion, well-informed, independent, imaginative, fact-oriented, and non-intrusive; wanting neither control nor to be too known, they grant abundant space with distance, courtesy, and few demands as hallmarks, rarely initiating on personal matters but capable of quick secret attachment, long silences punctuated by intense bursts of communication.",
-   "trouble": "The pair can over-intellectualise the relationship and compartmentalise into separate worlds, both turning secretive to avoid being engulfed and sliding into competitive intellectual bickering; the core danger is too much distance and reticence eroding intimacy into a mere professional-respect association, then dry indifference, burying themselves in work until they risk becoming eccentric recluses cut off from each other and the world.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-5"
-  },
-  {
-   "a": 5,
-   "b": 6,
-   "brings": "Both mental types who respect each other's intellect and expertise, often starting as colleagues, valuing detail, accuracy, and unbiased analysis and handling crises well; Fives add calm, detached objectivity and penetrating curiosity while Sixes add strong values, more passion, and a warmer human quality, looking to trusted authorities while the authority-skeptical Five thinks independently, a symbiotic exchange of doubt and decision given unshakable trust.",
-   "trouble": "They tend to think in opposite ways and land on opposite conclusions, generating tension: Sixes lean on precedent and marshalled facts while Fives take imaginative leaps and ignore received wisdom, and when trust breaks the Five sees the Six as conservative, indecisive, and authority-pleasing while the Six sees the Five as provocative and impractical, each feeding the other's powerlessness until they feel better off as colleagues than partners.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-6"
-  },
-  {
-   "a": 5,
-   "b": 7,
-   "brings": "Two thinking types bringing mental energy and love of ideas in a complementary mix: Fives bring depth, observation, self-reliance, and offbeat humour while Sevens bring quickness of mind and spirit, generosity, extravagance, and gregarious optimism; the frugal, private Five grounds and focuses the Seven while the Seven draws the Five into new experiences and social contact, balancing 'don't expect too much' against 'try it all,' each usefully checking the other.",
-   "trouble": "Under stress the two split hard: the Five, seeing scarcity, withdraws into a reclusive hard-to-reach mind while the Seven goes into hyper-drive with more activity, talk, and possibly substances, which makes the Five retreat further; at lower Levels the Five sees the Seven as escapist and coarse while the Seven finds the Five cold, style clashes making both dig in until the Seven's attention-getting closes the Five's door and both take extreme, well-defended positions.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-7"
-  },
-  {
-   "a": 5,
-   "b": 8,
-   "brings": "Complementary talents each needs: the Five can learn from the Eight to inhabit body, instinct, and power and engage the practical world while the Eight can learn from the Five to weigh consequences before acting; both insist on independence and non-interference, enjoy debate, feel like misfits and grasp each other's core wordlessly, seeing the person behind the defense and relating to hidden vulnerability, together combining power and brains as formidable mutual protectors.",
-   "trouble": "The mind-identified Five takes pride in doing without the earthly goals the Eight prizes while the Eight takes pride in conquest and intimidation, and as insecurity rises they react oppositely, the Five shutting down secretive and isolated while the Eight grows confrontational and enraged; at lower Levels they physically separate and communication stops, both attacking each other's vulnerabilities, and being rejection-sensitive the Five collapses into cynicism while the Eight retaliates, the breakup confirming both types' darkest views.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-8"
-  },
-  {
-   "a": 5,
-   "b": 9,
-   "brings": "A pairing of abundant space where neither hovers yet connection and interest remain, marked by quiet, spaciousness, and respect for boundaries; the more emotional but self-unsure Nine appreciates the Five drawing them out of inner fuzziness plus the Five's sharpness and patience, while the dry, cut-off Five finds warmth, unquestioned acceptance, and sensual comfort that lets them deeply relax, together a stimulating couple of wit and understatement initiating each other into different worldviews.",
-   "trouble": "Tension grows from all the space each gives: both so boundary-aware that neither easily initiates, stays decisive, or knows their own feelings, so with rapport present but feeling cut off they may not know if they are in love; the emotionally fluid Nine idealises the Five when together but slips into out of sight, out of mind, and the frustrated Five turns cynical and dissects the relationship as a defense, both living in projection until the Nine's inertia mixes with the Five's detachment and it withers.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-5-with-type-9"
-  },
-  {
-   "a": 6,
-   "b": 6,
-   "brings": "Two Sixes bond fast as kindred spirits into a playful, bantering, buddies-in-arms collusion, sharing secrets and values; trust is paramount and once established lets them relax, think aloud, and offer unhesitating mutual support and protection, feelings shown mostly in steadfast action as each works for the other's welfare more than their own.",
-   "trouble": "Both emotionally reactive, once negativity enters their fears feed off each other into worst-case catastrophizing until they feel doomed, acting impulsively or freezing into indecisive stalemate and blaming each other in a ping-pong that keeps connection; it can become a keyed-up, semi-hysterical pairing hard to break because fears are irrational and future-based, wearing each other out with worry and eventual mistrust and accusations of betrayal.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-6"
-  },
-  {
-   "a": 6,
-   "b": 7,
-   "brings": "Two mental types with plenty of stimulation who reinforce and counterbalance each other: Sevens entertain and lift the Six's spirits and generate big-picture ideas while Sixes master the practical steps, a stimulator-regulator team; Sixes bring commitment, loyalty, and groundedness while Sevens bring optimism, energy, and fearlessness about failure, teaching Sixes resilience while Sixes teach the difference between optimism and pipedreams.",
-   "trouble": "At lower Levels the fit shifts fast: the security-seeking, past-aware, commitment-wanting Six foresees problems and limits while the happiness-seeking, future-oriented Seven wants new things now and commits reluctantly; Sixes see Sevens as too hedonistic and unreliable while Sevens see Sixes as anxiety-ridden worriers who oppose everything and live by self-imposed limits, opposing philosophies that unless reconciled make the couple hard to hold together.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-7"
-  },
-  {
-   "a": 6,
-   "b": 8,
-   "brings": "A potentially strong, lasting bond built on a shared defensive worldview where one guards one's own interests (the Eight) and secures strong allies (the Six); both carry deep trust issues, so after a testing period the alliance runs deep, both prizing strength, honour, loyalty, and protectiveness, the Six bringing warmth and analytic foresight as advisor-lieutenant while the Eight supplies vision, audacity, and decisiveness, the Six looking up to the Eight as a hero.",
-   "trouble": "Both are emotional but hide it (the Eight under bravado, the Six under bluster) and counterattack when threatened; the Eight expects to lead and be obeyed, which suits the Six except when it must push back, sparking power struggles, counterphobic Sixes fighting openly while phobic Sixes turn covertly passive-aggressive, and the Eight grows contemptuous if the Six seems weak, its rages and threats to the Six's security ending it quickly once trust crumbles.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-8"
-  },
-  {
-   "a": 6,
-   "b": 9,
-   "brings": "One of the most stable and common pairings wanting similar things (security and predictability for the Six, stability and autonomy for the Nine), both dutiful, middle-of-the-road, and rule-abiding; the Six brings an active, questioning, safety-alert, skeptical mind while the sunny, trusting, steady Nine offers non-threatening acceptance, the Six seeing exceptions while the Nine sees what works, greasing each other's wheels and bolstering confidence without crowding, often feeling like a dream come true.",
-   "trouble": "Both find it hard to say what's really on their minds, so they clam up, go silently stubborn, and make the other guess, falling into a stalemate held at arm's length, sometimes with health complaints binding them in concern; both disappear too completely into social roles and dread change, equating familiarity with security, so they postpone confrontation until the Six's shorter fuse either gives up on the Nine or erupts with a backlog of hostility, often doing permanent damage.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-6-with-type-9"
-  },
-  {
-   "a": 7,
-   "b": 7,
-   "brings": "Two Sevens bring high energy, spontaneity, travel, and appetite for anything new; when healthy a radiant joyousness and abundance permeates and spills onto everyone, thoughtful, idealistic, hospitable, and generous, each bringing a strong spirit of personal freedom that refuses to tie the other down, optimistic and resilient with gratitude for finding each other as the guiding spirit.",
-   "trouble": "The main pitfall is impatience, wanting the bond more complete than it is and drifting to work or other involvements as novelty fades; both believe the perfect person exists elsewhere and dread missing out, so commitment feels limiting and one must risk it first, and both are impulsive and irreverent, saying unretractable things in arguments and craving constant stimulation until separate interests and friends pull their social lives apart and someone feels left out.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-7-with-type-7"
-  },
-  {
-   "a": 7,
-   "b": 8,
-   "brings": "Both highly self-assertive, independent, strong-willed, and resistant to control, practical and here-and-now oriented, unwilling to postpone satisfaction, both overspending on a generous lifestyle and loving to entertain; high-energy and adventuresome, the Seven adds lightness, fun, and engaging storytelling as the more talkative one while the more reserved, moody Eight relies on the Seven to lighten things and brings directness, decisiveness, and determination.",
-   "trouble": "The productive pairing sours if that energy lacks constructive outlets, turning destructive or into a dark collusion; both resist the other's control and taunt its lack of influence, the Eight turning authoritarian and bullying while the Seven evades and grows contemptuous, both flaunting the other's failure to prevail and both intensely selfish, their crude fights becoming gargantuan brawls with possible violence, both addicted to the adrenaline of recklessness until they push the limits once too far.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-7-with-type-8"
-  },
-  {
-   "a": 7,
-   "b": 9,
-   "brings": "One of the most common pairings mixing similar and opposite qualities: both positive-outlook, optimistic, conflict-avoiding, friendly types who forgive and make the best of limitations; the more active, self-assertive Seven takes initiative, makes plans, and supplies fun, sparkle, and adventure while the Nine brings steadiness, support, acceptance, and soft-hearted sympathy, the Seven providing stimulation and the Nine the audience, a good balance of energy and relaxation if neither exploits the other.",
-   "trouble": "Neither is adept at working through the painful, both keeping things positive and at most blaming the other under stress rather than processing their own feelings, blind to their own share; the Nine collapses under the Seven's angry demands into silence and stubbornness while the more talkative Seven impulsively lashes into verbal abuse, feeling the Nine too checked-out and ineffectual, its contempt only making the Nine retreat further, turning one of the sunniest couples into one of the most tortured.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-7-with-type-9"
-  },
-  {
-   "a": 8,
-   "b": 8,
-   "brings": "Two Eights bring enormous energy, vitality, and passion with strong willpower, decisiveness, and a drive to make things happen; well matched they paradoxically stimulate and relax each other, each feeling their energy finally met and confident the other is strong enough to depend on, so quiet confidence ('we've got it covered') is the real hallmark, breeding deep mutual respect, direct communication, and clean quick resolution, able to build an empire and be generous with others.",
-   "trouble": "A double Eight is extremely volatile with lots of ego, tests of will, and jockeying for control since neither will look weak, both struggling to dominate; both can have hair-trigger tempers and creeping paranoia even toward the partner, upping the ante emotionally, sexually, and financially, neither backing down or apologising yet both surprisingly thin-skinned and easily hurt, needing a lot of room until too much bluntness escalates into outright battles and revenge that wears them down to a final straw.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-8-with-type-8"
-  },
-  {
-   "a": 8,
-   "b": 9,
-   "brings": "The Eight brings take-charge leadership, self-confidence, and vitality the Nine admires and gravitates toward while giving the Eight an appreciative audience, and the Nine brings calm, stability, and a safe harbour where the fighter Eight can drop its guard; they teach each other what they lack, the Eight lending assertion and the Nine teaching which battles are worth it, a fire-and-water, active-and-receptive pairing with an archetypal feel, well-defined complementary roles, and a shared love of comfort and a safe retreat.",
-   "trouble": "As they deteriorate their defenses go opposite ways, the Eight pushing harder while the Nine shuts down, going on emotional strike and passive-aggressively sabotaging plans, driving the Eight to escalate berating and threats until it loses interest feeling obstructed; the Nine comes to see the Eight as bossy and controlling and goes stubborn when directed, the Eight startled by the depth of that stubbornness, the relationship often foundering on open or covert rage that at worst becomes a domestic battlefield with abuse.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-8-with-type-9"
-  },
-  {
-   "a": 9,
-   "b": 9,
-   "brings": "One of the most common same-type pairs, quiet, gentle, mutually supportive, comfortable, and hospitable, easy-going people who don't let irritations get to them and look positively on their circumstances; patient and quick to forgive, they give each other abundant space, undemanding attention, and affection, each a kindred spirit, enjoying regularity and the familiar, surprisingly domestic and protective of their private haven, above all feeling unpressured in a low-stress mellowness that is the main draw.",
-   "trouble": "That very steadiness is the Achilles' heel, a fear of rocking the boat that leaves them stuck in doldrums, dropping social connections, and unable to raise important issues, so they may love each other while almost no real communication happens; as they deteriorate they idealise each other rather than relate to the real person, letting passive-aggression, worry, and blame build, subtly suppressing each other into a deadening of vitality and masked depression, often settling into a mutual non-aggression pact with joy long evaporated into entrenched routine.",
-   "repair": "",
-   "source": "https://www.enneagraminstitute.com/relationship-type-9-with-type-9"
-  }
- ]
 }
