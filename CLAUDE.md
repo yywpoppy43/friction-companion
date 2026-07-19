@@ -29,6 +29,7 @@ Keep them side by side; neither replaces the other.
 | `The_Composition_Engine.html` | Specialist: three selectors, source cells, registers, grid sheets | https://claude.ai/code/artifact/84553294-5b0f-4265-8904-933d68e7cbb9 |
 | `The_Field_Guide.html` | Reader/presenter, v1: enter through a type, guided journey, language switcher, phone-friendly | https://claude.ai/code/artifact/c2f36d0d-6a64-4ba5-9461-7299a3fc1ae1 |
 | `The_Field_Guide_II.html` | Reader/presenter, v2 (built to `FIELD_GUIDE_SPEC.md`): the Moment with who's-in-the-room (0/1/2 people), 3×3 door map, nine-level spectrum with the clinical edge marked, centre-sibling contrasts | https://claude.ai/code/artifact/5bfca5bd-ec99-4992-a2f7-13bbd8ce66c1 |
+| `The_Field_Kit.html` | Practical layer: Before/During/After a hard conversation — pocket brief, breath-pacer steady mode, walk-it-back prompts. Everyday language only. | https://claude.ai/code/artifact/ae7ffb4d-bdc2-4314-ab98-4390f62b746e |
 | `The_Field_Guide_III.html` | Reader/presenter, v3 ("Guide 3"): everything in v2 plus **The Loop** — in two-people mode the Moment draws the circuit between the two defenses (each one's authored mode-move is the other's filter's input), with the seven source-drawn pair contrasts surfacing. No pair-specific text is ever generated; no compatibility claims. | https://claude.ai/code/artifact/100ea721-39c2-41e0-ab68-558fa3e19246 |
 
 Both compose at runtime from `grid_data.json` (Concept × Lens) and

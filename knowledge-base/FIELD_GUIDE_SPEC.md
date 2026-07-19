@@ -502,3 +502,45 @@ Field Guides I/II keep their earlier embedded snapshots as historical versions.
 
 130 automated checks pass, including new assertions that the dead model branch
 never fires and that the movement order matches the changelog.
+
+
+## 19 · The Field Kit — the practical layer (new deliverable), and the qualitative vertical
+
+**Post-integration audit (owner-requested re-check):** all seven data faces re-verified
+in one pass — 13 concepts, zero model tiers, Baseline rename with intact join, vagal
+precision fix present; nine types with uniform sourced mode glosses and full levels;
+arrows 9/9 canon with closed circuits; wings 18/18 adjacent with canonical names;
+subtypes 27/27 with the canonical countertype set; pairs 45/45 with no invented repair;
+protocol tiers [est, model, est]; Guide III embeds byte-identical to canonical. The only
+scanner hits were the guardrails quoting banned phrases in order to ban them. CLEAN.
+
+**The qualitative vertical (owner critique, applied to Guide III):** the `available`
+numbers are the tradition's picture, not measurements — a plotted curve with percent
+labels dressed qualitative material as quantitative. Replaced with an ordinal fade:
+nine constant-size dots whose presence fades level by level, current level ringed —
+no numbers, no percentages, no plotted values anywhere. Suite asserts the absence.
+
+**`The_Field_Kit.html`** — new deliverable, own URL. The library explains; the kit is
+for the conversation itself. Everyday language only (no lens switcher — by design; the
+five-language library remains the Guide). Three jobs over a you(+them) picker:
+- **Before — Brief me:** a pocket card: your/their tripwires (trimmed, expandable to
+  verbatim), ways back as vectors, the pairing's rub and brings, the three ground
+  steps with evidence chips and the not-a-treatment line.
+- **During — Steady me:** four full-width steps — Ground (a working breath pacer at
+  the validated dose: ~4s in / ~6s out × 3, reduced-motion safe, plus the upright
+  line), Name it (universal Flinch + your trigger), The turn (universal Shift + your
+  doorway), Return (universal Encounter + trimmed caveat).
+- **After — Walk it back:** the same authored material as ordered recognition prompts
+  (question labels are UI copy; content verbatim), closing on the authored
+  "Not two systems merging…" line.
+Reads grid/types/protocol/pairs faces (fetch-first, embedded fallback); fonts embedded.
+No generated claims; prescriptive framing limited to the owner-sanctioned protocol.
+28 automated checks pass (flows, pacer, verbatim expansion, honesty lines, phone,
+offline, zero rendered vagus/vagal-tone language).
+
+Copy-inventory additions (kit): job names and descriptions, "Who's in the room?",
+"You"/"Them (optional)"/"just me", "The brief —", "Trimmed for scanning; every block
+opens to the full text, word for word.", row labels (Your/Their tripwires, Your/Their
+way back, Where it rubs, What each brings, Ground any time), "Read in full"/"Show
+less", steady step names (Ground/Name it/The turn/Return) and pacer strings, walk-back
+question labels, and the footer. Nothing else.
