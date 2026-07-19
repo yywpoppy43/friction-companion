@@ -14,6 +14,7 @@ The runtime interior of the three-axis knowledge base: **Concept × Type × Lens
 | `wings_data.json` | Validated research face ([STRUCTURE], Riso-Hudson): the 18 wing subtypes, names canon-checked. Feeds Guide III's "The two flavors". |
 | `anchor_protocol_data.json` | Validated research face (evidence-tiered, meta-analysis/RCT-cited): three mid-conversation down-regulation steps. Feeds Guide III's "Do this now" card at the Anchor step. |
 | `subtypes_data.json` | Validated research face ([STRUCTURE], Naranjo/Chestnut with Riso-Hudson divergences preserved): the 27 instinctual subtypes with the canonical countertype set. Feeds Guide III's "The three instincts". |
+| `pairs_data.json` | Validated research face ([STRUCTURE], Riso-Hudson/Enneagram Institute): all 45 type combinations — what each brings, where it rubs; repair empty because the source has none. Feeds Guide III's "This pairing" card in the Loop. |
 
 The interior of the cube — *this concept, for this type, in this lens* — is never
 authored. Given `(concept, type, lens)` the engine composes the cell at runtime:

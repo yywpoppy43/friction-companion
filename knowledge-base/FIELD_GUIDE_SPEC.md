@@ -426,3 +426,35 @@ instincts", the instincts sub-line, "the countertype", "Self-preservation", "Soc
 "One-to-one (sexual)".
 
 Pipeline: ✅ arrows · ✅ wings · ✅ protocol · ✅ subtypes · ⏳ pairs (prompt 2).
+
+
+## 17 · v3.4 addendum — the pairs layer and the precision fix; pipeline complete
+
+**`pairs_data.json`** — the Riso-Hudson/Enneagram Institute 45-combination matrix.
+Validation: 45/45 combinations present (36 cross + 9 same-type doubles, a ≤ b);
+brings/trouble substantive and paraphrased with per-pair URLs; `repair` empty in all
+45 **by design** — the source's pages have no repair section, and the researcher
+refused to invent one (the two flagged word-hits, "score-keeping" and "they feel
+doomed", are behavioral descriptions, not verdicts); no compatibility scores, no
+rankings, no body claims. **In the product:** in the Moment's two-people mode, a
+"This pairing" card (node "&") follows the Loop — "{A} with {B} — the tradition's own
+account", then "What each brings" and "Where it rubs" verbatim from the face; a
+"What helps" block renders only if repair content ever lands. Same-type pairs work.
+
+**Recorded for later (owner decision, not blocking):** explicit repair guidance
+exists in a different school (David Daniels' 45-combination material). If wanted, it
+would enter as a clearly-tagged second-school field (`repair_daniels`), never merged
+silently into the Riso-Hudson account.
+
+**Precision fix applied (owner approved):** the authored Anchor cell (scientific
+lens) now reads "Slow breathing and posture raise **vagally-mediated heart-rate
+variability**, bringing prefrontal regulation back online" (was "raise vagal tone").
+Fixed in `grid_data.json` and re-embedded in all four HTML deliverables and all four
+live artifacts. The owner's upstream Architecture document still carries the old
+phrasing in its own text and is the owner's to update.
+
+Copy-inventory additions: "This pairing", "— the tradition's own account.",
+"What each brings", "Where it rubs", "What helps".
+
+**Pipeline complete:** ✅ arrows · ✅ wings · ✅ protocol · ✅ subtypes · ✅ pairs.
+All five research layers validated and live. 113 automated checks pass.

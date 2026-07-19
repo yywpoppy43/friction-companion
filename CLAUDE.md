@@ -33,11 +33,11 @@ Keep them side by side; neither replaces the other.
 
 Both compose at runtime from `grid_data.json` (Concept × Lens) and
 `types_data.json` (Concept × Type, joined by `_meta.parents`). Guide III additionally
-reads `arrows_data.json`, `wings_data.json`, `anchor_protocol_data.json` and
-`subtypes_data.json` — validated faces produced via `knowledge-base/RESEARCH_PROMPTS.md`;
-the pairs face (prompt 2) is still expected from the same pipeline. One open owner
-decision is recorded in FIELD_GUIDE_SPEC.md §16 (the "vagal tone" phrasing in the
-authored Anchor cell). The interior of
+reads `arrows_data.json`, `wings_data.json`, `anchor_protocol_data.json`,
+`subtypes_data.json` and `pairs_data.json` — all five validated faces from the
+`knowledge-base/RESEARCH_PROMPTS.md` pipeline, now complete. The "vagal tone"
+precision fix is applied everywhere (spec §17); one deferred owner option is recorded
+there (second-school repair content for the pairs face). The interior of
 the Concept × Type × Lens cube is never authored. The non-negotiable rules
 (weaker register wins; no body predictions; centre × mode generates nothing;
 attribution stays in the ledger; the clinical vertical is out of reach) are
