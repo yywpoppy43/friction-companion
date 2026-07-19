@@ -270,6 +270,24 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .feelcard:hover{transform:translateY(-2px);border-color:rgba(43,34,22,.38)}
 .feelcard .fk{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--edge);display:block;margin-bottom:.35rem}
 .feelcard .ft{font-size:.95rem;line-height:1.6;color:var(--ink)}
+.vnum7{font-weight:500;color:var(--gold);margin-right:.55rem;letter-spacing:.1em}
+.vslider{margin:1.6rem 0 .3rem}
+.vslider input[type=range]{margin:2px 0 0}
+.vstops{position:relative;height:12px;margin:0 11px 4px}
+.vstop{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:rgba(43,34,22,.32);transform:translate(-50%,-50%);padding:0;border:0;cursor:pointer}
+.vstop:hover{background:rgba(43,34,22,.6)}
+.vstop.on{width:12px;height:12px;background:currentColor}
+.vwakemark{position:absolute;left:31.25%;top:-15px;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.vwakemark i{display:block;position:absolute;left:50%;top:13px;width:1px;height:40px;background:var(--gold);opacity:.5}
+.vzones{display:flex;margin:8px 11px 0;font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.vzones span{border-top:1px solid currentColor;padding-top:4px;text-align:center}
+.vzones span+span{border-left:1px solid currentColor}
+.vwake{margin-top:1.15rem;border-left:2px solid var(--gold);padding-left:.9rem}
+.vwake .wk{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block}
+.vwake .wtx{margin-top:.6rem;font-size:1rem;line-height:1.64;max-width:64ch}
+.mvhead{display:flex;align-items:baseline;gap:.6rem;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin:2.2rem 0 .1rem;border-top:1px solid var(--line);padding-top:1.35rem}
+.mvhead b{color:var(--edge,var(--gold));font-weight:500;letter-spacing:.1em}
+.mvhead+.jcard{border-top:0}
 .vcurve{margin-top:1.2rem}
 .vcurve .k{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:.8}
 .vcurve svg{width:100%;max-width:360px;height:auto;display:block;margin-top:.4rem}
@@ -302,7 +320,7 @@ footer p+p{margin-top:.6rem}
       "scientific",
       "product"
     ],
-    "tier_rule": "Everything in the scientific column is peer-reviewed unless marked otherwise. Two cells are models and are marked as such. Established is the default and goes unmarked — a tag on every cell carries no information and teaches the reader to skip it."
+    "tier_rule": "Every cell in the scientific column is peer-reviewed. There are no models in it."
   },
   "core_systems": [
     {
@@ -315,7 +333,7 @@ footer p+p{margin-top:.6rem}
       "tier": "established"
     },
     {
-      "name": "The Core Truth",
+      "name": "The Baseline",
       "experience": "Feeling grounded, clear, and unbothered by external chaos - the baseline that exists before any performance.",
       "psychological": "Authentic self / core values.",
       "spiritual": "The Soul / The Source.",
@@ -346,10 +364,9 @@ footer p+p{margin-top:.6rem}
       "experience": "Anticipating interactions, assuming the worst, living inside a script written by past fear rather than present reality.",
       "psychological": "Projection / cognitive bias.",
       "spiritual": "The Small Reality: projecting past fears onto the present to maintain an illusion of control.",
-      "scientific": "Prediction error — a leading account holds the brain runs on prediction and updates against error, so it guesses the present from the past instead of reading current data.",
+      "scientific": "What a person expects changes what they register. Expectation is applied to incoming information before it is fully processed, so the anticipation arrives ahead of the evidence and shapes it. A script written from earlier experience is run against the present.",
       "product": "System Data Correction: showing the gap between the fear and the actual reality.",
-      "tier": "model",
-      "caveat": "A dominant framework, not a settled mechanism."
+      "tier": "established"
     },
     {
       "name": "The Core Motivation",
@@ -451,7 +468,8 @@ footer p+p{margin-top:.6rem}
       "destination": "Passion to virtue; fixation to holy idea",
       "levels": "The vertical. Nine cells per type, three lines each. TEXT = what this level looks like (sourced). SHIFT = what gave way to arrive here from the level above — this is the recognition handle: a state description cannot be placed ('am I self-absorbed?' — everyone says yes), but a move can ('did I start using imagination to keep a feeling from stopping?'). AIM = where the type's one power is pointed now; read the aim column alone and the nine levels resolve into a single motion. Shift and aim are DERIVED from the level text, not invented — the derivation is showable.",
       "clinical_at_9": "What the tradition maps Level 9 onto. Inconsistently, and softer than it looks — see the ledger. Present so the edge of the product's reach is knowable, not so the product uses it.",
-      "faculty": "The type's one power, named. The aim column shows this same faculty at nine different targets — that is the same-energy law, made visible as motion."
+      "faculty": "The type's one power, named. The aim column shows this same faculty at nine different targets — that is the same-energy law, made visible as motion.",
+      "mode": "The Hornevian group: the strategy the type uses to get its needs met. Assertive types insist or demand; compliant types do what is expected or required; withdrawn types move away from engagement. The centre says what the type wants; the mode says how it goes about getting it. Riso-Hudson assignment — Naranjo sorts differently; see the ledger."
     },
     "the_split": "Level 2 is where the wound opens. The person identifies with part of their own qualities and sets the rest down — and the basic desire is the shape of what got set down. The Eight sets down the part that can be hurt, and wants never to be controlled. The Two sets down their own needing, and wants to be loved. Level 1 is picking it back up, and finding they always had what they were looking for. This is why the flaw and the gift are one power: nothing is added at Level 1. Something is returned.",
     "parents": {
@@ -462,7 +480,7 @@ footer p+p{margin-top:.6rem}
       "wake_up": "The Core Motivation",
       "cost": "The Defense",
       "contradiction": "The False Narrative",
-      "same_energy": "The Core Truth",
+      "same_energy": "The Baseline",
       "doorway": "The Shift",
       "destination": "The Growth Process"
     },
@@ -475,7 +493,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Perfectionist",
       "anchor": {
         "center": "Body / anger",
-        "mode": "Compliant — moving toward the standard",
+        "mode": "Compliant — does what is expected",
         "core_fear": "being corrupt, defective, bad, wrong",
         "core_desire": "integrity — to be good, right, balanced",
         "passion": "Anger",
@@ -586,7 +604,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Giver",
       "anchor": {
         "center": "Heart / shame",
-        "mode": "Compliant — moving toward people",
+        "mode": "Compliant — does what is expected",
         "core_fear": "being unwanted, unworthy of love",
         "core_desire": "to feel loved and wanted",
         "passion": "Pride",
@@ -697,7 +715,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Performer",
       "anchor": {
         "center": "Heart / shame",
-        "mode": "Assertive — moving against",
+        "mode": "Assertive — insists or demands",
         "core_fear": "being worthless, without value apart from achievement",
         "core_desire": "to feel valuable and worthwhile",
         "passion": "Deceit (self-deception)",
@@ -808,7 +826,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Romantic",
       "anchor": {
         "center": "Heart / shame",
-        "mode": "Withdrawn — moving away",
+        "mode": "Withdrawn — moves away from engagement",
         "core_fear": "having no identity or personal significance",
         "core_desire": "to be uniquely themselves; to find identity",
         "passion": "Envy",
@@ -919,7 +937,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Observer",
       "anchor": {
         "center": "Head / fear",
-        "mode": "Withdrawn — moving away",
+        "mode": "Withdrawn — moves away from engagement",
         "core_fear": "being helpless, incapable, overwhelmed",
         "core_desire": "to be capable and competent; to understand",
         "passion": "Avarice",
@@ -1030,7 +1048,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Loyal Skeptic",
       "anchor": {
         "center": "Head / fear",
-        "mode": "Compliant — moving toward support",
+        "mode": "Compliant — does what is expected",
         "core_fear": "being without support or guidance; unable to survive alone",
         "core_desire": "security, support, guidance",
         "passion": "Fear",
@@ -1141,7 +1159,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Epicure",
       "anchor": {
         "center": "Head / fear",
-        "mode": "Assertive — moving against",
+        "mode": "Assertive — insists or demands",
         "core_fear": "being deprived, trapped in pain",
         "core_desire": "to be satisfied and content",
         "passion": "Gluttony",
@@ -1252,7 +1270,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Leader",
       "anchor": {
         "center": "Body / anger",
-        "mode": "Assertive — moving against",
+        "mode": "Assertive — insists or demands",
         "core_fear": "being harmed, controlled, violated, made vulnerable",
         "core_desire": "to protect themselves; control of their own life and destiny",
         "passion": "Lust (excess, intensity)",
@@ -1363,7 +1381,7 @@ footer p+p{margin-top:.6rem}
       "alt": "The Mediator",
       "anchor": {
         "center": "Body / anger",
-        "mode": "Withdrawn — moving away",
+        "mode": "Withdrawn — moves away from engagement",
         "core_fear": "loss, fragmentation, separation, conflict",
         "core_desire": "inner and outer peace; wholeness",
         "passion": "Sloth (self-forgetting)",
@@ -2409,18 +2427,23 @@ const LENSES=[
  {k:'scientific',name:'Science',desc:'The biology that runs it — the same in every body.'},
  {k:'product',name:'Product',desc:'The build vocabulary the system uses.'}
 ];
-const JOURNEY=[
- {key:'triad_relation',title:'The family trait',sub:'how this type handles what its whole centre struggles with'},
- {key:'engine',title:'The engine',sub:'what is actually driving it'},
- {key:'trigger',title:'What sets it off',sub:'the moments that trip the defense'},
- {key:'filter',title:'The filter',sub:'how everything gets read as threat'},
- {key:'wake_up',title:'Where the slide starts',sub:'the fear that begins the descent'},
- {key:'cost',title:'What it costs',sub:'what running the defense takes'},
- {key:'contradiction',title:'The trap',sub:'how the defense defeats itself'},
- {key:'same_energy',title:'The gift',sub:'the same power, differently aimed'},
- {key:'doorway',title:'The way back',sub:'which way the correction runs'},
- {key:'destination',title:'Where it leads',sub:'what it resolves into'}
+const MOVEMENTS=[
+ {n:'02',title:'How it runs',fields:[
+  {key:'triad_relation',title:'The family trait',sub:'how this type handles what its whole centre struggles with'},
+  {key:'engine',title:'The engine',sub:'what is actually driving it'}]},
+ {n:'03',title:'What sets it off',fields:[
+  {key:'trigger',title:'The trigger',sub:'the moments that trip the defense'},
+  {key:'filter',title:'The mishearing',sub:'how everything gets read as threat'}]},
+ {n:'04',title:'What it costs',fields:[
+  {key:'cost',title:'',sub:'what running the defense takes'}]},
+ {n:'05',title:'Why it can drop',fields:[
+  {key:'contradiction',title:'The trap',sub:'how the defense defeats itself'},
+  {key:'same_energy',title:'The gift',sub:'the same power, differently aimed'}]},
+ {n:'06',title:'Which way out',fields:[
+  {key:'doorway',title:'The way back',sub:'which way the correction runs'},
+  {key:'destination',title:'Where it leads',sub:'what it resolves into'}]}
 ];
+const JOURNEY=MOVEMENTS.flatMap(m=>m.fields);
 /* the two contrasts the sources themselves draw — no others exist in the material */
 const CONTRASTS={
  5:{other:7,quote:'The Seven is the near-exact opposite of the Five.'},
@@ -2554,14 +2577,15 @@ function renderHome(el){
  const cols=['Body','Heart','Head'];
  const colLabel={Body:'Anger <span>· the body</span>',Heart:'Shame <span>· the heart</span>',Head:'Fear <span>· the head</span>'};
  const rows=['Assertive','Withdrawn','Compliant'];
- const rowLabel={Assertive:'<b>Against</b>moving against',Withdrawn:'<b>Away</b>moving away',Compliant:'<b>Toward</b>moving toward'};
+ const modeGloss=r=>{const t0=TYPES.find(t=>modeWord(t)===r);const p=t0.anchor.mode.split('—');return `<b>${esc(p[0].trim())}</b>${esc((p[1]||'').trim())}`};
+ const rowLabel={Assertive:modeGloss('Assertive'),Withdrawn:modeGloss('Withdrawn'),Compliant:modeGloss('Compliant')};
  const cell=(r,c)=>TYPES.find(t=>house(t)===c&&modeWord(t)===r);
  const desk=`<table class="map"><thead>
-   <tr><th class="rh"><span class="axisk">how it moves</span></th>
+   <tr><th class="rh"><span class="axisk">the strategy</span></th>
    ${cols.map(c=>`<th><b>${colLabel[c].split(' <span>')[0]}</b>${colLabel[c].match(/<span>(.*)<\/span>/)[1]}</th>`).join('')}</tr></thead>
    <tbody>${rows.map(r=>`<tr><th class="rh">${rowLabel[r]}</th>${cols.map(c=>`<td>${doorBtn(cell(r,c),false)}</td>`).join('')}</tr>`).join('')}</tbody></table>
-   <div class="axisk" style="margin-top:.5rem">columns — the raw feeling underneath · rows — how it moves</div>`;
- const phone=cols.map(c=>`<div class="cgrp"><div class="ck"><b>${colLabel[c].split(' <span>')[0]}</b> — the raw feeling underneath (${c.toLowerCase()})</div>
+   <div class="axisk" style="margin-top:.5rem">columns — the feeling each type manages · rows — the strategy to get what it needs</div>`;
+ const phone=cols.map(c=>`<div class="cgrp"><div class="ck"><b>${colLabel[c].split(' <span>')[0]}</b> — the feeling each type manages (${c.toLowerCase()})</div>
    <div class="doors">${rows.map(r=>doorBtn(cell(r,c),true)).join('')}</div></div>`).join('');
  el.innerHTML=`
   <header style="margin-top:1.7rem">
@@ -2610,7 +2634,7 @@ function svgCircuit(A,B,whoA,whoB){
  let top='',topLab='';
  if(modeWord(A)==='Withdrawn'){
   top=`<path d="M78 95 L 24 95" fill="none" stroke="${cA}" stroke-width="2"/><polygon points="24,95 38,88 38,102" fill="${cA}"/>`;
-  topLab=`<text x="52" y="80" text-anchor="middle" fill="${cA}">${esc(moveLabel(A))}</text>`;
+  topLab=`<text x="90" y="52" text-anchor="middle" fill="${cA}">${esc(moveLabel(A))}</text>`;
  }else{
   top=`<path d="M148 70 C 230 34, 330 34, 404 68" fill="none" stroke="${cA}"${dashA} stroke-width="2"/><polygon points="404,68 388,60 392,74" fill="${cA}"/>`;
   topLab=`<text x="278" y="28" text-anchor="middle" fill="${cA}">${esc(moveLabel(A))}</text>`;
@@ -2618,7 +2642,7 @@ function svgCircuit(A,B,whoA,whoB){
  let bot='',botLab='';
  if(modeWord(B)==='Withdrawn'){
   bot=`<path d="M482 95 L 536 95" fill="none" stroke="${cB}" stroke-width="2"/><polygon points="536,95 522,88 522,102" fill="${cB}"/>`;
-  botLab=`<text x="508" y="80" text-anchor="middle" fill="${cB}">${esc(moveLabel(B))}</text>`;
+  botLab=`<text x="556" y="172" text-anchor="end" fill="${cB}">${esc(moveLabel(B))}</text>`;
  }else{
   bot=`<path d="M412 122 C 330 158, 230 158, 156 124" fill="none" stroke="${cB}"${dashB} stroke-width="2"/><polygon points="156,124 172,132 168,118" fill="${cB}"/>`;
   botLab=`<text x="278" y="172" text-anchor="middle" fill="${cB}">${esc(moveLabel(B))}</text>`;
@@ -2637,7 +2661,7 @@ function loopCard(){
  const sameC=house(A)===house(B);
  const sharedLine=sameC&&!pq?firstSentence((A.n===6?B:A).triad_relation):'';
  const filters=[{who:'You',t:A},{who:'The other person',t:B}]
-   .map(p=>personBlock(p.who,p.t.n,'filter','The filter — how input becomes threat')).join('');
+   .map(p=>personBlock(p.who,p.t.n,'filter','The mishearing — how input becomes threat')).join('');
  return `<div class="mstep loopstep"><div class="mnode">&#8734;</div><div>
    <h3>The loop</h3><span class="mlab diff">two people</span>
    <p class="loopsub">Each one&#x27;s defense is the other&#x27;s input.</p>
@@ -2737,37 +2761,54 @@ function curveSvg(t){
   <text x="${cur[0]+(S.lv>6?-9:9)}" y="${cur[1]+3}" text-anchor="${S.lv>6?'end':'start'}" font-family="JetBrains Mono,monospace" font-size="10" fill="currentColor">${av}%</text>
  </svg>`;
 }
+function wakeBlock(t){
+ if(S.lv!==4)return '';
+ const pname=PARENTS['wake_up'];
+ const c=conceptByName(pname);
+ return `<div class="vwake"><span class="wk">The wake-up call — level 3 &#8594; 4</span>
+  <div class="uni" style="margin-top:.45rem"><span class="uk">True of everyone · ${esc(pname)}</span><span class="ub">${md(c[S.l])}</span></div>
+  <div class="wtx">${md(t.wake_up)}</div></div>`;
+}
 function renderSpectrum(t){
  const L=t.levels[S.lv-1];
  const clinical=S.lv>=7;
  return `<div class="vert" id="vert">
-   <div class="vh"><span class="vk">How deep does it go? — how much of themselves they have let go of</span><span class="zn" id="vzone">${esc(L.zone)}${clinical?' · clinical territory':''}</span></div>
+   <div class="vh"><span class="vk"><b class="vnum7">07</b>How far it goes — how much of themselves they have let go of</span><span class="zn" id="vzone">${esc(L.zone)}</span></div>
    <p class="vint">Nine levels, one motion. Slide — and find your place by the move, not the label.</p>
-   <input type="range" min="1" max="9" step="1" value="${S.lv}" id="vsl" aria-label="Level of development">
-   <div class="vticks"><span>1 · liberation</span><span>healthy</span><span>average</span><span>unhealthy</span><span>9</span></div>
+   <div class="vslider">
+    <div class="vstops" id="vstops">${Array.from({length:9},(_,i)=>`<button class="vstop${i+1===S.lv?' on':''}" data-lv="${i+1}" style="left:${i*12.5}%" aria-label="Level ${i+1}"></button>`).join('')}<span class="vwakemark"><i></i>the wake-up call</span></div>
+    <input type="range" min="1" max="9" step="1" value="${S.lv}" id="vsl" aria-label="Level of development">
+    <div class="vzones"><span style="width:31.25%">Healthy 1–3</span><span style="width:37.5%">Average 4–6</span><span style="width:31.25%">Unhealthy 7–9</span></div>
+   </div>
    <div class="vlv"><span class="num" id="vnum">${S.lv}</span><span class="nm" id="vnm">The Level of ${esc(L.name)}</span></div>
    <div class="vshift"><span class="k">What gave way</span><span class="s" id="vshift">${md(L.shift)}</span></div>
    <div class="vtx" id="vtx">${md(L.text)}</div>
    <div class="vaim"><b id="vfac">${esc(t.faculty)}, aimed</b> <i id="vaim">${esc(L.aim)}</i></div>
+   <div id="vwake">${wakeBlock(t)}</div>
    <div class="vcurve"><span class="k">Of themselves, available — the whole slide</span><div id="vcw">${curveSvg(t)}</div></div>
    <div class="vflag${clinical?' on':''}" id="vflag"><b>Outside this guide&#x27;s reach</b>Clinical territory. The guide shows the shape of the slide here; it does not interpret it.</div>
   </div>`;
 }
 function wireSpectrum(t){
  const sl=document.getElementById('vsl');if(!sl)return;
+ document.querySelectorAll('#vstops .vstop').forEach(b=>b.addEventListener('click',()=>{
+  sl.value=b.dataset.lv;sl.dispatchEvent(new Event('input'));
+ }));
  sl.addEventListener('input',()=>{
   S.lv=+sl.value;history.replaceState(null,'','#'+stateParams());
   const L=t.levels[S.lv-1],clinical=S.lv>=7;
   const vert=document.getElementById('vert');
   vert.style.background=VBG[S.lv-1];vert.style.color=VFG[S.lv-1];
   vert.style.borderColor=clinical?'rgba(203,181,137,.35)':'var(--line)';
-  document.getElementById('vzone').textContent=L.zone+(clinical?' · clinical territory':'');
+  document.getElementById('vzone').textContent=L.zone;
   document.getElementById('vnum').textContent=S.lv;
   document.getElementById('vnm').textContent='The Level of '+L.name;
   document.getElementById('vshift').innerHTML=md(L.shift);
   document.getElementById('vtx').innerHTML=md(L.text);
   document.getElementById('vaim').textContent=L.aim;
   document.getElementById('vcw').innerHTML=curveSvg(t);
+  document.getElementById('vwake').innerHTML=wakeBlock(t);
+  document.querySelectorAll('#vstops .vstop').forEach(b=>b.classList.toggle('on',+b.dataset.lv===S.lv));
   document.getElementById('vflag').classList.toggle('on',clinical);
  });
 }
@@ -2806,7 +2847,7 @@ function renderType(el){
  const t=typeByN(S.t);
  const edge=`m-${modeWord(t)}`;
  const plan=anchorPlan();
- const cards=JOURNEY.map((j,i)=>{
+ const fieldCard=j=>{
   const parent=plan[j.key];
   let uni='';
   if(parent){
@@ -2814,9 +2855,10 @@ function renderType(el){
    uni=`<div class="uni"><span class="uk">True of everyone · ${esc(parent)}</span><span class="ub">${md(c[S.l])}</span>${c.tier==='model'?`<span class="ucv">${esc(readerCaveat(c.caveat)||'A leading model, not a settled mechanism.')}</span>`:''}</div>`;
   }
   return `<section class="jcard">
-   <div class="jk"><b>${String(i+1).padStart(2,'0')}</b><h3>${esc(j.title)}</h3><i>${esc(j.sub)}</i></div>
+   <div class="jk">${j.title?`<h3>${esc(j.title)}</h3>`:''}<i>${esc(j.sub)}</i></div>
    ${uni}<div class="jtx">${md(t[j.key])}</div></section>`;
- }).join('');
+ };
+ const cards=MOVEMENTS.map(m=>`<div class="mvhead"><b>${m.n}</b>${esc(m.title)}</div>${m.fields.map(fieldCard).join('')}`).join('');
  const sibs=TYPES.filter(x=>x.n!==t.n&&house(x)===house(t));
  const shared=firstSentence(t.triad_relation);
  const sibCard=s=>{
@@ -2831,14 +2873,15 @@ function renderType(el){
    <div class="tnum">Type ${t.n} · ${esc(t.anchor.center)} · ${esc(t.anchor.mode)}</div>
    <h2 class="tname">${esc(t.name)} <i>${esc(t.alt)}</i></h2>
    <p class="onepower">${esc(t.faculty)} is the one power here — it never changes, only its aim does.</p>
-   <div class="wants">
+   <div class="mvhead" style="border-top:0;padding-top:0;margin-top:1.5rem"><b>01</b>Who they are</div>
+   <div class="wants" style="margin-top:.6rem">
     <div><span class="k">Deep down, the fear</span><span class="v">${esc(t.anchor.core_fear)}</span></div>
     <div><span class="k">What they want most</span><span class="v">${esc(t.anchor.core_desire)}</span></div>
    </div>
    <p class="doorline">The way back: <em>&ldquo;${esc(t.doorway_short)}.&rdquo;</em></p>
    <div class="trad">The tradition&#x27;s anchors — Passion ${esc(t.anchor.passion)} · Virtue ${esc(t.anchor.virtue)} · Ego defense ${esc(t.anchor.defense)} · Holy idea ${esc(t.anchor.holy_idea)}</div>
    <p class="srcline">${SRC_LINE}</p>
-   <p class="jintro">Ten stops, in order. The story runs from what drives it to the way back.</p>
+   <p class="jintro">Seven movements, in order — from who they are to how far it goes.</p>
   </header>
   <div class="${edge}">${cards}</div>
   ${renderSpectrum(t)}

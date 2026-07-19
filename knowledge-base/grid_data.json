@@ -9,7 +9,7 @@
       "scientific",
       "product"
     ],
-    "tier_rule": "Everything in the scientific column is peer-reviewed unless marked otherwise. Two cells are models and are marked as such. Established is the default and goes unmarked — a tag on every cell carries no information and teaches the reader to skip it."
+    "tier_rule": "Every cell in the scientific column is peer-reviewed. There are no models in it."
   },
   "core_systems": [
     {
@@ -22,7 +22,7 @@
       "tier": "established"
     },
     {
-      "name": "The Core Truth",
+      "name": "The Baseline",
       "experience": "Feeling grounded, clear, and unbothered by external chaos - the baseline that exists before any performance.",
       "psychological": "Authentic self / core values.",
       "spiritual": "The Soul / The Source.",
@@ -53,10 +53,9 @@
       "experience": "Anticipating interactions, assuming the worst, living inside a script written by past fear rather than present reality.",
       "psychological": "Projection / cognitive bias.",
       "spiritual": "The Small Reality: projecting past fears onto the present to maintain an illusion of control.",
-      "scientific": "Prediction error — a leading account holds the brain runs on prediction and updates against error, so it guesses the present from the past instead of reading current data.",
+      "scientific": "What a person expects changes what they register. Expectation is applied to incoming information before it is fully processed, so the anticipation arrives ahead of the evidence and shapes it. A script written from earlier experience is run against the present.",
       "product": "System Data Correction: showing the gap between the fear and the actual reality.",
-      "tier": "model",
-      "caveat": "A dominant framework, not a settled mechanism."
+      "tier": "established"
     },
     {
       "name": "The Core Motivation",

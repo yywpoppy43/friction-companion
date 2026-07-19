@@ -35,7 +35,11 @@ Both compose at runtime from `grid_data.json` (Concept × Lens) and
 `types_data.json` (Concept × Type, joined by `_meta.parents`). Guide III additionally
 reads `arrows_data.json`, `wings_data.json`, `anchor_protocol_data.json`,
 `subtypes_data.json` and `pairs_data.json` — all five validated faces from the
-`knowledge-base/RESEARCH_PROMPTS.md` pipeline, now complete. The "vagal tone"
+`knowledge-base/RESEARCH_PROMPTS.md` pipeline, now complete. The authored faces were
+revised upstream 2026-07-19 ("The Baseline" rename, sourced mode glosses, zero
+model-tier cells, seven-movement type-page order — see FIELD_GUIDE_SPEC.md §18);
+Guide III is synced; the CE and Guides I/II embed earlier snapshots as historical
+versions. The "vagal tone"
 precision fix is applied everywhere (spec §17); one deferred owner option is recorded
 there (second-school repair content for the pairs face). The interior of
 the Concept × Type × Lens cube is never authored. The non-negotiable rules

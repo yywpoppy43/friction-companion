@@ -20,7 +20,8 @@
       "destination": "Passion to virtue; fixation to holy idea",
       "levels": "The vertical. Nine cells per type, three lines each. TEXT = what this level looks like (sourced). SHIFT = what gave way to arrive here from the level above — this is the recognition handle: a state description cannot be placed ('am I self-absorbed?' — everyone says yes), but a move can ('did I start using imagination to keep a feeling from stopping?'). AIM = where the type's one power is pointed now; read the aim column alone and the nine levels resolve into a single motion. Shift and aim are DERIVED from the level text, not invented — the derivation is showable.",
       "clinical_at_9": "What the tradition maps Level 9 onto. Inconsistently, and softer than it looks — see the ledger. Present so the edge of the product's reach is knowable, not so the product uses it.",
-      "faculty": "The type's one power, named. The aim column shows this same faculty at nine different targets — that is the same-energy law, made visible as motion."
+      "faculty": "The type's one power, named. The aim column shows this same faculty at nine different targets — that is the same-energy law, made visible as motion.",
+      "mode": "The Hornevian group: the strategy the type uses to get its needs met. Assertive types insist or demand; compliant types do what is expected or required; withdrawn types move away from engagement. The centre says what the type wants; the mode says how it goes about getting it. Riso-Hudson assignment — Naranjo sorts differently; see the ledger."
     },
     "the_split": "Level 2 is where the wound opens. The person identifies with part of their own qualities and sets the rest down — and the basic desire is the shape of what got set down. The Eight sets down the part that can be hurt, and wants never to be controlled. The Two sets down their own needing, and wants to be loved. Level 1 is picking it back up, and finding they always had what they were looking for. This is why the flaw and the gift are one power: nothing is added at Level 1. Something is returned.",
     "parents": {
@@ -31,7 +32,7 @@
       "wake_up": "The Core Motivation",
       "cost": "The Defense",
       "contradiction": "The False Narrative",
-      "same_energy": "The Core Truth",
+      "same_energy": "The Baseline",
       "doorway": "The Shift",
       "destination": "The Growth Process"
     },
@@ -44,7 +45,7 @@
       "alt": "The Perfectionist",
       "anchor": {
         "center": "Body / anger",
-        "mode": "Compliant — moving toward the standard",
+        "mode": "Compliant — does what is expected",
         "core_fear": "being corrupt, defective, bad, wrong",
         "core_desire": "integrity — to be good, right, balanced",
         "passion": "Anger",
@@ -155,7 +156,7 @@
       "alt": "The Giver",
       "anchor": {
         "center": "Heart / shame",
-        "mode": "Compliant — moving toward people",
+        "mode": "Compliant — does what is expected",
         "core_fear": "being unwanted, unworthy of love",
         "core_desire": "to feel loved and wanted",
         "passion": "Pride",
@@ -266,7 +267,7 @@
       "alt": "The Performer",
       "anchor": {
         "center": "Heart / shame",
-        "mode": "Assertive — moving against",
+        "mode": "Assertive — insists or demands",
         "core_fear": "being worthless, without value apart from achievement",
         "core_desire": "to feel valuable and worthwhile",
         "passion": "Deceit (self-deception)",
@@ -377,7 +378,7 @@
       "alt": "The Romantic",
       "anchor": {
         "center": "Heart / shame",
-        "mode": "Withdrawn — moving away",
+        "mode": "Withdrawn — moves away from engagement",
         "core_fear": "having no identity or personal significance",
         "core_desire": "to be uniquely themselves; to find identity",
         "passion": "Envy",
@@ -488,7 +489,7 @@
       "alt": "The Observer",
       "anchor": {
         "center": "Head / fear",
-        "mode": "Withdrawn — moving away",
+        "mode": "Withdrawn — moves away from engagement",
         "core_fear": "being helpless, incapable, overwhelmed",
         "core_desire": "to be capable and competent; to understand",
         "passion": "Avarice",
@@ -599,7 +600,7 @@
       "alt": "The Loyal Skeptic",
       "anchor": {
         "center": "Head / fear",
-        "mode": "Compliant — moving toward support",
+        "mode": "Compliant — does what is expected",
         "core_fear": "being without support or guidance; unable to survive alone",
         "core_desire": "security, support, guidance",
         "passion": "Fear",
@@ -710,7 +711,7 @@
       "alt": "The Epicure",
       "anchor": {
         "center": "Head / fear",
-        "mode": "Assertive — moving against",
+        "mode": "Assertive — insists or demands",
         "core_fear": "being deprived, trapped in pain",
         "core_desire": "to be satisfied and content",
         "passion": "Gluttony",
@@ -821,7 +822,7 @@
       "alt": "The Leader",
       "anchor": {
         "center": "Body / anger",
-        "mode": "Assertive — moving against",
+        "mode": "Assertive — insists or demands",
         "core_fear": "being harmed, controlled, violated, made vulnerable",
         "core_desire": "to protect themselves; control of their own life and destiny",
         "passion": "Lust (excess, intensity)",
@@ -932,7 +933,7 @@
       "alt": "The Mediator",
       "anchor": {
         "center": "Body / anger",
-        "mode": "Withdrawn — moving away",
+        "mode": "Withdrawn — moves away from engagement",
         "core_fear": "loss, fragmentation, separation, conflict",
         "core_desire": "inner and outer peace; wholeness",
         "passion": "Sloth (self-forgetting)",

@@ -458,3 +458,47 @@ Copy-inventory additions: "This pairing", "— the tradition's own account.",
 
 **Pipeline complete:** ✅ arrows · ✅ wings · ✅ protocol · ✅ subtypes · ✅ pairs.
 All five research layers validated and live. 113 automated checks pass.
+
+
+## 18 · v3.5 addendum — sync with the upstream data revision (owner changelog, 2026-07-19)
+
+The owner's parallel session revised the two authored faces and the presentation rules.
+Applied to Guide 3 (in place, same URL, per instruction); the Composition Engine and
+Field Guides I/II keep their earlier embedded snapshots as historical versions.
+
+**Data (new canonical `grid_data.json` / `types_data.json`):**
+- `anchor.mode` now carries the sourced Riso-Hudson gloss, uniform per group
+  ("Assertive — insists or demands" / "Compliant — does what is expected" /
+  "Withdrawn — moves away from engagement"); `_meta.fields.mode` documents it.
+- "The Core Truth" → **"The Baseline"** (name only); the `_meta.parents` join was
+  updated upstream to match — verified, no orphan.
+- The False Narrative's scientific cell rewritten to an established mechanism
+  ("expectation shapes what is registered"); **zero model-tier cells remain**.
+  Model-rendering branches kept as dead code per instruction, and the suite now
+  asserts they never fire.
+- **Reconciliation:** the new grid was cut from a base predating the owner-approved
+  vagal precision fix (spec §17); the fix was **re-applied on top** ("raise
+  vagally-mediated heart-rate variability"). The owner's in-session decision
+  outranks the stale copy; recorded here.
+
+**Presentation (per changelog §2):**
+- Type pages regrouped into the **seven movements**: 01 Who they are (anchor block) ·
+  02 How it runs (triad_relation, engine) · 03 What sets it off (trigger, mishearing) ·
+  04 What it costs · 05 Why it can drop (contradiction, same_energy) · 06 Which way
+  out (doorway, destination) · 07 How far it goes (the vertical).
+- `wake_up` renders **inside the vertical at Level 4** (with the Core Motivation gold
+  line), not in the mechanism list — journey anchors are now six, the seventh lives
+  at the wake-up block.
+- "the filter" relabeled **"the mishearing"** everywhere (journey card, Loop blocks).
+- 3×3 axis labels: columns "the feeling each type manages", rows "the strategy to
+  get what it needs"; row headers now display the full sourced `anchor.mode` strings
+  (data-driven); no explanatory essay.
+- Spectrum: nine **discrete stops** (clickable), three zone bands (Healthy 1–3 /
+  Average 4–6 / Unhealthy 7–9), **one** permanent marker — "the wake-up call" at
+  3→4 — the zone chip's "clinical territory" suffix removed (the zone band and the
+  Level-7+ flag carry it), default landing stays Level 4.
+- Loop arrows and door mode lines now carry the sourced glosses verbatim (no
+  appended definitions, per changelog §1a).
+
+130 automated checks pass, including new assertions that the dead model branch
+never fires and that the movement order matches the changelog.
