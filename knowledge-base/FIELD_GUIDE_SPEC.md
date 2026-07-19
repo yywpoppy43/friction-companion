@@ -379,3 +379,50 @@ carry both." Nothing else.
 
 Still pending from the pipeline: prompt 2 (pairs), prompt 3 (anchor protocol),
 prompt 5 (subtypes).
+
+
+## 16 · v3.3 addendum — protocol and subtypes layers wired in
+
+Prompts 3 and 5 returned and passed validation; two more data faces landed:
+
+- **`anchor_protocol_data.json`** — evidence-graded mid-conversation down-regulation
+  ([ESTABLISHED]/[MODEL] tiers, meta-analysis/RCT-cited). Validation: 3 steps tiered
+  [est, model, est]; the sigh correctly held at MODEL (the Balban 2023 RCT's outcome is
+  daily-practice mood, with no acute HRV/heart-rate change — the "fastest way to calm
+  down" framing is excluded as inference); power-posing endocrine claims excluded
+  (failed replication); no "vagal tone"/"vagus reset" language in any displayed string;
+  jaw-unclench and feet-grounding correctly kept out as untested micro-doses.
+  **In the product:** the Moment's Anchor step gains a sage-edged "Do this now — the
+  same in every body" card with the three instructions, per-step tier chips (solid
+  science / a leading model), and the line "Small, real, short-term effects — studied
+  as brief practices, not treatments." Shown in all room modes; instructions verbatim;
+  mechanism prose stays in the data file, off the reader surface.
+- **`subtypes_data.json`** — the 27 instinctual subtypes, both schools kept separate.
+  Validation: 27/27; instincts complete per type; exactly one countertype per type;
+  the countertype set independently matched the canonical Naranjo/Chestnut scheme
+  (1-SX, 2-SP, 3-SP, 4-SP, 5-SX, 6-SX, 7-SO, 8-SO, 9-SO; 3/3/3 distribution); passions
+  consistent with the anchor; Riso-Hudson titles honestly CANNOT VERIFY where
+  unconfirmed. **In the product:** type pages gain "The three instincts" — three cards
+  (Self-preservation / Social / One-to-one (sexual)) with the Naranjo/Chestnut labels
+  (parenthetical etymologies stripped from the surface), the countertype chipped, and
+  the sub-line "…one runs against the type's usual look ('the countertype'). Teachers
+  vary on the labels."
+
+**Open decision recorded for the owner (from prompt 3's findings):** the authored
+Anchor cell in `grid_data.json` (scientific lens) says slow breathing and posture
+"raise vagal tone." The research's precision bar says the defensible phrasing is
+"raise vagally-mediated HRV / cardiac vagal activity" (the acute rise may be partly a
+respiratory artifact; Grossman 1993/2024, Eckberg 2003). Changing an authored face is
+the owner's call; until decided, the shipped protocol card avoids the phrase entirely.
+
+**Transparency note:** the subtypes file references correcting "the anchor's
+provisional hypothesis" — no such hypothesis exists in `Source_Enneagram.md`; it
+appears to have originated in that research chat's own session. Since the delivered
+countertype set matches the primary sources independently, this affects nothing.
+
+Copy-inventory additions: "Do this now — the same in every body", "Small, real,
+short-term effects — studied as brief practices, not treatments.", "The three
+instincts", the instincts sub-line, "the countertype", "Self-preservation", "Social",
+"One-to-one (sexual)".
+
+Pipeline: ✅ arrows · ✅ wings · ✅ protocol · ✅ subtypes · ⏳ pairs (prompt 2).

@@ -33,9 +33,11 @@ Keep them side by side; neither replaces the other.
 
 Both compose at runtime from `grid_data.json` (Concept × Lens) and
 `types_data.json` (Concept × Type, joined by `_meta.parents`). Guide III additionally
-reads `arrows_data.json` and `wings_data.json` — validated [STRUCTURE] faces produced
-via `knowledge-base/RESEARCH_PROMPTS.md`; pairs, anchor-protocol and subtypes faces
-are expected from the same pipeline. The interior of
+reads `arrows_data.json`, `wings_data.json`, `anchor_protocol_data.json` and
+`subtypes_data.json` — validated faces produced via `knowledge-base/RESEARCH_PROMPTS.md`;
+the pairs face (prompt 2) is still expected from the same pipeline. One open owner
+decision is recorded in FIELD_GUIDE_SPEC.md §16 (the \"vagal tone\" phrasing in the
+authored Anchor cell). The interior of
 the Concept × Type × Lens cube is never authored. The non-negotiable rules
 (weaker register wins; no body predictions; centre × mode generates nothing;
 attribution stays in the ledger; the clinical vertical is out of reach) are

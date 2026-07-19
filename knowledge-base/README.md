@@ -12,6 +12,8 @@ The runtime interior of the three-axis knowledge base: **Concept × Type × Lens
 | `types_data.json` | The authored **Concept × Type** face: the nine defenses, field by field. `_meta.parents` is the joint — it maps each type-field to its universal concept. |
 | `arrows_data.json` | Validated research face ([STRUCTURE], Riso-Hudson): each type's Direction of Integration (growth) and Disintegration (stress), canon-checked and circuit-verified. Feeds Guide III's "Where it moves". |
 | `wings_data.json` | Validated research face ([STRUCTURE], Riso-Hudson): the 18 wing subtypes, names canon-checked. Feeds Guide III's "The two flavors". |
+| `anchor_protocol_data.json` | Validated research face (evidence-tiered, meta-analysis/RCT-cited): three mid-conversation down-regulation steps. Feeds Guide III's "Do this now" card at the Anchor step. |
+| `subtypes_data.json` | Validated research face ([STRUCTURE], Naranjo/Chestnut with Riso-Hudson divergences preserved): the 27 instinctual subtypes with the canonical countertype set. Feeds Guide III's "The three instincts". |
 
 The interior of the cube — *this concept, for this type, in this lens* — is never
 authored. Given `(concept, type, lens)` the engine composes the cell at runtime:

@@ -1,0 +1,45 @@
+{
+ "anchor_protocol": {
+  "steps": [
+   {
+    "instruction": "Quietly lengthen your exhale so it is longer than your inhale (e.g., in for ~4s, out for ~6s) for two or three breaths.",
+    "why": "Slowing the breath toward ~5-6 breaths/min acutely raises vagally-mediated HRV during the breathing, and cardiac vagal outflow waxes during expiration (the respiratory gate). It does not require raising tonic 'vagal tone' to work.",
+    "tier": "established",
+    "dose": "2-3 breaths, ~15-40s; the acute HRV effect is present within a single short session and does not increase with longer duration.",
+    "source": "Laborde et al., Neuroscience & Biobehavioral Reviews, 2022 (meta-analysis); Eckberg, J Physiol, 2003 (review); You/Laborde et al., 2021 (dose-response, recruited N=65)"
+   },
+   {
+    "instruction": "If you can, take one or two slow full exhales after a slightly fuller inhale (optionally a small double inhale) — an unobtrusive 'sigh'.",
+    "why": "We model the sigh as a psychophysiological 'resetter' followed by subjective relief; a longer exhale increases cardiac vagal modulation during the breath. Daily practice of extended-exhale cyclic sighing improved mood in a randomized trial.",
+    "tier": "model",
+    "dose": "1-2 sighs. Note: the trial evidence is for 5 min/day over a month, so a single mid-conversation sigh is an extrapolation, and the trial found no acute HRV/heart-rate change.",
+    "source": "Balban et al., Cell Reports Medicine, 2023 (RCT, daily practice, mood outcome); Vlemincx et al., Biological Psychology, 2010 (resetter model)"
+   },
+   {
+    "instruction": "Shift from a slumped to an upright seated posture: lengthen the spine, let the shoulders drop.",
+    "why": "In a randomized stress-task study, sitting upright rather than slumped better maintained self-reported mood and self-esteem. This is a self-report affect effect, not a proven autonomic calming effect.",
+    "tier": "established",
+    "dose": "Sustained through the conversation; self-report affect effect.",
+    "source": "Nair, Sagar, Sollers, Consedine & Broadbent, Health Psychology, 2015 (single RCT, N=74)"
+   }
+  ],
+  "caveats": [
+   "The acute HRV rise during slow breathing may be substantially a respiratory-sinus-arrhythmia artifact of breathing mechanics, not proof of increased tonic vagal outflow (Grossman & Kollai, 1993; Grossman, 2024; Eckberg, 2003). Say 'vagally-mediated HRV / cardiac vagal activity', not 'vagal tone'.",
+   "The Balban 2023 cyclic-sighing RCT found NO significant change in HRV or resting heart rate in any group; its established outcome is mood/affect over a month of daily practice, not acute cardiac calming.",
+   "No trial tests a single mid-conversation sigh, a seconds-long jaw/shoulder unclench, or a feet-on-floor cue as a validated micro-dose; these are extrapolated from fuller protocols.",
+   "The upright-posture finding is a single study, is on self-reported affect, and the upright group actually showed HIGHER pulse pressure (more arousal); it may partly reflect avoiding a slump rather than a benefit of uprightness.",
+   "Progressive muscle relaxation's anxiety evidence is for full multi-minute protocols, not a brief single-muscle release.",
+   "Effects across these techniques are acute-state and largely self-report; they are not clinical treatments and no single mid-conversation micro-dose is clinically validated."
+  ],
+  "do_not_state": [
+   "That slow breathing or sighing 'resets' or 'raises' vagal tone (say: raises vagally-mediated HRV / cardiac vagal activity).",
+   "That a physiological sigh 'drops your heart rate and cortisol faster than any technique' or is 'the fastest way to calm down' as fact (the trial found no HRV/HR change; this is Huberman's inference).",
+   "That the extended-exhale mechanism is a proven route to durable calming (respiratory-gate effect is transient and during-breath).",
+   "That power posing changes testosterone, cortisol, or risk-taking/behavior (failed replication; first author withdrew support).",
+   "Any 'vagus nerve reset' framing.",
+   "That feet-on-floor 'grounding' specifically reduces anxiety (no direct evidence).",
+   "That panoramic vision / gaze defocus reliably reduces state anxiety (podcast claim, no human RCT).",
+   "That any single mid-conversation micro-dose is clinically validated."
+  ]
+ }
+}

@@ -1,0 +1,265 @@
+{
+ "_meta": {
+  "schools": [
+   "Riso-Hudson",
+   "Naranjo/Chestnut"
+  ],
+  "sources": [
+   "Chestnut & Paes, CP Enneagram Academy, 'The Ultimate Guide to the 27 Enneagram Subtypes' (cpenneagram.com/subtypes)",
+   "Beatrice Chestnut, 'The Complete Enneagram: 27 Paths to Greater Self-Knowledge' (2013)",
+   "Beatrice Chestnut guest blog, The Enneagram in Business (theenneagraminbusiness.com)",
+   "Claudio Naranjo, 'Character and Neurosis' / '27 personajes en busca del ser' (via scribd/linktr.ee transcriptions)",
+   "Don Riso & Russ Hudson, 'The Wisdom of the Enneagram' (1999); The Enneagram Institute (enneagraminstitute.com)",
+   "Jerome Wagner, Enneagram Spectrum synopsis (enneagramspectrum.com) [secondary]",
+   "Personality Database Enneagram wiki; Personality Cafe transcriptions of The Wisdom of the Enneagram [secondary]",
+   "Ashlie Woods, enneagram-sexual-six (Chestnut-based) [secondary]"
+  ],
+  "tier": "STRUCTURE",
+  "countertype_invariant": "exactly one per type; nine total; verified"
+ },
+ "subtypes": [
+  {
+   "n": 1,
+   "instinct": "self-preservation",
+   "label": "Worry (Ichazo: Anxiety)",
+   "text": "Anger is turned inward as anxious over-responsibility; reaction formation converts the heat of anger into warmth, producing the true, benevolent perfectionist who controls the environment to secure survival.",
+   "countertype": false,
+   "school_note": "Riso-Hudson: grounded, practical, self-disciplined One; RH give no confirmed one-word title and no 'countertype' concept, treating the instinct as an independent overlay.",
+   "source": "cpenneagram.com/subtypes; Chestnut guest blog; Naranjo (scribd)"
+  },
+  {
+   "n": 1,
+   "instinct": "social",
+   "label": "Non-Adaptability (Ichazo: Maladjustment)",
+   "text": "Anger is half-hidden as cool superiority; resentment is channeled into embodying the perfect model of the 'right way,' with a teacher-like, aristocratic rigidity.",
+   "countertype": false,
+   "school_note": "Both schools describe a cooler, intellectual One; only Naranjo/Chestnut structure the trio around a countertype.",
+   "source": "cpenneagram.com; Naranjo (scribd)"
+  },
+  {
+   "n": 1,
+   "instinct": "sexual",
+   "label": "Zeal (Ichazo Spanish: celo)",
+   "text": "The only overtly angry One; anger potentiates desire so resentment is redirected outward into a vehement, entitled drive to reform and perfect others. Can resemble an Eight.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SX One as the countertype (anger expressed, not repressed); Riso-Hudson have no equivalent designation.",
+   "source": "cpenneagram.com ('The Countertype'); the16types Naranjo notes"
+  },
+  {
+   "n": 2,
+   "instinct": "self-preservation",
+   "label": "Privilege (also Me-First)",
+   "text": "Pride is hardest to detect here; the passion is redirected into a childlike, charming bid to be taken care of, staying youthful and ambivalent about adult connection.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SP Two as the countertype (pride least visible); Riso-Hudson treat SP Two as a domestic/nesting flavor without a countertype label.",
+   "source": "cpenneagram.com ('The Countertype'); typologycentral"
+  },
+  {
+   "n": 2,
+   "instinct": "social",
+   "label": "Ambition",
+   "text": "Pride is most visible; the helper's pride is redirected into seducing groups by cultivating an image of influential, super-competent leadership, 'giving to get' with a strategic angle.",
+   "countertype": false,
+   "school_note": "Both schools see the Social Two as more powerful/adult; only Naranjo/Chestnut define the trio by contrast to the countertype.",
+   "source": "cpenneagram.com; enneagramspectrum.com"
+  },
+  {
+   "n": 2,
+   "instinct": "sexual",
+   "label": "Seduction/Aggression (Aggressive-Seductive)",
+   "text": "Pride is redirected into classical one-to-one seduction; a 'femme fatale' (or male equivalent) who becomes irresistible to win the single person who will meet all their needs.",
+   "countertype": false,
+   "school_note": "Substantial agreement across schools on the seductive one-to-one Two.",
+   "source": "cpenneagram.com"
+  },
+  {
+   "n": 3,
+   "instinct": "self-preservation",
+   "label": "Security",
+   "text": "Self-deception takes the form of a 'vanity for having no vanity'; the Three works to genuinely be good and effective rather than to look good, hiding that image matters at all.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SP Three as the countertype; Riso-Hudson note the Three among the few types with a counter-appearance but reserve 'countertype' to the Naranjo lineage.",
+   "source": "cpenneagram.com ('The Countertype'); enneagramspectrum.com"
+  },
+  {
+   "n": 3,
+   "instinct": "social",
+   "label": "Prestige",
+   "text": "The 'classic' Three; vanity is acted out through visible achievement, status-climbing, and being on stage; the most competitive Three, with a corporate/sales mentality.",
+   "countertype": false,
+   "school_note": "Both schools treat this as the prototypical, recognition-seeking Three.",
+   "source": "cpenneagram.com; Naranjo (linktr.ee)"
+  },
+  {
+   "n": 3,
+   "instinct": "sexual",
+   "label": "Charisma (some Naranjo notes: Masculinity/Femininity)",
+   "text": "Vanity is redirected into building a personally attractive image and promoting important others; the most emotional Three, uneasy talking about self, with a team/family mentality.",
+   "countertype": false,
+   "school_note": "Naming varies within the Naranjo lineage (Charisma vs. Ichazo's Masculinity/Femininity); Riso-Hudson describe an attractiveness-focused Three.",
+   "source": "cpenneagram.com; scribd Naranjo notes"
+  },
+  {
+   "n": 4,
+   "instinct": "self-preservation",
+   "label": "Tenacity (Ichazo: Reckless/Dauntless; RH: The Sensualist)",
+   "text": "Envy is redirected away from lament into hard work to acquire what one lacks; long-suffering, stoic, masochistic-not-melodramatic, with a 'passion for effort.'",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SP Four as the countertype; Riso-Hudson title the same combination 'The Sensualist' (focus on comfort/beauty) — same slot, different emphasis.",
+   "source": "cpenneagram.com ('The Countertype'); Chestnut guest blog; Personality Cafe (RH)"
+  },
+  {
+   "n": 4,
+   "instinct": "social",
+   "label": "Shame (RH: The Outsider)",
+   "text": "Envy fuels shame, unfavorable comparison, and the victim role; the shyest Four, who finds a paradoxical comfort in melancholy and self-abasement.",
+   "countertype": false,
+   "school_note": "Naranjo 'Shame'; Riso-Hudson 'The Outsider' for the same combination.",
+   "source": "cpenneagram.com; Personality Cafe (RH)"
+  },
+  {
+   "n": 4,
+   "instinct": "sexual",
+   "label": "Competition (Ichazo: Hate; RH: Infatuation)",
+   "text": "Envy becomes competitive anger and 'an envy that wants'; shameless and demanding, this Four externalizes pain and can make others suffer — the angriest Four.",
+   "countertype": false,
+   "school_note": "Sharp divergence: Naranjo/Ichazo emphasize rivalry/hate; Riso-Hudson name the same slot 'Infatuation' (romantic obsession).",
+   "source": "cpenneagram.com; thetypendium.com; Personality Cafe (RH)"
+  },
+  {
+   "n": 5,
+   "instinct": "self-preservation",
+   "label": "Castle (Ichazo: Refuge; Naranjo: Lair; RH: Isolation and Hoarding)",
+   "text": "Avarice is redirected into boundaries — being 'encastled' behind walls with everything needed to survive, minimizing needs to avoid dependence; least expressive Five.",
+   "countertype": false,
+   "school_note": "Naranjo/Chestnut 'Castle'; Riso-Hudson 'Isolation and Hoarding' for the same combination.",
+   "source": "cpenneagram.com; k-enneagram (RH); personality-database wiki"
+  },
+  {
+   "n": 5,
+   "instinct": "social",
+   "label": "Totem (RH: The Specialist)",
+   "text": "Avarice is channeled into knowledge and 'super-ideals'; relating to others through shared expertise rather than feeling, hoarding what confers standing, seeking ultimate meaning.",
+   "countertype": false,
+   "school_note": "Naranjo/Chestnut 'Totem'; Riso-Hudson 'The Specialist' for the same combination.",
+   "source": "cpenneagram.com; personality-database wiki"
+  },
+  {
+   "n": 5,
+   "instinct": "sexual",
+   "label": "Confidence (RH: This Is My World)",
+   "text": "Avarice is redirected into a search for an idealized, wholly trustworthy partner to confide in; the most romantic and emotionally sensitive Five, resembling a Four.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut clearly mark SX Five as the countertype; Riso-Hudson's overlay framing does not designate one. See Part C — a commonly mis-reported countertype.",
+   "source": "cpenneagram.com ('The Countertype'); Chestnut guest blog ('the Five countertype')"
+  },
+  {
+   "n": 6,
+   "instinct": "self-preservation",
+   "label": "Warmth",
+   "text": "Fear is redirected into seeking warm, trustworthy alliances; the most phobic Six, whose insecurity is managed by friendliness and dependence on protective others.",
+   "countertype": false,
+   "school_note": "Both schools describe a warm, alliance-seeking phobic Six.",
+   "source": "cpenneagram.com; ashliewoods.com"
+  },
+  {
+   "n": 6,
+   "instinct": "social",
+   "label": "Duty (RH secondary: Generating Support)",
+   "text": "Fear is managed by adherence to rules, reason, and authority; the 'Prussian'/lawgiver Six who becomes over-sure as a defense against uncertainty, disliking ambiguity.",
+   "countertype": false,
+   "school_note": "Naranjo/Chestnut 'Duty'; a Riso-Hudson secondary title 'Generating Support' is reported (Truity).",
+   "source": "cpenneagram.com; Truity (RH, secondary)"
+  },
+  {
+   "n": 6,
+   "instinct": "sexual",
+   "label": "Strength/Beauty",
+   "text": "The counterphobic Six goes against fear by becoming strong and intimidating ('the best defense is a good offense'); per Chestnut quoting Naranjo, Ichazo's title meant strength in men, beauty in women.",
+   "countertype": true,
+   "school_note": "The point of nearest agreement: both schools treat the counterphobic Sexual Six as the well-known counter-appearance; only Naranjo/Chestnut formalize 'countertype.'",
+   "source": "cpenneagram.com ('The Countertype'); ashliewoods.com (Chestnut/Naranjo)"
+  },
+  {
+   "n": 7,
+   "instinct": "self-preservation",
+   "label": "Keepers of the Castle (Naranjo: Family; Ichazo: Defenders; RH: Getting Mine)",
+   "text": "Gluttony (experiential hunger) is redirected into building a partisan 'good mafia' network of allies and family; pragmatic, opportunistic, alert to any advantage.",
+   "countertype": false,
+   "school_note": "Naranjo 'Family'/'Keepers of the Castle'; Riso-Hudson 'Getting Mine' for the same combination.",
+   "source": "cpenneagram.com; personality-database wiki; the16types"
+  },
+  {
+   "n": 7,
+   "instinct": "social",
+   "label": "Sacrifice",
+   "text": "'Counter-gluttony': the Seven sacrifices its own desires to serve others and ideals, becoming ascetic and wanting to be seen as good/pure — gluttony inverted into idealistic self-denial.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SO Seven as the countertype; Riso-Hudson agree it is the atypical Seven but do not use the term.",
+   "source": "cpenneagram.com ('The Countertype'); Chestnut guest blog"
+  },
+  {
+   "n": 7,
+   "instinct": "sexual",
+   "label": "Suggestibility (also Fascination; RH: The Neophile)",
+   "text": "Gluttony for a higher, idealized world; a dreamer viewing reality through rose-colored, in-love optimism, susceptible to enthusiasm and fantasy.",
+   "countertype": false,
+   "school_note": "Naranjo 'Suggestibility'; Riso-Hudson 'The Neophile' for the same combination.",
+   "source": "cpenneagram.com; enneagramspectrum.com"
+  },
+  {
+   "n": 8,
+   "instinct": "self-preservation",
+   "label": "Satisfaction (Ichazo: Satisfactory Survival; RH: The Survivor)",
+   "text": "Lust (intensity/excess) is focused on timely satisfaction of material needs and low tolerance for frustration; the least expressive, most armed and self-sufficient Eight.",
+   "countertype": false,
+   "school_note": "Naranjo 'Satisfaction'; Riso-Hudson 'The Survivor' for the same combination.",
+   "source": "cpenneagram.com; enneagramuserguide.com; Personality Cafe (RH)"
+  },
+  {
+   "n": 8,
+   "instinct": "social",
+   "label": "Solidarity (Ichazo: Friendship; Naranjo: Complicity; RH: Gusto and Camaraderie)",
+   "text": "A 'social antisocial' Eight; lust and aggression are redirected into protecting and standing with others, appearing less aggressive and more loyal than the other Eights.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SO Eight as the countertype; Riso-Hudson label the same combination 'Gusto and Camaraderie.'",
+   "source": "cpenneagram.com ('The Countertype'); the16types; Personality Cafe (RH)"
+  },
+  {
+   "n": 8,
+   "instinct": "sexual",
+   "label": "Possession (RH: Taking Charge)",
+   "text": "Lust becomes rebellion and a need to possess everyone's attention — an energetic takeover of the whole scene, seeking power over people and things rather than material security.",
+   "countertype": false,
+   "school_note": "Naranjo 'Possession'; Riso-Hudson 'Taking Charge' for the same combination.",
+   "source": "cpenneagram.com; scribd Naranjo notes"
+  },
+  {
+   "n": 9,
+   "instinct": "self-preservation",
+   "label": "Appetite",
+   "text": "Sloth (self-forgetting) is expressed by merging with physical comforts and routines — eating, sleeping, familiar absorbing activities — substituting these for contact with one's own being; most solitary Nine.",
+   "countertype": false,
+   "school_note": "Naranjo/Chestnut 'Appetite'; Riso-Hudson describe a comfort-seeking, routine-bound Nine.",
+   "source": "cpenneagram.com; Chestnut guest blog"
+  },
+  {
+   "n": 9,
+   "instinct": "social",
+   "label": "Participation",
+   "text": "Self-forgetting is redirected into fusing with groups and working hard — even to workaholism — to belong; the high activity level runs against the type's usual inertia.",
+   "countertype": true,
+   "school_note": "Naranjo/Chestnut mark SO Nine as the countertype; Riso-Hudson agree it is the atypically active Nine but do not use the term.",
+   "source": "cpenneagram.com ('The Countertype'); iEQ9"
+  },
+  {
+   "n": 9,
+   "instinct": "sexual",
+   "label": "Fusion (also Union)",
+   "text": "Sloth is expressed by merging with one important other, unconsciously taking on their attitudes, opinions and feelings because standing alone feels too hard; gentle and unassertive.",
+   "countertype": false,
+   "school_note": "Naranjo/Chestnut 'Fusion'/'Union'; Riso-Hudson describe a merging, self-losing Nine in one-to-one bonds.",
+   "source": "cpenneagram.com; enneagramspectrum.com"
+  }
+ ]
+}
