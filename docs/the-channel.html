@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Channel — the growth-architecture layer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --ground:#f3ead8;
+    --panel:#fbf6ea;
+    --ink:#322819;
+    --ink-soft:#6a5c45;
+    --ink-faint:#9a8a6d;
+    --trap:#bd4d28;
+    --channel:#5b7148;
+    --model:#b07d22;
+    --rule:#e3d6bb;
+    --serif:'Spectral', Georgia, 'Times New Roman', serif;
+    --mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:19px;
+    line-height:1.62;
+    letter-spacing:.002em;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  .wrap{max-width:820px;margin:0 auto;padding:clamp(28px,6vw,72px) clamp(20px,5vw,40px) 96px;}
+
+  /* ---- typographic primitives ---- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:inline-block;
+  }
+  .eyebrow.gold{color:var(--model);}
+  .eyebrow.trap{color:var(--trap);}
+  .eyebrow.channel{color:var(--channel);}
+
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(38px,8vw,62px);
+    line-height:1.02;
+    letter-spacing:-.015em;
+    margin:.28em 0 .1em;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(25px,4.2vw,33px);
+    line-height:1.12;
+    letter-spacing:-.01em;
+    margin:0 0 .1em;
+  }
+  h3{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(23px,3.8vw,30px);
+    line-height:1.1;
+    letter-spacing:-.008em;
+    margin:.1em 0 0;
+  }
+  p{margin:0 0 1.05em;}
+  a{color:var(--model);}
+  em{font-style:italic;}
+  strong{font-weight:600;}
+
+  .lede{font-variant:small-caps;letter-spacing:.03em;font-weight:600;color:var(--ink);}
+
+  /* ---- masthead ---- */
+  .masthead{border-bottom:1.5px solid var(--ink);padding-bottom:34px;margin-bottom:14px;}
+  .masthead .kicker{margin-bottom:10px;}
+  .standfirst{
+    font-size:18px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    font-style:italic;
+    max-width:62ch;
+    margin-top:16px;
+  }
+
+  /* ---- section scaffolding ---- */
+  section.block{margin-top:56px;}
+  .secnum{margin-bottom:14px;display:block;}
+  .divider{height:1px;background:var(--rule);border:0;margin:64px 0 0;}
+
+  /* ---- the law (gold callout) ---- */
+  .law{
+    background:linear-gradient(180deg, rgba(176,125,34,.09), rgba(176,125,34,.045));
+    border:1.5px solid var(--model);
+    border-radius:3px;
+    padding:clamp(24px,4vw,38px);
+    margin:22px 0 30px;
+    box-shadow:0 1px 0 rgba(50,40,25,.03);
+  }
+  .law .eyebrow{margin-bottom:14px;}
+  .lawline{
+    font-size:clamp(23px,3.6vw,30px);
+    line-height:1.24;
+    font-weight:600;
+    letter-spacing:-.008em;
+    color:var(--ink);
+    margin-bottom:.5em;
+  }
+  .lawline .hot{color:var(--model);}
+  .law p:last-child{margin-bottom:0;color:var(--ink-soft);font-size:17.5px;}
+
+  /* ---- specimens (capacities + defenses) ---- */
+  .specimen{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:clamp(22px,3.6vw,34px);
+    margin-top:26px;
+  }
+  .specimen .top{border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:20px;}
+  .force{color:var(--ink);margin-top:16px;}
+
+  .cell{
+    border-radius:3px;
+    padding:18px 20px 16px;
+    margin:0 0 14px;
+    position:relative;
+  }
+  .cell .eyebrow{margin-bottom:9px;}
+  .cell p{margin-bottom:.7em;}
+  .cell p:last-child{margin-bottom:0;}
+  .cell .feels{font-style:italic;color:var(--ink-soft);font-size:17.5px;}
+  .cell .feels em{font-style:normal;font-variant:small-caps;letter-spacing:.02em;color:var(--ink);}
+
+  .cell.trap{
+    background:rgba(189,77,40,.055);
+    border:1px solid rgba(189,77,40,.28);
+    border-left:4px solid var(--trap);
+  }
+  .cell.channel{
+    background:rgba(91,113,72,.06);
+    border:1px solid rgba(91,113,72,.30);
+    border-left:4px solid var(--channel);
+  }
+
+  /* ---- the plain read (what ships) ---- */
+  .plainread{
+    border-top:1px dashed var(--rule);
+    border-bottom:1px dashed var(--rule);
+    padding:16px 0 14px;
+    margin:16px 0 14px;
+    text-align:center;
+  }
+  .plainread .eyebrow{margin-bottom:8px;}
+  .plainread p{
+    font-size:19.5px;
+    font-style:italic;
+    color:var(--ink);
+    max-width:56ch;
+    margin:0 auto;
+    line-height:1.5;
+  }
+
+  /* ---- confidence line ---- */
+  .confidence{
+    font-size:15.5px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin:14px 0 0;
+    padding-top:14px;
+    border-top:1px solid var(--rule);
+  }
+  .confidence .eyebrow{display:block;margin-bottom:7px;}
+  .confidence strong{color:var(--ink);}
+  .templateline{
+    font-size:17px;color:var(--ink);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--rule);
+  }
+  .templateline .lede{color:var(--model);}
+
+  /* ---- inline confidence tags ---- */
+  .tag{
+    font-family:var(--mono);
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.05em;
+    padding:1px 6px;
+    border-radius:3px;
+    white-space:nowrap;
+    border:1px solid transparent;
+  }
+  .tag.confirmed{color:var(--channel);background:rgba(91,113,72,.10);border-color:rgba(91,113,72,.28);}
+  .tag.caveat{color:#8a5a2b;background:rgba(176,125,34,.10);border-color:rgba(176,125,34,.30);}
+  .tag.contested{color:var(--trap);background:rgba(189,77,40,.09);border-color:rgba(189,77,40,.28);}
+  .tag.model{color:var(--model);background:rgba(176,125,34,.12);border-color:rgba(176,125,34,.36);}
+  .tag.cannot{color:var(--ink-faint);background:rgba(154,138,109,.12);border-color:rgba(154,138,109,.32);}
+  .tag.none{color:var(--ink-soft);background:rgba(50,40,25,.05);border-color:rgba(50,40,25,.16);}
+
+  /* ---- generic prose emphasis blocks ---- */
+  .pull{
+    font-size:clamp(20px,3vw,25px);
+    font-weight:500;
+    line-height:1.28;
+    color:var(--ink);
+    border-left:4px solid var(--model);
+    padding:4px 0 4px 20px;
+    margin:20px 0 24px;
+    letter-spacing:-.005em;
+  }
+  .note{color:var(--ink-soft);}
+  ol.test{margin:0 0 1.05em;padding-left:0;list-style:none;counter-reset:t;}
+  ol.test li{position:relative;padding:2px 0 14px 44px;counter-increment:t;}
+  ol.test li::before{
+    content:counter(t);
+    position:absolute;left:0;top:0;
+    font-family:var(--mono);font-weight:600;font-size:15px;
+    color:var(--model);
+    border:1.5px solid var(--model);border-radius:50%;
+    width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  }
+
+  ul.seams{list-style:none;padding:0;margin:0 0 1em;}
+  ul.seams li{padding:14px 0;border-top:1px solid var(--rule);}
+  ul.seams li:first-child{border-top:0;}
+  ul.seams .seamlabel{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.05em;color:var(--channel);display:inline-block;margin-right:4px;}
+
+  /* ---- confidence legend ---- */
+  .legend{margin:18px 0 8px;}
+  .legend .row{display:flex;gap:14px;padding:8px 0;border-top:1px solid var(--rule);align-items:baseline;}
+  .legend .row:first-child{border-top:0;}
+  .legend .k{flex:0 0 auto;min-width:210px;}
+  .legend .v{color:var(--ink-soft);font-size:16.5px;}
+
+  /* ---- source ledger table ---- */
+  .tablewrap{overflow-x:auto;margin:16px 0 4px;border:1px solid var(--rule);border-radius:4px;}
+  table{border-collapse:collapse;width:100%;min-width:660px;font-size:15.5px;background:var(--panel);}
+  thead th{
+    font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;
+    color:var(--ink-soft);text-align:left;padding:12px 16px;border-bottom:1.5px solid var(--ink);
+    background:rgba(50,40,25,.03);
+  }
+  tbody td{padding:12px 16px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.42;}
+  tbody tr:last-child td{border-bottom:0;}
+  tbody td:nth-child(2){white-space:nowrap;}
+  tbody td .anchor{color:var(--ink-faint);font-size:14px;}
+  .claimhot{font-weight:600;}
+
+  /* ---- colophon ---- */
+  .colophon{
+    margin-top:60px;padding-top:28px;border-top:1.5px solid var(--ink);
+    font-style:italic;color:var(--ink-soft);font-size:17.5px;line-height:1.55;
+  }
+
+  @media (max-width:560px){
+    body{font-size:18px;}
+    .plainread p{font-size:18px;}
+    .legend .k{min-width:0;flex-basis:100%;}
+    .legend .row{flex-wrap:wrap;gap:6px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <span class="eyebrow gold kicker">The built framework · Layer II · the growth-architecture layer</span>
+    <h1>The Channel</h1>
+    <p class="standfirst">What each force looks like when it runs clean. The second layer of the framework, compiling down to the same material floor as the Substrate. It derives the growth architecture for the four capacities the Substrate left open — Water, Wood, Fire, Earth — and for the three defenses (Push, Withdraw, Manage), under one law. Metal is already solved on the floor; here it is the worked example everything else is cut to match. Internal canon.</p>
+  </header>
+
+  <!-- ============ 0 · THE LAW ============ -->
+  <section class="block" id="law">
+    <span class="eyebrow gold secnum">0 · The law</span>
+    <h2>One law, held</h2>
+    <p>The Substrate names, for each of the five capacities, the point where the force floods — the trap. It names the growth architecture — what the force looks like running clean — for only one: Metal. Internal willpower fails; external structure holds. That single worked case is not an exception. It is the template. What it shows there is true of every force on the floor, and this layer states the general form.</p>
+
+    <div class="law">
+      <span class="eyebrow gold">The law · the Channel</span>
+      <p class="lawline">A force does not fail because it is too much. It fails because it has <span class="hot">no channel</span>.</p>
+      <p>The same force, given an architecture that fits it, runs clean. Growth never reduces the force — it builds the channel the force was missing. You do not get smaller. The world gets a shape that can carry what you already generate.</p>
+    </div>
+
+    <p>This is universal-law work — but a law is only worth stating if it cuts. Every section below is concrete: a named trap, a named channel, the felt texture of each, and the one plain line that surfaces to a person. Abstractness is the wrong tool for a spec. The law earns its generality by paying out in seven specific architectures, each derived from a mechanism the Substrate already established — never pattern-matched, never borrowed by analogy from outside. Where a channel is the framework's own claim and not yet a mechanism on the floor, it says so.</p>
+
+    <p class="pull">Metaphor is the workshop. Plain mechanism is what ships.</p>
+
+    <p><strong>The black box holds here too.</strong> Element names, type names, and mechanism jargon are how the read is <em>built</em>; they never reach a person. Every block below carries a <strong>plain read</strong> — the line as it surfaces — and it names no element, makes no nature-image into a claim, and promises nothing unfalsifiable.</p>
+
+    <p><strong>Confidence discipline.</strong> Every claim is tagged. Trap claims are inherited from the Substrate at the confidence the Substrate assigned. Channel claims are largely the framework's own and are marked as such; where one rests on or awaits a specific literature, that is stated rather than smoothed over. The typology itself — the five forces, the three defenses — is never asserted as science. It is the way in, not the thing claimed.</p>
+
+    <div class="legend">
+      <div class="row"><span class="k"><span class="tag confirmed">CONFIRMED</span></span><span class="v">The neuroscience claim the force was translated into is supported in the literature.</span></div>
+      <div class="row"><span class="k"><span class="tag caveat">CONFIRMED-WITH-CAVEAT</span></span><span class="v">Supported, with a stated boundary on how far it reaches.</span></div>
+      <div class="row"><span class="k"><span class="tag contested">CONTESTED</span></span><span class="v">Live disagreement in the literature; held loosely.</span></div>
+      <div class="row"><span class="k"><span class="tag model">MODEL</span></span><span class="v">The framework's own architecture. Not asserted as an established finding.</span></div>
+      <div class="row"><span class="k"><span class="tag cannot">CANNOT VERIFY</span></span><span class="v">A bridge the channel leans on that awaits a source check; flagged, not assumed.</span></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 1 · METAL (TEMPLATE) ============ -->
+  <section class="block" id="metal">
+    <span class="eyebrow gold secnum">1 · The worked example — Metal</span>
+    <h2>Metal — already solved on the floor</h2>
+    <p>The one force the Substrate carries all the way to its growth architecture: the boundary. Read it as the shape; everything after is cut to it.</p>
+
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Capacity · the boundary · the crown jewel</span>
+        <h3>Metal</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> The boundary drive — the instinct to cut, to decide, to hold a line. A strong boundary drive is not a problem and is not "strong willpower." Willpower is the <em>failing half</em> of it.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>The drive routed through the mind, held by sustained effort. Under a sudden hit it is chemically switched off and the wheel handed to autopilot; under a long grind it slowly stops being <em>willing</em> to hold — not can't, won't-anymore. Sealed in the one place stress is built to reach.</p>
+        <p class="feels"><em>How the trap feels.</em> Gripping. And your grip is weakest at exactly the moment the pressure is highest.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>The same drive routed through an external container: the boundary built once, when you are clear, into the setting itself — which routes behavior through the automatic systems that stress cannot touch. Spend the willpower a single time, early, to build the wall. Then it holds itself.</p>
+        <p class="feels"><em>How the channel feels.</em> Nothing to hold. There is no line to grip because the exit simply isn't there.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>You don't have a willpower problem, you have a design problem. Stop trying to hold the line in your head. Build it into the room, once, while you're clear — and let the room hold it.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap:</strong> <span class="tag confirmed">CONFIRMED</span>, mechanistically grounded — acute stress takes the prefrontal boundary offline via catecholamine surge <span class="anchor">(Arnsten 2009, 2015)</span>; the glucose / ego-depletion account is dead <span class="anchor">(Hagger et al. 2016, 23-lab, d = 0.04)</span>; sustained-load failure is a motivational cost-benefit re-weighting <span class="anchor">(Kurzban et al. 2013; Shenhav et al. 2013)</span>. <strong>Channel:</strong> <span class="tag confirmed">CONFIRMED</span> for the core case — if-then plans work under load and depletion where raw effort collapses <span class="anchor">(Gollwitzer &amp; Sheeran 2006, d ≈ 0.65)</span>, <em>because</em> they route through the automatic system. Honest caveat: external structure is effort <strong>spent once, early, when calm</strong> — not effort abolished. The wall still has to be built, can be circumvented, and depends on the right cue appearing.
+      </p>
+
+      <p class="templateline"><span class="lede">The template line.</span> Growth did not reduce the boundary drive. It built the container the drive was missing. Hold this shape; every force below is cut to it.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 2 · FOUR CAPACITIES ============ -->
+  <section class="block" id="capacities">
+    <span class="eyebrow gold secnum">2 · The four capacities</span>
+    <h2>The forces the floor left open</h2>
+    <p>Four forces the Substrate named only to their trap. Each channel below is read off the mechanism the Substrate already stated for that force — not imposed from outside.</p>
+
+    <!-- WATER -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Capacity · the generator</span>
+        <h3>Water</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> Production from the inside: thoughts, connections, inner momentum. When it's on, everything links to everything. Its second mode is <em>quieting down</em> so one line can lock and run to the end. The output is precise. The force is never too much.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>Generation that never lands: producing, connecting, finishing nothing. The mechanism is the source network failing to step down, with <strong>no external channel to catch the output</strong> — so the mode that generates can't hand off to the mode that executes, because nothing is receiving what it makes. The Substrate names the missing piece by name. This is not confusion; the output is sharp. It is a switch that won't throw because the downstream is empty.</p>
+        <p class="feels"><em>How the trap feels.</em> The mind that won't stop connecting, nothing closing. You produce and produce and none of it clears, so the generator never gets the signal it's allowed to rest.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>An external catch: a capture surface outside the head that <em>receives</em> the output the moment it's made. The force doesn't need throttling — it needs a downstream. Once what's generated lands somewhere real, the pressure that was holding the generator wide open drops, and the system can step down into the single-track mode on its own. You don't build focus by force; you empty the thing that was keeping the noise on.</p>
+        <p class="feels"><em>How the channel feels.</em> The noise switches down without a fight. The output is out of your hands and into the world, so one line can finally run clean to the end.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>You're not scattered and you're not confused — what you're making is sharp. The problem is it has nowhere to land, so you can't stop making more. Give it a place to go outside your head, and the focus arrives on its own.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap:</strong> <span class="tag confirmed">CONFIRMED</span> — failure of the default-mode network to suppress drives attentional lapses <span class="anchor">(Sonuga-Barke &amp; Castellanos 2007)</span>; focused execution requires that step-down <span class="anchor">(Dietrich 2003; Ulrich et al. 2014)</span>, which is <span class="tag caveat">CONFIRMED-WITH-CAVEAT</span> because it is selective, not global. That the network may <strong>re-couple</strong> with the executive network in some flow states is a <span class="tag contested">CONTESTED</span> nuance — state "steps down," never "off." <strong>Channel:</strong> <span class="tag model">MODEL</span> — that an <em>external</em> capture surface is what permits the step-down is the framework's own claim. It rests plausibly on salience-network switching <span class="anchor">(Sridharan et al. 2008)</span> and, empirically, on the cognitive-offloading literature; that specific bridge is <span class="tag cannot">CANNOT VERIFY</span> here — held as a lead, not leaned on as proof.
+      </p>
+    </div>
+
+    <!-- WOOD -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Capacity · the setter</span>
+        <h3>Wood</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> How a loose new skill becomes automatic: repetition physically insulates the pathways you use, so the signal runs faster and cleaner each pass. Practice builds the wiring that makes the move happen without you. This is a real gain and you do not want it undone.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>The same maturing wiring that automates a skill secretes the signals that halt further growth and lock the architecture in place. Consolidation manufactures its own ceiling: expansion, finished, becomes rigidity. The trap is not the locking — locking one skill in is the whole point. The trap is letting the drive set the <em>whole structure</em> at once, with no next window opened, so it hardens around parts of you that were meant to stay live.</p>
+        <p class="feels"><em>How the trap feels.</em> The thing that made you fluent made you fixed. It doesn't cost effort anymore — but it doesn't feel like choice anymore either. The competence you fought for paved a groove you can't climb out of.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>A staircase, not a slab. Point the consolidating force at <em>one bounded target</em> — make this move automatic — and then deliberately open the next window before the whole thing sets. New practice re-engages the machinery that lays fresh road; what gets locked in is then the <em>capacity to keep paving</em>, not a single finished shape. The force keeps working for you because you keep handing it a next edge.</p>
+        <p class="feels"><em>How the channel feels.</em> You let the move set — and then you go find the next edge before everything hardens around it. The paving still works; you just never stop feeding it new road.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>The skill that runs on autopilot now is a real win — don't undo it. But that same "lock it in" drive is quietly setting the parts of you that were supposed to stay open. The fix isn't to loosen the good habit; it's to aim the drive at one new edge before it sets around everything.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap:</strong> <span class="tag confirmed">CONFIRMED</span> — consolidation is activity-dependent myelination <span class="anchor">(McKenzie et al. 2014; Steadman et al. 2020)</span>, and maturing myelin secretes inhibitors (Nogo-A) that halt sprouting and close critical periods <span class="anchor">(Delekate et al. 2011; McGee et al. 2005; Syken et al. 2006)</span>. <strong>Channel:</strong> <span class="tag model">MODEL</span> — the staircase (bounded consolidation plus a deliberately opened next window) is the framework's architecture. It leans on critical periods being reopenable and adult plasticity reinstatable by new experience; that closure is not absolute is established in principle, but the specific reopening literature invoked is <span class="tag cannot">CANNOT VERIFY</span> pending the source check.
+      </p>
+    </div>
+
+    <!-- FIRE -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Capacity · the driver</span>
+        <h3>Fire</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> The lift to meet a demand: alertness, heat, push. In tight, targeted bursts it locks attention onto the task and suppresses everything else — peak engagement. It is a curve, not a ladder.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>Past the peak, the same drive stops firing in bursts against a target and floods the whole system continuously and indiscriminately. Held on, it degrades the very focus it was built to create. The failure is not the amount of heat. It is heat with no binding in <em>time</em> — a drive left running instead of fired and released.</p>
+        <p class="feels"><em>How the trap feels.</em> Wired and scattered. Everything is urgent, so nothing finishes. The heat that used to pin you to one thing is now spraying at all of them at once — full output, none of it landing.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>A burst container built into the setting: one target, a bounded window, full heat — and then a <em>real</em> release where the drive is allowed to drop. You don't will yourself calm in the moment (that's the internal grip that fails); you engineer the cadence in advance so the force fires sharp against one thing and then falls, instead of idling hot all day. Inside the burst it's the good kind of narrow. The release is not quitting — it is what keeps the next burst sharp instead of smeared.</p>
+        <p class="feels"><em>How the channel feels.</em> One target, a set window, everything you've got — then you actually let it drop. Inside the burst the task is the only thing in the room. Outside it, you're off, and that's the point.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>You're not low on drive — you've got too much of it running with nowhere to aim. Held on all day it turns to static: everything feels urgent and nothing closes. Aim all of it at one thing for a set stretch, then let it genuinely drop. The heat was never the problem — running it nonstop is.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap:</strong> <span class="tag caveat">CONFIRMED-WITH-CAVEAT</span> — drive is locus-coeruleus / noradrenaline signalling on an inverted-U; phasic bursts optimize, tonic flood degrades <span class="anchor">(Aston-Jones &amp; Cohen 2005)</span>. The caveat is real: context- and age-dependent, not a fixed dial — the inverted-U holds but the exact tipping point is not deterministic. <strong>Channel:</strong> <span class="tag model">MODEL</span> — that the growth architecture is an <em>external</em> burst-and-release cadence (rather than in-the-moment arousal control) is the framework's claim, consistent with the phasic-optimal mechanism but not established as an intervention. <span class="note">Seam to Earth: the release Fire needs <em>is</em> the protected window Earth needs — one architecture seen from two sides.</span>
+      </p>
+    </div>
+
+    <!-- EARTH -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Capacity · the recoverer</span>
+        <h3>Earth</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> The brake and the filing system. It pulls the system down out of arousal and restores equilibrium — but the slowdown is not an off-switch. It is when the day's raw experience gets sorted and written into permanent storage. The stillness is a cover over an intense internal transfer.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>Recovery read as passivity. Because the surface looks like doing nothing, the window gets cut, devalued, or colonized by drive — and then nothing from the last stretch is filed. The work was real; it just never got saved. The failure is a producing force whose output is <em>invisible</em>, so it earns no protection and gets deleted.</p>
+        <p class="feels"><em>How the trap feels.</em> The stillness looks like stalling, so you cut it — and then nothing sticks. You did the work and it landed nowhere; you wake up owing the same debt. Stopping feels like laziness, so you don't, and the ledger never clears.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>A protected, inert low-arousal window built into the shape of the day — because recovery cannot be willed (trying to relax harder is still arousal). You build the container where the down-shift happens by design, and you defend it as the working state it is, not idle time. Given the real conditions, the filing runs and the day sets. The stillness was never the absence of work. It was the work, hidden.</p>
+        <p class="feels"><em>How the channel feels.</em> You give the downtime a real place and stop apologizing for it. Nothing looks like it's happening — which is exactly the filing running. What you did finally sets, and you come back with ground under you instead of debt.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>The downtime you keep cutting because it looks like nothing is the part where everything you did actually gets filed. Skip it and none of it sticks — you're not lazy, you're just never letting it save. Build the off-window in on purpose and guard it like real work, because it is.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap:</strong> <span class="tag confirmed">CONFIRMED</span> — recovery is vagal down-regulation plus slow-wave-sleep consolidation, and the low-kinetic surface hides one of the most metabolically active, synchronized computations the brain runs <span class="anchor">(Gais &amp; Born 2004; Thayer &amp; Lane)</span>. <strong>Channel:</strong> <span class="tag model">MODEL</span> — that the growth architecture is a <em>built, defended, inert</em> window (not willed relaxation) is the framework's claim. It rests on the established point that consolidation depends on the genuine low-arousal state and cannot be forced; the "protect it structurally" prescription is the model's, not a trial result.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 3 · THREE DEFENSES ============ -->
+  <section class="block" id="defenses">
+    <span class="eyebrow gold secnum">3 · The three defenses</span>
+    <h2>The threat responses</h2>
+    <p>Under threat the system does one of three things. Each is a real circuit with a measurable signature, and each has the same trap→channel shape — but the defenses are tighter than the capacities, because the trap is already a specific geometry. Name the geometry, and the channel is its complement.</p>
+
+    <!-- PUSH -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Defense · active</span>
+        <h3>Push</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> Meet the threat head-on: dominate it, outrun it, pivot away fast. The body floods with action-fuel — the brake released, blood to the muscles — and it registers as <em>demand for effort</em>, not fear. Charged, forward, certain.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>The outward force sealed inside a rigid perimeter. To meet everything head-on and let nothing through, the drive hardens into a wall that must hold against all of it, alone — and so it traps its own force inside. Every hit loads the same sealed edge, and the harder the pressure, the harder the wall has to be, until the thing holding the line is the thing that cracks.</p>
+        <p class="feels"><em>How the trap feels.</em> Charged, forward, certain — and completely sealed. Beating it feels like the only option, so you never stop pushing on the wall. The force that wants to move has nowhere to move to.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>An open, load-bearing frame in place of the sealed wall — a structure that carries load by <em>distributing</em> it across many members and giving where it must, instead of holding it all on one rigid perimeter. The force still drives forward; now it has load paths. You can meet the hit and let it pass through the frame instead of taking all of it on one edge. Still forward — just no longer the only thing holding.</p>
+        <p class="feels"><em>How the channel feels.</em> The drive is intact; you don't lose the fight in you. But the load spreads across something that gives without failing, and you can stop being the single point that everything lands on.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>The drive to meet it head-on isn't the problem — it's real and you need it. What breaks you is sealing it all behind one wall you have to hold alone, so every hit lands on the same edge. Build something that carries the load in more than one place, and the same force stops cornering you.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap mechanism:</strong> <span class="tag confirmed">CONFIRMED</span> — active coping organized by the lateral / dorsolateral midbrain column: sympathetic surge, HF-HRV drop, high skin-conductance, adrenaline-dominant "effort without distress" <span class="anchor">(Bandler &amp; Shipley 1994; Lundberg &amp; Frankenhaeuser 1980)</span>. <strong>Channel:</strong> <span class="tag model">MODEL</span> — sealed perimeter → open load-bearing frame is the framework's structural architecture for the growth of active defense.
+      </p>
+    </div>
+
+    <!-- WITHDRAW -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Defense · passive</span>
+        <h3>Withdraw</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> When the threat reads as too big to beat, the system conserves: contract, numb, go quiet, pull everything inward. It is not an absence of arousal — it is a hard brake clamped over a still-running engine. Deep inner processing, running at full pressure.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>Collapse to zero surface area. All the density turns inward with no outward contact — the inside gets denser and denser while presence shrinks to nothing. The engine runs and nothing comes out; the accumulation compounds in the dark. Full inside, absent outside.</p>
+        <p class="feels"><em>How the trap feels.</em> Far away, flat, behind glass. Not calm — muffled. Everything pulls in and nothing comes back out, so the pressure only builds where no one can reach it.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean</span>
+        <p>A channel that draws the density back to the surface <em>as output</em> — a route from the depths to a point of contact — <strong>without stopping the absorbing.</strong> The depth is the force and it is precise; you do not have to stop going in. You add the missing outlet, so what you take in surfaces as <em>something</em>: a word, a made thing, one point of contact. The inside stops compounding in the dark because it finally has somewhere to surface.</p>
+        <p class="feels"><em>How the channel feels.</em> You keep the depth. You just cut one channel back up, and the pressure that was building where no one could reach it comes out as output instead of density.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>You're not empty — you're the opposite, packed dense inside with nothing making it out. The pulling-inward isn't the problem; there's just no route back to the surface, so it all compounds where no one can reach it. Keep taking it in — but cut one channel for it to come back out.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap mechanism:</strong> <span class="tag caveat">CONFIRMED-WITH-CAVEAT</span> — passive coping organized by the ventrolateral midbrain column: vagally-mediated slowdown, analgesic numbing, a stress axis that surges then exhausts; human causal evidence confirms the midbrain drives threat-slowdown <span class="anchor">(Bandler, Keay et al. 2000; Klaassen et al. 2026)</span>. Caveat: the freeze brake is <strong>predominantly (~80%) the nucleus ambiguus</strong>, not exclusively <span class="anchor">(Strain et al. 2024)</span>. <strong>Channel:</strong> <span class="tag model">MODEL</span> — the surface-routing channel that preserves the absorption while adding an outlet is the framework's architecture.
+      </p>
+    </div>
+
+    <!-- MANAGE -->
+    <div class="specimen">
+      <div class="top">
+        <span class="eyebrow gold">Defense · appeasement</span>
+        <h3>Manage</h3>
+      </div>
+      <p class="force"><span class="lede">The force.</span> Neutralize the threat by managing it: read the environment perfectly, stay attuned and indispensable. Underneath the smooth surface the alarm is fully on; the body performs a safety it does not feel. The read itself — the fine attunement to everyone else's state — is a real and valuable capacity.</p>
+
+      <div class="cell trap">
+        <span class="eyebrow trap">Trap — where it floods</span>
+        <p>Fusing to an external mass for stability — taking your axis from outside — and so being dragged whenever it moves. Your okay depends on theirs; when they shift, you lurch, because you have no independent center. The alarm never switches off, because the thing that would switch it off is never yours to hold.</p>
+        <p class="feels"><em>How the trap feels.</em> Tuned to everyone's weather and pulled around by all of it. Pleasant on the outside, sirens on the inside — and no off-switch, because your ground is standing on someone else's feet.</p>
+      </div>
+
+      <div class="cell channel">
+        <span class="eyebrow channel">Channel — where it runs clean <span class="tag model" style="margin-left:6px;">routes inward</span></span>
+        <p>Internalize the stabilizer: hold your <em>own</em> axis. You keep the antenna — the read stays as sharp as it ever was — but the ground moves under your own feet now, not theirs. When they shift, you notice; you don't lurch. The environmental read stops being a rope that yanks you and becomes information you can use.</p>
+        <p class="feels"><em>How the channel feels.</em> You still read the room better than anyone. But your center is yours, so the read is data now, not weather you're at the mercy of.</p>
+      </div>
+
+      <div class="plainread">
+        <span class="eyebrow">What surfaces · the plain read</span>
+        <p>Reading everyone around you is a real skill — don't lose it. The trouble is you're borrowing your stability from them, so every time they move you get dragged. Put your center back inside yourself, and the same reading turns into information you can use instead of a rope that yanks you around.</p>
+      </div>
+
+      <p class="confidence">
+        <span class="eyebrow">Confidence</span>
+        <strong>Trap mechanism:</strong> <span class="tag caveat">CONFIRMED-WITH-CAVEAT</span> — the appeasement response read through neurovisceral integration: chronic threat-detection keeps the prefrontal cortex from fully damping the amygdala, so alarm runs inside while the face performs calm; low, rigid HRV <span class="anchor">(Thayer &amp; Lane 2000; Bailey et al. 2023)</span>. State it as "the alarm stays on while the body performs calm," <strong>not</strong> literal engine-and-brake co-activation (that leaned on the now-contested polyvagal frame; the defense cascade is sequential). The oxytocin-cortisol → anxious-attachment chain is a synthesized <strong>inference</strong>, not a single established finding. <strong>Channel:</strong> <span class="tag model">MODEL</span> — internalizing the stabilizer / reclaiming the axis is the framework's architecture.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 4 · ASYMMETRY ============ -->
+  <section class="block" id="asymmetry">
+    <span class="eyebrow gold secnum">4 · The asymmetry</span>
+    <h2>Outward, and the one that routes inward</h2>
+    <p>Look at where each channel sends the force.</p>
+    <p>Most of them route it <strong>outward</strong> — they take a force trapped with no outlet and give it one, restoring contact, giving the output somewhere to go. Water lands its production outside the head. Fire fires at a single target and releases. Push opens the sealed perimeter so the force expands through a frame instead of loading one edge. Withdraw cuts a route from the depths back up to the surface. Each is the same move: the force was never too much; it was output with nowhere to go, so the channel is an <em>outlet</em>.</p>
+
+    <p class="pull">Manage's channel alone routes inward.</p>
+
+    <p>Its failure is the mirror image of all the others. It did not seal its force, or collapse it inward, or leave it with no outlet — it did the opposite. It already gave its load away, out to a single external mass, and took its stability from there. So its growth cannot be "more outlet"; more outward routing is more of exactly what broke it. Its channel is the <em>reclaiming of the center</em>: internalize the stabilizer, bring the axis back in.</p>
+
+    <p>Name the asymmetry plainly, because it is the deep structure of the layer: <strong>most forces need to get their output out; Manage needs to bring its center back in.</strong> Every other channel restores contact. Manage's restores the self that makes contact.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 5 · SUPPORTING VS DEPENDENCY ============ -->
+  <section class="block" id="distinction">
+    <span class="eyebrow gold secnum">5 · The distinction the product turns on</span>
+    <h2>Supporting structure vs. dependency</h2>
+    <p>The framework holds, from Metal, that a boundary must be built into the environment rather than held by willpower — external structure beats internal effort, as a thermodynamic requirement, not a preference. Taken naively, that instruction contradicts Manage's growth head-on. Manage's failure <em>is</em> leaning on an external mass. For a person fused to something outside themselves, "build more external structure" reads as "fuse harder." If the two claims can't be reconciled, the product either abandons its core mechanism or actively harms its Manage users. They reconcile. The reconciliation is a single line, and it is designable.</p>
+
+    <div class="law">
+      <span class="eyebrow gold">The resolving line</span>
+      <p class="lawline">A supporting structure holds your <span class="hot">load</span>. A dependency holds your <span class="hot">axis</span>.</p>
+    </div>
+
+    <p>A <strong>supporting structure</strong> carries weight you would otherwise hold by effort — the decision made in advance, the container, the catch, the frame. It is external to your <em>center</em>. Remove it and you lose a support you'd have to rebuild; you work harder, but you are still you, your ground intact. This is Metal's external container, and it is always what "build it into the environment" meant.</p>
+
+    <p>A <strong>dependency</strong> carries your <em>center</em>. Your stability is located in it. Remove it and you don't merely work harder — you topple, because your okay-ness was standing on it. This is Manage's fusion, and it is what "build more external structure" collapses into if the distinction isn't held.</p>
+
+    <p>They look identical from outside — both are "something external you rely on." The difference is <em>what</em> they hold, and you can test which one you're building at the point of design, not only in the wreckage afterward.</p>
+
+    <p><strong>The design-time test.</strong> Ask two questions of any structure before you build it:</p>
+    <ol class="test">
+      <li><strong>Is it inert, or does it move on its own?</strong> A supporting structure is inert — a designed feature of the setting with no will of its own: a time set aside, an if-then plan, a physical arrangement, a capture surface. It cannot drag you because it cannot move on its own. A dependency is <em>animate</em> — a person or mass with its own motion, which you've made load-bearing for your center. It drags you precisely because it moves on its own, and you don't control it.</li>
+      <li><strong>If it vanished tomorrow, what do you lose — a support, or your center?</strong> A supporting structure gone is a rebuild: effort, not identity. A dependency gone is the floor gone: you don't know if you're okay. If the honest answer is the second, you are not building structure. You are building fusion wearing structure's clothes.</li>
+    </ol>
+
+    <p>The discriminator, in one cut: <strong>inert-and-yours-to-rebuild holds your load; animate-and-another's-to-withdraw holds your axis.</strong> Build the first freely — it is the whole external-container mechanism. The second is the trap, and for the Manage force it is the <em>specific</em> trap, which is why Manage is the one force whose growth routes inward. The resolution is not that Manage is exempt from external structure. It is that Manage, more than any other force, must build the inert kind — supports that hold load while the center is rebuilt inside — and must never again let an animate other become the axis.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 6 · SEAMS ============ -->
+  <section class="block" id="seams">
+    <span class="eyebrow gold secnum">6 · The seams</span>
+    <h2>Where the architectures meet</h2>
+    <p>The Substrate noted that capacities turn into one another at seams — Wood matures and secretes its own Metal; the mechanism that automates a skill <em>is</em> the mechanism that closes the window. The Channel layer has its own seams, and naming them keeps the seven architectures one system rather than seven parts.</p>
+
+    <ul class="seams">
+      <li><span class="seamlabel">Fire → Earth.</span> The release Fire's burst container requires is the protected window Earth's filing requires. Build one and you have built the other; neglect one and both fail. A drive with no release never drops into the recovery that files the day; a recovery never protected leaves the drive no honest off-window and it idles hot. One architecture, two names.</li>
+      <li><span class="seamlabel">Water → Metal.</span> Water's external catch is a specific instance of Metal's external container: a boundary built into the setting, deciding in advance where the output goes, routing through the automatic system instead of in-the-moment effort. Water's landing surface <em>is</em> an environmental boundary. What Metal says about willpower, Water inherits: you cannot catch your own output by trying harder to focus; you build the catch once, and it holds.</li>
+      <li><span class="seamlabel">Wood → Metal, again.</span> The staircase is boundary work too — each deliberately closed window and each deliberately opened next one is a decision built into a sequence, not a grip held in the moment.</li>
+    </ul>
+
+    <p>The seams are why the law generalizes cleanly: every channel is, underneath, the same act Metal names — spend the effort once, early, to build a shape in the world, so the force runs through the automatic path instead of the exhaustible one.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ 7 · SOURCE LEDGER ============ -->
+  <section class="block" id="ledger">
+    <span class="eyebrow gold secnum">7 · Source ledger</span>
+    <h2>Every load-bearing claim</h2>
+    <p>Trap rows inherit the Substrate's confidence; channel rows are the framework's own unless a mechanism is cited, and where a channel awaits a literature check it is marked.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Claim</th><th>Confidence</th><th>Anchor / note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="claimhot">Law: a force fails for want of a channel, not from excess; growth builds the channel, never reduces the force</td><td><span class="tag model">MODEL</span></td><td>Framework law, generalized from the Metal worked case</td></tr>
+          <tr><td>Metal trap — internal boundary held by effort fails (acute: PFC offline; sustained: motivational)</td><td><span class="tag confirmed">CONFIRMED</span></td><td>Arnsten 2009/2015; Hagger et al. 2016; Kurzban et al. 2013; Shenhav et al. 2013</td></tr>
+          <tr><td>Metal channel — external container routes through stress-resistant automatic systems</td><td><span class="tag confirmed">CONFIRMED</span> <span class="note">(core)</span></td><td>Gollwitzer &amp; Sheeran 2006 (d ≈ 0.65); caveat: effort spent once, early, not abolished</td></tr>
+          <tr><td>Water trap — source network fails to step down; no external channel catches the output</td><td><span class="tag confirmed">CONFIRMED</span></td><td>Sonuga-Barke &amp; Castellanos 2007; step-down selective (Dietrich 2003; Ulrich et al. 2014)</td></tr>
+          <tr><td>Water — network may re-couple in flow, not switch off</td><td><span class="tag contested">CONTESTED</span></td><td>State "steps down," not "off"</td></tr>
+          <tr><td class="claimhot">Water channel — external capture surface permits the step-down</td><td><span class="tag model">MODEL</span> · <span class="tag cannot">CANNOT VERIFY</span></td><td>Rests on salience switching (Sridharan et al. 2008); cognitive-offloading bridge awaits source check</td></tr>
+          <tr><td>Wood trap — consolidation secretes its own inhibitors and locks the architecture</td><td><span class="tag confirmed">CONFIRMED</span></td><td>McKenzie et al. 2014; Delekate et al. 2011; McGee et al. 2005; Syken et al. 2006</td></tr>
+          <tr><td class="claimhot">Wood channel — staircase: bounded consolidation + deliberately reopened next window</td><td><span class="tag model">MODEL</span> · <span class="tag cannot">CANNOT VERIFY</span></td><td>Critical-period reopening established in principle; exact source pending</td></tr>
+          <tr><td>Fire trap — drive on an inverted-U; phasic optimizes, tonic flood degrades</td><td><span class="tag caveat">CONFIRMED-WITH-CAVEAT</span></td><td>Aston-Jones &amp; Cohen 2005; context/age-dependent, tipping point not deterministic</td></tr>
+          <tr><td class="claimhot">Fire channel — external burst-and-release cadence (target, window, real drop)</td><td><span class="tag model">MODEL</span></td><td>Consistent with phasic-optimal mechanism; not established as an intervention. Seam: Fire's release = Earth's window</td></tr>
+          <tr><td>Earth trap — recovery is active consolidation under a still surface; read as passivity, it is cut and nothing files</td><td><span class="tag confirmed">CONFIRMED</span></td><td>Gais &amp; Born 2004; Thayer &amp; Lane</td></tr>
+          <tr><td class="claimhot">Earth channel — built, defended, inert low-arousal window (recovery cannot be willed)</td><td><span class="tag model">MODEL</span></td><td>Rests on consolidation requiring the genuine low-arousal state; "protect it structurally" is the model's</td></tr>
+          <tr><td>Push trap — active-coping force sealed in a rigid perimeter, trapping its own outward drive</td><td><span class="tag confirmed">CONFIRMED</span></td><td>Bandler &amp; Shipley 1994; Lundberg &amp; Frankenhaeuser 1980</td></tr>
+          <tr><td class="claimhot">Push channel — open load-bearing frame replaces the sealed wall</td><td><span class="tag model">MODEL</span></td><td>Framework structural architecture</td></tr>
+          <tr><td>Withdraw trap — collapse to zero surface area; density with no outward contact</td><td><span class="tag caveat">CONFIRMED-WITH-CAVEAT</span></td><td>Bandler, Keay et al. 2000; Klaassen et al. 2026; freeze brake ~80% nucleus ambiguus (Strain et al. 2024)</td></tr>
+          <tr><td class="claimhot">Withdraw channel — route the density back to the surface as output, without stopping the absorbing</td><td><span class="tag model">MODEL</span></td><td>Framework architecture</td></tr>
+          <tr><td>Manage trap — fusing to an external mass for stability; dragged when it moves</td><td><span class="tag caveat">CONFIRMED-WITH-CAVEAT</span></td><td>Thayer &amp; Lane 2000; Bailey et al. 2023; "alarm on under performed calm," sequential; oxytocin-cortisol = inference</td></tr>
+          <tr><td class="claimhot">Manage channel — internalize the stabilizer; hold your own axis; the read becomes usable</td><td><span class="tag model">MODEL</span></td><td>Framework architecture; the one channel that routes inward</td></tr>
+          <tr><td class="claimhot">Asymmetry — most channels route the force outward; Manage's alone routes inward</td><td><span class="tag model">MODEL</span></td><td>Structural claim of this layer</td></tr>
+          <tr><td class="claimhot">Supporting structure holds your load; a dependency holds your axis — inert-and-yours vs. animate-and-another's</td><td><span class="tag model">MODEL</span></td><td>Resolves the external-structure / Manage-fusion contradiction; test applied at design time</td></tr>
+          <tr><td>The typology itself (five forces, three defenses) is neurobiologically validated</td><td><span class="tag none">NOT CLAIMED</span></td><td>No such study exists; the dialect is read-in only, never asserted as science</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ COLOPHON ============ -->
+  <p class="colophon">Metal was the worked example. The law is the general form: a force does not fail because it is too much — it fails because it has no channel. For every force on the floor, growth is the same act — build the shape in the world that the force was missing, once, when you are clear — and the force you already have runs clean. The forge is metaphor; what ships is the plain read.</p>
+
+</div>
+</body>
+</html>
