@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Half-Second</title>
-<meta name="description" content="A companion instrument to The Third Position. One half-second, at full size. About five minutes.">
+<meta name="description" content="A companion instrument to The Third Position. The essay, enacted. About twenty minutes.">
 <meta property="og:title" content="The Half-Second">
-<meta property="og:description" content="A companion instrument to The Third Position. About five minutes.">
+<meta property="og:description" content="A companion instrument to The Third Position. The essay, enacted. About twenty minutes.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#0a0b0c">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='2.4' fill='%238ce0c9'/%3E%3C/svg%3E">
@@ -59,22 +59,29 @@
   }
 
   .acc { color: var(--watch); text-shadow: 0 0 22px rgba(140, 224, 201, 0.22); }
+  .str { color: var(--ink-bright); font-weight: 400; }
 
   .sr {
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
 
-  /* ---- blocks & reveals ---- */
+  /* ---- timed blocks (movement i owns the clock) ---- */
   .blk { display: none; }
   /* backwards fill only — the keyframes must release opacity at the end,
      or later fades (the hold going quiet) lose to the animation */
   .blk.on { display: block; animation: rise 0.95s cubic-bezier(0.21, 0.55, 0.25, 1) backwards; }
   @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeonly { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ---- scroll blocks (movements ii–v: the pacing is the reader's) ---- */
+  .sblk { opacity: 0; }
+  .sblk.on { opacity: 1; animation: rise 0.95s cubic-bezier(0.21, 0.55, 0.25, 1) backwards; }
+
   @media (prefers-reduced-motion: reduce) {
     .blk.on { animation: fadeonly 0.4s ease backwards; }
+    .sblk.on { animation: fadeonly 0.4s ease backwards; }
   }
-  @keyframes fadeonly { from { opacity: 0; } to { opacity: 1; } }
 
   .ln {
     font-size: clamp(20px, 5.3vw, 24px);
@@ -82,10 +89,45 @@
     color: var(--ink);
     margin: 0 0 2.35rem;
   }
+  .prose-p {
+    font-size: clamp(19px, 4.7vw, 21.5px);
+    line-height: 1.78;
+    color: var(--ink-mid);
+    font-weight: 300;
+    margin: 0 0 2rem;
+  }
+  .prose-p em { font-style: italic; }
   .w { opacity: 0; }
   .slowline .w { transition: opacity 0.55s ease; }
   .stickline .w { transition: opacity 0.15s ease; }
   .w.on { opacity: 1; }
+
+  .marker {
+    display: block;
+    letter-spacing: 0.3em;
+    margin: 20vh 0 4.4rem;
+  }
+  .marker.first { margin: 2vh 0 3.4rem; }
+
+  .pullq {
+    margin: 4.4rem 0;
+    padding-left: 24px;
+    border-left: 1px solid var(--ink-dim);
+    font-style: italic;
+    font-size: clamp(21px, 5.6vw, 26px);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .pullq em { color: var(--ink-bright); }
+
+  .lookline {
+    margin: 4.2rem 0;
+    font-size: clamp(22px, 6vw, 28px);
+    line-height: 1.45;
+  }
+
+  .stillgap { height: 44vh; }
+  .handoff { margin: 4rem 0 0; }
 
   /* ---- entry ---- */
   .entry {
@@ -158,8 +200,8 @@
   .plain { color: var(--ink-mid); }
 
   /* ---- the anatomy ---- */
-  .lead-in { margin-top: 16vh; }
-  .panelwrap { margin: 3.5rem 0 6vh; }
+  .lead-in { margin-top: 12vh; }
+  .panelwrap { margin: 3.5rem 0 5vh; }
   .panel {
     position: relative;
     border: 1px solid var(--line);
@@ -234,10 +276,115 @@
   }
   .panelhint { margin-top: 1rem; transition: opacity 0.8s; }
   .panelhint.dimmed { opacity: 0.35; }
-  .landing { margin-top: 7vh; }
+  .landing { margin-top: 6vh; }
+
+  /* ---- figures (movements ii, iv, v) ---- */
+  .figwrap { margin: 3.8rem 0 4.4rem; }
+  .figstage {
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.015);
+    padding: 26px 18px 22px;
+    display: flex;
+    justify-content: center;
+  }
+  .figcap { margin-top: 1.1rem; letter-spacing: 0.24em; }
+  .figsub {
+    font-style: italic;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--ink-mid);
+    margin-top: 0.6rem;
+    max-width: 30rem;
+  }
+  .opbar { margin-top: 1.2rem; display: flex; gap: 1.8rem; align-items: baseline; }
+  .opbtn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-dim);
+    padding: 6px 0 4px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .opbtn:hover { color: var(--ink-mid); }
+  .opbtn.onbtn { color: var(--ink-bright); border-bottom-color: rgba(211, 215, 217, 0.35); }
+
+  /* the grammar glass */
+  .glyphsvg { width: 100%; max-width: 340px; height: auto; }
+  #gThings, #gFlow { transition: opacity 0.9s ease; }
+  .glyphcap {
+    font-style: italic;
+    font-size: 16.5px;
+    color: var(--ink-mid);
+    margin-top: 1.15rem;
+    min-height: 1.6em;
+    transition: opacity 0.3s ease;
+  }
+  .glyphcap.capfade { opacity: 0; }
+  .swayer { transform-origin: 50% 100%; animation: sway 7s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-0.7deg); } to { transform: rotate(1.1deg); } }
+  @media (prefers-reduced-motion: reduce) { .swayer { animation: none; } }
+
+  /* the wheel */
+  .taijisvg { width: 100%; max-width: 230px; height: auto; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; }
+  .taijisvg:active { cursor: grabbing; }
+
+  /* the mast */
+  .tensvg { width: 100%; max-width: 340px; height: auto; }
+  .trod { transition: transform 0.75s cubic-bezier(0.4, 0.08, 0.55, 1); transform-box: fill-box; transform-origin: center; }
+  .trod line { stroke: var(--ink-bright); stroke-width: 3.5; }
+  #rodB { transition-delay: 0.07s; }
+  #rodC { transition-delay: 0.14s; }
+  .tcable { stroke: var(--ink-dim); stroke-width: 0.9; stroke-dasharray: 3 2; opacity: 0.8; transition: opacity 0.45s ease; }
+  .tenstage.cut .tcable { opacity: 0; }
+  .tenstage.cut #rodA { transform: translate(4px, 46px) rotate(-52deg); }
+  .tenstage.cut #rodB { transform: translate(-6px, 52px) rotate(66deg); }
+  .tenstage.cut #rodC { transform: translate(-8px, 44px) rotate(-54deg); }
+  .tenground { stroke: var(--ink-faint); stroke-width: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .trod { transition-duration: 0.01s; transition-delay: 0s !important; }
+    .tcable { transition-duration: 0.01s; }
+  }
+
+  /* the corridor */
+  .doorswrap { margin: 3.4rem 0 4rem; }
+  .door {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-weight: 300;
+    font-size: clamp(20px, 5.2vw, 23px);
+    line-height: 1.5;
+    color: var(--ink-mid);
+    padding: 0.8rem 0;
+    transition: color 0.3s, opacity 0.3s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .door:hover { color: var(--ink); }
+  .door.chose { color: var(--ink-bright); }
+  .doorswrap.cycling .door { opacity: 0; }
+  .doorswrap.dimmed .door { opacity: 0.3; pointer-events: none; transition: color 0.3s, opacity 1.8s ease; }
+  .doorsnote {
+    margin-top: 2.4rem;
+    font-style: italic;
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  .doorsnote.on { opacity: 1; }
+  .doorshint {
+    display: block;
+    margin-top: 1.7rem;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  .doorshint.on { opacity: 0.8; }
 
   /* ---- the trace ---- */
-  .tracewrap { margin: 14vh 0 6vh; }
+  .tracewrap { margin: 10vh 0 6vh; }
   .tracelbl { margin-bottom: 1.3rem; }
   .tracebox { position: relative; height: 174px; }
   .tracebox svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -274,6 +421,12 @@
     letter-spacing: -0.012em;
   }
   .closing em { font-style: italic; }
+  .closing-sub {
+    margin-top: 1.6rem;
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--ink);
+  }
   .exitwrap { margin: 12vh 0 0; text-align: center; }
   .exitlink {
     display: inline-block;
@@ -316,7 +469,7 @@
   <header class="entry" id="entry">
     <div class="mn eyebrow">the third position &middot; a demonstration</div>
     <h1>The Half-Second</h1>
-    <div class="mn runtime">about five minutes</div>
+    <div class="mn runtime">about twenty minutes</div>
     <div>
       <button class="mn soundtoggle" id="soundtoggle" aria-pressed="false">sound &mdash; off</button>
     </div>
@@ -329,8 +482,10 @@
     </noscript>
   </header>
 
-  <!-- ================= act i — the load ================= -->
-  <section aria-live="polite">
+  <!-- ================= movement i — recognition (the clock is the piece's) ================= -->
+  <section aria-live="polite" id="mv1">
+    <span class="blk mn marker first" id="m1">i &middot; recognition</span>
+
     <p class="blk ln" id="p1">Someone says the wrong thing.</p>
     <p class="blk ln" id="p2">A car cuts across the lane.</p>
     <p class="blk ln" id="p3">The response is already loaded and climbing before any decision gets made.</p>
@@ -354,84 +509,326 @@
 
     <p class="blk ln plain" id="d1">Those delays were built. The slow line, the stuck word, the slip near the end of the hold.</p>
     <p class="blk ln plain" id="d2">The surge they produced was real. So was the one that watched it.</p>
+
+    <p class="blk ln" id="r1a">It&rsquo;s easy to miss, because the reaction is loud &mdash; fast, taking the whole floor, feeling in the moment like the whole of you.</p>
+    <p class="blk ln" id="r1b">But you just saw that it isn&rsquo;t.</p>
+    <p class="blk ln" id="r1c">Something underneath was watching the reaction happen, and it held the line.</p>
+    <p class="blk ln" id="r1d"><span class="str">That is the part of you actually at the controls.</span></p>
+    <p class="blk ln" id="r1e">Not the personality &mdash; the personality is most of the noise it has to cut through. The one beneath it, watching the whole system run, able to take the wheel.</p>
+    <p class="blk ln" id="r1f">Call it <span class="str">the operator</span>. <span class="acc">It&rsquo;s what&rsquo;s reading this sentence right now.</span></p>
+
+    <p class="blk ln plain" id="r2">The lines are arriving clean now. Nothing in the medium is pulling back.</p>
+
+    <p class="blk ln" id="r3a">The same thing surfaces from the other side, in work done at full stretch.</p>
+    <p class="blk ln" id="r3b">The second-guessing drops away and the thing starts to move on its own: the next right move arriving, and the next, ahead of thought, no voice narrating.</p>
+    <p class="blk ln" id="r3c">Athletes call it the zone. Musicians call it being inside the music. The old sword schools called it <em>mushin</em> &mdash; no-mind.</p>
+    <p class="blk ln" id="r3d">Different doors, one state: <span class="str">the noise has gone quiet, and the operator is simply doing the work.</span></p>
+
+    <p class="blk ln" id="r4a">Two sightings, one thing &mdash; the one that catches a reaction, and the one that runs clean when the noise drops.</p>
+    <p class="blk ln" id="r4b">What follows is what it is, why every serious tradition on earth circled it, and why &mdash; now, of all moments &mdash; it&rsquo;s become the one thing that can&rsquo;t be replaced.</p>
+
+    <div class="blk handoff" id="handoff"><span class="mn">the pacing is yours from here</span></div>
   </section>
 
-  <!-- ================= act ii — the anatomy ================= -->
-  <section aria-live="polite">
-    <p class="blk ln lead-in" id="t1">Here is that half-second again, stretched to arm&rsquo;s length.</p>
+  <!-- ================= movements ii–v (the pacing is the reader's) ================= -->
+  <div id="movements" hidden>
 
-    <div class="blk panelwrap" id="panelblk">
-      <div class="panel" id="panel" tabindex="0" role="slider"
-           aria-label="the playhead — half a second, moved by hand"
-           aria-valuemin="0" aria-valuemax="500" aria-valuenow="0" aria-valuetext="0 milliseconds">
-        <span class="sr">Three strips across half a second. The equipment kicks. The voice assembles. The third does not move.</span>
-        <div class="strip strip-eq">
-          <span class="mn striplbl" aria-hidden="true">equipment</span>
-          <div class="stripclip" id="eqclip">
-            <svg class="stripsvg" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
-              <path class="eqglow" d="M0,72 L44,71.5 L92,72.3 L142,71.6 L190,72.2 L216,71.2 L228,66 L238,79 L248,42 L258,87 L268,26 L278,80 L288,33 L298,86 L308,20 L318,62 L328,31 L338,74 L350,44 L364,67 L380,50 L398,64 L418,54 L440,62.5 L464,55.5 L490,61.5 L520,57 L554,60.5 L592,57.8 L634,60 L680,58.2 L730,59.6 L784,58.6 L842,59.4 L904,58.8 L1000,59.2"/>
-              <path class="eqline" d="M0,72 L44,71.5 L92,72.3 L142,71.6 L190,72.2 L216,71.2 L228,66 L238,79 L248,42 L258,87 L268,26 L278,80 L288,33 L298,86 L308,20 L318,62 L328,31 L338,74 L350,44 L364,67 L380,50 L398,64 L418,54 L440,62.5 L464,55.5 L490,61.5 L520,57 L554,60.5 L592,57.8 L634,60 L680,58.2 L730,59.6 L784,58.6 L842,59.4 L904,58.8 L1000,59.2"/>
-            </svg>
+    <!-- ============ movement ii — two readings ============ -->
+    <section id="mv2">
+      <span class="sblk mn marker" id="m2">ii &middot; two readings</span>
+
+      <p class="sblk ln" id="mv2a">None of this is new.</p>
+
+      <p class="sblk prose-p" id="mv2b">The thing the last few minutes circled &mdash; the one at the controls, underneath the noise &mdash; has been found before, over and over, by people who had no contact with each other and no shared language. Every tradition that ever looked hard at a human being ran into it. Buddhism reached for it as the witness, the awareness that watches a thought without being the thought. The Vedic traditions reached for it as the self beneath the self. Taoism pointed at it sideways, as action that isn&rsquo;t done by anyone in particular. The West reached for it as the soul. Different centuries, different continents, the same thing circled again and again.</p>
+
+      <p class="sblk prose-p" id="mv2c">What&rsquo;s strange is what they built around it. All these traditions, circling the same thing, drew almost opposite pictures of a human being. Stand a contemplative from the East beside a philosopher of the self from the West and they barely agree on what a person <em>is</em>. One sees a self that has to be seen through. The other spends two thousand years describing what a self is and how to make it whole.</p>
+
+      <p class="sblk prose-p" id="mv2d">They aren&rsquo;t being careless. They&rsquo;re reading two different layers of the same person &mdash; and each is reading its own layer clean. Here are the two layers &mdash; the whole thing rests on them.</p>
+
+      <p class="sblk prose-p" id="mv2e">Some of what you are came installed. The speed you process at, how much noise you can take before it&rsquo;s too much, what tires you and what wakes you up, the temperament that was visible in you as a small child and is still running now &mdash; none of it was chosen. It&rsquo;s the equipment you arrived with: a body and a nervous system already running their own way before you had any say in it.</p>
+
+      <p class="sblk prose-p" id="mv2f">And running on top of that is a second thing &mdash; the part that talks. The voice that narrates, weighs, rehearses the conversation before it happens and replays it after. It isn&rsquo;t only commentary; it&rsquo;s protection. Early in every life, a person works out how to stay safe &mdash; what to perform, what to hide, what to need and what to never need &mdash; and those moves harden into a personality, a standing set of defenses that runs mostly on its own. It&rsquo;s the voice that goes quiet when the work starts to run itself. It&rsquo;s the thing that loaded the sharp reply before any decision got made.</p>
+
+      <p class="sblk ln lead-in" id="t1">Here is the half-second from the opening again, stretched to arm&rsquo;s length.</p>
+
+      <div class="sblk panelwrap" id="panelblk">
+        <div class="panel" id="panel" tabindex="0" role="slider"
+             aria-label="the playhead — half a second, moved by hand"
+             aria-valuemin="0" aria-valuemax="500" aria-valuenow="0" aria-valuetext="0 milliseconds">
+          <span class="sr">Three strips across half a second. The equipment kicks. The voice assembles. The third does not move.</span>
+          <div class="strip strip-eq">
+            <span class="mn striplbl" aria-hidden="true">equipment</span>
+            <div class="stripclip" id="eqclip">
+              <svg class="stripsvg" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
+                <path class="eqglow" d="M0,72 L44,71.5 L92,72.3 L142,71.6 L190,72.2 L216,71.2 L228,66 L238,79 L248,42 L258,87 L268,26 L278,80 L288,33 L298,86 L308,20 L318,62 L328,31 L338,74 L350,44 L364,67 L380,50 L398,64 L418,54 L440,62.5 L464,55.5 L490,61.5 L520,57 L554,60.5 L592,57.8 L634,60 L680,58.2 L730,59.6 L784,58.6 L842,59.4 L904,58.8 L1000,59.2"/>
+                <path class="eqline" d="M0,72 L44,71.5 L92,72.3 L142,71.6 L190,72.2 L216,71.2 L228,66 L238,79 L248,42 L258,87 L268,26 L278,80 L288,33 L298,86 L308,20 L318,62 L328,31 L338,74 L350,44 L364,67 L380,50 L398,64 L418,54 L440,62.5 L464,55.5 L490,61.5 L520,57 L554,60.5 L592,57.8 L634,60 L680,58.2 L730,59.6 L784,58.6 L842,59.4 L904,58.8 L1000,59.2"/>
+              </svg>
+            </div>
           </div>
+          <div class="strip strip-voice">
+            <span class="mn striplbl" aria-hidden="true">the voice</span>
+            <div class="frags" id="frags" aria-hidden="true"></div>
+          </div>
+          <div class="strip strip-watch">
+            <span class="mn striplbl watchlbl" id="watchlbl" aria-hidden="true">the watching</span>
+            <div class="thread" aria-hidden="true"></div>
+          </div>
+          <div class="rail" aria-hidden="true">
+            <span class="mn tick t0">0</span><span class="mn tick t250">250</span><span class="mn tick t500">500 ms</span>
+          </div>
+          <div class="playhead" id="playhead" aria-hidden="true"><div class="phline"></div><div class="phdot"></div></div>
         </div>
-        <div class="strip strip-voice">
-          <span class="mn striplbl" aria-hidden="true">the voice</span>
-          <div class="frags" id="frags" aria-hidden="true"></div>
-        </div>
-        <div class="strip strip-watch">
-          <span class="mn striplbl watchlbl" id="watchlbl" aria-hidden="true">the watching</span>
-          <div class="thread" aria-hidden="true"></div>
-        </div>
-        <div class="rail" aria-hidden="true">
-          <span class="mn tick t0">0</span><span class="mn tick t250">250</span><span class="mn tick t500">500 ms</span>
-        </div>
-        <div class="playhead" id="playhead" aria-hidden="true"><div class="phline"></div><div class="phdot"></div></div>
+        <div class="mn panelhint" id="panelhint">the playhead moves by hand</div>
       </div>
-      <div class="mn panelhint" id="panelhint">the playhead moves by hand</div>
-    </div>
 
-    <div class="landing">
-      <p class="blk ln" id="land1">The first two strips are events. They sit on the timeline.</p>
-      <p class="blk ln" id="land2">The third never moved &mdash; because it is not on the timeline.</p>
-      <p class="blk ln" id="land3">It is <span class="acc">the position holding the scrubber</span>.</p>
-      <p class="blk ln" id="land4">Not a thing hidden in the machinery &mdash; an event, one that starts when the watching switches on. <span class="acc">The looking is the operator.</span></p>
-    </div>
-
-    <p class="blk ln lead-in" id="t2">One more record has been running since the first word.</p>
-  </section>
-
-  <!-- ================= act iii — the trace ================= -->
-  <section aria-live="polite">
-    <div class="blk tracewrap" id="traceblk">
-      <div class="mn tracelbl">the session &mdash; first word to here</div>
-      <div class="tracebox" role="img" aria-label="one drawn line — the record of this visit, first word to here">
-        <svg viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true">
-          <line class="traceaxis" x1="0" y1="118" x2="1000" y2="118"/>
-          <path class="traceglow" id="traceglow" d=""/>
-          <path class="tracepath" id="tracepath" d=""/>
-        </svg>
-        <div class="tmark tmark-surge" id="msurge" aria-hidden="true"><i></i><span class="mn">the surge</span></div>
-        <div class="tmark tmark-still" id="mstill" aria-hidden="true"><i></i><span class="mn">the stillness</span></div>
+      <div class="landing">
+        <p class="sblk ln" id="land1" data-gate="scrub">The first two strips are events. They sit on the timeline.</p>
+        <p class="sblk ln" id="land2" data-gate="scrub">The third never moved &mdash; because it is not on the timeline.</p>
+        <p class="sblk ln" id="land3" data-gate="scrub">It is <span class="acc">the position holding the scrubber</span>.</p>
+        <p class="sblk ln" id="land4" data-gate="scrub">Neither the equipment nor the voice &mdash; the layer that can watch them both run and, now and then, take the wheel.</p>
       </div>
-    </div>
 
-    <p class="blk ln" id="a1">This is the session, seen from outside.</p>
-    <p class="blk ln" id="a2">Every pause is a place something noticed.</p>
-    <p class="blk ln" id="a3">The noticing was never on the page.</p>
+      <p class="sblk prose-p lead-in" id="mv2g">Now the two traditions come apart cleanly. The East, for thousands of years, mapped the field a person runs inside &mdash; the weather a system lives in, the cycles, the flow, the conditions that decide what anyone can do. Its subject was never the lone individual; it was the whole system in motion. The West mapped the inner defended self &mdash; what it knows, what it wants, how it guards itself, how it might be made whole. Its subject was always the single person.</p>
 
-    <div class="blk closewrap" id="closeblk">
-      <p class="closing">The thing that was reading these words<br>has been here <em>the whole time</em>.</p>
-    </div>
+      <p class="sblk prose-p" id="mv2h">So each looked at the other and saw a hole. The West, looking East, sees a self gone missing. The East, looking West, sees a person who&rsquo;s lost the flow. Neither was wrong. Each was reading clean in its own layer and finding the other layer absent &mdash; because the other layer wasn&rsquo;t what it was looking at.</p>
 
-    <div class="blk exitwrap" id="exitblk">
-      <a class="mn exitlink" href="the-third-position.html">the full case &rarr;</a>
-    </div>
+      <p class="sblk prose-p" id="mv2i">And the not-seeing runs deeper than disagreement. It&rsquo;s built into the languages. Classical Chinese is a grammar for pointing at process &mdash; it lets you indicate a movement, a relation, a whole system, and lets the listener&rsquo;s mind move through it. English makes you break a scene into actors and actions, things doing things to other things, one link at a time. Hand the same reality to the two grammars and they hand back two different worlds: one a flowing system, one a set of separate parts knocking together. <span class="str">The language commits you to a picture of reality before you&rsquo;ve noticed you had a choice.</span></p>
 
-    <footer class="blk foot" id="footblk">
-      <p class="mn footline">the record stayed on this device &mdash; nothing was sent, nothing was kept</p>
-      <a class="mn footlink" href="the-third-position.html">read without the instrument</a>
-    </footer>
-  </section>
+      <div class="sblk figwrap" id="glyphwrap">
+        <div class="figstage">
+          <svg class="glyphsvg" viewBox="0 0 320 190" aria-label="one scene, two grammars" role="img">
+            <line x1="34" y1="164" x2="286" y2="164" stroke="rgba(211,215,217,0.16)" stroke-width="1"/>
+            <g id="gThings" opacity="1">
+              <line x1="150" y1="164" x2="150" y2="122" stroke="#d3d7d9" stroke-width="2.4"/>
+              <line x1="150" y1="140" x2="131" y2="122" stroke="#d3d7d9" stroke-width="1.6"/>
+              <line x1="150" y1="132" x2="167" y2="115" stroke="#d3d7d9" stroke-width="1.6"/>
+              <ellipse cx="150" cy="94" rx="35" ry="30" fill="none" stroke="#d3d7d9" stroke-width="1.5"/>
+              <g stroke="#8b9094" stroke-width="1.4" fill="#8b9094">
+                <line x1="52" y1="82" x2="94" y2="82"/><path d="M94,82 l-7,-3.6 v7.2 Z"/>
+                <line x1="42" y1="106" x2="86" y2="106"/><path d="M86,106 l-7,-3.6 v7.2 Z"/>
+                <line x1="54" y1="130" x2="92" y2="130"/><path d="M92,130 l-7,-3.6 v7.2 Z"/>
+              </g>
+            </g>
+            <g id="gFlow" opacity="0">
+              <g stroke="#8b9094" stroke-width="1.3" fill="none" stroke-linecap="round">
+                <path d="M20,82 C80,72 122,76 162,86 S250,96 300,86"/>
+                <path d="M14,106 C76,98 120,100 164,108 S252,116 306,104"/>
+                <path d="M24,130 C84,124 126,126 168,132 S254,138 298,128"/>
+                <path d="M30,60 C90,52 134,56 172,64 S248,72 292,62"/>
+              </g>
+              <g class="swayer">
+                <path d="M150,164 C149,146 152,134 161,116" stroke="#d3d7d9" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+                <path d="M155,140 C146,132 140,126 136,118" stroke="#d3d7d9" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                <path d="M158,132 C166,124 172,118 176,110" stroke="#d3d7d9" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                <path d="M124,92 C140,84 158,82 178,88" stroke="#eceeef" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M118,104 C138,96 160,94 184,100" stroke="#eceeef" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M128,78 C144,72 160,70 176,76" stroke="#eceeef" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <p class="glyphcap" id="glyphcap">The wind bends the tree.</p>
+        <div class="opbar" role="group" aria-label="the two grammars">
+          <button class="opbtn onbtn" id="btnThings" aria-pressed="true">as things</button>
+          <button class="opbtn" id="btnFlow" aria-pressed="false">as flow</button>
+        </div>
+      </div>
+
+      <p class="sblk prose-p" id="mv2j">Both readings are real. Both are necessary. Neither is complete alone. And the thing both kept circling sits above the split &mdash; the one layer that is neither the equipment nor the voice, the layer that can watch them both run and, now and then, take the wheel. It was standing in both maps the whole time, named cleanly by neither, because each tradition had its eyes on its own layer.</p>
+    </section>
+
+    <!-- ============ movement iii — why now · the refusal ============ -->
+    <section id="mv3">
+      <span class="sblk mn marker" id="m3">iii &middot; why now &middot; the refusal</span>
+
+      <p class="sblk prose-p" id="mv3a">So why now? Why would a thing every tradition circled for millennia become sayable in plain terms at this particular moment?</p>
+
+      <p class="sblk prose-p" id="mv3b">Because the conditions for saying it are finally common. For most of history a person lived inside one grammar, one tradition, one picture of the world, and never had to hold a second. That&rsquo;s ending. People move now; languages mix inside the same house; whole lives get lived between worlds. More nervous systems than ever are being built in two grammars at once &mdash; not taught a second language in a classroom, but wired in both from the start, made to hold two pictures of reality without collapsing into either.</p>
+
+      <p class="sblk prose-p" id="mv3c">And living like that does something specific. Hold two grammars from the beginning, with neither one simply <em>the truth</em>, and you lose the ability to mistake either for reality itself. You start using each as an instrument &mdash; picking up the one that fits and setting it down again. The same skill gets trained other ways. Deep contemplative practice teaches a person to use a thought instead of being used by it. Serious artistic discipline teaches you to operate your medium instead of being operated by it. It&rsquo;s all the same move &mdash; the operator&rsquo;s move, run at the level of thought: hold the frame, don&rsquo;t <em>be</em> the frame. The world is producing more people who can do this than at any time before, which is why the position can be named now in a way it couldn&rsquo;t have been a century ago.</p>
+
+      <p class="sblk prose-p" id="mv3d">There&rsquo;s a second reason, sharper and newer. For all of history, being good at things &mdash; knowing, calculating, producing competent work &mdash; was most of what a person had to offer, and it was easy to mistake that competence for the person. Machines have ended the confusion. Software can now write the passable essay, draft the brief, generate competent output in nearly any domain, and it is getting better fast. What it cannot do is <em>be</em> the one who wanted to make the thing &mdash; the specific life at the controls, with a reason of its own. <span class="str">The machines didn&rsquo;t threaten that layer. They exposed it,</span> by stripping away everything around it that used to look essential and turns out not to be. <span class="str">When the competent output is automated, the one at the controls is what&rsquo;s left standing.</span> That is what makes naming it urgent, now.</p>
+
+      <p class="sblk ln" id="mv3e">And now the most disciplined move of all &mdash; a refusal.</p>
+
+      <p class="sblk ln" id="mv3f">There&rsquo;s a set of questions human thought has circled for as long as there&rsquo;s been thought.</p>
+
+      <div class="sblk doorswrap" id="doorswrap">
+        <button class="door" data-door="0">What is consciousness.</button>
+        <button class="door" data-door="1">Is there a soul.</button>
+        <button class="door" data-door="2">Does the self exist before the body.</button>
+        <button class="door" data-door="3">What happens after death.</button>
+        <button class="door" data-door="4">Does God exist.</button>
+        <p class="doorsnote" id="doorsnote">Thousands of years of hard thinking by serious people &mdash; no agreement on a single one.</p>
+        <span class="mn doorshint" id="doorshint">it ends when the choosing stops</span>
+      </div>
+
+      <p class="sblk prose-p" id="ref1" data-gate="doors">The work takes no side on any of them &mdash; not because they don&rsquo;t matter, but because, looked at closely, they&rsquo;re the wrong questions, and the asking is itself a move a person makes to feel safe.</p>
+
+      <p class="sblk prose-p" id="ref2" data-gate="doors">That isn&rsquo;t because no one thought hard enough. It&rsquo;s because those are the defenses&rsquo; questions &mdash; the protective mind trying to build a story about reality solid enough to stand on, so it can stop feeling the open ground underneath. The relief people chase through those questions was never waiting in the answers. It&rsquo;s in noticing that the questions themselves are the thing keeping them circling. Picking a side is just one more wall.</p>
+
+      <p class="sblk prose-p" id="mv3g">So the work doesn&rsquo;t answer them. It does something narrower and sturdier: it watches. It describes an operation a person can run, notes what comes online when they run it, and stops there. It says what the one at the controls <em>does</em>, not what it <em>is</em>. That&rsquo;s closer to the old meaning of natural philosophy &mdash; the spirit in which Newton described how bodies move &mdash; than to the kind of philosophy that argues about essences. Watch the thing. Describe how it works. Leave the meaning to whoever is living it.</p>
+
+      <p class="sblk prose-p" id="mv3h">Which is why it carries across people who agree on nothing else. A Christian can run the operation without leaving Christianity; an atheist can run it without believing anything; a skeptic can run it without signing on to a worldview. Whatever it comes to mean afterward is theirs. And it&rsquo;s why the work can&rsquo;t hand anyone the thing directly &mdash; it can only build the conditions where a person finds it themselves. <span class="str">No one can wake it in you from the outside. The most anyone can do is set up the room so it wakes on its own.</span></p>
+    </section>
+
+    <!-- ============ movement iv — the structural law ============ -->
+    <section id="mv4">
+      <span class="sblk mn marker" id="m4">iv &middot; the structural law</span>
+
+      <p class="sblk ln" id="mv4a">One more concrete thing before the hardest turn.</p>
+
+      <p class="sblk prose-p" id="mv4b">The mushroom you&rsquo;d point at and call <em>the mushroom</em> is a temporary thing &mdash; the brief visible bloom of a web of fine threads running through the soil beneath it, sometimes for miles. Most of the organism is the web. The mushroom is just the moment the web pushes a piece of itself up into the air where you can see it. Biology stared at mushrooms for a long time before it understood that the discrete thing on the surface was a passing expression of a vast continuous thing below.</p>
+
+      <p class="sblk prose-p" id="mv4c">Once you&rsquo;ve seen that shape, you start seeing it everywhere. Look at the old drawing that reads as either two faces or a vase. You can see faces, you can see vase, you can&rsquo;t hold both at once &mdash; and neither one is the real one underneath the other. The faces and the vase make each other. The cut between them is the only reason your eye sees anything at all.</p>
+
+      <p class="sblk prose-p" id="mv4d">It&rsquo;s one pattern, under both. The separate thing and the field it rises out of aren&rsquo;t two facts; they&rsquo;re one process wearing two faces. The mushroom and the web. The faces and the vase. Each makes the other, in real time. <span class="str">Reality, looked at closely enough, isn&rsquo;t built out of separate things. It&rsquo;s built out of relationships that throw up the appearance of separate things.</span></p>
+
+      <p class="sblk prose-p" id="mv4e">The oldest map of this is one most people have seen and never really looked at. The taiji &mdash; the black and white teardrops curled into a circle, each carrying a seed of the other. The West imported it as a symbol of balance, and missed the whole of it. It isn&rsquo;t a picture of balance. <em>It&rsquo;s a picture of motion.</em></p>
+
+      <div class="sblk figwrap" id="taijiwrap">
+        <div class="figstage">
+          <svg class="taijisvg" id="taijisvg" viewBox="0 0 200 200" role="img" aria-label="the taiji, turning">
+            <g id="taijirot">
+              <circle cx="100" cy="100" r="72" fill="none" stroke="#d3d7d9" stroke-width="1" opacity="0.55"/>
+              <path d="M 100,28 A 72,72 0 0,1 100,172 A 36,36 0 0,1 100,100 A 36,36 0 0,0 100,28 Z" fill="#eceeef" opacity="0.92"/>
+              <circle cx="100" cy="64" r="9" fill="#0a0b0c"/>
+              <circle cx="100" cy="136" r="9" fill="#eceeef"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mn figcap">the seed of each held in the other &middot; it turns by hand</div>
+        <p class="figsub">Not two opposites in balance. One process, two phases, each generating the other.</p>
+      </div>
+
+      <p class="sblk prose-p" id="mv4f">Look at what it actually shows. The black is pouring into the white &mdash; and at the fullest point of the black, the white is already being born, its seed already there. Each side, at its peak, is producing its opposite. You could not stop the wheel and find one phase on its own; the dark only is what it is on its way to becoming the light. Not two things getting along. <span class="str">One motion, seen at two moments.</span> Physics ran into the same shape when its experiments stopped fitting the old logic &mdash; Niels Bohr put the taiji on his coat of arms. Call it <span class="str">mutual generation</span>: one process, showing up as two.</p>
+
+      <p class="sblk ln" id="mv4g">Now the hard turn. And the pattern we just built is what carries it.</p>
+
+      <p class="sblk ln" id="mv4h">The operator and the equipment it runs are a pair like that.</p>
+
+      <p class="sblk prose-p" id="mv4i">The operator doesn&rsquo;t sit inside the body like a driver waiting to be found. Machinery running with nobody watching produces no operator at all. The operator is what happens the moment the machinery begins to observe itself. Not a hidden thing, discovered. <span class="str">An event, that starts when the self-watching switches on.</span> Before it: just the machinery, running. After it: the machinery running <em>plus</em> the watching of it &mdash; which changes how it runs.</p>
+
+      <p class="sblk prose-p" id="mv4j">The event runs in a half-second. There is the reading of these words &mdash; and then the noticing of the reading. That second turn, attention folding back on itself, is the whole of it.</p>
+
+      <p class="sblk prose-p" id="mv4k">That second step &mdash; the watching folding back on itself &mdash; is the operator coming online. It isn&rsquo;t mystical, and it doesn&rsquo;t take years. It takes a half-second of attention. Physics made the same move when it admitted the one measuring is part of what gets measured: there is no watcher standing outside, looking in. There is one system that, the instant it turns to look at itself, <em>has</em> someone at the controls.</p>
+
+      <p class="sblk lookline" id="lookline"><span class="acc">The looking is the operator.</span></p>
+
+      <p class="sblk prose-p" id="mv4l">So that&rsquo;s what the operator is. One thing is left to find &mdash; what&rsquo;s underneath it. It&rsquo;s the layer all of this has been walking toward, so take it slowly.</p>
+
+      <p class="sblk ln" id="mv4m">Take the defenses offline. Quiet the commentary, the protective patterns, the old strategies. <span class="str">What&rsquo;s left?</span></p>
+
+      <div class="stillgap" aria-hidden="true"></div>
+
+      <p class="sblk ln" id="mv4n">Not emptiness.</p>
+
+      <p class="sblk prose-p" id="mv4o">What&rsquo;s left is the same thing that drives a seed to push up through the dirt toward a light it has never seen. The living thing&rsquo;s own pull toward continuing, toward growing, toward becoming the fullest version of its specific form. You&rsquo;ve seen it. It&rsquo;s there in a frightened child who steadies the instant a calm adult simply stays close. It&rsquo;s there in the particular release a person feels when someone finally sees them &mdash; actually sees them &mdash; and something that was braced lets go. It was under the noise the whole time.</p>
+
+      <p class="sblk prose-p" id="mv4p">That pull is the deepest thing the work names. And it is the thing meant by a word worn so smooth it&rsquo;s nearly useless: <span class="str">love</span>. Not the feeling. Not sentiment. The actual force that keeps a living thing alive and aimed at its own growth &mdash; what nourishes it, what sustains it, the reason a system grows instead of collapsing. The operator doesn&rsquo;t manufacture it. It lands on it &mdash; comes to rest on its own aliveness, and recognizes what it is.</p>
+
+      <p class="sblk prose-p" id="mv4q">Strip the word back to that, and love stops being soft. It&rsquo;s the life force itself. Naming it here isn&rsquo;t a turn toward the mystical; it&rsquo;s the most physical claim here.</p>
+
+      <div class="sblk pullq" id="pullq">Persuasion feeds the defenses. <em>Steadiness is the one thing they can&rsquo;t eat.</em></div>
+
+      <p class="sblk prose-p" id="mv4r">It&rsquo;s also why some things reach a person and others bounce off. The defending mind runs on data &mdash; it takes in arguments, logic, even conflict, and turns all of it into material for stronger walls. Try to talk someone out of their defenses and you&rsquo;ve just fed them.</p>
+
+      <p class="sblk prose-p" id="mv4s">Steadiness isn&rsquo;t data. The calm adult beside the frightened child isn&rsquo;t making a case. The teacher who simply sees a student isn&rsquo;t winning an argument. The partner who recognizes you in your real form isn&rsquo;t persuading you. None of it can be turned into a defense, because none of it is information. It can only be received by the thing under the defenses &mdash; <em>the life in one recognizing the life in the other.</em> That&rsquo;s the whole mechanism. Not a better argument. A steady frequency the defenses have no way to consume.</p>
+    </section>
+
+    <!-- ============ movement v — the fleet ============ -->
+    <section id="mv5">
+      <span class="sblk mn marker" id="m5">v &middot; coherence &middot; recognition</span>
+
+      <p class="sblk prose-p" id="mv5a">One question is left, the one usually gestured at and walked past: what would a world of people actually at the controls of their own lives look like, together?</p>
+
+      <p class="sblk prose-p" id="mv5b">The usual answers fail in matching ways. The mystical answer merges everyone &mdash; dissolve into oneness &mdash; and produces not coherence but a huddle of people who&rsquo;ve lost their edges and lean on each other to stand. The modern answer isolates everyone &mdash; each a sovereign unit, society a contract between them &mdash; and produces atomized people who trade goods and can&rsquo;t quite reach one another. The compromise balances the two and quietly ends up choosing a side.</p>
+
+      <p class="sblk prose-p" id="mv5c">All three break the same way. They still treat being yourself and being with others as a tug-of-war, where more of one has to mean less of the other.</p>
+
+      <p class="sblk prose-p" id="mv5d">It was never a tug-of-war. Two things are true at once and they don&rsquo;t compete. In its own layer, the one at the controls is alone &mdash; irreducibly. However much someone loves you, they cannot climb inside and run you for you; in the cockpit, you are the only one there, always. And in its layer, the body is never alone for a second &mdash; the nervous system, the air, the people around you are one continuous exchange, not sealed units passing things across a gap. Alone at the controls; never alone in the medium. Both at once, no contradiction.</p>
+
+      <p class="sblk prose-p" id="mv5e">There&rsquo;s a structure that shows exactly this, and it holds real weight. A tensegrity mast is a set of rigid rods that never touch, suspended in a web of cables held under tension. Each rod keeps its own shape completely; the cables hold all of them in relation; and the whole thing stands only because both are true at once. Cut the tension and the rods clatter into a pile. Treat the rods as separate and forget the cables and there is nothing holding them in form. <em>The structure stands on the integrity of each piece and the field of relationship between them, together.</em></p>
+
+      <div class="sblk figwrap" id="tensegwrap">
+        <div class="figstage">
+          <svg class="tensvg" viewBox="0 0 320 170" role="img" aria-label="a tensegrity mast — rods held in a web of tension">
+            <g class="tenstage" id="tenstage">
+              <line class="tenground" x1="30" y1="150" x2="290" y2="150"/>
+              <line class="tcable" x1="50" y1="40" x2="170" y2="30"/>
+              <line class="tcable" x1="50" y1="40" x2="220" y2="45"/>
+              <line class="tcable" x1="100" y1="120" x2="125" y2="130"/>
+              <line class="tcable" x1="100" y1="120" x2="270" y2="125"/>
+              <line class="tcable" x1="170" y1="30" x2="220" y2="45"/>
+              <line class="tcable" x1="125" y1="130" x2="270" y2="125"/>
+              <line class="tcable" x1="170" y1="30" x2="270" y2="125"/>
+              <line class="tcable" x1="220" y1="45" x2="125" y2="130"/>
+              <g class="trod" id="rodA"><line x1="50" y1="40" x2="100" y2="120"/></g>
+              <g class="trod" id="rodB"><line x1="170" y1="30" x2="125" y2="130"/></g>
+              <g class="trod" id="rodC"><line x1="220" y1="45" x2="270" y2="125"/></g>
+            </g>
+          </svg>
+        </div>
+        <div class="mn figcap">each piece whole &middot; the field holds them in form</div>
+        <p class="figsub">Remove the tension and the rigid pieces collapse into a pile. Remove the pieces and the tension has nothing to hold. Neither is more real; the structure is both at once.</p>
+        <div class="opbar">
+          <button class="opbtn" id="tensegbtn" aria-pressed="false">the tension &mdash; holding</button>
+        </div>
+      </div>
+
+      <p class="sblk prose-p" id="mv5f">That&rsquo;s the shape, and at human scale it has a name: <span class="str">distributed coherence</span>. Each person fully their own form, none dissolved into the group, and every one of them in a live field of recognition with the others. Not merging, not unification &mdash; form across difference, with nothing given up.</p>
+
+      <p class="sblk prose-p" id="mv5g">There is a felt difference between two people meeting from behind their defenses and two meeting without them. Defended, a room is busy even in silence: sizing up, comparing, managing the impression, scanning for threat. When two people meet from underneath all that &mdash; both at the controls, neither performing, neither braced &mdash; the busyness simply isn&rsquo;t there. Nothing is being defended, so the machinery of defense has nothing to do and goes quiet. The body clocks it before the mind does: the readiness drains off, the guard comes down, the whole system reads safe.</p>
+
+      <p class="sblk prose-p" id="mv5h">A room of people like that isn&rsquo;t melting into one mind. It&rsquo;s that the static each set of defenses was throwing off has dropped, and what&rsquo;s underneath &mdash; the plain fact of life recognizing life &mdash; becomes audible for once. <span class="str">The signal was always there. The noise was covering it.</span></p>
+
+      <p class="sblk prose-p" id="mv5i">This is the layer nothing artificial reaches, however good it gets. A machine can already produce the competent work in any domain, and it will keep getting better. What it can&rsquo;t do is be the one who wanted to make the thing &mdash; the specific life at the controls, with its own reason. The output was never the irreplaceable part. The one at the controls is. That&rsquo;s what doesn&rsquo;t get automated, and it&rsquo;s what the whole world is about to need people to find, because nearly everything else is being handed to the machines.</p>
+
+      <p class="sblk ln" id="mv5j">So strip it all away &mdash; the names, the diagrams, the scaffolding of the work. What&rsquo;s left?</p>
+
+      <div class="stillgap" aria-hidden="true"></div>
+
+      <p class="sblk prose-p" id="mv5k"><span class="str">You have been one thing the whole time.</span> The line you thought ran between you and everything else was a story the defenses told. <span class="acc">The thing reading this sentence, right now,</span> is the thing this piece has been pointing at from the opening: the one at the controls, awake, watching the reading happen. It was never somewhere else. There was never any distance to cross to reach it. That is what comes online when a person finally stops trying and is simply what they are &mdash; not transcendence, not leaving the world behind, but the thing that was already here, seeing itself at last.</p>
+    </section>
+
+    <!-- ============ the trace · closing ============ -->
+    <section id="closingsec">
+      <p class="sblk ln lead-in" id="t2">One more record has been running since the first word.</p>
+
+      <div class="sblk tracewrap" id="traceblk">
+        <div class="mn tracelbl">the session &mdash; first word to here</div>
+        <div class="tracebox" role="img" aria-label="one drawn line — the record of this visit, first word to here">
+          <svg viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true">
+            <line class="traceaxis" x1="0" y1="118" x2="1000" y2="118"/>
+            <path class="traceglow" id="traceglow" d=""/>
+            <path class="tracepath" id="tracepath" d=""/>
+          </svg>
+          <div class="tmark tmark-surge" id="msurge" aria-hidden="true"><i></i><span class="mn">the surge</span></div>
+          <div class="tmark tmark-still" id="mstill" aria-hidden="true"><i></i><span class="mn">the stillness</span></div>
+          <div class="tmark tmark-surge" id="mstop" aria-hidden="true"><i></i><span class="mn">the stop</span></div>
+        </div>
+      </div>
+
+      <p class="sblk ln" id="a1">This is the session, seen from outside.</p>
+      <p class="sblk ln" id="a2">Every pause is a place something noticed.</p>
+      <p class="sblk ln" id="a3">The noticing was never on the page.</p>
+
+      <div class="sblk closewrap" id="closeblk">
+        <p class="closing">The thing that was reading these words<br>has been here <em>the whole time</em>.</p>
+        <p class="closing-sub">Recognition.</p>
+      </div>
+
+      <div class="sblk exitwrap" id="exitblk">
+        <a class="mn exitlink" href="the-third-position.html">the full case &rarr;</a>
+      </div>
+
+      <footer class="sblk foot" id="footblk">
+        <p class="mn footline">the record stayed on this device &mdash; nothing was sent, nothing was kept</p>
+        <a class="mn footlink" href="the-third-position.html">read without the instrument</a>
+      </footer>
+    </section>
+
+  </div>
 
 </main>
 
@@ -491,10 +888,10 @@
   }, { passive: true });
 
   var visBlocks = {};
-  var io = new IntersectionObserver(function (entries) {
+  var dwellIO = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) { visBlocks[en.target.id] = en.isIntersecting; });
   }, { threshold: 0.5 });
-  document.querySelectorAll('.blk[id]').forEach(function (el) { io.observe(el); });
+  document.querySelectorAll('.blk[id], .sblk[id]').forEach(function (el) { dwellIO.observe(el); });
 
   var lastY = window.scrollY, velEMA = 0, sampleAcc = 0, sampling = true;
   onFrame(function (dt) {
@@ -571,7 +968,7 @@
     }
   });
 
-  /* ---------------- reveals ---------------- */
+  /* ---------------- timed reveals (movement i) ---------------- */
   function autoScroll(el, prevBottom) {
     if (pressing()) return;
     // distance from the reader to the leading edge as it stood before this reveal;
@@ -615,8 +1012,8 @@
 
   var SLOW_WORDS = ['But ', 'every ', 'so ', 'often, ', 'in ', 'the ', 'half-second ', 'before ', 'it ', 'fires ', '—'];
   var STICK_BASE = ['something ', 'steps ', 'in ', 'and ', 'holds ', 'it'];
-  var STICK_REPEATS = [' — holds it', ' — holds it'];
-  var STICK_TAIL = ' back.';
+  var STICK_REPEATS = [' — holds it', ' — holds it'];
+  var STICK_TAIL = ' back.';
 
   /* ---------------- the hold ---------------- */
   function runHold() {
@@ -698,13 +1095,84 @@
     window.addEventListener('keydown', end);
   }
 
-  /* ---------------- the anatomy ---------------- */
+  /* ---------------- scroll reveals (movements ii–v) ---------------- */
+  var gates = {
+    scrub: { open: false, pending: [], armed: false, stagger: 2300 },
+    doors: { open: false, pending: [], armed: false, stagger: 2600 }
+  };
+  function docOrder(a, b) {
+    return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+  }
+  function openGate(name) {
+    var g = gates[name];
+    if (g.open) return;
+    g.open = true;
+    g.pending.sort(docOrder);
+    g.pending.forEach(function (el, i) {
+      wait(i * g.stagger).then(function () { revealS(el); });
+    });
+    g.pending = [];
+  }
+  function gateForceDelay(name) {
+    // operations invite; they never hard-block — a reader who moves on gets the prose anyway
+    if (name === 'doors') return doorsCtl.rounds > 0 ? 9000 : 900;
+    return 7000;
+  }
+  function revealS(el) {
+    if (!el || el.classList.contains('on')) return;
+    el.classList.add('on');
+    so.unobserve(el);
+    rec.ev('show:' + el.id);
+    sideEffects(el.id);
+  }
+  var so = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var el = en.target;
+      var g = el.getAttribute('data-gate');
+      if (g && gates[g] && !gates[g].open) {
+        if (gates[g].pending.indexOf(el) < 0) gates[g].pending.push(el);
+        if (!gates[g].armed) {
+          gates[g].armed = true;
+          wait(gateForceDelay(g)).then(function () { openGate(g); });
+        }
+      } else {
+        revealS(el);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -9% 0px' });
+  document.querySelectorAll('.sblk').forEach(function (el) { so.observe(el); });
+  document.addEventListener('focusin', function (e) {
+    var b = e.target.closest ? e.target.closest('.sblk') : null;
+    if (b && !b.classList.contains('on')) revealS(b);
+  });
+
+  function sideEffects(id) {
+    if (id === 'panelblk') {
+      panelCtl.cacheRect();
+      panelCtl.nudgeLoop();
+    } else if (id === 'land2') {
+      byId('watchlbl').classList.add('on');
+    } else if (id === 'doorswrap') {
+      doorsCtl.visible = true;
+      doorsCtl.lastT = clock.t;
+    } else if (id === 'taijiwrap') {
+      taijiCtl.visible = true;
+    } else if (id === 'traceblk') {
+      beginTrace();
+    } else if (id === 'closeblk') {
+      audio.fadeOut();
+      rec.ev('end');
+    }
+  }
+
+  /* ---------------- the anatomy (movement ii station) ---------------- */
   var FRAGS = [
-    { t: 80,  s: 'again —',               row: 0, anchor: 'l' },
-    { t: 165, s: 'this is broken',             row: 1, anchor: 'l' },
-    { t: 255, s: 'skip this',                  row: 0, anchor: 'l' },
-    { t: 340, s: 'it did that on purpose',     row: 2, anchor: 'r' },
-    { t: 430, s: 'almost —',              row: 1, anchor: 'r' }
+    { t: 80,  s: 'again —',                row: 0, anchor: 'l' },
+    { t: 165, s: 'this is broken',         row: 1, anchor: 'l' },
+    { t: 255, s: 'skip this',              row: 0, anchor: 'l' },
+    { t: 340, s: 'it did that on purpose', row: 2, anchor: 'r' },
+    { t: 430, s: 'almost —',               row: 1, anchor: 'r' }
   ];
   var ROW_TOP = [26, 47, 66];
 
@@ -801,7 +1269,10 @@
       }
     });
 
+    var nudging = false;
     async function nudgeLoop() {
+      if (nudging) return;
+      nudging = true;
       while (!st.scrubbed) {
         await wait(12000);
         if (st.scrubbed) break;
@@ -815,6 +1286,115 @@
 
     return { landed: landP, cacheRect: cacheRect, nudgeLoop: nudgeLoop };
   }
+  var panelCtl = setupPanel();
+  panelCtl.landed.then(function () { openGate('scrub'); });
+
+  /* ---------------- the grammar glass (movement ii) ---------------- */
+  (function () {
+    var gT = byId('gThings'), gF = byId('gFlow'), cap = byId('glyphcap');
+    var bT = byId('btnThings'), bF = byId('btnFlow');
+    var CAPS = { things: 'The wind bends the tree.', flow: 'Bending — wind and tree, one motion.' };
+    function setGlyph(mode) {
+      gT.style.opacity = mode === 'things' ? '1' : '0';
+      gF.style.opacity = mode === 'flow' ? '1' : '0';
+      bT.classList.toggle('onbtn', mode === 'things');
+      bF.classList.toggle('onbtn', mode === 'flow');
+      bT.setAttribute('aria-pressed', mode === 'things' ? 'true' : 'false');
+      bF.setAttribute('aria-pressed', mode === 'flow' ? 'true' : 'false');
+      cap.classList.add('capfade');
+      wait(280).then(function () {
+        cap.textContent = CAPS[mode];
+        cap.classList.remove('capfade');
+      });
+      rec.ev('glyph:' + mode);
+    }
+    bT.addEventListener('click', function () { setGlyph('things'); });
+    bF.addEventListener('click', function () { setGlyph('flow'); });
+  })();
+
+  /* ---------------- the wheel (movement iv) ---------------- */
+  var taijiCtl = { visible: false };
+  (function () {
+    var svg = byId('taijisvg'), rot = byId('taijirot');
+    var angle = 0, applied = -1, dragging = false, lastA = 0, cx = 0, cy = 0;
+    function pointerAngle(e) { return Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI; }
+    svg.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      var r = svg.getBoundingClientRect();
+      cx = r.left + r.width / 2; cy = r.top + r.height / 2;
+      lastA = pointerAngle(e);
+      dragging = true;
+      if (svg.setPointerCapture) { try { svg.setPointerCapture(e.pointerId); } catch (err) {} }
+      rec.ev('taiji:turn');
+    });
+    svg.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var a = pointerAngle(e), d = a - lastA;
+      if (d > 180) d -= 360; else if (d < -180) d += 360;
+      angle += d; lastA = a;
+    });
+    var end = function () { dragging = false; };
+    svg.addEventListener('pointerup', end);
+    svg.addEventListener('pointercancel', end);
+    svg.addEventListener('lostpointercapture', end);
+    onFrame(function (dt) {
+      if (taijiCtl.visible && !RM && !dragging) angle += dt * 0.004;
+      if (Math.abs(angle - applied) > 0.05) {
+        applied = angle;
+        rot.setAttribute('transform', 'rotate(' + angle.toFixed(2) + ' 100 100)');
+      }
+    });
+  })();
+
+  /* ---------------- the mast (movement v) ---------------- */
+  (function () {
+    var stage = byId('tenstage'), btn = byId('tensegbtn');
+    var cut = false;
+    btn.addEventListener('click', function () {
+      cut = !cut;
+      stage.classList.toggle('cut', cut);
+      btn.innerHTML = cut ? 'the tension &mdash; cut' : 'the tension &mdash; holding';
+      btn.setAttribute('aria-pressed', cut ? 'true' : 'false');
+      rec.ev(cut ? 'tenseg:cut' : 'tenseg:held');
+    });
+  })();
+
+  /* ---------------- the corridor (movement iii) ---------------- */
+  var doorsCtl = { rounds: 0, lastT: 0, resolved: false, visible: false };
+  (function () {
+    var wrap = byId('doorswrap'), note = byId('doorsnote'), hint = byId('doorshint');
+    var busy = false;
+    wrap.querySelectorAll('.door').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (doorsCtl.resolved || busy) return;
+        busy = true;
+        doorsCtl.lastT = clock.t;
+        rec.ev('door:' + btn.getAttribute('data-door'));
+        btn.classList.add('chose');
+        wait(240).then(function () {
+          wrap.classList.add('cycling');
+          return wait(300);
+        }).then(function () {
+          wrap.classList.remove('cycling');
+          btn.classList.remove('chose');
+          doorsCtl.rounds++;
+          doorsCtl.lastT = clock.t;
+          busy = false;
+          if (doorsCtl.rounds >= 2) note.classList.add('on');
+          if (doorsCtl.rounds >= 5) hint.classList.add('on');
+        });
+      });
+    });
+    onFrame(function () {
+      if (doorsCtl.visible && !doorsCtl.resolved && doorsCtl.rounds > 0 &&
+          clock.t - doorsCtl.lastT > 10000 * SPEED) {
+        doorsCtl.resolved = true;
+        wrap.classList.add('dimmed');
+        rec.ev('doors:stop');
+        openGate('doors');
+      }
+    });
+  })();
 
   /* ---------------- the trace ---------------- */
   function buildTrace() {
@@ -849,8 +1429,9 @@
     var stillA = rec.find('still:start');
     var stillB = rec.find('still:end');
     if (stillA !== null && (stillB === null || stillB <= stillA)) stillB = Math.min(end, stillA + 12000);
+    var stopT = rec.find('doors:stop');
 
-    var marks = { surgeX: null, stillX: null };
+    var marks = { surgeX: null, stillX: null, stopX: null };
     if (surgeT !== null) {
       var sx = clamp(surgeT / end * 100, 4, 96);
       var m1 = byId('msurge');
@@ -866,18 +1447,29 @@
       m2.style.top = '93%';
       marks.stillX = stillB / end * 1000;
     }
+    if (stopT !== null) {
+      var px = clamp(stopT / end * 100, 4, 96);
+      var m3 = byId('mstop');
+      m3.style.left = px + '%';
+      m3.style.top = '71%';
+      marks.stopX = stopT / end * 1000;
+    }
     return marks;
   }
 
   function drawTrace(marks) {
     return new Promise(function (resolve) {
       var path = byId('tracepath'), glow = byId('traceglow');
-      var msurge = byId('msurge'), mstill = byId('mstill');
+      var msurge = byId('msurge'), mstill = byId('mstill'), mstop = byId('mstop');
+      function allOn() {
+        if (marks.surgeX !== null) msurge.classList.add('on');
+        if (marks.stillX !== null) mstill.classList.add('on');
+        if (marks.stopX !== null) mstop.classList.add('on');
+      }
       var L = 0;
       try { L = path.getTotalLength(); } catch (e) { L = 0; }
       if (RM || L === 0) {
-        if (marks.surgeX !== null) msurge.classList.add('on');
-        if (marks.stillX !== null) mstill.classList.add('on');
+        allOn();
         rec.ev('trace:drawn');
         resolve();
         return;
@@ -886,7 +1478,7 @@
       path.style.strokeDashoffset = String(L);
       glow.style.strokeDasharray = L + ' ' + L;
       glow.style.strokeDashoffset = String(L);
-      var DUR = 9000 * SPEED, t = 0, doneS = false, doneQ = false;
+      var DUR = 9000 * SPEED, t = 0, doneS = false, doneQ = false, doneP = false;
       function ease(u) { return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
       onFrame(function tick(dt) {
         if (t >= DUR) return;
@@ -899,9 +1491,9 @@
         try { px = path.getPointAtLength(drawn).x; } catch (e) {}
         if (!doneS && marks.surgeX !== null && px >= marks.surgeX) { doneS = true; msurge.classList.add('on'); }
         if (!doneQ && marks.stillX !== null && px >= marks.stillX) { doneQ = true; mstill.classList.add('on'); }
+        if (!doneP && marks.stopX !== null && px >= marks.stopX) { doneP = true; mstop.classList.add('on'); }
         if (t >= DUR) {
-          if (marks.surgeX !== null) msurge.classList.add('on');
-          if (marks.stillX !== null) mstill.classList.add('on');
+          allOn();
           rec.ev('trace:drawn');
           resolve();
         }
@@ -909,7 +1501,16 @@
     });
   }
 
-  /* ---------------- the flow ---------------- */
+  var traceStarted = false;
+  function beginTrace() {
+    if (traceStarted) return;
+    traceStarted = true;
+    sampling = false;
+    var marks = buildTrace();
+    wait(600).then(function () { return drawTrace(marks); });
+  }
+
+  /* ---------------- the flow (movement i owns the clock) ---------------- */
   var slowSpans = buildWords(byId('slow'), SLOW_WORDS);
   var stickBaseSpans = buildWords(byId('stick'), STICK_BASE);
   var stickRepeatSpans = buildWords(byId('stick'), STICK_REPEATS);
@@ -929,7 +1530,8 @@
 
   async function flow() {
     await began;
-    await wait(700);
+    await wait(500);
+    show('m1'); await wait(1700);
 
     show('p1'); await wait(2500);
     show('p2'); await wait(2500);
@@ -968,43 +1570,29 @@
     show('d1'); await wait(4400);
     show('d2'); await wait(4700);
 
-    show('t1'); await wait(3000);
-    show('panelblk');
-    rec.ev('act2');
+    show('r1a'); await wait(5600);
+    show('r1b'); await wait(2600);
+    show('r1c'); await wait(4000);
+    show('r1d'); await wait(3400);
+    show('r1e'); await wait(6600);
+    show('r1f'); await wait(4200);
+
+    show('r2');
     audio.back(0.006);
-    var panel = setupPanel();
-    panel.cacheRect();
-    panel.nudgeLoop();
+    await wait(3600);
 
-    await panel.landed;
-    await wait(1400);
-    show('land1'); await wait(3300);
-    byId('watchlbl').classList.add('on');
-    show('land2'); await wait(3500);
-    show('land3'); await wait(4400);
-    show('land4'); await wait(5600);
+    show('r3a'); await wait(4000);
+    show('r3b'); await wait(6800);
+    show('r3c'); await wait(5200);
+    show('r3d'); await wait(5200);
 
-    show('t2'); await wait(3400);
+    show('r4a'); await wait(5400);
+    show('r4b'); await wait(7000);
 
-    rec.ev('act3');
-    sampling = false;
-    var marks = buildTrace();
-    show('traceblk');
-    await wait(600);
-    await drawTrace(marks);
-    await wait(1600);
-
-    show('a1'); await wait(3300);
-    show('a2'); await wait(3500);
-    show('a3'); await wait(4700);
-
-    show('closeblk');
-    audio.fadeOut();
-    await wait(5200);
-    show('exitblk');
-    await wait(1400);
-    show('footblk');
-    rec.ev('end');
+    show('handoff');
+    await wait(900);
+    byId('movements').removeAttribute('hidden');
+    rec.ev('handoff');
   }
 
   flow();
