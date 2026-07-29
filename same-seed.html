@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Same Seed</title>
+<meta name="description" content="Same seed, two grounds, one changed variable. A companion instrument to The Seed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden]{ display: none !important; }
+
+:root{
+  --ink:      #0a0c0b;
+  --ink-2:    #0f1211;
+  --ink-3:    #141817;
+  --bone:     #ded9cc;
+  --bone-mid: #9a998c;
+  --bone-soft:#67685f;
+  --rule:     rgba(222,217,204,0.13);
+  --rule-2:   rgba(222,217,204,0.07);
+  /* the only accent in this document. it means surplus. */
+  --surplus:  #a6e264;
+}
+
+html { background: var(--ink); -webkit-text-size-adjust: 100%; }
+body{
+  background: var(--ink);
+  color: var(--bone);
+  font-family: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono{
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- shell ---------- */
+
+.topbar{
+  position: sticky; top: 0; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px 13px;
+  background: linear-gradient(var(--ink) 62%, rgba(10,12,11,0));
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 9.5px; font-weight: 300;
+  letter-spacing: 0.34em; text-transform: uppercase;
+  color: var(--bone-soft);
+}
+.rail{ display: flex; gap: 7px; align-items: center; }
+.rail i{
+  display: block; width: 11px; height: 1px;
+  background: var(--bone-soft); opacity: .4;
+  transition: opacity .5s, width .5s, background .5s;
+}
+.rail i.on{ opacity: 1; width: 20px; background: var(--bone); }
+
+main{ max-width: 760px; margin: 0 auto; padding: 4px 20px 0; }
+
+.act{ padding: 22px 0 64px; }
+.act[hidden]{ display: none; }
+
+.act-mark{
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.36em; text-transform: uppercase;
+  color: var(--bone-soft); margin-bottom: 26px;
+}
+
+/* ---------- language ---------- */
+
+.say{
+  font-size: clamp(19px, 4.4vw, 23px);
+  line-height: 1.45;
+  letter-spacing: -0.008em;
+  color: var(--bone);
+  max-width: 30em;
+}
+.say + .say{ margin-top: 14px; }
+.say.soft{ color: var(--bone-mid); }
+#act2Instr{ transition: opacity .9s ease; }
+.say em{ font-style: italic; }
+
+.note{
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10.5px; font-weight: 300;
+  letter-spacing: 0.2em; text-transform: lowercase;
+  color: var(--bone-soft); line-height: 1.9;
+}
+
+.land{ margin-top: 30px; }
+.land .say{ font-size: clamp(20px, 4.8vw, 26px); line-height: 1.38; }
+
+.reveal{ opacity: 0; transform: translateY(6px); transition: opacity 1.1s ease, transform 1.1s ease; }
+.reveal.in{ opacity: 1; transform: none; }
+
+/* ---------- controls ---------- */
+
+.controls{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; align-items: center; }
+
+button{
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px; font-weight: 300;
+  letter-spacing: 0.2em; text-transform: lowercase;
+  color: var(--bone);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 11px 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color .3s, color .3s, background .3s;
+  min-height: 42px;
+}
+button:hover:not(:disabled){ border-color: rgba(222,217,204,0.34); }
+button:focus-visible{ outline: 1px solid var(--bone-mid); outline-offset: 2px; }
+button[hidden]{ display: none; }
+button:disabled{ color: var(--bone-soft); cursor: default; }
+
+.seg{ display: inline-flex; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
+.seg button{ border: 0; border-radius: 0; padding: 10px 14px; color: var(--bone-soft); }
+.seg button + button{ border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"]{ color: var(--bone); background: rgba(222,217,204,0.045); }
+
+.go{
+  display: inline-block; margin-top: 34px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.24em; text-transform: lowercase;
+  color: var(--bone-mid); background: none; border: 0; border-bottom: 1px solid var(--rule);
+  padding: 6px 2px; border-radius: 0;
+}
+.go:hover{ color: var(--bone); border-bottom-color: var(--bone-mid); }
+
+/* ---------- act one : field ---------- */
+
+.field-wrap{ margin-top: 22px; position: relative; }
+canvas{ display: block; width: 100%; height: auto; touch-action: manipulation; }
+
+.ledgers{
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-top: 12px; max-height: 320px; overflow: hidden;
+  transition: opacity .45s ease, max-height .6s ease, margin-top .6s ease;
+}
+.ledgers.away{ opacity: 0; max-height: 0; margin-top: 0; pointer-events: none; }
+.plot-name{
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.14em; color: var(--bone-mid);
+  padding-bottom: 9px; border-bottom: 1px solid var(--rule-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.rows{ padding-top: 10px; }
+.row + .row{ margin-top: 9px; }
+.row-top{
+  display: flex; justify-content: space-between; align-items: baseline; gap: 6px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 9px; letter-spacing: 0.11em; color: var(--bone-soft);
+}
+.row-top b{ font-weight: 300; font-size: 11.5px; color: var(--bone-mid); font-variant-numeric: tabular-nums; }
+.row.left-over .row-top b{ color: var(--bone-soft); }
+.row.left-over.has .row-top b{ color: var(--surplus); }
+.track{ height: 2px; background: rgba(222,217,204,0.09); margin-top: 5px; overflow: hidden; }
+.fill{ height: 100%; width: 100%; background: var(--bone-mid); transform-origin: left center; transform: scaleX(0); }
+.row.left-over .fill{ background: var(--surplus); }
+
+.clockline{
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  margin-top: 20px; flex-wrap: wrap;
+}
+
+.vars{
+  margin-top: 18px; padding: 12px 0 0; border-top: 1px solid var(--rule-2);
+  display: flex; flex-wrap: wrap; gap: 4px 22px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.16em; color: var(--bone-soft);
+}
+.vars b{ font-weight: 400; color: var(--bone-mid); }
+
+/* ---------- act two : instrument ---------- */
+
+.tree-wrap{ position: relative; margin-top: 20px; touch-action: none; }
+.puck{
+  position: absolute; width: 54px; height: 54px; margin: -27px 0 0 -27px;
+  border: 1px solid rgba(222,217,204,0.3); border-radius: 50%;
+  background: rgba(20,24,23,0.82);
+  display: grid; place-items: center;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 8px; letter-spacing: 0.1em; color: var(--bone-mid);
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  transition: border-color .3s, opacity .5s;
+  z-index: 3;
+}
+.puck:active{ cursor: grabbing; }
+.puck.near{ border-color: rgba(222,217,204,0.62); }
+.puck.done{ opacity: .25; pointer-events: none; }
+.puck span{ display: block; width: 13px; height: 1px; background: var(--bone-mid); }
+.puck span + span{ margin-top: 3px; width: 8px; }
+
+.zone{
+  position: absolute; border: 0; background: none; padding: 0; border-radius: 50%;
+  transform: translate(-50%,-50%); opacity: 0; min-height: 0; z-index: 2;
+}
+.zone:focus-visible{ opacity: 1; outline: 1px solid var(--bone-mid); }
+.zone:disabled{ pointer-events: none; }
+
+.readouts{ margin-top: 18px; }
+.readout{
+  padding: 11px 0; border-top: 1px solid var(--rule-2);
+  transition: opacity .8s ease;
+}
+.readout.past{ opacity: .3; }
+.ro-top{
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.13em; color: var(--bone-mid);
+}
+.ro-top b{ font-weight: 300; color: var(--bone); font-variant-numeric: tabular-nums; font-size: 12px; }
+.ro-bar{ position: relative; height: 3px; background: rgba(222,217,204,0.08); margin-top: 8px; }
+.ro-bar i{ position: absolute; left: 0; top: 0; bottom: 0; background: var(--bone-soft); }
+.ro-bar u{ position: absolute; top: -2px; bottom: -2px; width: 1px; background: rgba(222,217,204,0.5); }
+.ro-bar s{ position: absolute; top: 0; bottom: 0; background: rgba(222,217,204,0.14); }
+.ro-foot{
+  margin-top: 7px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 9.5px; letter-spacing: 0.16em; color: var(--bone-soft);
+  display: flex; justify-content: space-between; gap: 10px;
+}
+.instr-label{
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--bone-soft); margin: 26px 0 2px;
+}
+
+/* ---------- act three : shell ---------- */
+
+.seed-wrap{ margin-top: 20px; touch-action: none; }
+.sensors{ margin-top: 20px; }
+.sensor{ padding: 13px 0; border-top: 1px solid var(--rule-2); }
+.sensor:last-of-type{ border-bottom: 1px solid var(--rule-2); }
+.s-head{
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.18em; color: var(--bone-mid);
+}
+.s-mark{ width: 26px; height: 8px; position: relative; flex: none; }
+.s-mark i{
+  position: absolute; inset: 0; background: var(--bone-mid); opacity: 0;
+  transition: opacity .35s ease;
+}
+.s-mark.in::after{
+  content: ''; position: absolute; inset: -4px; border: 1px solid rgba(222,217,204,0.42);
+}
+input[type=range]{
+  -webkit-appearance: none; appearance: none; width: 100%; height: 30px;
+  background: transparent; margin-top: 4px; cursor: pointer; touch-action: pan-y;
+}
+input[type=range]::-webkit-slider-runnable-track{ height: 1px; background: var(--rule); }
+input[type=range]::-moz-range-track{ height: 1px; background: var(--rule); }
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 26px; margin-top: -13px; border-radius: 1px;
+  background: var(--bone-mid); border: 0;
+}
+input[type=range]::-moz-range-thumb{
+  width: 12px; height: 26px; border-radius: 1px; background: var(--bone-mid); border: 0;
+}
+input[type=range]:focus-visible{ outline: 1px solid var(--bone-mid); outline-offset: 4px; }
+
+.steady{ margin-top: 22px; }
+.steady .note{ margin-bottom: 7px; }
+.steady-track{ height: 1px; background: rgba(222,217,204,0.09); }
+.steady-fill{
+  height: 100%; width: 100%; background: var(--bone-mid);
+  transform-origin: left center; transform: scaleX(0);
+}
+
+/* ---------- act four ---------- */
+
+.cross{ margin: 30px 0 8px; }
+.crossrow{
+  display: grid; grid-template-columns: 1fr; gap: 4px;
+  padding: 15px 0; border-top: 1px solid var(--rule-2);
+}
+.crossrow:last-child{ border-bottom: 1px solid var(--rule-2); }
+.cr-key{ display: flex; align-items: baseline; gap: 8px; flex-wrap: nowrap; }
+.cr-key span{
+  white-space: nowrap;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.2em; color: var(--bone-soft);
+  transition: opacity .9s ease, color .9s ease;
+}
+.cr-key .arw, .cr-key .hum{ opacity: 0; }
+.cr-key .hum{ color: var(--bone); }
+/* the ground keeps its own name. the second name is laid over it, not instead of it. */
+.crossrow.turned .bot{ opacity: .42; }
+.crossrow.turned .arw, .crossrow.turned .hum{ opacity: 1; }
+.cr-body{ font-size: 17.5px; line-height: 1.45; color: var(--bone-mid); max-width: 34em; }
+
+.close-say{
+  font-size: clamp(26px, 7vw, 40px); line-height: 1.2; letter-spacing: -0.02em;
+  margin-top: 46px; color: var(--bone);
+}
+.close-say em{ font-style: italic; color: var(--bone-mid); }
+
+.exit{
+  display: inline-block; margin-top: 40px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.24em; color: var(--bone-mid);
+  text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 5px;
+}
+.exit:hover{ color: var(--bone); border-bottom-color: var(--bone-mid); }
+
+/* ---------- foot ---------- */
+
+footer{
+  max-width: 760px; margin: 0 auto; padding: 40px 20px 54px;
+  border-top: 1px solid var(--rule-2);
+}
+footer a{
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.24em; color: var(--bone-soft); text-decoration: none;
+}
+footer a:hover{ color: var(--bone-mid); }
+
+.sr{
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+@media (min-width: 620px){
+  body{ font-size: 19px; }
+  main{ padding: 4px 34px 0; }
+  footer{ padding: 40px 34px 54px; }
+  .ledgers{ gap: 26px; }
+  .crossrow{ grid-template-columns: 250px 1fr; gap: 20px; align-items: baseline; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ transition-duration: .001ms !important; }
+  .reveal{ opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>same seed</span>
+  <span class="rail" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span>
+</div>
+
+<p class="sr" aria-live="polite" id="live"></p>
+
+<main>
+
+<!-- ========================= ACT ONE ========================= -->
+<section class="act" id="act1" aria-label="one, two grounds">
+  <div class="act-mark">one — two grounds</div>
+
+  <p class="say">The same seed in both plots. Identical form, identical clock.</p>
+  <p class="say soft">Left: hard, dry, open ground. Right: cool, damp shade.</p>
+
+  <div class="field-wrap">
+    <canvas id="fieldCanvas" aria-label="Two plots of ground, each holding the same seed."></canvas>
+  </div>
+
+  <div class="ledgers">
+    <div class="ledger">
+      <div class="plot-name" id="nameA">hard, dry, open</div>
+      <div class="rows" id="rowsA"></div>
+    </div>
+    <div class="ledger">
+      <div class="plot-name" id="nameB">cool, damp shade</div>
+      <div class="rows" id="rowsB"></div>
+    </div>
+  </div>
+
+  <div class="clockline">
+    <span class="note" id="clock">day 00 · 90</span>
+    <span class="seg">
+      <button type="button" id="camClose" aria-pressed="true">up close</button>
+      <button type="button" id="camWide" aria-pressed="false">from across the yard</button>
+    </span>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="startSeason">start the season</button>
+    <button type="button" id="movePlant" hidden>move the left plant into the right ground</button>
+  </div>
+
+  <div class="vars" id="vars" hidden>
+    <span>seed <b>unchanged</b></span>
+    <span>clock <b>unchanged</b></span>
+    <span>ground <b>changed</b></span>
+  </div>
+
+  <div class="land" id="land1" hidden>
+    <p class="say reveal" data-d="0">Neither plant died. One spent the season holding on.</p>
+    <p class="say reveal" data-d="900">Nothing in the plant changed. The ground did.</p>
+    <p class="say soft reveal" data-d="1800">The ground didn't change what the seed was. It decided how much of it got out.</p>
+    <button type="button" class="go reveal" data-d="2700" id="toAct2">the ruler →</button>
+  </div>
+</section>
+
+<!-- ========================= ACT TWO ========================= -->
+<section class="act" id="act2" hidden aria-label="two, the ruler">
+  <div class="act-mark">two — the ruler</div>
+
+  <p class="say">One tree, at full expression, in ground that suits it.</p>
+  <p class="say soft" id="act2Instr">An instrument. Drag it across the tree to take a reading.</p>
+
+  <div class="tree-wrap" id="treeWrap">
+    <canvas id="treeCanvas" aria-label="A single mature tree in open ground."></canvas>
+    <div class="puck" id="puck" aria-hidden="true"><span></span><span></span></div>
+  </div>
+
+  <div class="instr-label" id="instrLabel">instrument</div>
+  <div class="readouts" id="readouts"></div>
+
+  <div class="land" id="land2a" hidden>
+    <p class="say reveal" data-d="0">The tree is an oak. It is healthy, at full expression, in ground that suits it.</p>
+    <p class="say reveal" data-d="1100">The instrument was calibrated for pine.</p>
+    <p class="say reveal" data-d="2200">Every reading is accurate. None of them is a verdict.</p>
+    <p class="say soft reveal" data-d="3400">An oak is not a better pine. Grass is not a failed tree. Better appears the moment one form is measured against a shape that was never its own.</p>
+    <div class="controls reveal" data-d="4600">
+      <button type="button" id="swapInstrument">change the instrument</button>
+    </div>
+  </div>
+
+  <div class="land" id="land2b" hidden>
+    <p class="say reveal" data-d="0">Same tree. Same afternoon. Every reading sound.</p>
+    <p class="say reveal" data-d="1200">The misery is not in the seed. It's <em>in the measuring</em>.</p>
+    <button type="button" class="go reveal" data-d="2200" id="toAct3">the shell →</button>
+  </div>
+</section>
+
+<!-- ========================= ACT THREE ========================= -->
+<section class="act" id="act3" hidden aria-label="three, the shell">
+  <div class="act-mark">three — the shell</div>
+
+  <p class="say">One seed, closed. The ground is set below.</p>
+
+  <div class="seed-wrap">
+    <canvas id="seedCanvas" aria-label="One closed seed in soil, seen in cross-section."></canvas>
+  </div>
+
+  <div class="note" style="margin-top:18px">the seed's sensors, reading the ground</div>
+  <div class="sensors" id="sensors"></div>
+
+  <div class="steady">
+    <div class="note">held steady</div>
+    <div class="steady-track"><div class="steady-fill" id="steadyFill"></div></div>
+  </div>
+
+  <div class="land" id="land3" hidden>
+    <p class="say reveal" data-d="0">The shell isn't a weakness. It's <em>engineering</em>.</p>
+    <p class="say soft reveal" data-d="1300">It opened when its own sensors read the ground as right. Not before.</p>
+    <button type="button" class="go reveal" data-d="2400" id="toAct4">→</button>
+  </div>
+</section>
+
+<!-- ========================= ACT FOUR ========================= -->
+<section class="act" id="act4" hidden aria-label="four">
+  <div class="act-mark">four</div>
+
+  <p class="say reveal" data-d="0">A person runs the same way.</p>
+  <p class="say soft reveal" data-d="1000">The nervous system, the temperament, the speed a mind runs at, what lights a person up and what flattens them. Installed, not chosen. Measurable. Stable from infancy onward.</p>
+
+  <div class="cross">
+    <div class="crossrow" id="cr0">
+      <div class="cr-key"><span class="bot">moisture</span><span class="arw">→</span><span class="hum">safety</span></div>
+      <div class="cr-body">Not the absence of challenge. Ground that can actually be trusted.</div>
+    </div>
+    <div class="crossrow" id="cr1">
+      <div class="cr-key"><span class="bot">warmth</span><span class="arw">→</span><span class="hum">honesty</span></div>
+      <div class="cr-body">A place where nothing has to be performed.</div>
+    </div>
+    <div class="crossrow" id="cr2">
+      <div class="cr-key"><span class="bot">length of light</span><span class="arw">→</span><span class="hum">something outward</span></div>
+      <div class="cr-body">Something that pulls energy outward, and makes opening worth the risk.</div>
+    </div>
+  </div>
+
+  <p class="say reveal" data-d="3600" style="margin-top:30px">Every place a person grows is already signaling one of two things — harden, or open. Which one it signals isn't chance. It's structure.</p>
+  <p class="say reveal" data-d="4700">Structure can be built.</p>
+
+  <p class="close-say reveal" data-d="6000">Know <em>your seed</em>.<br>Find <em>your soil</em>.</p>
+
+  <a class="exit reveal" data-d="7200" href="the-seed.html">the full case →</a>
+</section>
+
+</main>
+
+<footer>
+  <a href="the-seed.html">read without the instrument →</a>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   0 — ground rules
+   ============================================================ */
+
+var RMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+var reduced = RMQ.matches;
+if (RMQ.addEventListener) RMQ.addEventListener('change', function(e){ reduced = e.matches; });
+
+var clamp = function(v,a,b){ return v<a?a:(v>b?b:v); };
+var lerp  = function(a,b,t){ return a+(b-a)*t; };
+var ease  = function(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; };
+
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a>>>15, 1|a);
+    t = t + Math.imul(t ^ t>>>7, 61|t) ^ t;
+    return ((t ^ t>>>14) >>> 0) / 4294967296;
+  };
+}
+
+function rgb(c, alpha){
+  return 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + (alpha === undefined ? 1 : alpha) + ')';
+}
+function mix(a, b, t){
+  t = clamp(t,0,1);
+  return [ a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t ];
+}
+
+var C = {
+  bg:       [10,12,11],
+  soilDry:  [50,45,36],
+  soilDamp: [27,33,28],
+  stem:     [120,126,108],
+  leafOK:   [111,148,99],
+  leafPale: [178,176,140],
+  brown:    [125,90,53],
+  bloom:    [212,205,183],
+  accent:   [166,226,100],
+  bark:     [90,84,72],
+  oakLeaf:  [100,130,92],
+  hedge:    [20,26,22],
+  bone:     [222,217,204]
+};
+
+function fitCanvas(cv, h){
+  var w = cv.parentNode.clientWidth;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.style.height = h + 'px';
+  cv.width  = Math.round(w * dpr);
+  cv.height = Math.round(h * dpr);
+  var ctx = cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return { ctx: ctx, w: w, h: h };
+}
+
+function stagger(root){
+  var els = root.querySelectorAll('.reveal');
+  for (var i=0;i<els.length;i++){
+    (function(el){
+      var d = reduced ? 0 : (parseInt(el.getAttribute('data-d'),10) || 0);
+      setTimeout(function(){ el.classList.add('in'); }, d);
+    })(els[i]);
+  }
+}
+
+var live = document.getElementById('live');
+function announce(msg){ live.textContent = msg; }
+
+/* ============================================================
+   1 — the seed
+   fixed vector, set at load, hidden, never displayed.
+   ============================================================ */
+
+var SEED = {
+  water:   { opt: 0.74, tol: 0.18 },
+  light:   { opt: 0.28, tol: 0.16 },
+  shelter: { opt: 0.72, tol: 0.20 },
+  CAP: 2.9, BASE: 0.62, STRAIN: 0.95, SOFT: 0.55,
+  K: 1.85, GMAX: 100, G0: 22,
+  /* the band the shell opens in */
+  open: { water: [0.55,0.82], warmth: [0.40,0.64], light: [0.30,0.58] }
+};
+
+var GROUND = {
+  hard:  { water: 0.16, light: 0.93, shelter: 0.12 },
+  shade: { water: 0.71, light: 0.30, shelter: 0.78 }
+};
+
+var DAYS = 90, BAR_MAX = 3.1, RNG_SEED = 0x5EED;
+
+function seasonCurve(t){ return 0.82 + 0.34*Math.sin(Math.PI*t); }
+
+function effectiveGround(g, t){
+  var s = Math.sin(Math.PI*t), exposure = 1 - g.shelter;
+  return {
+    water:   clamp(g.water - 0.12*exposure*s, 0, 1),
+    light:   clamp(g.light + 0.06*exposure*s, 0, 1),
+    shelter: g.shelter
+  };
+}
+
+/* one tick of the model. intake, what it costs to stay standing, what is left. */
+function ledgerFor(ground, G, t){
+  var g = effectiveGround(ground, t);
+  var keys = ['water','light','shelter'];
+  var prod = 1, strain = 0, i, k, d, inside, st;
+  for (i=0;i<3;i++){
+    k = keys[i];
+    d = Math.abs(g[k] - SEED[k].opt);
+    inside = clamp(1 - d/(SEED[k].tol*2.2 + SEED.SOFT), 0, 1);
+    prod *= inside;
+    st = Math.max(0, d - SEED[k].tol);
+    strain += Math.pow(st, 1.25);
+  }
+  var fit   = Math.cbrt(prod);
+  var sizeF = 0.55 + 0.45*Math.min(1, G/SEED.GMAX);
+  var intake = SEED.CAP * fit * sizeF * seasonCurve(t);
+  var demand = (SEED.BASE + SEED.STRAIN*strain) * sizeF;
+  var spent  = Math.min(demand, intake);
+  return { intake: intake, spent: spent, surplus: intake - spent };
+}
+
+/* ============================================================
+   2 — form
+   both plots draw from one rng, seeded once. same draw, both plots.
+   ============================================================ */
+
+function buildClump(){
+  var r = mulberry32(RNG_SEED);
+  var stems = [], scapes = [], i, j;
+  var born = [0, 5, 11, 24, 36, 48, 60, 72, 84];
+  for (i=0;i<born.length;i++){
+    var side = (i % 2 === 0) ? -1 : 1;
+    var rank = Math.floor(i/2);
+    var leaves = [];
+    var n = 3 + Math.floor(r()*2);
+    for (j=0;j<n;j++){
+      leaves.push({
+        at:   0.10 + 0.74*(j/Math.max(1,n-1)) + (r()-0.5)*0.06,
+        side: (j % 2 === 0) ? 1 : -1,
+        len:  0.20 + r()*0.11,
+        wid:  0.075 + r()*0.035,
+        tilt: (r()-0.5)*0.5
+      });
+    }
+    stems.push({
+      born: born[i], growLen: 26,
+      maxLen: 0.78 + r()*0.30 - rank*0.03,
+      baseAngle: side * (0.10 + rank*0.09 + r()*0.07),
+      curveRate: side * (0.22 + r()*0.26),
+      leaves: leaves
+    });
+  }
+  var sBorn = [8, 14, 30, 44, 56, 68, 78, 88];
+  for (i=0;i<sBorn.length;i++){
+    scapes.push({
+      born: sBorn[i], growLen: 6,
+      maxLen: 0.62 + r()*0.30,
+      baseAngle: (r()-0.5)*0.40,
+      curveRate: (r()-0.5)*0.40,
+      size: 0.030 + r()*0.016
+    });
+  }
+  /* normalise the form into the plot it has to fit, once, at load */
+  var all = stems.concat(scapes), mx = 0, my = 0, pi, q, pts;
+  for (pi=0;pi<all.length;pi++){
+    pts = rawPath(all[pi], 1);
+    for (q=0;q<pts.length;q++){
+      if (Math.abs(pts[q][0]) > mx) mx = Math.abs(pts[q][0]);
+      if (pts[q][1] > my) my = pts[q][1];
+    }
+  }
+  return { stems: stems, scapes: scapes, k: Math.min(1.0/my, 0.42/mx) };
+}
+
+/* raw stem geometry, base at the origin, before the plot it lands in */
+function rawPath(stem, prog){
+  var len = stem.maxLen*prog, N = 20, step = len/N;
+  var x = 0, y = 0, ang = stem.baseAngle, pts = [[0,0]], i;
+  for (i=0;i<N;i++){
+    ang += stem.curveRate*step;
+    x += Math.sin(ang)*step;
+    y += Math.cos(ang)*step;
+    pts.push([x,y]);
+  }
+  return pts;
+}
+
+var CLUMP = buildClump();
+
+/* the same geometry, placed in a plot and projected */
+function stemPath(cam, stem, bx, prog){
+  var raw = rawPath(stem, prog), out = [], i, k = CLUMP.k;
+  for (i=0;i<raw.length;i++) out.push(w2s(cam, bx + raw[i][0]*k, raw[i][1]*k));
+  return out;
+}
+
+function w2s(cam, wx, wy){ return [ cam.ox + wx*cam.scale, cam.gy - wy*cam.scale ]; }
+
+function drawLeaf(ctx, x, y, ang, L, W, fill, edge){
+  if (L < 0.6) return;
+  ctx.save();
+  ctx.translate(x,y); ctx.rotate(ang);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.quadraticCurveTo(L*0.42,-W, L, 0);
+  ctx.quadraticCurveTo(L*0.42, W, 0, 0);
+  ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill();
+  if (edge > 0.03){
+    ctx.strokeStyle = rgb(C.brown, edge*0.85);
+    ctx.lineWidth = Math.max(0.7, L*0.06);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(L*0.94, 0, Math.max(0.7, L*0.06), 0, 6.2832);
+    ctx.fillStyle = rgb(C.brown, edge*0.7); ctx.fill();
+  }
+  ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+  ctx.lineWidth = Math.max(0.5, L*0.03);
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(L*0.88,0); ctx.stroke();
+  ctx.restore();
+}
+
+function drawBloom(ctx, x, y, r, fill){
+  if (r < 0.5) return;
+  var i, a;
+  ctx.fillStyle = fill;
+  for (i=0;i<5;i++){
+    a = i*1.2566 + 0.4;
+    ctx.beginPath();
+    ctx.ellipse(x+Math.cos(a)*r*0.6, y+Math.sin(a)*r*0.6, r*0.52, r*0.34, a, 0, 6.2832);
+    ctx.fill();
+  }
+  ctx.beginPath(); ctx.arc(x,y,r*0.3,0,6.2832);
+  ctx.fillStyle = 'rgba(0,0,0,0.34)'; ctx.fill();
+}
+
+/* the whole plant, expressed only as far as growth allows */
+function drawPlant(ctx, cam, bx, G, cond, surplus, dim){
+  var s, i, j, prog, pts, k, p1, p2, head, L, W, ang, tint, born, newness, fill;
+  var leafCol = mix(C.leafPale, C.leafOK, cond);
+  var edge = clamp(1 - cond*1.5, 0, 1);
+  /* distance takes the colour out of it long before it takes the shape */
+  if (cam.wide > 0.01){
+    leafCol = mix(leafCol, [60,68,58], cam.wide*0.68);
+    edge *= (1 - cam.wide*0.82);
+  }
+  var tipAcc = (G > SEED.G0) ? clamp(surplus/2.4, 0, 1) : 0;
+  var scale = cam.scale;
+
+  for (i=0;i<CLUMP.stems.length;i++){
+    s = CLUMP.stems[i];
+    prog = clamp((G - s.born)/s.growLen, 0, 1);
+    if (prog <= 0.001) continue;
+    pts = stemPath(cam, s, bx, prog);
+
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (k=1;k<pts.length;k++) ctx.lineTo(pts[k][0], pts[k][1]);
+    ctx.strokeStyle = rgb(mix(C.stem, C.leafPale, edge*0.5), dim);
+    ctx.lineWidth = Math.max(0.8, scale*0.016);
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    /* the growing tip carries the colour of what is left over */
+    if (tipAcc > 0.02 && prog < 0.995){
+      ctx.beginPath();
+      ctx.moveTo(pts[pts.length-4][0], pts[pts.length-4][1]);
+      for (k=pts.length-3;k<pts.length;k++) ctx.lineTo(pts[k][0], pts[k][1]);
+      ctx.strokeStyle = rgb(C.accent, tipAcc*0.85*dim);
+      ctx.lineWidth = Math.max(0.9, scale*0.018);
+      ctx.stroke();
+    }
+
+    for (j=0;j<s.leaves.length;j++){
+      var lf = s.leaves[j];
+      if (prog <= lf.at) continue;
+      var open = clamp((prog - lf.at)/0.16, 0, 1);
+      /* the leaf sits at a fixed point on the stem, not on the part grown so far */
+      var qi = Math.min(pts.length-2, Math.max(0, Math.round((lf.at/prog)*(pts.length-1))));
+      p1 = pts[qi]; p2 = pts[qi+1];
+      head = Math.atan2(p2[1]-p1[1], p2[0]-p1[0]);
+      ang = head + lf.side*(0.85 + lf.tilt) + (1-cond)*0.42*lf.side;
+      L = lf.len*CLUMP.k*scale*open*(0.74 + 0.34*cond);
+      W = lf.wid*CLUMP.k*scale*open*(0.74 + 0.34*cond);
+      born = s.born + lf.at*s.growLen;
+      newness = (born > SEED.G0) ? clamp(1 - (G - born)/8, 0, 1) : 0;
+      tint = newness*0.8;
+      fill = rgb(mix(leafCol, C.accent, tint), dim);
+      drawLeaf(ctx, p1[0], p1[1], ang, L, W, fill, edge*dim*(1-tint));
+    }
+  }
+
+  for (i=0;i<CLUMP.scapes.length;i++){
+    s = CLUMP.scapes[i];
+    prog = clamp((G - s.born)/s.growLen, 0, 1);
+    if (prog <= 0.001) continue;
+    pts = stemPath(cam, s, bx, prog);
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (k=1;k<pts.length;k++) ctx.lineTo(pts[k][0], pts[k][1]);
+    ctx.strokeStyle = rgb(mix(C.stem, C.leafPale, edge*0.6), dim*0.9);
+    ctx.lineWidth = Math.max(0.6, scale*0.008);
+    ctx.stroke();
+    if (prog > 0.93){
+      born = s.born + s.growLen;
+      newness = (born > SEED.G0) ? clamp(1 - (G - born)/8, 0, 1) : 0;
+      p1 = pts[pts.length-1];
+      drawBloom(ctx, p1[0], p1[1], s.size*CLUMP.k*scale*(0.55+0.45*cond),
+        rgb(mix(C.bloom, C.accent, newness*0.55), dim));
+    }
+  }
+}
+
+/* ============================================================
+   3 — act one : two grounds
+   ============================================================ */
+
+var fieldCv = document.getElementById('fieldCanvas');
+var fieldCtx = null, fw = 0, fh = 0;
+
+var PLOT_X = 0.46, PATCH = [0.02, 0.92], PATCH_D = 0.55;
+var VIEW_CLOSE = 1.86, VIEW_WIDE = 5.0;
+
+var field = {
+  day: 0, target: 0, run: 0, phase: 'idle',
+  cam: 0, camTo: 0,
+  plots: [
+    { ground: GROUND.hard,  G: SEED.G0, cond: 0.5, led: {intake:0,spent:0,surplus:0} },
+    { ground: GROUND.shade, G: SEED.G0, cond: 0.5, led: {intake:0,spent:0,surplus:0} }
+  ]
+};
+
+function camParams(){
+  var e = ease(field.cam);
+  var viewW = lerp(VIEW_CLOSE, VIEW_WIDE, e);
+  return { ox: fw/2, gy: fh*lerp(0.87, 0.66, e), scale: fw/viewW, wide: e };
+}
+
+function drawSoil(ctx, cam, sign, moisture){
+  var x0 = w2s(cam, sign*PATCH[0], 0)[0];
+  var x1 = w2s(cam, sign*PATCH[1], 0)[0];
+  var y0 = cam.gy, y1 = w2s(cam, 0, -PATCH_D)[1];
+  var L = Math.min(x0,x1), R = Math.max(x0,x1);
+  var wide = cam.wide, near = 1 - wide;
+
+  /* up close the two grounds are plainly different.
+     at distance they converge, because that is what distance does. */
+  ctx.fillStyle = rgb(mix(mix(C.soilDry, C.soilDamp, moisture), [27,32,28], wide*0.94));
+  ctx.fillRect(L, y0, R-L, y1-y0);
+
+  var r = mulberry32(0xA11CE + (sign>0?7:3)), i, x, y;
+  if (near > 0.05){
+    if (moisture < 0.5){
+      ctx.strokeStyle = 'rgba(255,246,228,' + (0.06*near) + ')';
+      ctx.lineWidth = 1;
+      for (i=0;i<13;i++){
+        x = L + r()*(R-L); y = y0 + r()*(y1-y0)*0.85;
+        ctx.beginPath(); ctx.moveTo(x,y);
+        ctx.lineTo(x + (r()-0.5)*(R-L)*0.24, y + r()*(y1-y0)*0.3);
+        ctx.stroke();
+      }
+    } else {
+      for (i=0;i<70;i++){
+        x = L + r()*(R-L); y = y0 + r()*(y1-y0);
+        ctx.fillStyle = 'rgba(150,178,140,' + ((0.03 + r()*0.05)*near) + ')';
+        ctx.fillRect(x, y, 1.6, 1.2);
+      }
+    }
+  }
+  ctx.fillStyle = 'rgba(0,0,0,' + (0.22*near) + ')';
+  ctx.fillRect(L, y0-1, R-L, 2);
+}
+
+function drawYard(ctx, cam, a){
+  var i, x;
+
+  /* dusk */
+  var g = ctx.createLinearGradient(0,0,0,cam.gy);
+  g.addColorStop(0,    'rgba(48,55,57,' + (0.96*a) + ')');
+  g.addColorStop(0.55, 'rgba(30,36,37,' + (0.96*a) + ')');
+  g.addColorStop(1,    'rgba(19,23,23,' + (0.96*a) + ')');
+  ctx.fillStyle = g; ctx.fillRect(0,0,fw,cam.gy);
+
+  /* the hedge at the end of the yard */
+  var hy = w2s(cam, 0, 1.42)[1];
+  var r = mulberry32(0xBEE);
+  ctx.beginPath(); ctx.moveTo(0, cam.gy); ctx.lineTo(0, hy);
+  for (x=0;x<=fw;x+=13) ctx.lineTo(x, hy + Math.sin(x*0.055)*4 - r()*11);
+  ctx.lineTo(fw, cam.gy); ctx.closePath();
+  ctx.fillStyle = rgb(C.hedge, 0.97*a); ctx.fill();
+
+  /* a fence in front of it */
+  var fy = w2s(cam, 0, 0.60)[1];
+  ctx.strokeStyle = 'rgba(126,122,106,' + (0.20*a) + ')';
+  ctx.lineWidth = Math.max(1, cam.scale*0.018);
+  for (x = -3.6; x <= 3.6; x += 0.40){
+    var px = w2s(cam, x, 0)[0];
+    ctx.beginPath(); ctx.moveTo(px, fy); ctx.lineTo(px, cam.gy); ctx.stroke();
+  }
+  ctx.lineWidth = Math.max(1, cam.scale*0.010);
+  ctx.beginPath();
+  ctx.moveTo(0, fy + cam.scale*0.07); ctx.lineTo(fw, fy + cam.scale*0.07); ctx.stroke();
+
+  /* neighbours. the bed is not a controlled experiment. */
+  var pos = [-2.62, -2.02, -1.42, 1.40, 2.00, 2.58];
+  for (i=0;i<pos.length;i++){
+    drawShrub(ctx, w2s(cam, pos[i], 0)[0], cam.gy, cam.scale*(0.52 + (i%4)*0.16), a*0.7, 0x30D + i*17);
+  }
+
+  /* the lawn in front */
+  ctx.fillStyle = 'rgba(24,29,26,' + (0.95*a) + ')';
+  ctx.fillRect(0, w2s(cam, 0, -PATCH_D)[1], fw, fh);
+}
+
+function drawShrub(ctx, x, y, s, a, seed){
+  var r = mulberry32(seed), i, ang, L;
+  ctx.strokeStyle = 'rgba(96,108,92,' + (0.75*a) + ')';
+  ctx.lineWidth = Math.max(0.7, s*0.02);
+  for (i=0;i<7;i++){
+    ang = -Math.PI/2 + (r()-0.5)*1.5;
+    L = s*(0.34 + r()*0.4);
+    ctx.beginPath(); ctx.moveTo(x,y);
+    ctx.quadraticCurveTo(x+Math.cos(ang)*L*0.5, y+Math.sin(ang)*L*0.7,
+                         x+Math.cos(ang)*L,     y+Math.sin(ang)*L);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(88,110,84,' + (0.66*a) + ')';
+    ctx.beginPath();
+    ctx.ellipse(x+Math.cos(ang)*L, y+Math.sin(ang)*L, s*0.075, s*0.045, ang, 0, 6.2832);
+    ctx.fill();
+  }
+}
+
+function drawField(){
+  if (!fieldCtx) return;
+  var ctx = fieldCtx, cam = camParams();
+  ctx.fillStyle = rgb(C.bg); ctx.fillRect(0,0,fw,fh);
+  if (cam.wide > 0.01) drawYard(ctx, cam, cam.wide);
+
+  drawSoil(ctx, cam, -1, field.plots[0].ground === GROUND.hard ? 0.1 : 0.9);
+  drawSoil(ctx, cam,  1, 0.9);
+
+  var dim = lerp(1, 0.72, cam.wide);
+  drawPlant(ctx, cam, -PLOT_X, field.plots[0].G, field.plots[0].cond, field.plots[0].led.surplus, dim);
+  drawPlant(ctx, cam,  PLOT_X, field.plots[1].G, field.plots[1].cond, field.plots[1].led.surplus, dim);
+
+  /* what distance does */
+  if (cam.wide > 0.01){
+    ctx.fillStyle = rgb(C.bg, 0.40*cam.wide);
+    ctx.fillRect(0,0,fw,fh);
+  }
+
+  if (cam.wide < 0.6){
+    ctx.strokeStyle = 'rgba(222,217,204,' + (0.07*(1-cam.wide/0.6)) + ')';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(fw/2, cam.gy - fh*0.55); ctx.lineTo(fw/2, w2s(cam,0,-PATCH_D)[1]); ctx.stroke();
+  }
+}
+
+/* ledgers */
+var ROWS = [
+  { key: 'intake',  label: 'taking in' },
+  { key: 'spent',   label: 'cost of standing' },
+  { key: 'surplus', label: 'left over' }
+];
+var ledgerEls = [];
+
+function buildLedgers(){
+  ['rowsA','rowsB'].forEach(function(id, pi){
+    var host = document.getElementById(id), set = [];
+    ROWS.forEach(function(r){
+      var row = document.createElement('div');
+      row.className = 'row' + (r.key === 'surplus' ? ' left-over' : '');
+      row.innerHTML = '<div class="row-top"><span>' + r.label + '</span><b>0.00</b></div>' +
+                      '<div class="track"><div class="fill"></div></div>';
+      host.appendChild(row);
+      set.push({ row: row, num: row.querySelector('b'), fill: row.querySelector('.fill'), key: r.key });
+    });
+    ledgerEls[pi] = set;
+  });
+}
+
+var lastLedgerPaint = 0;
+function paintLedgers(now, force){
+  if (!force && now - lastLedgerPaint < 120) return;
+  lastLedgerPaint = now;
+  for (var p=0;p<2;p++){
+    var led = field.plots[p].led, set = ledgerEls[p];
+    for (var i=0;i<set.length;i++){
+      var v = led[set[i].key];
+      set[i].num.textContent = v.toFixed(2);
+      set[i].fill.style.transform = 'scaleX(' + clamp(v/BAR_MAX,0,1).toFixed(4) + ')';
+      if (set[i].key === 'surplus') set[i].row.classList.toggle('has', v > 0.005);
+    }
+  }
+}
+
+/* the clock. one season, ninety days, ninety seconds. */
+var DAY_PER_SEC = 1;
+var RM_STEPS = [0,18,36,54,72,90], rmIndex = 0, rmAt = 0;
+
+function integrate(toDay){
+  var p, i, t, l, cT, dd;
+  while (field.day < toDay - 1e-6){
+    dd = Math.min(0.25, toDay - field.day);
+    t = field.day/DAYS;
+    for (i=0;i<2;i++){
+      p = field.plots[i];
+      l = ledgerFor(p.ground, p.G, t);
+      p.led = l;
+      cT = l.intake > 0 ? l.surplus/l.intake : 0;
+      p.cond += (cT - p.cond) * (1 - Math.exp(-dd/25));
+      p.G += SEED.K * l.surplus * (1 - p.G/(SEED.GMAX*1.06)) * dd;
+      p.G = Math.min(p.G, SEED.GMAX);
+    }
+    field.day += dd;
+  }
+  t = clamp(field.day/DAYS,0,1);
+  for (i=0;i<2;i++) field.plots[i].led = ledgerFor(field.plots[i].ground, field.plots[i].G, t);
+}
+
+var clockEl = document.getElementById('clock');
+var landedRun2 = false;
+
+function fieldTick(now, dt){
+  /* camera */
+  if (Math.abs(field.cam - field.camTo) > 0.0005){
+    var sp = reduced ? 1 : dt/900;
+    field.cam += clamp(field.camTo - field.cam, -sp, sp);
+  } else field.cam = field.camTo;
+
+  if (field.phase === 'running'){
+    if (reduced){
+      if (now - rmAt > 6000 && rmIndex < RM_STEPS.length-1){
+        rmIndex++; rmAt = now;
+        integrate(RM_STEPS[rmIndex]);
+      }
+    } else {
+      integrate(Math.min(DAYS, field.day + dt/1000*DAY_PER_SEC));
+    }
+    clockEl.textContent = 'day ' + String(Math.floor(field.day)).padStart(2,'0') + ' · ' + DAYS;
+
+    if (field.run === 2 && !landedRun2 && field.day >= 40){
+      landedRun2 = true;
+      var l1 = document.getElementById('land1');
+      l1.hidden = false; stagger(l1);
+      announce('The season is well under way in both plots.');
+    }
+    if (field.day >= DAYS - 1e-6){
+      field.phase = 'done';
+      if (field.run === 1){
+        document.getElementById('movePlant').hidden = false;
+        announce('The season ended.');
+      }
+    }
+  }
+  paintLedgers(now);
+  drawField();
+}
+
+function startSeason(runNo){
+  field.run = runNo;
+  field.day = 0; field.phase = 'running';
+  rmIndex = 0; rmAt = performance.now();
+  for (var i=0;i<2;i++){
+    field.plots[i].G = SEED.G0;
+    field.plots[i].cond = 0.5;
+    field.plots[i].led = ledgerFor(field.plots[i].ground, SEED.G0, 0);
+  }
+}
+
+document.getElementById('startSeason').addEventListener('click', function(){
+  this.hidden = true;
+  startSeason(1);
+});
+
+document.getElementById('movePlant').addEventListener('click', function(){
+  this.hidden = true;
+  field.plots[0].ground = GROUND.shade;
+  document.getElementById('nameA').textContent = 'cool, damp shade';
+  document.getElementById('vars').hidden = false;
+  startSeason(2);
+  announce('The plant is in the other ground. The season runs again.');
+});
+
+function setCam(v){
+  field.camTo = v;
+  document.getElementById('camClose').setAttribute('aria-pressed', v === 0 ? 'true' : 'false');
+  document.getElementById('camWide').setAttribute('aria-pressed', v === 1 ? 'true' : 'false');
+  document.querySelector('.ledgers').classList.toggle('away', v === 1);
+}
+document.getElementById('camClose').addEventListener('click', function(){ setCam(0); });
+document.getElementById('camWide').addEventListener('click', function(){ setCam(1); });
+
+/* ============================================================
+   4 — act two : the ruler
+   ============================================================ */
+
+var treeCv  = document.getElementById('treeCanvas');
+var treeCtx = null, tw = 0, th = 0, treeBuf = null;
+var puck = document.getElementById('puck');
+var wrap = document.getElementById('treeWrap');
+
+var ZONES = [
+  { id:'crown',  fx: 0.44, fy: 0.20, r: 38 },
+  { id:'branch', fx: 0.72, fy: 0.42, r: 34 },
+  { id:'trunk',  fx: 0.49, fy: 0.68, r: 31 },
+  { id:'base',   fx: 0.52, fy: 0.88, r: 31 }
+];
+
+var PINE = {
+  crown:  { label:'needle count',         value:'0',      num:0,    max:41000, mark:41000, std:'standard 41,000' },
+  branch: { label:'cone density',         value:'0.0 /m²',num:0,    max:6.4,   mark:6.4,   std:'standard 6.4 /m²' },
+  trunk:  { label:'resin yield',          value:'0.0 ml', num:0,    max:18.5,  mark:18.5,  std:'standard 18.5 ml' },
+  base:   { label:'height at year three', value:'0.9 m',  num:0.9,  max:4.2,   mark:3.4,   std:'standard 3.4 m' }
+};
+var OAK = {
+  crown:  { label:'leaf area index',      value:'4.6',    num:4.6,  max:7.0,   band:[3.9,5.4],   std:'range 3.9 – 5.4' },
+  branch: { label:'acorn set',            value:'540 /m²',num:540,  max:1100,  band:[300,900],   std:'range 300 – 900 /m²' },
+  trunk:  { label:'tannin',               value:'9.2 %',  num:9.2,  max:15,    band:[6,12],      std:'range 6.0 – 12.0 %' },
+  base:   { label:'height at year three', value:'0.9 m',  num:0.9,  max:1.6,   band:[0.7,1.2],   std:'range 0.7 – 1.2 m' }
+};
+
+var act2 = { set: PINE, taken: {}, count: 0, stage: 'pine', zoneEls: [] };
+
+function renderOak(){
+  var buf = document.createElement('canvas');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  buf.width = Math.round(tw*dpr); buf.height = Math.round(th*dpr);
+  var c = buf.getContext('2d');
+  c.setTransform(dpr,0,0,dpr,0,0);
+
+  c.fillStyle = rgb(C.bg); c.fillRect(0,0,tw,th);
+
+  var gy = th*0.94;
+  var r = mulberry32(0xACE);
+
+  /* ground */
+  c.fillStyle = 'rgba(30,35,30,1)'; c.fillRect(0, gy, tw, th-gy);
+  c.fillStyle = 'rgba(0,0,0,0.25)'; c.fillRect(0, gy-1, tw, 2);
+
+  /* first pass: the tree in its own units, trunk length one, base at the origin */
+  var segs = [];
+  function walk(x, y, ang, len, wid, depth){
+    var x2 = x + Math.cos(ang)*len, y2 = y + Math.sin(ang)*len;
+    var mx = (x+x2)/2 + (r()-0.5)*len*0.20, my = (y+y2)/2 + (r()-0.5)*len*0.20;
+    segs.push([x, y, mx, my, x2, y2, wid, depth]);
+    if (depth > 5 || len < 0.06) return;
+    var n = depth < 2 ? 3 : 2, i;
+    /* heavy limbs go out low and wide; the branchlets above them turn back up.
+       that shape is the difference between an oak and a fountain. */
+    var arc = depth < 1 ? 0.86 : (depth < 2 ? 0.60 : 0.44);
+    var rf  = depth < 2 ? 0.98 : 0.64;
+    var dec = depth < 2 ? 0.82 : 0.72;
+    for (i=0;i<n;i++){
+      var spread = (i - (n-1)/2)*(arc + r()*0.12) + (r()-0.5)*0.16;
+      var na = -Math.PI/2 + (ang + Math.PI/2)*rf + spread;
+      walk(x2, y2, na, len*(dec + r()*0.08), wid*0.64, depth+1);
+    }
+  }
+  walk(0, 0, -Math.PI/2, 0.78, 0.17, 0);
+
+  /* an oak carries leaves the length of its branches, not in a plate on top */
+  var r2 = mulberry32(0xF0111A), leaves = [], i, j, t, u, iu, px, py, aa, rad, cnt;
+  for (i=0;i<segs.length;i++){
+    t = segs[i];
+    if (t[7] < 2) continue;
+    cnt = t[7] >= 4 ? 10 : 7;
+    for (j=0;j<cnt;j++){
+      u = 0.12 + r2()*0.94; iu = 1-u;
+      px = iu*iu*t[0] + 2*iu*u*t[2] + u*u*t[4];
+      py = iu*iu*t[1] + 2*iu*u*t[3] + u*u*t[5];
+      aa = r2()*6.2832; rad = 0.05 + r2()*0.15;
+      leaves.push([px + Math.cos(aa)*rad, py + Math.sin(aa)*rad*0.85, t[7], aa]);
+    }
+  }
+
+  /* fit it to the frame it has to live in */
+  var minX = 0, maxX = 0, minY = 0, pad = 0.055;
+  for (i=0;i<leaves.length;i++){
+    t = leaves[i];
+    if (t[0]-pad < minX) minX = t[0]-pad;
+    if (t[0]+pad > maxX) maxX = t[0]+pad;
+    if (t[1]-pad < minY) minY = t[1]-pad;
+  }
+  var s = Math.min((tw*0.94)/(maxX-minX), (th*0.82)/(-minY));
+  var ox = tw/2 - ((minX+maxX)/2)*s, oy = gy;
+  var X = function(v){ return v*s + ox; }, Y = function(v){ return v*s + oy; };
+
+  /* the skeleton */
+  for (i=0;i<segs.length;i++){
+    t = segs[i];
+    c.beginPath();
+    c.moveTo(X(t[0]), Y(t[1]));
+    c.quadraticCurveTo(X(t[2]), Y(t[3]), X(t[4]), Y(t[5]));
+    c.strokeStyle = rgb(mix(C.bark, C.bg, t[7]*0.09));
+    c.lineWidth = Math.max(1, t[6]*s); c.lineCap = 'round'; c.stroke();
+  }
+
+  /* the crown, deepest wood first so the outer leaves sit on top */
+  leaves.sort(function(p,q){ return p[2]-q[2]; });
+  var lr = s*0.032, lw = s*0.021, col;
+  for (i=0;i<leaves.length;i++){
+    t = leaves[i];
+    col = mix(C.oakLeaf, C.bone, r2()*0.24);
+    c.fillStyle = rgb(mix(col, C.bg, (5-t[2])*0.05), 0.62 + r2()*0.32);
+    c.beginPath();
+    c.ellipse(X(t[0]), Y(t[1]), lr, lw, t[3], 0, 6.2832);
+    c.fill();
+  }
+  /* what is left over, at the growing tips */
+  for (i=0;i<leaves.length;i+=47){
+    t = leaves[i];
+    if (t[2] < 5) continue;
+    c.fillStyle = rgb(C.accent, 0.5);
+    c.beginPath();
+    c.ellipse(X(t[0]), Y(t[1]), lr*0.66, lw*0.66, t[3], 0, 6.2832);
+    c.fill();
+  }
+
+  /* the four places the instrument is taken to, read off the tree itself */
+  var top = leaves[0], right = null, crownTop = 0;
+  for (i=0;i<leaves.length;i++) if (leaves[i][1] < crownTop) crownTop = leaves[i][1];
+  for (i=0;i<leaves.length;i++){
+    if (leaves[i][1] < top[1]) top = leaves[i];
+    if (leaves[i][1] > crownTop*0.72 && leaves[i][1] < crownTop*0.30 &&
+        (!right || leaves[i][0] > right[0])) right = leaves[i];
+  }
+  if (!right) right = top;
+  var trunk = segs[0];
+  ZONES[0].fx = X(top[0])/tw;                ZONES[0].fy = (Y(top[1]) + lr*1.6)/th;
+  ZONES[1].fx = (X(right[0]) - lr*1.0)/tw;   ZONES[1].fy = Y(right[1])/th;
+  ZONES[2].fx = X(trunk[0] + (trunk[4]-trunk[0])*0.70)/tw;
+  ZONES[2].fy = Y(trunk[1] + (trunk[5]-trunk[1])*0.70)/th;
+  /* height is read from the ground beside the trunk, not through it.
+     step it far enough out that the two targets can never be confused. */
+  ZONES[3].fy = (gy - lr*1.0)/th;
+  var need = ZONES[2].r + ZONES[3].r + 10;
+  var dy = (ZONES[3].fy - ZONES[2].fy)*th;
+  var out = Math.sqrt(Math.max(0, need*need - dy*dy));
+  var rightX = X(trunk[0]) + out;
+  ZONES[3].fx = (rightX + ZONES[3].r <= tw - 4 ? rightX : X(trunk[0]) - out)/tw;
+  /* the whole target has to stay on the canvas, not just its centre */
+  for (i=0;i<ZONES.length;i++){
+    ZONES[i].fx = clamp(ZONES[i].fx, ZONES[i].r/tw, 1 - ZONES[i].r/tw);
+    ZONES[i].fy = clamp(ZONES[i].fy, ZONES[i].r/th, 1 - ZONES[i].r/th);
+  }
+
+  treeBuf = buf;
+}
+
+function drawTree(){
+  if (!treeCtx || !treeBuf) return;
+  var c = treeCtx;
+  c.fillStyle = rgb(C.bg); c.fillRect(0,0,tw,th);
+  c.drawImage(treeBuf, 0, 0, tw, th);
+  for (var i=0;i<ZONES.length;i++){
+    var z = ZONES[i], taken = !!act2.taken[z.id];
+    var x = z.fx*tw, y = z.fy*th, m = 13;
+    /* a crosshair, not a target ring. it has to read against foliage,
+       so it is laid down twice: a dark backing, then the mark itself. */
+    var mark = function(){
+      c.beginPath(); c.arc(x, y, m, 0, 6.2832); c.stroke();
+      c.beginPath();
+      c.moveTo(x-m-5, y); c.lineTo(x-m-1, y);
+      c.moveTo(x+m+1, y); c.lineTo(x+m+5, y);
+      c.moveTo(x, y-m-5); c.lineTo(x, y-m-1);
+      c.moveTo(x, y+m+1); c.lineTo(x, y+m+5);
+      c.stroke();
+    };
+    c.strokeStyle = 'rgba(8,10,9,' + (taken ? 0.30 : 0.62) + ')';
+    c.lineWidth = 3.5; mark();
+    c.strokeStyle = 'rgba(228,224,212,' + (taken ? 0.16 : (z.hot ? 0.78 : 0.42)) + ')';
+    c.lineWidth = 1; mark();
+  }
+}
+
+function buildZones(){
+  for (var i=0;i<act2.zoneEls.length;i++) act2.zoneEls[i].remove();
+  act2.zoneEls = [];
+  ZONES.forEach(function(z){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'zone';
+    b.style.left = (z.fx*100) + '%';
+    b.style.top  = (z.fy*100) + '%';
+    b.style.width = (z.r*2) + 'px'; b.style.height = (z.r*2) + 'px';
+    b.setAttribute('aria-label', 'take a reading at the ' + z.id);
+    b.addEventListener('click', function(){ takeReading(z.id); });
+    wrap.appendChild(b);
+    z.el = b;
+    act2.zoneEls.push(b);
+  });
+}
+
+var readouts = document.getElementById('readouts');
+
+function takeReading(id){
+  if (act2.taken[id]) return;
+  var d = act2.set[id];
+  act2.taken[id] = true; act2.count++;
+  for (var zi=0; zi<ZONES.length; zi++) if (ZONES[zi].id === id && ZONES[zi].el) ZONES[zi].el.disabled = true;
+
+  var el = document.createElement('div');
+  el.className = 'readout';
+  var barHTML;
+  if (act2.stage === 'pine'){
+    var f = clamp(d.num/d.max, 0, 1)*100;
+    barHTML = '<i style="width:' + f.toFixed(1) + '%"></i>' +
+              '<u style="left:' + (d.mark/d.max*100).toFixed(1) + '%"></u>';
+  } else {
+    var b0 = d.band[0]/d.max*100, b1 = d.band[1]/d.max*100;
+    barHTML = '<s style="left:' + b0.toFixed(1) + '%;width:' + (b1-b0).toFixed(1) + '%"></s>' +
+              '<u style="left:' + (d.num/d.max*100).toFixed(1) + '%"></u>';
+  }
+  el.innerHTML =
+    '<div class="ro-top"><span>' + d.label + '</span><b>' + d.value + '</b></div>' +
+    '<div class="ro-bar">' + barHTML + '</div>' +
+    '<div class="ro-foot"><span>' + d.std + '</span><span>' +
+    (act2.stage === 'pine' ? 'below standard' : 'within range') + '</span></div>';
+  readouts.appendChild(el);
+  announce(d.label + ', ' + d.value + ', ' + (act2.stage === 'pine' ? 'below standard' : 'within range'));
+
+  drawTree();
+  if (act2.count === 4) (act2.stage === 'pine') ? afterPine() : afterOak();
+}
+
+function afterPine(){
+  puck.classList.add('done');
+  for (var i=0;i<act2.zoneEls.length;i++) act2.zoneEls[i].disabled = true;
+  document.getElementById('act2Instr').style.opacity = '0';
+  /* stillness */
+  setTimeout(function(){
+    var l = document.getElementById('land2a');
+    l.hidden = false; stagger(l);
+  }, reduced ? 400 : 2400);
+}
+
+function afterOak(){
+  puck.classList.add('done');
+  for (var i=0;i<act2.zoneEls.length;i++) act2.zoneEls[i].disabled = true;
+  setTimeout(function(){
+    var l = document.getElementById('land2b');
+    l.hidden = false; stagger(l);
+  }, reduced ? 300 : 1400);
+}
+
+document.getElementById('swapInstrument').addEventListener('click', function(){
+  this.disabled = true;
+  var old = readouts.querySelectorAll('.readout');
+  for (var i=0;i<old.length;i++) old[i].classList.add('past');
+  act2.set = OAK; act2.stage = 'oak'; act2.taken = {}; act2.count = 0;
+  document.getElementById('instrLabel').textContent = 'instrument · calibrated for this tree';
+  var instr = document.getElementById('act2Instr');
+  instr.textContent = 'The same four measurements, again.';
+  instr.style.opacity = '1';
+  puck.classList.remove('done');
+  for (i=0;i<act2.zoneEls.length;i++) act2.zoneEls[i].disabled = false;
+  placePuck(tw*0.14, th*0.16);
+  drawTree();
+});
+
+/* the instrument itself */
+var puckX = 0, puckY = 0, dragging = false;
+function placePuck(x,y){
+  puckX = clamp(x, 6, tw-6); puckY = clamp(y, 6, th-6);
+  puck.style.left = puckX + 'px'; puck.style.top = puckY + 'px';
+  var near = null, i, z, d;
+  for (i=0;i<ZONES.length;i++){
+    z = ZONES[i];
+    d = Math.hypot(puckX - z.fx*tw, puckY - z.fy*th);
+    z.hot = (d < z.r + 10) && !act2.taken[z.id];
+    if (z.hot) near = z;
+  }
+  puck.classList.toggle('near', !!near);
+  drawTree();
+  return near;
+}
+
+function puckDown(e){
+  if (puck.classList.contains('done')) return;
+  dragging = true;
+  puck.setPointerCapture && puck.setPointerCapture(e.pointerId);
+  e.preventDefault();
+}
+function puckMove(e){
+  if (!dragging) return;
+  var r = wrap.getBoundingClientRect();
+  placePuck(e.clientX - r.left, e.clientY - r.top);
+  e.preventDefault();
+}
+function puckUp(e){
+  if (!dragging) return;
+  dragging = false;
+  var r = wrap.getBoundingClientRect();
+  var near = placePuck(e.clientX - r.left, e.clientY - r.top);
+  if (near) takeReading(near.id);
+}
+puck.addEventListener('pointerdown', puckDown);
+window.addEventListener('pointermove', puckMove, { passive: false });
+window.addEventListener('pointerup', puckUp);
+window.addEventListener('pointercancel', function(){ dragging = false; });
+
+/* ============================================================
+   5 — act three : the shell
+   ============================================================ */
+
+var seedCv = document.getElementById('seedCanvas');
+var sCtx = null, sw = 0, sh = 0;
+
+var COND = [
+  { key: 'water',  name: 'moisture',        band: SEED.open.water,  start: 0.14 },
+  { key: 'warmth', name: 'warmth',          band: SEED.open.warmth, start: 0.88 },
+  { key: 'light',  name: 'length of light', band: SEED.open.light,  start: 0.93 }
+];
+
+var HOLD_MS = 50000;
+var shell = {
+  vals: [0.14, 0.88, 0.93],
+  lastInput: 0, held: 0, allIn: false,
+  openT: 0, opened: false, press: 0, calm: 0, marks: [], inputs: []
+};
+
+function buildSensors(){
+  var host = document.getElementById('sensors');
+  COND.forEach(function(c, i){
+    var d = document.createElement('div');
+    d.className = 'sensor';
+    d.innerHTML = '<div class="s-head"><span class="s-mark"><i></i></span><span>' + c.name + '</span></div>';
+    var inp = document.createElement('input');
+    inp.type = 'range'; inp.min = 0; inp.max = 1000; inp.step = 1;
+    inp.value = Math.round(c.start*1000);
+    inp.setAttribute('aria-label', c.name);
+    d.appendChild(inp);
+    host.appendChild(d);
+    shell.marks.push(d.querySelector('.s-mark'));
+    shell.inputs.push(inp);
+    inp.addEventListener('input', function(){
+      shell.vals[i] = parseInt(inp.value,10)/1000;
+      shell.lastInput = performance.now();
+    });
+  });
+}
+
+function inBand(v, band){ return v >= band[0] && v <= band[1]; }
+function proximity(v, band){
+  if (inBand(v, band)) return 1;
+  var d = v < band[0] ? band[0]-v : v-band[1];
+  return clamp(1 - d/0.26, 0, 1)*0.8;
+}
+
+var steadyFill = document.getElementById('steadyFill');
+
+function shellTick(now, dt){
+  var i, all = true, p;
+  for (i=0;i<3;i++){
+    p = proximity(shell.vals[i], COND[i].band);
+    var isIn = inBand(shell.vals[i], COND[i].band);
+    if (!isIn) all = false;
+    shell.marks[i].firstChild.style.opacity = p.toFixed(3);
+    shell.marks[i].classList.toggle('in', isIn);
+  }
+  shell.allIn = all;
+
+  if (!shell.opened){
+    if (all && now - shell.lastInput > 0){
+      shell.held = now - shell.lastInput;
+    } else {
+      shell.held = 0;
+      if (!all) shell.lastInput = now;
+    }
+    var f = clamp(shell.held/HOLD_MS, 0, 1);
+    var shown = Math.pow(f, 0.85);
+    if (reduced) shown = Math.round(shown*10)/10;
+    steadyFill.style.transform = 'scaleX(' + shown.toFixed(4) + ')';
+    shell.calm += ((all ? f : 0) - shell.calm)*0.05;
+    if (shell.held >= HOLD_MS) openShell();
+  } else {
+    if (reduced){
+      shell.openT = Math.min(1, Math.round((shell.openT + dt/1400)*4)/4);
+    } else {
+      shell.openT = Math.min(1, shell.openT + dt/3200);
+    }
+  }
+  shell.press = Math.max(0, shell.press - dt/700);
+  drawSeed();
+}
+
+function openShell(){
+  shell.opened = true;
+  steadyFill.style.transform = 'scaleX(1)';
+  for (var i=0;i<shell.inputs.length;i++) shell.inputs[i].disabled = true;
+  announce('The shell opened.');
+  setTimeout(function(){
+    var l = document.getElementById('land3');
+    l.hidden = false; stagger(l);
+  }, reduced ? 400 : 2600);
+}
+
+/* one definition of where the seed is, shared by the drawing and the hand */
+function seedGeom(){
+  return { surfY: sh*0.24, cx: sw*0.5, cy: sh*0.53, R: Math.min(sw*0.112, sh*0.180) };
+}
+
+function drawSeed(){
+  if (!sCtx) return;
+  var c = sCtx, i, r, g0 = seedGeom();
+  var surfY = g0.surfY, cx = g0.cx, cy = g0.cy, R = g0.R;
+
+  c.fillStyle = rgb(C.bg); c.fillRect(0,0,sw,sh);
+
+  /* air above the ground */
+  var g = c.createLinearGradient(0,0,0,surfY);
+  g.addColorStop(0,'rgba(24,29,29,1)'); g.addColorStop(1,'rgba(16,20,19,1)');
+  c.fillStyle = g; c.fillRect(0,0,sw,surfY);
+
+  /* soil, in cross-section */
+  var moist = shell.vals[0];
+  c.fillStyle = rgb(mix(C.soilDry, C.soilDamp, moist));
+  c.fillRect(0, surfY, sw, sh-surfY);
+  c.fillStyle = 'rgba(0,0,0,0.3)'; c.fillRect(0, surfY-1, sw, 2);
+
+  r = mulberry32(0x5011);
+  var grain = 0.055 - shell.calm*0.02;
+  for (i=0;i<220;i++){
+    var gx = r()*sw, gy2 = surfY + r()*(sh-surfY);
+    c.fillStyle = 'rgba(210,206,186,' + (grain*(0.4+r())) + ')';
+    c.fillRect(gx, gy2, 1.4, 1.1);
+  }
+
+  /* what steadiness looks like, unquantified */
+  if (shell.calm > 0.02 && !shell.opened){
+    c.strokeStyle = 'rgba(222,217,204,' + (0.05*shell.calm) + ')';
+    c.lineWidth = 1;
+    for (i=1;i<=3;i++){
+      c.beginPath(); c.arc(cx, cy, R*(1.7 + i*0.9), 0, 6.2832); c.stroke();
+    }
+  }
+
+  var openT = shell.openT;
+  var squeeze = 1 - shell.press*0.022;
+  var gap = openT*R*0.26;
+  var tilt = openT*0.20;
+
+  /* the two halves of the shell */
+  for (i=0;i<2;i++){
+    var sgn = i === 0 ? -1 : 1;
+    c.save();
+    c.translate(cx + sgn*gap, cy);
+    c.rotate(sgn*tilt);
+    c.scale(squeeze, squeeze);
+    c.beginPath();
+    c.moveTo(0, -R);
+    c.quadraticCurveTo(sgn*R*0.86, -R*0.42, sgn*R*0.72, R*0.22);
+    c.quadraticCurveTo(sgn*R*0.55, R*1.02, 0, R);
+    c.closePath();
+    c.fillStyle = rgb(mix([74,64,50],[92,80,62], 0.5 + 0.5*Math.sin(i)));
+    c.fill();
+    c.strokeStyle = 'rgba(0,0,0,0.4)'; c.lineWidth = 1; c.stroke();
+    /* grain of the coat */
+    c.strokeStyle = 'rgba(226,216,190,0.10)';
+    for (var k=1;k<4;k++){
+      c.beginPath();
+      c.moveTo(sgn*R*0.14*k, -R*0.72);
+      c.quadraticCurveTo(sgn*R*(0.3+0.16*k), 0, sgn*R*0.14*k, R*0.78);
+      c.stroke();
+    }
+    if (shell.press > 0.02 && !shell.opened){
+      c.strokeStyle = 'rgba(226,216,190,' + (0.34*shell.press) + ')';
+      c.lineWidth = 1;
+      c.beginPath();
+      c.moveTo(0, -R*0.86);
+      c.quadraticCurveTo(sgn*R*0.2, 0, 0, R*0.86);
+      c.stroke();
+    }
+    c.restore();
+  }
+
+  /* what is left over, once it opens */
+  if (openT > 0.02){
+    var rl = openT*R*1.5;
+    c.strokeStyle = rgb(C.accent, 0.9);
+    c.lineWidth = Math.max(1.6, R*0.10);
+    c.lineCap = 'round';
+    c.beginPath();
+    c.moveTo(cx, cy + R*0.5);
+    c.quadraticCurveTo(cx - rl*0.22, cy + R*0.5 + rl*0.55, cx + rl*0.12, cy + R*0.5 + rl);
+    c.stroke();
+    for (i=1;i<=3;i++){
+      var ft = i/4;
+      if (openT < 0.4 + ft*0.3) continue;
+      c.lineWidth = Math.max(0.8, R*0.028);
+      c.beginPath();
+      c.moveTo(cx + rl*0.12*ft, cy + R*0.5 + rl*ft);
+      c.quadraticCurveTo(
+        cx + rl*0.12*ft + (i%2?1:-1)*rl*0.13, cy + R*0.5 + rl*ft + rl*0.09,
+        cx + rl*0.12*ft + (i%2?1:-1)*rl*0.19, cy + R*0.5 + rl*ft + rl*0.20);
+      c.stroke();
+    }
+    if (openT > 0.55){
+      var st = (openT-0.55)/0.45;
+      var top = cy - R*0.6 - st*(cy - R*0.6 - surfY*1.30);
+      c.strokeStyle = rgb(C.accent, 0.95);
+      c.lineWidth = Math.max(1.4, R*0.085);
+      c.beginPath(); c.moveTo(cx, cy - R*0.4); c.lineTo(cx, top); c.stroke();
+      for (i=0;i<2;i++){
+        var sg = i ? 1 : -1;
+        c.save(); c.translate(cx, top); c.rotate(sg*0.62);
+        c.beginPath();
+        c.moveTo(0,0);
+        c.quadraticCurveTo(sg*R*0.34*st, -R*0.20*st, sg*R*0.64*st, 0);
+        c.quadraticCurveTo(sg*R*0.34*st,  R*0.17*st, 0, 0);
+        c.fillStyle = rgb(C.accent, 0.88); c.fill();
+        c.restore();
+      }
+    }
+  }
+}
+
+function seedPress(e){
+  if (shell.opened) return;
+  var r = seedCv.getBoundingClientRect();
+  var x = (e.clientX - r.left) * (sw / r.width), y = (e.clientY - r.top) * (sh / r.height);
+  var g0 = seedGeom();
+  if (Math.hypot(x-g0.cx, y-g0.cy) < g0.R*2.1){
+    shell.press = 1;
+    shell.lastInput = performance.now();
+  }
+}
+seedCv.addEventListener('pointerdown', seedPress);
+seedCv.addEventListener('pointermove', function(e){
+  if (e.buttons) seedPress(e);
+});
+
+/* any hand on the piece resets the steadiness. quietly. */
+document.getElementById('act3').addEventListener('pointerdown', function(){
+  if (!shell.opened) shell.lastInput = performance.now();
+});
+document.getElementById('act3').addEventListener('keydown', function(){
+  if (!shell.opened) shell.lastInput = performance.now();
+});
+
+/* ============================================================
+   6 — acts
+   ============================================================ */
+
+var acts = ['act1','act2','act3','act4'], current = 0;
+var railEls = document.querySelectorAll('.rail i');
+
+function goTo(n){
+  document.getElementById(acts[current]).hidden = true;
+  current = n;
+  var el = document.getElementById(acts[current]);
+  el.hidden = false;
+  for (var i=0;i<railEls.length;i++) railEls[i].classList.toggle('on', i <= n);
+  window.scrollTo(0,0);
+  sizeAll();
+  if (n === 2){ shell.lastInput = performance.now(); }
+  if (n === 3){ enterAct4(); }
+  var h = el.querySelector('.act-mark');
+  if (h){ h.setAttribute('tabindex','-1'); h.focus({ preventScroll: true }); }
+}
+
+document.getElementById('toAct2').addEventListener('click', function(){ goTo(1); });
+document.getElementById('toAct3').addEventListener('click', function(){ goTo(2); });
+document.getElementById('toAct4').addEventListener('click', function(){ goTo(3); });
+
+function enterAct4(){
+  stagger(document.getElementById('act4'));
+  var ids = ['cr0','cr1','cr2'];
+  ids.forEach(function(id, i){
+    setTimeout(function(){
+      document.getElementById(id).classList.add('turned');
+    }, reduced ? 0 : 1800 + i*750);
+  });
+}
+
+/* ============================================================
+   7 — sizing and the loop
+   ============================================================ */
+
+function sizeAll(){
+  if (current === 0){
+    var h1 = Math.round(clamp(fieldCv.parentNode.clientWidth*0.74, 210, 340));
+    var a = fitCanvas(fieldCv, h1);
+    fieldCtx = a.ctx; fw = a.w; fh = a.h;
+    drawField();
+  }
+  if (current === 1){
+    var h2 = Math.round(clamp(treeCv.parentNode.clientWidth*0.94, 300, 420));
+    var b = fitCanvas(treeCv, h2);
+    treeCtx = b.ctx; tw = b.w; th = b.h;
+    renderOak(); buildZones(); placePuck(puckX || tw*0.14, puckY || th*0.16);
+  }
+  if (current === 2){
+    var h3 = Math.round(clamp(seedCv.parentNode.clientWidth*0.62, 210, 320));
+    var d = fitCanvas(seedCv, h3);
+    sCtx = d.ctx; sw = d.w; sh = d.h;
+    drawSeed();
+  }
+}
+
+var last = performance.now();
+function loop(now){
+  var dt = Math.min(64, now - last); last = now;
+  if (current === 0) fieldTick(now, dt);
+  else if (current === 2) shellTick(now, dt);
+  requestAnimationFrame(loop);
+}
+
+buildLedgers();
+buildSensors();
+integrate(0);
+sizeAll();
+paintLedgers(0, true);
+shell.lastInput = performance.now();
+requestAnimationFrame(loop);
+
+var rt = null;
+window.addEventListener('resize', function(){
+  clearTimeout(rt);
+  rt = setTimeout(sizeAll, 140);
+});
+
+})();
+</script>
+</body>
+</html>
