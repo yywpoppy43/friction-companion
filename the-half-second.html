@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Half-Second</title>
+<meta name="description" content="A companion instrument to The Third Position. One half-second, at full size. About five minutes.">
+<meta property="og:title" content="The Half-Second">
+<meta property="og:description" content="A companion instrument to The Third Position. About five minutes.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a0b0c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='2.4' fill='%238ce0c9'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: dark; -webkit-text-size-adjust: 100%; }
+  :root {
+    --field: #0a0b0c;
+    --ink: #d3d7d9;
+    --ink-bright: #eceeef;
+    --ink-mid: #8b9094;
+    --ink-dim: #565b5f;
+    --ink-faint: #34383b;
+    --line: rgba(211, 215, 217, 0.13);
+    --line-soft: rgba(211, 215, 217, 0.07);
+    --watch: #8ce0c9;
+    --watch-soft: rgba(140, 224, 201, 0.28);
+  }
+  html, body { background: var(--field); }
+  body {
+    color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 300;
+    font-size: 19px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: rgba(211, 215, 217, 0.16); }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 1px solid rgba(211, 215, 217, 0.55); outline-offset: 5px; }
+
+  .col {
+    max-width: 34.5rem;
+    margin: 0 auto;
+    padding: 0 26px calc(56px + env(safe-area-inset-bottom));
+  }
+
+  .mn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-dim);
+  }
+
+  .acc { color: var(--watch); text-shadow: 0 0 22px rgba(140, 224, 201, 0.22); }
+
+  .sr {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  /* ---- blocks & reveals ---- */
+  .blk { display: none; }
+  /* backwards fill only — the keyframes must release opacity at the end,
+     or later fades (the hold going quiet) lose to the animation */
+  .blk.on { display: block; animation: rise 0.95s cubic-bezier(0.21, 0.55, 0.25, 1) backwards; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .blk.on { animation: fadeonly 0.4s ease backwards; }
+  }
+  @keyframes fadeonly { from { opacity: 0; } to { opacity: 1; } }
+
+  .ln {
+    font-size: clamp(20px, 5.3vw, 24px);
+    line-height: 1.56;
+    color: var(--ink);
+    margin: 0 0 2.35rem;
+  }
+  .w { opacity: 0; }
+  .slowline .w { transition: opacity 0.55s ease; }
+  .stickline .w { transition: opacity 0.15s ease; }
+  .w.on { opacity: 1; }
+
+  /* ---- entry ---- */
+  .entry {
+    min-height: 92vh;
+    min-height: 92dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 8vh;
+  }
+  .entry .eyebrow { margin-bottom: 3.2rem; }
+  .entry h1 {
+    font-weight: 300;
+    font-size: clamp(42px, 12vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--ink-bright);
+    margin-bottom: 1.4rem;
+  }
+  .entry .runtime { color: var(--ink-dim); opacity: 0.75; margin-bottom: 4.2rem; }
+  .soundtoggle { display: inline-block; text-align: left; padding: 6px 0; transition: color 0.3s; }
+  .soundtoggle:hover { color: var(--ink-mid); }
+  .begin {
+    display: inline-block;
+    margin-top: 2.6rem;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink-mid);
+    text-align: left;
+    padding: 6px 0;
+    transition: color 0.35s, opacity 0.8s;
+  }
+  .begin:hover { color: var(--ink-bright); }
+  .begin.spent { opacity: 0.22; pointer-events: none; }
+
+  /* ---- the hold ---- */
+  .holdwrap {
+    margin: 3.4rem 0 0;
+    text-align: left;
+    transition: opacity 1.2s ease;
+  }
+  .holdwrap.quiet { opacity: 0; pointer-events: none; }
+  .holdbtn {
+    display: block;
+    padding: 10px;
+    margin-left: -10px;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hold-track { fill: none; stroke: rgba(211, 215, 217, 0.14); stroke-width: 1.5; }
+  .hold-fill {
+    fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: center;
+    stroke-dasharray: 213.63; stroke-dashoffset: 213.63;
+  }
+  .holdlbl { margin-top: 0.7rem; transition: opacity 0.9s; }
+  .holdlbl.faded { opacity: 0.3; }
+
+  /* ---- stillness aftermath ---- */
+  .aftermath { margin-top: 20vh; }
+  .still-ln {
+    font-size: clamp(21px, 5.9vw, 27px);
+    line-height: 1.5;
+    margin: 0 0 3.2rem;
+    color: var(--ink-bright);
+  }
+  .plain { color: var(--ink-mid); }
+
+  /* ---- the anatomy ---- */
+  .lead-in { margin-top: 16vh; }
+  .panelwrap { margin: 3.5rem 0 6vh; }
+  .panel {
+    position: relative;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.015);
+    touch-action: none;
+    cursor: ew-resize;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .strip { position: relative; border-bottom: 1px solid var(--line-soft); }
+  .strip-eq { height: 74px; }
+  .strip-voice { height: 84px; }
+  .strip-watch { height: 64px; }
+  .striplbl {
+    position: absolute; top: 8px; left: 10px;
+    font-size: 9.5px; letter-spacing: 0.26em;
+    color: var(--ink-faint);
+    z-index: 3;
+  }
+  .watchlbl { color: var(--watch); opacity: 0; transition: opacity 1.6s ease; text-shadow: none; }
+  .watchlbl.on { opacity: 0.85; }
+  .stripclip {
+    position: absolute; inset: 0;
+    clip-path: inset(0 100% 0 0);
+    will-change: clip-path;
+  }
+  .stripsvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .eqline { fill: none; stroke: var(--ink); stroke-width: 1.4; vector-effect: non-scaling-stroke; opacity: 0.92; }
+  .eqglow { fill: none; stroke: rgba(236, 238, 239, 0.16); stroke-width: 4.5; vector-effect: non-scaling-stroke; filter: blur(5px); }
+  .frags { position: absolute; inset: 0; }
+  .frag {
+    position: absolute;
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1;
+    color: var(--ink-mid);
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .thread {
+    position: absolute; left: 0; right: 0; top: 50%;
+    height: 1px;
+    background: var(--watch);
+    opacity: 0.85;
+    box-shadow: 0 0 9px rgba(140, 224, 201, 0.55);
+  }
+  .rail { position: relative; height: 34px; }
+  .tick { position: absolute; bottom: 9px; font-size: 9px; color: var(--ink-faint); }
+  .tick::before {
+    content: ''; position: absolute; top: -7px; left: 0;
+    width: 1px; height: 5px; background: var(--ink-faint);
+  }
+  .tick.t0 { left: 0; padding-left: 10px; }
+  .tick.t0::before { left: 0; }
+  .tick.t250 { left: 50%; transform: translateX(-50%); }
+  .tick.t250::before { left: 50%; }
+  .tick.t500 { right: 0; padding-right: 10px; text-align: right; }
+  .tick.t500::before { left: auto; right: 0; }
+  .playhead {
+    position: absolute; top: 0; bottom: 0; left: 0; width: 0;
+    will-change: transform;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .phline { position: absolute; top: 5px; bottom: 30px; left: 0; width: 1px; background: rgba(236, 238, 239, 0.6); }
+  .phdot {
+    position: absolute; bottom: 7px; left: -5.5px;
+    width: 11px; height: 11px; border-radius: 50%;
+    border: 1px solid var(--ink-mid);
+    background: var(--field);
+  }
+  .panelhint { margin-top: 1rem; transition: opacity 0.8s; }
+  .panelhint.dimmed { opacity: 0.35; }
+  .landing { margin-top: 7vh; }
+
+  /* ---- the trace ---- */
+  .tracewrap { margin: 14vh 0 6vh; }
+  .tracelbl { margin-bottom: 1.3rem; }
+  .tracebox { position: relative; height: 174px; }
+  .tracebox svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .traceaxis { stroke: rgba(211, 215, 217, 0.09); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .tracepath { fill: none; stroke: var(--watch); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .traceglow { fill: none; stroke: var(--watch); stroke-width: 5; vector-effect: non-scaling-stroke; opacity: 0.12; filter: blur(4px); }
+  .tmark { position: absolute; opacity: 0; transition: opacity 1.4s ease; }
+  .tmark.on { opacity: 1; }
+  .tmark .mn { font-size: 9px; color: var(--ink-dim); letter-spacing: 0.2em; }
+  .tmark-surge { transform: translateX(-50%); text-align: center; }
+  .tmark-surge i {
+    display: block; width: 1px; height: 8px;
+    background: var(--ink-dim); margin: 0 auto 5px;
+  }
+  .tmark-still { text-align: center; }
+  .tmark-still i {
+    display: block; height: 1px;
+    background: var(--ink-dim);
+    position: relative; margin-bottom: 6px;
+  }
+  .tmark-still i::before, .tmark-still i::after {
+    content: ''; position: absolute; top: -2px; width: 1px; height: 4px; background: var(--ink-dim);
+  }
+  .tmark-still i::before { left: 0; }
+  .tmark-still i::after { right: 0; }
+
+  /* ---- closing ---- */
+  .closewrap { margin: 22vh 0 0; text-align: center; }
+  .closing {
+    font-size: clamp(23px, 6.2vw, 33px);
+    line-height: 1.38;
+    font-weight: 300;
+    color: var(--ink-bright);
+    letter-spacing: -0.012em;
+  }
+  .closing em { font-style: italic; }
+  .exitwrap { margin: 12vh 0 0; text-align: center; }
+  .exitlink {
+    display: inline-block;
+    padding: 8px 2px;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(211, 215, 217, 0.22);
+    transition: color 0.35s, border-color 0.35s;
+  }
+  .exitlink:hover { color: var(--ink-bright); border-color: rgba(211, 215, 217, 0.5); }
+  .foot { margin-top: 16vh; text-align: center; }
+  .footline { font-size: 9.5px; color: var(--ink-faint); margin-bottom: 1.6rem; line-height: 2; }
+  .footlink {
+    font-size: 9.5px;
+    color: var(--ink-dim);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(211, 215, 217, 0.16);
+    padding-bottom: 3px;
+    transition: color 0.35s;
+  }
+  .footlink:hover { color: var(--ink-mid); }
+
+  noscript p { margin: 3rem 0 1.2rem; color: var(--ink-mid); font-size: 19px; }
+  noscript a { color: var(--ink); }
+
+  @media (min-width: 700px) {
+    .col { padding-left: 32px; padding-right: 32px; }
+    .strip-eq { height: 84px; }
+    .strip-voice { height: 92px; }
+    .strip-watch { height: 70px; }
+    .frag { font-size: 14.5px; }
+  }
+</style>
+</head>
+<body>
+
+<main class="col" id="main">
+
+  <!-- ================= entry ================= -->
+  <header class="entry" id="entry">
+    <div class="mn eyebrow">the third position &middot; a demonstration</div>
+    <h1>The Half-Second</h1>
+    <div class="mn runtime">about five minutes</div>
+    <div>
+      <button class="mn soundtoggle" id="soundtoggle" aria-pressed="false">sound &mdash; off</button>
+    </div>
+    <div>
+      <button class="begin" id="begin">the first line &rarr;</button>
+    </div>
+    <noscript>
+      <p>This instrument runs by script. The essay stands without it.</p>
+      <p><a href="the-third-position.html">the full case &rarr;</a></p>
+    </noscript>
+  </header>
+
+  <!-- ================= act i — the load ================= -->
+  <section aria-live="polite">
+    <p class="blk ln" id="p1">Someone says the wrong thing.</p>
+    <p class="blk ln" id="p2">A car cuts across the lane.</p>
+    <p class="blk ln" id="p3">The response is already loaded and climbing before any decision gets made.</p>
+    <p class="blk ln" id="p4">Usually that&rsquo;s the whole event. Trigger, reaction, done.</p>
+    <p class="blk ln slowline" id="slow"></p>
+    <p class="blk ln stickline" id="stick"></p>
+
+    <div class="blk holdwrap" id="holdblk">
+      <button class="holdbtn" id="holdbtn" aria-label="touch and hold to continue">
+        <svg viewBox="0 0 84 84" width="84" height="84" aria-hidden="true">
+          <circle class="hold-track" cx="42" cy="42" r="34"/>
+          <circle class="hold-fill" id="holdfill" cx="42" cy="42" r="34"/>
+        </svg>
+      </button>
+      <div class="mn holdlbl" id="holdlbl">touch and hold</div>
+    </div>
+
+    <div class="blk aftermath" id="s1"><p class="still-ln">Something in you just surged.</p></div>
+    <div class="blk" id="s2"><p class="still-ln">Something else watched it surge.</p></div>
+    <div class="blk" id="s3"><p class="still-ln">Two things. <span class="acc">You are the second one.</span></p></div>
+
+    <p class="blk ln plain" id="d1">Those delays were built. The slow line, the stuck word, the slip near the end of the hold.</p>
+    <p class="blk ln plain" id="d2">The surge they produced was real. So was the one that watched it.</p>
+  </section>
+
+  <!-- ================= act ii — the anatomy ================= -->
+  <section aria-live="polite">
+    <p class="blk ln lead-in" id="t1">Here is that half-second again, stretched to arm&rsquo;s length.</p>
+
+    <div class="blk panelwrap" id="panelblk">
+      <div class="panel" id="panel" tabindex="0" role="slider"
+           aria-label="the playhead — half a second, moved by hand"
+           aria-valuemin="0" aria-valuemax="500" aria-valuenow="0" aria-valuetext="0 milliseconds">
+        <span class="sr">Three strips across half a second. The equipment kicks. The voice assembles. The third does not move.</span>
+        <div class="strip strip-eq">
+          <span class="mn striplbl" aria-hidden="true">equipment</span>
+          <div class="stripclip" id="eqclip">
+            <svg class="stripsvg" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
+              <path class="eqglow" d="M0,72 L44,71.5 L92,72.3 L142,71.6 L190,72.2 L216,71.2 L228,66 L238,79 L248,42 L258,87 L268,26 L278,80 L288,33 L298,86 L308,20 L318,62 L328,31 L338,74 L350,44 L364,67 L380,50 L398,64 L418,54 L440,62.5 L464,55.5 L490,61.5 L520,57 L554,60.5 L592,57.8 L634,60 L680,58.2 L730,59.6 L784,58.6 L842,59.4 L904,58.8 L1000,59.2"/>
+              <path class="eqline" d="M0,72 L44,71.5 L92,72.3 L142,71.6 L190,72.2 L216,71.2 L228,66 L238,79 L248,42 L258,87 L268,26 L278,80 L288,33 L298,86 L308,20 L318,62 L328,31 L338,74 L350,44 L364,67 L380,50 L398,64 L418,54 L440,62.5 L464,55.5 L490,61.5 L520,57 L554,60.5 L592,57.8 L634,60 L680,58.2 L730,59.6 L784,58.6 L842,59.4 L904,58.8 L1000,59.2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="strip strip-voice">
+          <span class="mn striplbl" aria-hidden="true">the voice</span>
+          <div class="frags" id="frags" aria-hidden="true"></div>
+        </div>
+        <div class="strip strip-watch">
+          <span class="mn striplbl watchlbl" id="watchlbl" aria-hidden="true">the watching</span>
+          <div class="thread" aria-hidden="true"></div>
+        </div>
+        <div class="rail" aria-hidden="true">
+          <span class="mn tick t0">0</span><span class="mn tick t250">250</span><span class="mn tick t500">500 ms</span>
+        </div>
+        <div class="playhead" id="playhead" aria-hidden="true"><div class="phline"></div><div class="phdot"></div></div>
+      </div>
+      <div class="mn panelhint" id="panelhint">the playhead moves by hand</div>
+    </div>
+
+    <div class="landing">
+      <p class="blk ln" id="land1">The first two strips are events. They sit on the timeline.</p>
+      <p class="blk ln" id="land2">The third never moved &mdash; because it is not on the timeline.</p>
+      <p class="blk ln" id="land3">It is <span class="acc">the position holding the scrubber</span>.</p>
+      <p class="blk ln" id="land4">Not a thing hidden in the machinery &mdash; an event, one that starts when the watching switches on. <span class="acc">The looking is the operator.</span></p>
+    </div>
+
+    <p class="blk ln lead-in" id="t2">One more record has been running since the first word.</p>
+  </section>
+
+  <!-- ================= act iii — the trace ================= -->
+  <section aria-live="polite">
+    <div class="blk tracewrap" id="traceblk">
+      <div class="mn tracelbl">the session &mdash; first word to here</div>
+      <div class="tracebox" role="img" aria-label="one drawn line — the record of this visit, first word to here">
+        <svg viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true">
+          <line class="traceaxis" x1="0" y1="118" x2="1000" y2="118"/>
+          <path class="traceglow" id="traceglow" d=""/>
+          <path class="tracepath" id="tracepath" d=""/>
+        </svg>
+        <div class="tmark tmark-surge" id="msurge" aria-hidden="true"><i></i><span class="mn">the surge</span></div>
+        <div class="tmark tmark-still" id="mstill" aria-hidden="true"><i></i><span class="mn">the stillness</span></div>
+      </div>
+    </div>
+
+    <p class="blk ln" id="a1">This is the session, seen from outside.</p>
+    <p class="blk ln" id="a2">Every pause is a place something noticed.</p>
+    <p class="blk ln" id="a3">The noticing was never on the page.</p>
+
+    <div class="blk closewrap" id="closeblk">
+      <p class="closing">The thing that was reading these words<br>has been here <em>the whole time</em>.</p>
+    </div>
+
+    <div class="blk exitwrap" id="exitblk">
+      <a class="mn exitlink" href="the-third-position.html">the full case &rarr;</a>
+    </div>
+
+    <footer class="blk foot" id="footblk">
+      <p class="mn footline">the record stayed on this device &mdash; nothing was sent, nothing was kept</p>
+      <a class="mn footlink" href="the-third-position.html">read without the instrument</a>
+    </footer>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var qs = new URLSearchParams(location.search);
+  var SPEED = qs.has('fast') ? (parseFloat(qs.get('fast')) || 0.12) : 1;
+  var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var byId = function (id) { return document.getElementById(id); };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+
+  /* ---------------- clock — rAF-driven so the piece pauses with the tab ---------------- */
+  var clock = { t: 0, last: null, waits: [], frames: [] };
+  function loop(now) {
+    if (clock.last !== null) {
+      var dt = Math.min(120, now - clock.last);
+      clock.t += dt;
+      for (var i = clock.waits.length - 1; i >= 0; i--) {
+        if (clock.t >= clock.waits[i].at) {
+          var w = clock.waits.splice(i, 1)[0];
+          w.res();
+        }
+      }
+      for (var j = 0; j < clock.frames.length; j++) clock.frames[j](dt);
+    }
+    clock.last = now;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  document.addEventListener('visibilitychange', function () { clock.last = null; });
+  function wait(ms) { return new Promise(function (res) { clock.waits.push({ at: clock.t + ms * SPEED, res: res }); }); }
+  function onFrame(f) { clock.frames.push(f); }
+
+  /* ---------------- the record — in memory only, never sent, never stored ---------------- */
+  var rec = {
+    t0: null, samples: [], events: [], dwell: {},
+    now: function () { return this.t0 === null ? 0 : performance.now() - this.t0; },
+    ev: function (k) { if (this.t0 !== null) this.events.push({ t: this.now(), k: k }); },
+    find: function (k) {
+      for (var i = 0; i < this.events.length; i++) if (this.events[i].k === k) return this.events[i].t;
+      return null;
+    }
+  };
+
+  var pressCount = 0;
+  var pressing = function () { return pressCount > 0; };
+  window.addEventListener('pointerdown', function () { pressCount++; }, { passive: true });
+  window.addEventListener('pointerup', function () { pressCount = Math.max(0, pressCount - 1); }, { passive: true });
+  window.addEventListener('pointercancel', function () { pressCount = Math.max(0, pressCount - 1); }, { passive: true });
+
+  var movedAcc = 0, lastPX = null, lastPY = null;
+  window.addEventListener('pointermove', function (e) {
+    if (lastPX !== null) movedAcc += Math.abs(e.clientX - lastPX) + Math.abs(e.clientY - lastPY);
+    lastPX = e.clientX; lastPY = e.clientY;
+  }, { passive: true });
+
+  var visBlocks = {};
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { visBlocks[en.target.id] = en.isIntersecting; });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.blk[id]').forEach(function (el) { io.observe(el); });
+
+  var lastY = window.scrollY, velEMA = 0, sampleAcc = 0, sampling = true;
+  onFrame(function (dt) {
+    var y = window.scrollY;
+    var v = Math.abs(y - lastY) / Math.max(1, dt);
+    lastY = y;
+    velEMA = velEMA * 0.8 + v * 0.2;
+    if (rec.t0 === null || !sampling) { movedAcc = 0; return; }
+    for (var id in visBlocks) if (visBlocks[id]) rec.dwell[id] = (rec.dwell[id] || 0) + dt;
+    sampleAcc += dt;
+    if (sampleAcc >= 150) {
+      rec.samples.push({ t: rec.now(), v: velEMA, m: movedAcc, p: pressing() ? 1 : 0 });
+      sampleAcc = 0; movedAcc = 0;
+    }
+  });
+
+  /* ---------------- sound — one barely-there room tone, off by default ---------------- */
+  var audio = {
+    ctx: null, gain: null, want: false, phaseLevel: 0.011,
+    ensure: function () {
+      if (this.ctx) return;
+      var C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return;
+      this.ctx = new C();
+      var sr = this.ctx.sampleRate, len = 4 * sr;
+      var buf = this.ctx.createBuffer(1, len, sr);
+      var ch = buf.getChannelData(0), last = 0, mx = 0, i;
+      for (i = 0; i < len; i++) { last = (last + (Math.random() * 2 - 1) * 0.04) * 0.998; ch[i] = last; if (Math.abs(last) > mx) mx = Math.abs(last); }
+      for (i = 0; i < len; i++) ch[i] /= (mx || 1);
+      for (i = 0; i < 2400; i++) { var f = i / 2400; ch[i] *= f; ch[len - 1 - i] *= f; }
+      var src = this.ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+      var filt = this.ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 330; filt.Q.value = 0.4;
+      this.gain = this.ctx.createGain(); this.gain.gain.value = 0;
+      src.connect(filt); filt.connect(this.gain); this.gain.connect(this.ctx.destination);
+      src.start();
+      var lfo = this.ctx.createOscillator(); lfo.frequency.value = 0.05;
+      var lg = this.ctx.createGain(); lg.gain.value = 55;
+      lfo.connect(lg); lg.connect(filt.frequency); lfo.start();
+    },
+    set: function (level, ramp) {
+      if (!this.gain) return;
+      var g = this.gain.gain, t = this.ctx.currentTime;
+      g.cancelScheduledValues(t);
+      g.setValueAtTime(g.value, t);
+      g.linearRampToValueAtTime(level, t + ramp);
+    },
+    on: function () {
+      this.want = true; this.ensure();
+      if (!this.ctx) return;
+      var self = this;
+      this.ctx.resume().then(function () { self.set(self.phaseLevel, 1.4); }).catch(function () {});
+    },
+    off: function () { this.want = false; this.set(0, 0.3); },
+    cut: function () { this.phaseLevel = 0.0001; if (this.want) this.set(0.0001, 0.06); },
+    back: function (level) { this.phaseLevel = level; if (this.want) this.set(level, 2.5); },
+    fadeOut: function () { this.phaseLevel = 0; if (this.want) this.set(0, 4); this.want = false; }
+  };
+  document.addEventListener('visibilitychange', function () {
+    if (!audio.ctx) return;
+    if (document.hidden) audio.ctx.suspend().catch(function () {});
+    else if (audio.want) audio.ctx.resume().catch(function () {});
+  });
+
+  var soundBtn = byId('soundtoggle');
+  soundBtn.addEventListener('click', function () {
+    if (audio.want) {
+      audio.off();
+      soundBtn.innerHTML = 'sound &mdash; off';
+      soundBtn.setAttribute('aria-pressed', 'false');
+    } else {
+      audio.on();
+      soundBtn.innerHTML = 'sound &mdash; on';
+      soundBtn.setAttribute('aria-pressed', 'true');
+    }
+  });
+
+  /* ---------------- reveals ---------------- */
+  function autoScroll(el, prevBottom) {
+    if (pressing()) return;
+    // distance from the reader to the leading edge as it stood before this reveal;
+    // if they scrolled up to re-read, leave them alone
+    var gapBelow = prevBottom - (window.scrollY + window.innerHeight);
+    if (gapBelow > 340) return;
+    var r = el.getBoundingClientRect();
+    var target = window.scrollY + r.bottom - window.innerHeight * 0.7;
+    if (target > window.scrollY + 8) {
+      window.scrollTo({ top: target, behavior: RM ? 'auto' : 'smooth' });
+    }
+  }
+  function show(id) {
+    var el = byId(id);
+    var prevBottom = document.documentElement.scrollHeight;
+    el.classList.add('on');
+    rec.ev('show:' + id);
+    autoScroll(el, prevBottom);
+    return el;
+  }
+
+  function buildWords(el, words) {
+    return words.map(function (w) {
+      var s = document.createElement('span');
+      s.className = 'w';
+      s.textContent = w;
+      el.appendChild(s);
+      return s;
+    });
+  }
+  function streamWords(spans, gap) {
+    var p = Promise.resolve();
+    spans.forEach(function (s, i) {
+      p = p.then(function () {
+        s.classList.add('on');
+        return i < spans.length - 1 ? wait(gap) : Promise.resolve();
+      });
+    });
+    return p;
+  }
+
+  var SLOW_WORDS = ['But ', 'every ', 'so ', 'often, ', 'in ', 'the ', 'half-second ', 'before ', 'it ', 'fires ', '—'];
+  var STICK_BASE = ['something ', 'steps ', 'in ', 'and ', 'holds ', 'it'];
+  var STICK_REPEATS = [' — holds it', ' — holds it'];
+  var STICK_TAIL = ' back.';
+
+  /* ---------------- the hold ---------------- */
+  function runHold() {
+    return new Promise(function (resolve) {
+      var btn = byId('holdbtn'), fill = byId('holdfill'), lbl = byId('holdlbl');
+      var C = 213.63;
+      var p = 0, pressed = false, slipped = false, mode = 'run', slipT = 0, done = false, everPressed = false;
+      function easeOut(u) { return 1 - (1 - u) * (1 - u); }
+      function setPressed(v, viaKey) {
+        if (done) return;
+        pressed = v;
+        if (v && !everPressed) { everPressed = true; lbl.classList.add('faded'); rec.ev('hold:first'); }
+        if (v) rec.ev('hold:down'); else rec.ev('hold:up');
+        if (viaKey) { if (v) pressCount++; else pressCount = Math.max(0, pressCount - 1); }
+      }
+      btn.addEventListener('pointerdown', function (e) {
+        e.preventDefault();
+        if (btn.setPointerCapture) { try { btn.setPointerCapture(e.pointerId); } catch (err) {} }
+        setPressed(true, false);
+      });
+      var up = function () { if (pressed) setPressed(false, false); };
+      btn.addEventListener('pointerup', up);
+      btn.addEventListener('pointercancel', up);
+      btn.addEventListener('lostpointercapture', up);
+      btn.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+      btn.addEventListener('keydown', function (e) {
+        if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); setPressed(true, true); }
+      });
+      btn.addEventListener('keyup', function (e) {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (pressed) setPressed(false, true); }
+      });
+      onFrame(function (dt) {
+        if (done) return;
+        if (mode === 'slip') {
+          slipT += dt;
+          var u = Math.min(1, slipT / (300 * SPEED));
+          p = 0.9 - (0.9 - 0.72) * easeOut(u);
+          if (u >= 1) mode = 'run';
+        } else if (mode === 'stall') {
+          slipT += dt;
+          if (slipT >= 750 * SPEED) mode = 'run';
+        } else if (pressed) {
+          p += dt / (2600 * SPEED);
+          if (!slipped && p >= 0.9) {
+            slipped = true; slipT = 0; p = 0.9;
+            mode = RM ? 'stall' : 'slip';
+            rec.ev('hold:slip');
+          }
+          if (p >= 1) {
+            p = 1; done = true;
+            rec.ev('hold:done');
+            fill.style.strokeDashoffset = '0';
+            resolve();
+            return;
+          }
+        } else if (p > 0) {
+          p = Math.max(0, p - dt / (1500 * SPEED));
+        }
+        fill.style.strokeDashoffset = (C * (1 - p)).toFixed(2);
+      });
+    });
+  }
+
+  /* ---------------- stillness — first input after the stop ---------------- */
+  function armStillEnd() {
+    var fired = false;
+    function end() {
+      if (fired) return;
+      fired = true;
+      rec.ev('still:end');
+      window.removeEventListener('pointerdown', end);
+      window.removeEventListener('wheel', end);
+      window.removeEventListener('touchstart', end);
+      window.removeEventListener('keydown', end);
+    }
+    window.addEventListener('pointerdown', end, { passive: true });
+    window.addEventListener('wheel', end, { passive: true });
+    window.addEventListener('touchstart', end, { passive: true });
+    window.addEventListener('keydown', end);
+  }
+
+  /* ---------------- the anatomy ---------------- */
+  var FRAGS = [
+    { t: 80,  s: 'again —',               row: 0, anchor: 'l' },
+    { t: 165, s: 'this is broken',             row: 1, anchor: 'l' },
+    { t: 255, s: 'skip this',                  row: 0, anchor: 'l' },
+    { t: 340, s: 'it did that on purpose',     row: 2, anchor: 'r' },
+    { t: 430, s: 'almost —',              row: 1, anchor: 'r' }
+  ];
+  var ROW_TOP = [26, 47, 66];
+
+  function setupPanel() {
+    var panel = byId('panel'), playhead = byId('playhead'), eqclip = byId('eqclip'),
+        fragbox = byId('frags'), hint = byId('panelhint');
+    var fragEls = FRAGS.map(function (f) {
+      var s = document.createElement('span');
+      s.className = 'frag';
+      s.textContent = f.s;
+      s.style.top = ROW_TOP[f.row] + 'px';
+      var pct = (f.t / 500 * 100);
+      if (f.anchor === 'l') s.style.left = pct + '%';
+      else { s.style.left = pct + '%'; s.style.transform = 'translateX(-100%)'; }
+      fragbox.appendChild(s);
+      return s;
+    });
+
+    var st = {
+      cur: 0, target: 0, maxT: 0, total: 0, lastT: 0,
+      scrubbed: false, landed: false, rect: null, ariaAcc: 0,
+      nudging: false, nudgeT: 0,
+      resolveLand: null
+    };
+    var landP = new Promise(function (res) { st.resolveLand = res; });
+
+    function cacheRect() { st.rect = panel.getBoundingClientRect(); }
+    function fromX(clientX) {
+      if (!st.rect) cacheRect();
+      return clamp((clientX - st.rect.left) / st.rect.width, 0, 1) * 500;
+    }
+    function setTarget(t) {
+      st.target = clamp(t, 0, 500);
+      st.total += Math.abs(st.target - st.lastT);
+      st.lastT = st.target;
+      if (st.target > st.maxT) st.maxT = st.target;
+      if (!st.scrubbed && st.total > 15) { st.scrubbed = true; rec.ev('scrub:first'); hint.classList.add('dimmed'); }
+      if (!st.landed && (st.maxT >= 492 || st.total >= 1250)) {
+        st.landed = true;
+        rec.ev('scrub:land');
+        st.resolveLand();
+      }
+    }
+
+    var dragging = false;
+    panel.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      dragging = true; st.nudging = false;
+      if (panel.setPointerCapture) { try { panel.setPointerCapture(e.pointerId); } catch (err) {} }
+      cacheRect();
+      setTarget(fromX(e.clientX));
+    });
+    panel.addEventListener('pointermove', function (e) {
+      if (dragging) setTarget(fromX(e.clientX));
+    });
+    var stopDrag = function () { dragging = false; };
+    panel.addEventListener('pointerup', stopDrag);
+    panel.addEventListener('pointercancel', stopDrag);
+    panel.addEventListener('lostpointercapture', stopDrag);
+    panel.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 50 : 10;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); st.nudging = false; setTarget(st.target + step); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); st.nudging = false; setTarget(st.target - step); }
+      else if (e.key === 'Home') { e.preventDefault(); setTarget(0); }
+      else if (e.key === 'End') { e.preventDefault(); st.nudging = false; setTarget(500); }
+    });
+    window.addEventListener('resize', function () { st.rect = null; });
+
+    var fragOps = FRAGS.map(function () { return -1; });
+    onFrame(function (dt) {
+      if (st.nudging) {
+        st.nudgeT += dt;
+        var u = Math.min(1, st.nudgeT / (1700 * SPEED));
+        st.target = 26 * Math.sin(Math.PI * u);
+        if (u >= 1) { st.nudging = false; st.target = 0; }
+      }
+      var k = Math.min(1, dt / 55);
+      st.cur += (st.target - st.cur) * k;
+      if (Math.abs(st.target - st.cur) < 0.05) st.cur = st.target;
+      if (!st.rect) return;
+      var u01 = st.cur / 500;
+      playhead.style.transform = 'translateX(' + (u01 * st.rect.width).toFixed(2) + 'px)';
+      eqclip.style.clipPath = 'inset(0 ' + ((1 - u01) * 100).toFixed(3) + '% 0 0)';
+      for (var i = 0; i < FRAGS.length; i++) {
+        var op = clamp((st.cur - FRAGS[i].t) / 26, 0, 1);
+        if (Math.abs(op - fragOps[i]) > 0.02) { fragEls[i].style.opacity = op.toFixed(2); fragOps[i] = op; }
+      }
+      st.ariaAcc += dt;
+      if (st.ariaAcc > 180) {
+        st.ariaAcc = 0;
+        var ms = Math.round(st.cur);
+        panel.setAttribute('aria-valuenow', String(ms));
+        panel.setAttribute('aria-valuetext', ms + ' milliseconds');
+      }
+    });
+
+    async function nudgeLoop() {
+      while (!st.scrubbed) {
+        await wait(12000);
+        if (st.scrubbed) break;
+        if (RM) {
+          hint.classList.remove('dimmed');
+        } else {
+          st.nudging = true; st.nudgeT = 0;
+        }
+      }
+    }
+
+    return { landed: landP, cacheRect: cacheRect, nudgeLoop: nudgeLoop };
+  }
+
+  /* ---------------- the trace ---------------- */
+  function buildTrace() {
+    var end = Math.max(1, rec.now());
+    var S = rec.samples;
+    var raw = S.map(function (s) {
+      return clamp(0.9 * Math.min(1, s.v / 1.6) + 0.55 * s.p + 0.5 * Math.min(1, s.m / 170), 0, 1);
+    });
+    var vals = [], prev = 0;
+    for (var i = 0; i < raw.length; i++) { prev = 0.45 * raw[i] + 0.55 * prev; vals.push(prev); }
+    var N = vals.length;
+    var pts = [];
+    if (N >= 2) {
+      var buckets = Math.min(420, N);
+      var per = N / buckets;
+      for (var b = 0; b < buckets; b++) {
+        var a = Math.floor(b * per), z = Math.max(a + 1, Math.floor((b + 1) * per));
+        var mxv = 0, mid = S[Math.min(N - 1, Math.floor((a + z) / 2))].t;
+        for (var jn = a; jn < z && jn < N; jn++) if (vals[jn] > mxv) mxv = vals[jn];
+        pts.push({ x: mid / end * 1000, y: 118 - mxv * 88 });
+      }
+    }
+    var d = 'M0,118';
+    pts.forEach(function (pt) { d += ' L' + pt.x.toFixed(1) + ',' + pt.y.toFixed(1); });
+    d += ' L1000,118';
+    byId('tracepath').setAttribute('d', d);
+    byId('traceglow').setAttribute('d', d);
+
+    var surgeT = rec.find('hold:slip');
+    if (surgeT === null) surgeT = rec.find('hold:done');
+    if (surgeT === null) surgeT = rec.find('show:stick');
+    var stillA = rec.find('still:start');
+    var stillB = rec.find('still:end');
+    if (stillA !== null && (stillB === null || stillB <= stillA)) stillB = Math.min(end, stillA + 12000);
+
+    var marks = { surgeX: null, stillX: null };
+    if (surgeT !== null) {
+      var sx = clamp(surgeT / end * 100, 4, 96);
+      var m1 = byId('msurge');
+      m1.style.left = sx + '%';
+      m1.style.top = '71%';
+      marks.surgeX = surgeT / end * 1000;
+    }
+    if (stillA !== null && stillB !== null) {
+      var x1 = clamp(stillA / end * 100, 0, 100), x2 = clamp(stillB / end * 100, 0, 100);
+      var m2 = byId('mstill');
+      m2.style.left = x1 + '%';
+      m2.style.width = Math.max(2.5, x2 - x1) + '%';
+      m2.style.top = '93%';
+      marks.stillX = stillB / end * 1000;
+    }
+    return marks;
+  }
+
+  function drawTrace(marks) {
+    return new Promise(function (resolve) {
+      var path = byId('tracepath'), glow = byId('traceglow');
+      var msurge = byId('msurge'), mstill = byId('mstill');
+      var L = 0;
+      try { L = path.getTotalLength(); } catch (e) { L = 0; }
+      if (RM || L === 0) {
+        if (marks.surgeX !== null) msurge.classList.add('on');
+        if (marks.stillX !== null) mstill.classList.add('on');
+        rec.ev('trace:drawn');
+        resolve();
+        return;
+      }
+      path.style.strokeDasharray = L + ' ' + L;
+      path.style.strokeDashoffset = String(L);
+      glow.style.strokeDasharray = L + ' ' + L;
+      glow.style.strokeDashoffset = String(L);
+      var DUR = 9000 * SPEED, t = 0, doneS = false, doneQ = false;
+      function ease(u) { return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
+      onFrame(function tick(dt) {
+        if (t >= DUR) return;
+        t += dt;
+        var u = ease(Math.min(1, t / DUR));
+        var drawn = L * u;
+        path.style.strokeDashoffset = String(L - drawn);
+        glow.style.strokeDashoffset = String(L - drawn);
+        var px = 1000;
+        try { px = path.getPointAtLength(drawn).x; } catch (e) {}
+        if (!doneS && marks.surgeX !== null && px >= marks.surgeX) { doneS = true; msurge.classList.add('on'); }
+        if (!doneQ && marks.stillX !== null && px >= marks.stillX) { doneQ = true; mstill.classList.add('on'); }
+        if (t >= DUR) {
+          if (marks.surgeX !== null) msurge.classList.add('on');
+          if (marks.stillX !== null) mstill.classList.add('on');
+          rec.ev('trace:drawn');
+          resolve();
+        }
+      });
+    });
+  }
+
+  /* ---------------- the flow ---------------- */
+  var slowSpans = buildWords(byId('slow'), SLOW_WORDS);
+  var stickBaseSpans = buildWords(byId('stick'), STICK_BASE);
+  var stickRepeatSpans = buildWords(byId('stick'), STICK_REPEATS);
+  var stickTailSpan = buildWords(byId('stick'), [STICK_TAIL])[0];
+
+  var began = new Promise(function (res) {
+    var b = byId('begin');
+    b.addEventListener('click', function () {
+      if (rec.t0 !== null) return;
+      rec.t0 = performance.now();
+      rec.ev('begin');
+      b.classList.add('spent');
+      b.setAttribute('aria-disabled', 'true');
+      res();
+    });
+  });
+
+  async function flow() {
+    await began;
+    await wait(700);
+
+    show('p1'); await wait(2500);
+    show('p2'); await wait(2500);
+    show('p3'); await wait(3500);
+    show('p4'); await wait(3400);
+
+    show('slow');
+    rec.ev('slow:start');
+    await streamWords(slowSpans, 700);
+    rec.ev('slow:end');
+    await wait(2400);
+
+    show('stick');
+    await streamWords(stickBaseSpans, 210);
+    rec.ev('stick:start');
+    await wait(950);
+    stickRepeatSpans[0].classList.add('on'); await wait(1050);
+    stickRepeatSpans[1].classList.add('on'); await wait(1150);
+    stickTailSpan.classList.add('on');
+    rec.ev('stick:end');
+    await wait(2700);
+
+    show('holdblk');
+    await runHold();
+
+    await wait(500);
+    byId('holdblk').classList.add('quiet');
+    rec.ev('still:start');
+    audio.cut();
+    armStillEnd();
+    await wait(8800);
+
+    show('s1'); await wait(3300);
+    show('s2'); await wait(3600);
+    show('s3'); await wait(4600);
+    show('d1'); await wait(4400);
+    show('d2'); await wait(4700);
+
+    show('t1'); await wait(3000);
+    show('panelblk');
+    rec.ev('act2');
+    audio.back(0.006);
+    var panel = setupPanel();
+    panel.cacheRect();
+    panel.nudgeLoop();
+
+    await panel.landed;
+    await wait(1400);
+    show('land1'); await wait(3300);
+    byId('watchlbl').classList.add('on');
+    show('land2'); await wait(3500);
+    show('land3'); await wait(4400);
+    show('land4'); await wait(5600);
+
+    show('t2'); await wait(3400);
+
+    rec.ev('act3');
+    sampling = false;
+    var marks = buildTrace();
+    show('traceblk');
+    await wait(600);
+    await drawTrace(marks);
+    await wait(1600);
+
+    show('a1'); await wait(3300);
+    show('a2'); await wait(3500);
+    show('a3'); await wait(4700);
+
+    show('closeblk');
+    audio.fadeOut();
+    await wait(5200);
+    show('exitblk');
+    await wait(1400);
+    show('footblk');
+    rec.ev('end');
+  }
+
+  flow();
+})();
+</script>
+</body>
+</html>

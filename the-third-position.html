@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Third Position · The Return</title>
+<meta name="description" content="Every serious tradition circled the same thing. On what it is, why it could only be named now, and why it's the one part of a person nothing can replace.">
+<meta property="og:title" content="The Third Position">
+<meta property="og:description" content="On what every tradition circled, why it can be named now, and why it's the one part of a person nothing can replace.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Third Position">
+<meta name="twitter:description" content="On what every tradition circled, why it can be named now, and why it's the one part of a person nothing can replace.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #241d13;
+    --bg-soft: #2b2318;
+    --bg-card: #302619;
+    --text: #ece3ca;
+    --text-mid: #b4a47c;
+    --text-soft: #7a6e54;
+    --text-faint: #48412e;
+    --gold: #d29a36;
+    --gold-bright: #e0b055;
+    --sage: #6b8a52;
+    --sage-lift: #7da361;
+    --sage-bright: #8fb573;
+    --rule: rgba(236, 227, 202, 0.16);
+    --rule-soft: rgba(236, 227, 202, 0.08);
+  }
+  html, body { background: var(--bg); }
+  body {
+    color: var(--text);
+    font-weight: 300;
+    font-family: 'Spectral', Georgia, serif;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.68;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Atmospheric grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='23'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Subtle vignetting */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 74% 58% at 50% 34%, transparent 0%, rgba(0,0,0,0.42) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 100px 40px 200px;
+  }
+
+  /* ============ OPENING ============ */
+  header.frontispiece {
+    margin-bottom: 200px;
+    text-align: left;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 64px;
+    line-height: 1.6;
+  }
+  .eyebrow span { display: block; color: var(--text-soft); margin-top: 4px; }
+  h1.title {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-size: clamp(44px, 7vw, 72px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    margin-bottom: 56px;
+    color: var(--text);
+  }
+  h1.title em { font-style: italic; color: var(--gold); font-weight: 400; }
+  h1.title .article {
+    display: block;
+    font-size: 0.2em;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--text-soft);
+    text-transform: lowercase;
+    margin-bottom: 18px;
+    font-style: italic;
+  }
+  .subtitle {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-size: clamp(19px, 2.2vw, 24px);
+    line-height: 1.4;
+    color: var(--text-mid);
+    font-weight: 300;
+    max-width: 620px;
+    margin-bottom: 60px;
+  }
+  .subtitle em { color: var(--text); font-style: italic; }
+  .preamble-frame {
+    margin-top: 80px;
+    padding: 28px 32px;
+    border-left: 1px solid var(--gold);
+    background: var(--bg-soft);
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 600px;
+  }
+  .preamble-frame .marg {
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* ============ AI HOOK ============ */
+  .ai-hook {
+    margin: 80px 0 100px;
+    padding: 56px 36px 50px;
+    border-top: 1px solid rgba(107, 138, 82, 0.35);
+    border-bottom: 1px solid rgba(107, 138, 82, 0.35);
+    background: linear-gradient(180deg, rgba(107, 138, 82, 0.05), rgba(107, 138, 82, 0.01));
+    text-align: left;
+    position: relative;
+  }
+  .ai-hook::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 60px;
+    height: 1px;
+    background: var(--sage);
+  }
+  .ai-hook .ai-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--sage-bright);
+    margin-bottom: 26px;
+  }
+  .ai-hook p.ai-statement {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(20px, 2.6vw, 27px);
+    line-height: 1.32;
+    color: var(--text);
+    letter-spacing: -0.014em;
+  }
+  .ai-hook p.ai-statement em {
+    color: var(--sage-bright);
+    font-style: italic;
+  }
+  .ai-hook p.ai-followup {
+    margin-top: 22px;
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--text-mid);
+    line-height: 1.55;
+  }
+
+  /* ============ SECTIONS ============ */
+  section.movement {
+    margin: 140px 0;
+    position: relative;
+  }
+  .section-mark {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 48px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .section-numeral {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 26px;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+    letter-spacing: 0.08em;
+  }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-top: 8px;
+  }
+  .section-title {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    margin-bottom: 56px;
+    color: var(--text);
+  }
+  .section-title em { font-style: italic; color: var(--gold); font-weight: 400; }
+  .section-title .pop { color: var(--sage); font-style: italic; }
+
+  /* Prose */
+  .prose p {
+    font-size: clamp(19px, 1.9vw, 22px);
+    line-height: 1.85;
+    color: var(--text-mid);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+  .prose p em { color: var(--text-mid); font-style: italic; }
+  .prose p strong { color: var(--text); font-weight: 400; font-style: normal; }
+  .prose p .pop { color: var(--sage-bright); font-style: italic; }
+  .prose p:first-of-type::first-letter {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-size: 5.2em;
+    line-height: 0.85;
+    float: left;
+    margin: 0.1em 0.12em 0 -0.05em;
+    color: var(--gold);
+  }
+
+  /* Pull quote */
+  .pull {
+    margin: 60px 0;
+    padding: 0 0 0 40px;
+    border-left: 2px solid var(--gold);
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.3;
+    color: var(--text);
+    letter-spacing: -0.012em;
+  }
+  .pull em { color: var(--gold); font-style: italic; }
+  .pull .pop { color: var(--sage); font-style: italic; }
+
+  /* Figure block */
+  .figure-block {
+    margin: 70px 0;
+    padding: 48px 32px 36px;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule-soft);
+    text-align: center;
+  }
+  .figure-block svg { display: block; margin: 0 auto 22px; }
+  .figure-block .figcap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .figure-block .figsub {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-mid);
+    margin-top: 10px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  /* Inline interrupt block */
+  .interrupt {
+    margin: 50px 0;
+    padding: 32px 0 36px;
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .interrupt p {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(19px, 2.2vw, 24px);
+    line-height: 1.4;
+    color: var(--text-mid);
+    margin-bottom: 0;
+  }
+  .interrupt p em { color: var(--gold); font-style: italic; }
+
+  /* ============ CLOSING ============ */
+  .final {
+    margin-top: 200px;
+    text-align: center;
+  }
+  .final::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 80px;
+  }
+  .final .closing-line {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(26px, 3.6vw, 40px);
+    line-height: 1.2;
+    color: var(--text);
+    letter-spacing: -0.018em;
+    margin-bottom: 28px;
+  }
+  .final .closing-line em { color: var(--gold); }
+  .final .closing-sub {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--text-mid);
+    line-height: 1.45;
+  }
+  .final .closing-sub strong { color: var(--text); font-weight: 500; font-style: normal; }
+
+  .colophon-end {
+    margin-top: 160px;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+
+  /* Reading progress thread (decorative) */
+
+  /* ============ SITE BAR ============ */
+  .site-bar {
+    position: relative;
+    z-index: 200;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 40px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .site-bar a { text-decoration: none; transition: color .25s, border-color .25s; }
+  .site-bar .navhome { color: var(--text-mid); letter-spacing: .34em; }
+  .site-bar .navhome:hover { color: var(--text); }
+  .site-bar .navset { display:flex; gap: clamp(.9rem,2.4vw,1.6rem); align-items:baseline; flex-wrap:wrap; }
+  .site-bar .navlink { color: var(--text-soft); border-bottom: 1px solid transparent; padding-bottom: 3px; }
+  .site-bar .navlink:hover { color: var(--sage-lift); border-bottom-color: rgba(107,138,82,.5); }
+  .site-bar .navlink.here { color: var(--text-mid); border-bottom: 1px solid rgba(125,163,97,.55); cursor: default; }
+
+  /* ============ CONTENTS ============ */
+  section.movement { scroll-margin-top: 48px; }
+  .toc-fab {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    z-index: 90;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    background: rgba(29, 24, 18, 0.92);
+    border: 1px solid var(--rule);
+    padding: 12px 18px 11px 20px;
+    cursor: pointer;
+    transition: color .25s, border-color .25s;
+    backdrop-filter: blur(4px);
+  }
+  .toc-fab:hover, .toc-fab:focus-visible { color: var(--gold-bright); border-color: var(--gold); outline: none; }
+  .toc-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    background: rgba(20, 17, 12, 0.96);
+    backdrop-filter: blur(6px);
+    display: none;
+    overflow-y: auto;
+  }
+  .toc-overlay.open { display: block; }
+  .toc-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 90px 40px 120px;
+  }
+  .toc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 52px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .toc-head .toc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .toc-close {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color .25s;
+  }
+  .toc-close:hover, .toc-close:focus-visible { color: var(--sage-bright); outline: none; }
+  .toc-list { list-style: none; }
+  .toc-list li { margin-bottom: 6px; }
+  .toc-list a {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    padding: 16px 10px 15px 6px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-soft);
+    transition: background .25s;
+  }
+  .toc-list a:hover, .toc-list a:focus-visible { background: rgba(210, 154, 54, 0.05); outline: none; }
+  .toc-num {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 21px;
+    color: var(--gold);
+    min-width: 52px;
+    letter-spacing: 0.06em;
+  }
+  .toc-name {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-size: 19px;
+    color: var(--text);
+    line-height: 1.35;
+  }
+  .toc-name span {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-top: 6px;
+  }
+  @media (max-width: 720px) {
+    .site-bar { padding: 22px 22px 0; }
+    .toc-fab { right: 16px; bottom: 16px; padding: 10px 14px 9px 16px; }
+    .toc-inner { padding: 64px 24px 90px; }
+  }
+
+  .progress-thread {
+    position: fixed;
+    top: 0; left: 0;
+    height: 1px;
+    background: var(--gold);
+    width: 0%;
+    z-index: 100;
+    transition: width 0.15s ease-out;
+  }
+
+  @media (max-width: 720px) {
+    .container { padding: 60px 22px 120px; }
+    .prose p:first-of-type::first-letter {
+      font-size: 4.2em;
+    }
+    .pull { padding-left: 24px; font-size: 22px; }
+    .preamble-frame { padding: 22px 22px; }
+    .interrupt p { font-size: 19px; }
+  }
+
+  /* ============ WIDE SCREENS ============ */
+  @media (min-width: 1000px) {
+    .container { max-width: 1140px; padding: 110px 48px 200px; }
+    .site-bar { max-width: 1140px; padding: 28px 48px 0; }
+    .prose { max-width: 720px; margin-left: auto; margin-right: auto; }
+    .prose p { line-height: 1.9; }
+    .subtitle { max-width: 760px; }
+    .preamble-frame { max-width: 640px; }
+    .ai-hook { max-width: 880px; }
+  }
+  @media (min-width: 1150px) {
+    .prose .pull { margin-right: -180px; }
+    .prose .interrupt { margin-right: -120px; }
+    .prose .figure-block { margin-left: -90px; margin-right: -90px; }
+    .final { padding-left: calc((100% - 680px) / 2); }
+  }
+
+  .back-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--text-soft); text-decoration: none;
+    transition: color .25s;
+  }
+  .back-link:hover { color: var(--gold-bright); }
+
+  /* ============ DAWN HANDOFF + WINDOW — matches the site chain ============ */
+  .dawn-handoff {
+    position: relative;
+    margin-top: 200px;
+    padding-top: 90px;
+    text-align: center;
+  }
+  .dawn-glow {
+    position: absolute;
+    left: 50%;
+    bottom: -4rem;
+    transform: translateX(-50%);
+    width: 150vw;
+    height: 44vh;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse 52% 100% at 50% 100%, rgba(210,154,54,0.18), rgba(210,154,54,0.05) 48%, transparent 72%);
+    filter: blur(30px);
+  }
+  .sec-label {
+    position: relative; z-index: 2;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .dawn-line {
+    position: relative; z-index: 2;
+    max-width: 44ch; margin: 1.6rem auto 0;
+    font-family: 'Spectral', serif; font-style: italic; font-weight: 300;
+    color: var(--text-soft); font-size: clamp(19px, 2vw, 22px); line-height: 1.7;
+  }
+  .dawn-line strong { font-style: normal; font-weight: 400; color: var(--text-mid); }
+  .dawn-link {
+    position: relative; z-index: 2;
+    display: inline-block; margin-top: 1.8rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--sage-lift); text-decoration: none;
+    border-bottom: 1px solid rgba(107,138,82,0.35); padding-bottom: 0.4rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .dawn-link:hover { color: var(--text); border-color: rgba(125,163,97,0.7); }
+
+  .window-block {
+    position: relative; z-index: 2;
+    text-align: center; margin-top: clamp(4rem, 10vh, 6.5rem);
+  }
+  .window-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: clamp(150px, 26vw, 240px); height: clamp(150px, 26vw, 240px); border-radius: 50%;
+    background: radial-gradient(circle, rgba(107,138,82,0.16) 0%, rgba(107,138,82,0.06) 46%, transparent 72%);
+    animation: winbreath 6s ease-in-out infinite; pointer-events: none;
+  }
+  @keyframes winbreath { 0%,100%{opacity:0.6; transform:translate(-50%,-50%) scale(1);} 50%{opacity:1; transform:translate(-50%,-50%) scale(1.12);} }
+  .window-block a { position: relative; z-index: 1; display: inline-flex; text-decoration: none; }
+  .w-mail {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.2em;
+    color: var(--text-soft); border-bottom: 1px solid rgba(107,138,82,0.3); padding-bottom: 0.45rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .window-block a:hover .w-mail { color: var(--sage-lift); border-color: var(--sage); }
+  @media (prefers-reduced-motion: reduce) { .window-glow { animation: none !important; } }
+  .foot-entry{color:inherit;text-decoration:none;border-bottom:1px solid rgba(236,227,202,.2);transition:color .3s,border-color .3s}.foot-entry:hover{color:var(--sage-lift);border-color:rgba(107,138,82,.5)}
+
+  .navdd{position:relative;display:inline-block}
+  .navdd-btn{background:none;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.32em;text-transform:uppercase;display:inline-flex;align-items:baseline;gap:.4em;color:var(--text-soft);padding:0 0 3px;border-bottom:1px solid transparent;transition:color .25s,border-color .25s}
+  .navdd-btn:hover,.navdd:focus-within .navdd-btn{color:var(--sage-lift);border-bottom-color:rgba(107,138,82,.5)}
+  .navdd-btn.here{color:var(--text-mid);border-bottom:1px solid rgba(125,163,97,.55)}
+  .navdd-caret{font-size:.7em;opacity:.7}
+  .navdd-menu{position:absolute;right:0;top:calc(100% + .5rem);min-width:12rem;display:flex;flex-direction:column;background:rgba(43,35,24,.98);border:1px solid rgba(236,227,202,.12);border-radius:3px;padding:.35rem;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .22s,transform .22s,visibility .22s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);z-index:210;box-shadow:0 12px 34px rgba(0,0,0,.45)}
+  .navdd:hover .navdd-menu,.navdd:focus-within .navdd-menu,.navdd-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+  .navdd-item{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-soft);text-decoration:none;padding:.6rem .7rem;border-radius:2px;transition:color .22s,background .22s}
+  .navdd-item:hover{color:var(--text);background:rgba(107,138,82,.12)}
+</style>
+</head>
+<body>
+
+<div class="progress-thread" id="progressThread"></div>
+
+<nav class="site-bar" aria-label="Site">
+  <a class="navhome" href="the-map.html">Poppy Lifeforce</a>
+  <div class="navset">
+    <a class="navlink" href="the-map.html">the map</a>
+    <div class="navdd">
+      <button class="navlink navdd-btn here" aria-current="page" aria-haspopup="true" aria-expanded="false">the third position <span class="navdd-caret">&#9662;</span></button>
+      <div class="navdd-menu" role="menu">
+        <a class="navdd-item" href="the-seat.html" role="menuitem">the overview</a>
+        <a class="navdd-item" href="the-third-position.html" role="menuitem">the full case</a>
+      </div>
+    </div>
+    <a class="navlink" href="the-ground.html">the ground</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- ============ FRONTISPIECE ============ -->
+  <header class="frontispiece">
+    <div class="eyebrow">
+      The Return · the full case
+    </div>
+    <h1 class="title"> The <em>Third Position</em>
+    </h1>
+    <p class="subtitle">
+      Every serious tradition circled the same thing and never quite landed it — on what it is, why it could only be named now, and why it's the one part of a person nothing can replace.
+    </p>
+  </header>
+
+  <!-- ============ I — RECOGNITION ============ -->
+  <section class="movement" id="sec-i">
+    <div class="section-mark">
+      <div class="section-numeral">I.</div>
+      <div class="section-tag">Recognition</div>
+    </div>
+    <h2 class="section-title">Something is already <em>at the controls</em>.</h2>
+
+    <div class="prose">
+      <p>Someone says the wrong thing. A car cuts across the lane. The response is already loaded and climbing before any decision gets made. Usually that's the whole event — trigger, reaction, done. But every so often, in the half-second before it fires, <strong>something steps in and holds it back.</strong> The reaction is still there, fully formed; it just doesn't get to move. Whatever stepped in wasn't the reaction. It was slower, quieter — and it had been watching.</p>
+
+      <p>It's easy to miss, because the reaction is loud — fast, taking the whole floor, feeling in the moment like the whole of you. But you just saw that it isn't. Something underneath was watching the reaction happen, and it held the line. <span class="pop">That is the part of you actually at the controls.</span> Not the personality — the personality is most of the noise it has to cut through. The one beneath it, watching the whole system run, able to take the wheel. Call it <strong>the operator</strong>. It's what's reading this sentence right now.</p>
+
+      <p>The same thing surfaces from the other side, in work done at full stretch. The second-guessing drops away and the thing starts to move on its own: the next right move arriving, and the next, ahead of thought, no voice narrating. Athletes call it the zone. Musicians call it being inside the music. The old sword schools called it <em>mushin</em> — no-mind. Different doors, one state: <strong>the noise has gone quiet, and the operator is simply doing the work.</strong></p>
+
+      <p>Two sightings, one thing — the one that catches a reaction, and the one that runs clean when the noise drops. What follows is what it is, why every serious tradition on earth circled it, and why — now, of all moments — it's become the one thing that can't be replaced.</p>
+    </div>
+  </section>
+
+  <section class="movement" id="sec-ii">
+    <div class="section-mark">
+      <div class="section-numeral">II.</div>
+      <div class="section-tag">Two readings</div>
+    </div>
+    <h2 class="section-title">One person, <em>read two ways</em>.</h2>
+
+    <div class="prose">
+      <p>None of this is new.</p>
+
+      <p>The thing the last few pages circled — the one at the controls, underneath the noise — has been found before, over and over, by people who had no contact with each other and no shared language. Every tradition that ever looked hard at a human being ran into it. Buddhism reached for it as the witness, the awareness that watches a thought without being the thought. The Vedic traditions reached for it as the self beneath the self. Taoism pointed at it sideways, as action that isn't done by anyone in particular. The West reached for it as the soul. Different centuries, different continents, the same thing circled again and again.</p>
+
+      <p>What's strange is what they built around it. All these traditions, circling the same thing, drew almost opposite pictures of a human being. Stand a contemplative from the East beside a philosopher of the self from the West and they barely agree on what a person <em>is</em>. One sees a self that has to be seen through. The other spends two thousand years describing what a self is and how to make it whole.</p>
+
+      <p>They aren't being careless. They're reading two different layers of the same person — and each is reading its own layer clean. Here are the two layers — the whole thing rests on them.</p>
+
+      <p>Some of what you are came installed. The speed you process at, how much noise you can take before it's too much, what tires you and what wakes you up, the temperament that was visible in you as a small child and is still running now — none of it was chosen. It's the equipment you arrived with: a body and a nervous system already running their own way before you had any say in it.</p>
+
+      <p>And running on top of that is a second thing — the part that talks. The voice that narrates, weighs, rehearses the conversation before it happens and replays it after. It isn't only commentary; it's protection. Early in every life, a person works out how to stay safe — what to perform, what to hide, what to need and what to never need — and those moves harden into a personality, a standing set of defenses that runs mostly on its own. It's the voice that goes quiet when the work starts to run itself. It's the thing that loaded the sharp reply before any decision got made.</p>
+
+      <p>Now the two traditions come apart cleanly. The East, for thousands of years, mapped the field a person runs inside — the weather a system lives in, the cycles, the flow, the conditions that decide what anyone can do. Its subject was never the lone individual; it was the whole system in motion. The West mapped the inner defended self — what it knows, what it wants, how it guards itself, how it might be made whole. Its subject was always the single person.</p>
+
+      <p>So each looked at the other and saw a hole. The West, looking East, sees a self gone missing. The East, looking West, sees a person who's lost the flow. Neither was wrong. Each was reading clean in its own layer and finding the other layer absent — because the other layer wasn't what it was looking at.</p>
+
+      <p>And the not-seeing runs deeper than disagreement. It's built into the languages. Classical Chinese is a grammar for pointing at process — it lets you indicate a movement, a relation, a whole system, and lets the listener's mind move through it. English makes you break a scene into actors and actions, things doing things to other things, one link at a time. Hand the same reality to the two grammars and they hand back two different worlds: one a flowing system, one a set of separate parts knocking together. <strong>The language commits you to a picture of reality before you've noticed you had a choice.</strong></p>
+
+      <p>Both readings are real. Both are necessary. Neither is complete alone. And the thing both kept circling sits above the split — the one layer that is neither the equipment nor the voice, the layer that can watch them both run and, now and then, take the wheel. It was standing in both maps the whole time, named cleanly by neither, because each tradition had its eyes on its own layer.</p>
+    </div>
+  </section>
+
+  <section class="movement" id="sec-iii">
+    <div class="section-mark">
+      <div class="section-numeral">III.</div>
+      <div class="section-tag">Why now · the refusal</div>
+    </div>
+    <h2 class="section-title">Why it can be named <em>now</em> — and what it won't ask.</h2>
+
+    <div class="prose">
+      <p>So why now? Why would a thing every tradition circled for millennia become sayable in plain terms at this particular moment?</p>
+
+      <p>Because the conditions for saying it are finally common. For most of history a person lived inside one grammar, one tradition, one picture of the world, and never had to hold a second. That's ending. People move now; languages mix inside the same house; whole lives get lived between worlds. More nervous systems than ever are being built in two grammars at once — not taught a second language in a classroom, but wired in both from the start, made to hold two pictures of reality without collapsing into either.</p>
+
+      <p>And living like that does something specific. Hold two grammars from the beginning, with neither one simply <em>the truth</em>, and you lose the ability to mistake either for reality itself. You start using each as an instrument — picking up the one that fits and setting it down again. The same skill gets trained other ways. Deep contemplative practice teaches a person to use a thought instead of being used by it. Serious artistic discipline teaches you to operate your medium instead of being operated by it. It's all the same move — the operator's move, run at the level of thought: hold the frame, don't <em>be</em> the frame. The world is producing more people who can do this than at any time before, which is why the position can be named now in a way it couldn't have been a century ago.</p>
+
+      <p>There's a second reason, sharper and newer. For all of history, being good at things — knowing, calculating, producing competent work — was most of what a person had to offer, and it was easy to mistake that competence for the person. Machines have ended the confusion. Software can now write the passable essay, draft the brief, generate competent output in nearly any domain, and it is getting better fast. What it cannot do is <em>be</em> the one who wanted to make the thing — the specific life at the controls, with a reason of its own. The machines didn't threaten that layer. They exposed it, by stripping away everything around it that used to look essential and turns out not to be. <span class="pop">When the competent output is automated, the one at the controls is what's left standing.</span> That is what makes naming it urgent, now.</p>
+
+      <p>And now the most disciplined move of all — a refusal.</p>
+
+      <p>There's a set of questions human thought has circled for as long as there's been thought. What is consciousness. Is there a soul. Does the self exist before the body. What happens after death. Does God exist. The work takes no side on any of them — not because they don't matter, but because, looked at closely, they're the wrong questions, and the asking is itself a move a person makes to feel safe.</p>
+
+      <p>Notice that thousands of years of hard thinking by serious people has produced no agreement on a single one of them. That isn't because no one thought hard enough. It's because those are the defenses' questions — the protective mind trying to build a story about reality solid enough to stand on, so it can stop feeling the open ground underneath. The relief people chase through those questions was never waiting in the answers. It's in noticing that the questions themselves are the thing keeping them circling. Picking a side is just one more wall.</p>
+
+      <p>So the work doesn't answer them. It does something narrower and sturdier: it watches. It describes an operation a person can run, notes what comes online when they run it, and stops there. It says what the one at the controls <em>does</em>, not what it <em>is</em>. That's closer to the old meaning of natural philosophy — the spirit in which Newton described how bodies move — than to the kind of philosophy that argues about essences. Watch the thing. Describe how it works. Leave the meaning to whoever is living it.</p>
+
+      <p>Which is why it carries across people who agree on nothing else. A Christian can run the operation without leaving Christianity; an atheist can run it without believing anything; a skeptic can run it without signing on to a worldview. Whatever it comes to mean afterward is theirs. And it's why the work can't hand anyone the thing directly — it can only build the conditions where a person finds it themselves. <strong>No one can wake it in you from the outside. The most anyone can do is set up the room so it wakes on its own.</strong></p>
+    </div>
+  </section>
+
+  <section class="movement" id="sec-iv">
+    <div class="section-mark">
+      <div class="section-numeral">IV.</div>
+      <div class="section-tag">The structural law</div>
+    </div>
+    <h2 class="section-title">Made of relationships — and the <em>life under the noise</em>.</h2>
+
+    <div class="prose">
+      <p>One more concrete thing before the hardest turn.</p>
+
+      <p>The mushroom you'd point at and call <em>the mushroom</em> is a temporary thing — the brief visible bloom of a web of fine threads running through the soil beneath it, sometimes for miles. Most of the organism is the web. The mushroom is just the moment the web pushes a piece of itself up into the air where you can see it. Biology stared at mushrooms for a long time before it understood that the discrete thing on the surface was a passing expression of a vast continuous thing below.</p>
+
+      <p>Once you've seen that shape, you start seeing it everywhere. Look at the old drawing that reads as either two faces or a vase. You can see faces, you can see vase, you can't hold both at once — and neither one is the real one underneath the other. The faces and the vase make each other. The cut between them is the only reason your eye sees anything at all.</p>
+
+      <p>It's one pattern, under both. The separate thing and the field it rises out of aren't two facts; they're one process wearing two faces. The mushroom and the web. The faces and the vase. Each makes the other, in real time. <strong>Reality, looked at closely enough, isn't built out of separate things. It's built out of relationships that throw up the appearance of separate things.</strong></p>
+
+      <p>The oldest map of this is one most people have seen and never really looked at. The taiji — the black and white teardrops curled into a circle, each carrying a seed of the other. The West imported it as a symbol of balance, and missed the whole of it. It isn't a picture of balance. <em>It's a picture of motion.</em></p>
+
+      <p>Look at what it actually shows. The black is pouring into the white — and at the fullest point of the black, the white is already being born, its seed already there. Each side, at its peak, is producing its opposite. You could not stop the wheel and find one phase on its own; the dark only is what it is on its way to becoming the light. Not two things getting along. <strong>One motion, seen at two moments.</strong> Physics ran into the same shape when its experiments stopped fitting the old logic — Niels Bohr put the taiji on his coat of arms. Call it <strong>mutual generation</strong>: one process, showing up as two.</p>
+
+      <div class="figure-block">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="72" fill="none" stroke="#ecdfc7" stroke-width="1" opacity="0.5"/>
+          <path d="M 90,18 A 72,72 0 0,1 90,162 A 36,36 0 0,1 90,90 A 36,36 0 0,0 90,18 Z" fill="#ecdfc7" opacity="0.92"/>
+          <circle cx="90" cy="54" r="10" fill="#14110c"/>
+          <circle cx="90" cy="54" r="3" fill="#d29a36"/>
+          <circle cx="90" cy="126" r="10" fill="#ecdfc7"/>
+          <circle cx="90" cy="126" r="3" fill="#d29a36"/>
+        </svg>
+        <div class="figcap">the seed of each held in the other</div>
+        <div class="figsub">Not two opposites in balance. One process, two phases, each generating the other.</div>
+      </div>
+
+      <p>Now the hard turn. And the pattern we just built is what carries it.</p>
+
+      <p>The operator and the equipment it runs are a pair like that.</p>
+
+      <p>The operator doesn't sit inside the body like a driver waiting to be found. Machinery running with nobody watching produces no operator at all. The operator is what happens the moment the machinery begins to observe itself. Not a hidden thing, discovered. <strong>An event, that starts when the self-watching switches on.</strong> Before it: just the machinery, running. After it: the machinery running <em>plus</em> the watching of it — which changes how it runs.</p>
+
+      <p>The event runs in a half-second. There is the reading of these words — and then the noticing of the reading. That second turn, attention folding back on itself, is the whole of it.</p>
+
+      <p>That second step — the watching folding back on itself — is the operator coming online. It isn't mystical, and it doesn't take years. It takes a half-second of attention. Physics made the same move when it admitted the one measuring is part of what gets measured: there is no watcher standing outside, looking in. There is one system that, the instant it turns to look at itself, <em>has</em> someone at the controls. <strong>The looking is the operator.</strong></p>
+
+      <p>So that's what the operator is. One thing is left to find — what's underneath it. It's the layer all of this has been walking toward, so take it slowly.</p>
+
+      <p>Take the defenses offline. Quiet the commentary, the protective patterns, the old strategies. <strong>What's left?</strong></p>
+
+      <p>Not emptiness.</p>
+
+      <p>What's left is the same thing that drives a seed to push up through the dirt toward a light it has never seen. The living thing's own pull toward continuing, toward growing, toward becoming the fullest version of its specific form. You've seen it. It's there in a frightened child who steadies the instant a calm adult simply stays close. It's there in the particular release a person feels when someone finally sees them — actually sees them — and something that was braced lets go. It was under the noise the whole time.</p>
+
+      <p>That pull is the deepest thing the work names. And it is the thing meant by a word worn so smooth it's nearly useless: <strong>love</strong>. Not the feeling. Not sentiment. The actual force that keeps a living thing alive and aimed at its own growth — what nourishes it, what sustains it, the reason a system grows instead of collapsing. The operator doesn't manufacture it. It lands on it — comes to rest on its own aliveness, and recognizes what it is.</p>
+
+      <p>Strip the word back to that, and love stops being soft. It's the life force itself. Naming it here isn't a turn toward the mystical; it's the most physical claim here.</p>
+
+      <div class="pull">Persuasion feeds the defenses. <em>Steadiness is the one thing they can't eat.</em></div>
+
+      <p>It's also why some things reach a person and others bounce off. The defending mind runs on data — it takes in arguments, logic, even conflict, and turns all of it into material for stronger walls. Try to talk someone out of their defenses and you've just fed them.</p>
+
+      <p>Steadiness isn't data. The calm adult beside the frightened child isn't making a case. The teacher who simply sees a student isn't winning an argument. The partner who recognizes you in your real form isn't persuading you. None of it can be turned into a defense, because none of it is information. It can only be received by the thing under the defenses — <em>the life in one recognizing the life in the other.</em> That's the whole mechanism. Not a better argument. A steady frequency the defenses have no way to consume.</p>
+    </div>
+  </section>
+
+  <section class="movement" id="sec-v">
+    <div class="section-mark">
+      <div class="section-numeral">V.</div>
+      <div class="section-tag">Coherence · recognition</div>
+    </div>
+    <h2 class="section-title">The fleet — and <em>what was there all along</em>.</h2>
+
+    <div class="prose">
+      <p>One question is left, the one usually gestured at and walked past: what would a world of people actually at the controls of their own lives look like, together?</p>
+
+      <p>The usual answers fail in matching ways. The mystical answer merges everyone — dissolve into oneness — and produces not coherence but a huddle of people who've lost their edges and lean on each other to stand. The modern answer isolates everyone — each a sovereign unit, society a contract between them — and produces atomized people who trade goods and can't quite reach one another. The compromise balances the two and quietly ends up choosing a side.</p>
+
+      <p>All three break the same way. They still treat being yourself and being with others as a tug-of-war, where more of one has to mean less of the other.</p>
+
+      <p>It was never a tug-of-war. Two things are true at once and they don't compete. In its own layer, the one at the controls is alone — irreducibly. However much someone loves you, they cannot climb inside and run you for you; in the cockpit, you are the only one there, always. And in its layer, the body is never alone for a second — the nervous system, the air, the people around you are one continuous exchange, not sealed units passing things across a gap. Alone at the controls; never alone in the medium. Both at once, no contradiction.</p>
+
+      <p>There's a structure that shows exactly this, and it holds real weight. A tensegrity mast is a set of rigid rods that never touch, suspended in a web of cables held under tension. Each rod keeps its own shape completely; the cables hold all of them in relation; and the whole thing stands only because both are true at once. Cut the tension and the rods clatter into a pile. Treat the rods as separate and forget the cables and there is nothing holding them in form. <em>The structure stands on the integrity of each piece and the field of relationship between them, together.</em></p>
+
+      <div class="figure-block">
+        <svg width="320" height="160" viewBox="0 0 320 160">
+          <line x1="50" y1="40" x2="100" y2="120" stroke="#ecdfc7" stroke-width="3.5"/>
+          <line x1="170" y1="30" x2="125" y2="130" stroke="#ecdfc7" stroke-width="3.5"/>
+          <line x1="220" y1="45" x2="270" y2="125" stroke="#ecdfc7" stroke-width="3.5"/>
+          <line x1="50" y1="40" x2="170" y2="30" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="50" y1="40" x2="220" y2="45" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="100" y1="120" x2="125" y2="130" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="100" y1="120" x2="270" y2="125" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="170" y1="30" x2="220" y2="45" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="125" y1="130" x2="270" y2="125" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="170" y1="30" x2="270" y2="125" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+          <line x1="220" y1="45" x2="125" y2="130" stroke="#d29a36" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.85"/>
+        </svg>
+        <div class="figcap">each piece whole · the field holds them in form</div>
+        <div class="figsub">Remove the tension and the rigid pieces collapse into a pile. Remove the pieces and the tension has nothing to hold. Neither is more real; the structure is both at once.</div>
+      </div>
+
+      <p>That's the shape, and at human scale it has a name: <strong>distributed coherence</strong>. Each person fully their own form, none dissolved into the group, and every one of them in a live field of recognition with the others. Not merging, not unification — form across difference, with nothing given up.</p>
+
+      <p>There is a felt difference between two people meeting from behind their defenses and two meeting without them. Defended, a room is busy even in silence: sizing up, comparing, managing the impression, scanning for threat. When two people meet from underneath all that — both at the controls, neither performing, neither braced — the busyness simply isn't there. Nothing is being defended, so the machinery of defense has nothing to do and goes quiet. The body clocks it before the mind does: the readiness drains off, the guard comes down, the whole system reads safe.</p>
+
+      <p>A room of people like that isn't melting into one mind. It's that the static each set of defenses was throwing off has dropped, and what's underneath — the plain fact of life recognizing life — becomes audible for once. <span class="pop">The signal was always there. The noise was covering it.</span></p>
+
+      <p>This is the layer nothing artificial reaches, however good it gets. A machine can already produce the competent work in any domain, and it will keep getting better. What it can't do is be the one who wanted to make the thing — the specific life at the controls, with its own reason. The output was never the irreplaceable part. The one at the controls is. That's what doesn't get automated, and it's what the whole world is about to need people to find, because nearly everything else is being handed to the machines.</p>
+
+      <p>So strip it all away — the names, the diagrams, the scaffolding of the work. What's left?</p>
+
+      <p><strong>You have been one thing the whole time.</strong> The line you thought ran between you and everything else was a story the defenses told. The thing reading this sentence, right now, is the thing the essay has been pointing at from the opening: the one at the controls, awake, watching the reading happen. It was never somewhere else. There was never any distance to cross to reach it. That is what comes online when a person finally stops trying and is simply what they are — not transcendence, not leaving the world behind, but the thing that was already here, seeing itself at last.</p>
+    </div>
+  </section>
+
+  <div class="final">
+    <p class="closing-line">The thing that was reading these words<br>has been here <em>the whole time</em>.</p>
+    <p class="closing-sub"><strong>Recognition.</strong></p>
+  </div>
+
+  <div class="dawn-handoff">
+    <div class="dawn-glow" aria-hidden="true"></div>
+    <div class="sec-label">the ground</div>
+    <p class="dawn-line">A position is not held by reading about it. It is held the way anything is held — under real weight, on ground that keeps. <strong>That is the next surface.</strong></p>
+    <a class="dawn-link" href="the-ground.html">onto the ground&nbsp;&rarr;</a>
+  </div>
+
+  <div class="window-block">
+    <div class="window-glow" aria-hidden="true"></div>
+    <a href="mailto:hello@poppylifeforce.com">
+      <span class="w-mail">hello@poppylifeforce.com</span>
+    </a>
+  </div>
+
+  <div class="colophon-end">
+    <span>Poppy&nbsp;Lifeforce &middot; The Return</span>
+    <span><a class="foot-entry" href="/">the entry</a></span>
+  </div>
+
+</div>
+
+<button class="toc-fab" id="tocFab" aria-haspopup="dialog" aria-controls="tocOverlay">Contents</button>
+
+<div class="toc-overlay" id="tocOverlay" role="dialog" aria-modal="true" aria-label="Contents">
+  <div class="toc-inner">
+    <div class="toc-head">
+      <span class="toc-label">The Third Position · Contents</span>
+      <button class="toc-close" id="tocClose">Close ✕</button>
+    </div>
+    <ul class="toc-list">
+      <li><a href="#sec-i" data-toc-link>
+        <span class="toc-num">I.</span>
+        <span class="toc-name">Recognition<span>something already at the controls</span></span>
+      </a></li>
+      <li><a href="#sec-ii" data-toc-link>
+        <span class="toc-num">II.</span>
+        <span class="toc-name">Two Readings<span>one machine, read two ways</span></span>
+      </a></li>
+      <li><a href="#sec-iii" data-toc-link>
+        <span class="toc-num">III.</span>
+        <span class="toc-name">Why Now · The Refusal<span>and what it will not ask</span></span>
+      </a></li>
+      <li><a href="#sec-iv" data-toc-link>
+        <span class="toc-num">IV.</span>
+        <span class="toc-name">The Structural Law<span>relationships · the life under the noise</span></span>
+      </a></li>
+      <li><a href="#sec-v" data-toc-link>
+        <span class="toc-num">V.</span>
+        <span class="toc-name">The Fleet<span>coherence, and what was there all along</span></span>
+      </a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // Decorative reading progress thread at top of viewport
+  const thread = document.getElementById('progressThread');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled / max) * 100 : 0;
+    thread.style.width = pct + '%';
+  });
+
+  // Contents overlay
+  const fab = document.getElementById('tocFab');
+  const overlay = document.getElementById('tocOverlay');
+  const closeBtn = document.getElementById('tocClose');
+  const openToc = () => { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const closeToc = () => { overlay.classList.remove('open'); document.body.style.overflow = ''; };
+  fab.addEventListener('click', openToc);
+  closeBtn.addEventListener('click', closeToc);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeToc(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeToc(); });
+  document.querySelectorAll('[data-toc-link]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeToc();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      history.replaceState(null, '', a.getAttribute('href'));
+    });
+  });
+</script>
+
+
+<script>
+(function(){
+  var dds=document.querySelectorAll('.navdd');
+  dds.forEach(function(dd){
+    var btn=dd.querySelector('.navdd-btn'),menu=dd.querySelector('.navdd-menu');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(e){e.preventDefault();var o=menu.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});
+    document.addEventListener('click',function(e){if(!dd.contains(e.target)){menu.classList.remove('open');btn.setAttribute('aria-expanded','false');}});
+  });
+})();
+</script>
+</body>
+</html>
