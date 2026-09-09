@@ -1,0 +1,191 @@
+/* one node — layer 1. Warm paper, ink for what is fixed and wired, one metal
+   accent for what is loose. Nothing else gets colour. */
+:root{
+  --paper:#efe8da;
+  --paper-deep:#e2d8c3;
+  --ink:#26211b;
+  --ink-soft:#75695c;
+  --ink-faint:#b9ad9a;
+  --metal:#9a6b14;
+  --metal-soft:#d3b26a;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:1.5;
+  overflow:hidden;
+}
+.frame{height:100%;display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:1fr}
+
+header{padding:18px 22px 6px;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+header h1{font-size:22px;font-weight:500;margin:0;letter-spacing:.005em}
+header .sub{color:var(--ink-soft);font-size:14px}
+header .layer{color:var(--ink-faint);font-size:13px;text-align:right;white-space:nowrap}
+
+main{position:relative;min-height:0}
+main{overflow:hidden}
+/* Sized to its box rather than to its own aspect ratio: preserveAspectRatio
+   letterboxes the viewBox inside, so the figure can never overflow the
+   viewport width on a phone. */
+svg.stage{position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none;transition:width .22s ease}
+main.has-panel svg.stage{width:calc(100% - 330px)}
+
+/* ---------------------------------------------------------------- layers */
+.layers{
+  position:absolute;left:22px;top:6px;
+  background:rgba(239,232,218,.92);
+  border:1px solid var(--paper-deep);
+  padding:10px 14px 8px;font-size:14px;max-width:200px;
+}
+.layers .t{color:var(--ink-soft);margin-bottom:6px}
+.layers label{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer}
+.layers input{accent-color:var(--ink);width:15px;height:15px;margin:0}
+.layers .n{margin-left:auto;color:var(--ink-faint);font-size:13px}
+
+/* --------------------------------------------------------------- inspect */
+.inspect{
+  position:absolute;right:22px;top:6px;bottom:6px;width:300px;
+  background:rgba(239,232,218,.96);
+  border:1px solid var(--paper-deep);
+  padding:16px 18px;
+  transform:translateX(24px);opacity:0;pointer-events:none;
+  transition:transform .22s ease,opacity .22s ease;
+  overflow:auto;
+}
+.inspect.open{transform:none;opacity:1;pointer-events:auto}
+.inspect .kind{color:var(--ink-soft);font-size:13px;margin-bottom:2px;padding-right:22px}
+.inspect h2{font-size:21px;font-weight:500;margin:0 0 10px;line-height:1.25}
+.inspect p{margin:0 0 10px;font-size:15px}
+.inspect .lab{
+  color:var(--ink-soft);font-size:12.5px;margin-top:12px;
+  letter-spacing:.03em;
+}
+.inspect .field p{margin:2px 0 10px}
+.inspect .field.lead p{margin:0 0 10px}
+.inspect ul{margin:2px 0 10px;padding-left:18px;font-size:15px}
+.inspect li{margin:0 0 4px}
+.inspect .ref{font-style:italic;color:var(--ink-soft)}
+.inspect .lit{font-family:inherit;color:var(--ink-soft)}
+.inspect .close{
+  position:absolute;right:10px;top:8px;background:none;border:0;
+  font-size:20px;line-height:1;cursor:pointer;color:var(--ink-soft);font-family:inherit;
+}
+/* an answer is owed on this part */
+.owed{
+  border:1px solid var(--metal-soft);color:var(--metal);
+  padding:6px 9px;font-size:13.5px;margin:0 0 10px;
+}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{
+  border:1px solid var(--ink-faint);padding:3px 9px;font-size:13px;
+  background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+}
+.chip:hover,.chip:focus-visible{border-color:var(--ink);outline:none}
+.chip.metal{border-color:var(--metal-soft);color:var(--metal)}
+/* a connection whose part is real in the data but not built yet */
+.chip.later{
+  border-style:dotted;color:var(--ink-faint);cursor:default;
+}
+.chip.later:hover{border-color:var(--ink-faint)}
+.inspect .row{display:flex;gap:8px;margin-top:16px}
+button.b{
+  font-family:inherit;font-size:14px;padding:8px 12px;cursor:pointer;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+}
+button.b.q{background:transparent;color:var(--ink)}
+button.b:focus-visible{outline:2px solid var(--metal);outline-offset:2px}
+
+/* ------------------------------------------------------------------ dial */
+footer{padding:10px 22px 16px;display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:center}
+.dial{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;max-width:620px;margin:0 auto;width:100%}
+.dial button.end{
+  font-family:inherit;font-size:14px;background:none;border:0;cursor:pointer;
+  color:var(--ink-soft);padding:6px 4px;
+}
+.dial button.end:hover,.dial button.end:focus-visible{color:var(--ink);outline:none;text-decoration:underline}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--ink-faint)}
+input[type=range]::-moz-range-track{height:2px;background:var(--ink-faint)}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ink);
+  margin-top:-8px;border:2px solid var(--paper);
+}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--ink);border:2px solid var(--paper)}
+input[type=range]:focus-visible{outline:2px solid var(--metal);outline-offset:4px}
+.caption{grid-column:1/-1;text-align:center;color:var(--ink-soft);font-size:14px;min-height:1.5em}
+.caption em{color:var(--ink);font-style:normal}
+.hint{grid-column:1/-1;text-align:center;color:var(--ink-faint);font-size:13px}
+.reset{justify-self:end}
+
+/* -------------------------------------------------------------- svg parts */
+.ghost{fill:var(--ink);opacity:.055;pointer-events:none}
+.wire{stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;fill:none;transition:opacity .2s}
+.region{cursor:pointer;transition:opacity .2s}
+.region .shape{stroke:var(--ink);stroke-width:2}
+.region.fixed .shape{fill:var(--ink)}
+.region.fluid .shape{fill:var(--paper);stroke-dasharray:5 4}
+.region .lbl{font:13.5px var(--serif);fill:var(--ink);pointer-events:none;paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
+.region.fixed .lbl{fill:var(--ink)}
+.sealed{cursor:pointer;transition:opacity .2s}
+.sealed .dot{fill:var(--metal);stroke:var(--paper);stroke-width:1.5}
+.sealed .ring{fill:none;stroke:var(--metal);stroke-width:1.2;stroke-dasharray:3 3;opacity:.75}
+.sealed .lbl{font:12.5px var(--serif);fill:var(--metal);pointer-events:none;opacity:0;transition:opacity .2s;paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+.sealed .hit{fill:transparent}
+.sealed.show .lbl{opacity:1}
+.want{pointer-events:none;stroke:var(--metal);stroke-width:1.4;stroke-dasharray:4 5;fill:none;opacity:0;transition:opacity .2s}
+.want.on{opacity:.9}
+.sel .shape{stroke-width:3.5}
+.sel .dot{stroke:var(--ink);stroke-width:2}
+.wire.sel{stroke-width:5}
+.dim{opacity:.13}
+.hitline{stroke:transparent;stroke-width:16;fill:none;cursor:pointer}
+.region:focus-visible .shape,.sealed:focus-visible .dot{stroke:var(--metal);stroke-width:3}
+.hitline:focus-visible{stroke:var(--metal);stroke-opacity:.4}
+.region:focus,.sealed:focus,.hitline:focus{outline:none}
+
+/* ------------------------------------------------------------- portrait */
+@media (max-width:900px) and (orientation:portrait){
+  body{font-size:16px}
+  .frame{grid-template-rows:auto minmax(0,1fr) auto}
+  header{padding:14px 16px 4px;flex-direction:column;gap:2px}
+  header h1{font-size:20px}
+  header .layer{text-align:left;white-space:normal;overflow-wrap:anywhere}
+  main.has-panel svg.stage{width:100%}
+  .layers{
+    left:10px;right:10px;top:4px;padding:6px 10px;font-size:13px;max-width:none;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  }
+  .layers .t{margin:0;margin-right:2px}
+  .layers label{padding:0}
+  .layers .n{display:none}
+  /* the figure stays large; the panel becomes a sheet under it */
+  .inspect{
+    left:0;right:0;top:auto;bottom:0;width:auto;max-height:58%;
+    padding:14px 16px 18px;border-left:0;border-right:0;border-bottom:0;
+    transform:translateY(20px);
+  }
+  .inspect.open{transform:none}
+  footer{padding:8px 14px 12px;grid-template-columns:1fr}
+  .reset{justify-self:center}
+  .hint{display:none}
+}
+@media (max-width:760px) and (orientation:landscape){
+  header{padding:10px 16px 2px}
+  header .layer{white-space:normal;overflow-wrap:anywhere}
+  main.has-panel svg.stage{width:100%}
+  .inspect{left:auto;right:0;top:0;bottom:0;width:56%;max-width:340px}
+  footer{padding:6px 14px 10px}
+  .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .inspect,.wire,.region,.sealed,.want,.sealed .lbl,svg.stage{transition:none}
+}
+
+/* the file's own inline confidence notation, kept verbatim and kept quiet.
+   Proper per-claim treatment arrives with the sources layer. */
+.inspect .tag{font-size:12.5px;color:var(--ink-faint);white-space:nowrap}

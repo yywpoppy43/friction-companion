@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>one node — hardware</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="frame">
+  <header>
+    <div>
+      <h1>one node</h1>
+      <div class="sub">What holds together, and what floats.</div>
+    </div>
+    <div class="layer" id="stamp"></div>
+  </header>
+
+  <main>
+    <svg class="stage" viewBox="0 0 900 640" preserveAspectRatio="xMidYMid meet"
+         aria-label="The structure, from assembled to exploded">
+      <g id="ghost"></g>
+      <g id="wants"></g>
+      <g id="wires"></g>
+      <g id="regions"></g>
+      <g id="sealed"></g>
+    </svg>
+
+    <div class="layers" aria-label="Layers">
+      <div class="t">Layers</div>
+      <label><input type="checkbox" data-layer="fixed"  checked> Fixed  <span class="n" id="n-fixed"></span></label>
+      <label><input type="checkbox" data-layer="fluid"  checked> Fluid  <span class="n" id="n-fluid"></span></label>
+      <label><input type="checkbox" data-layer="wires"  checked> Wires  <span class="n" id="n-wires"></span></label>
+      <label><input type="checkbox" data-layer="sealed" checked> Sealed <span class="n" id="n-sealed"></span></label>
+    </div>
+
+    <aside class="inspect" id="inspect" aria-live="polite">
+      <button class="close" id="close" aria-label="Close">×</button>
+      <div class="kind" id="i-kind"></div>
+      <h2 id="i-name"></h2>
+      <div class="owed" id="i-owed" style="display:none"></div>
+      <div id="i-fields"></div>
+      <div class="lab">Connects to</div>
+      <div class="chips" id="i-chips"></div>
+      <div class="row">
+        <button class="b" id="isolate">Isolate</button>
+        <button class="b q" id="clear">Clear</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="dial">
+      <button class="end" id="toA">Assembled</button>
+      <input type="range" id="t" min="0" max="1000" value="0" aria-label="Explode">
+      <button class="end" id="toE">Every piece</button>
+    </div>
+    <button class="b q reset" id="reset">Reset</button>
+    <div class="caption" id="caption"></div>
+    <div class="hint">Drag the dial. Tap any part.</div>
+  </footer>
+</div>
+
+<!-- Plain scripts, in order, so this file opens straight from the filesystem
+     with no server. data/node.js is generated; never edit it by hand. -->
+<script src="data/node.js"></script>
+<script src="layout.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
