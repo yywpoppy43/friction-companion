@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One node — explode prototype</title>
+<style>
+  :root{
+    --paper:#efe8da;
+    --paper-deep:#e2d8c3;
+    --ink:#26211b;
+    --ink-soft:#75695c;
+    --ink-faint:#b9ad9a;
+    --metal:#9a6b14;
+    --metal-soft:#d3b26a;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:16px;
+    line-height:1.5;
+    overflow:hidden;
+  }
+  .frame{
+    height:100%;
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    grid-template-columns:1fr;
+  }
+  header{
+    padding:18px 22px 6px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  }
+  header h1{font-size:22px;font-weight:500;margin:0;letter-spacing:.005em}
+  header .sub{color:var(--ink-soft);font-size:14px}
+  main{position:relative;min-height:0}
+  svg.stage{
+    position:absolute;top:0;bottom:0;left:0;right:0;width:auto;height:100%;
+    touch-action:none;transition:right .22s ease;
+  }
+  main.has-panel svg.stage{right:330px}
+  /* layers panel */
+  .layers{
+    position:absolute;left:22px;top:6px;
+    background:rgba(239,232,218,.92);
+    border:1px solid var(--paper-deep);
+    padding:10px 14px 8px;
+    font-size:14px;
+    max-width:180px;
+  }
+  .layers .t{color:var(--ink-soft);margin-bottom:6px}
+  .layers label{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer}
+  .layers input{accent-color:var(--ink);width:15px;height:15px;margin:0}
+  .layers .n{margin-left:auto;color:var(--ink-faint);font-size:13px}
+  /* inspect panel */
+  .inspect{
+    position:absolute;right:22px;top:6px;bottom:6px;width:300px;
+    background:rgba(239,232,218,.96);
+    border:1px solid var(--paper-deep);
+    padding:16px 18px;
+    transform:translateX(24px);opacity:0;pointer-events:none;
+    transition:transform .22s ease,opacity .22s ease;
+    overflow:auto;
+  }
+  .inspect.open{transform:none;opacity:1;pointer-events:auto}
+  .inspect .kind{color:var(--ink-soft);font-size:13px;margin-bottom:2px}
+  .inspect h2{font-size:21px;font-weight:500;margin:0 0 10px;line-height:1.25}
+  .inspect p{margin:0 0 10px;font-size:15px}
+  .inspect .lab{color:var(--ink-soft);font-size:13px;margin-top:12px}
+  .inspect .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .chip{
+    border:1px solid var(--ink-faint);padding:3px 9px;font-size:13px;
+    background:transparent;color:var(--ink);cursor:pointer;font-family:inherit;
+  }
+  .chip:hover,.chip:focus-visible{border-color:var(--ink);outline:none}
+  .chip.metal{border-color:var(--metal-soft);color:var(--metal)}
+  .inspect .row{display:flex;gap:8px;margin-top:16px}
+  button.b{
+    font-family:inherit;font-size:14px;padding:8px 12px;cursor:pointer;
+    background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+  }
+  button.b.q{background:transparent;color:var(--ink)}
+  button.b:focus-visible{outline:2px solid var(--metal);outline-offset:2px}
+  .inspect .close{
+    position:absolute;right:10px;top:8px;background:none;border:0;
+    font-size:20px;line-height:1;cursor:pointer;color:var(--ink-soft);font-family:inherit;
+  }
+  /* dial */
+  footer{
+    padding:10px 22px 16px;
+    display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:center;
+  }
+  .dial{
+    display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;
+    max-width:620px;margin:0 auto;width:100%;
+  }
+  .dial button.end{
+    font-family:inherit;font-size:14px;background:none;border:0;cursor:pointer;
+    color:var(--ink-soft);padding:6px 4px;
+  }
+  .dial button.end:hover,.dial button.end:focus-visible{color:var(--ink);outline:none;text-decoration:underline}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;margin:0;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--ink-faint)}
+  input[type=range]::-moz-range-track{height:2px;background:var(--ink-faint)}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ink);
+    margin-top:-8px;border:2px solid var(--paper);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;background:var(--ink);border:2px solid var(--paper);
+  }
+  input[type=range]:focus-visible{outline:2px solid var(--metal);outline-offset:4px}
+  .caption{grid-column:1/-1;text-align:center;color:var(--ink-soft);font-size:14px;min-height:1.5em}
+  .caption em{color:var(--ink);font-style:normal}
+  .hint{grid-column:1/-1;text-align:center;color:var(--ink-faint);font-size:13px}
+  .reset{justify-self:end}
+  /* svg parts */
+  .ghost{fill:var(--ink);opacity:.055;pointer-events:none}
+  .wire{stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;fill:none;transition:opacity .2s}
+  .region{cursor:pointer;transition:opacity .2s}
+  .region .shape{stroke:var(--ink);stroke-width:2}
+  .region.fixed .shape{fill:var(--ink)}
+  .region.fluid .shape{fill:var(--paper);stroke-dasharray:5 4}
+  .region .lbl{font:13.5px var(--serif);fill:var(--ink);pointer-events:none;paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
+  .region.fixed .lbl{fill:var(--ink)}
+  .sealed{cursor:pointer;transition:opacity .2s}
+  .sealed .dot{fill:var(--metal);stroke:var(--paper);stroke-width:1.5}
+  .sealed .ring{fill:none;stroke:var(--metal);stroke-width:1.2;stroke-dasharray:3 3;opacity:.75}
+  .sealed .lbl{font:12.5px var(--serif);fill:var(--metal);pointer-events:none;opacity:0;transition:opacity .2s;paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+  .sealed .hit{fill:transparent}
+  .sealed.show .lbl{opacity:1}
+  .want{pointer-events:none;stroke:var(--metal);stroke-width:1.4;stroke-dasharray:4 5;fill:none;opacity:0;transition:opacity .2s}
+  .want.on{opacity:.9}
+  .sel .shape{stroke-width:3.5}
+  .sel .dot{stroke:var(--ink);stroke-width:2}
+  .wire.sel{stroke-width:5}
+  .dim{opacity:.13}
+  .hitline{stroke:transparent;stroke-width:16;fill:none;cursor:pointer}
+  @media (max-width:760px){
+    header{padding:14px 16px 4px}
+    header h1{font-size:19px}
+    .layers{left:12px;right:12px;top:4px;padding:6px 10px;font-size:13px;max-width:none;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .layers .t{margin:0;margin-right:4px}
+    .layers label{padding:0}
+    .layers .n{display:none}
+    main.has-panel svg.stage{right:0}
+    .inspect{
+      left:12px;right:12px;top:auto;bottom:8px;width:auto;max-height:42%;padding:12px 14px;
+      transform:translateY(16px);
+    }
+    .inspect.open{transform:none}
+    footer{padding:8px 14px 12px;grid-template-columns:1fr}
+    .reset{justify-self:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .inspect,.wire,.region,.sealed,.want,.sealed .lbl{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <header>
+    <div>
+      <h1>One node</h1>
+      <div class="sub">Explode prototype. What holds together, and what floats.</div>
+    </div>
+  </header>
+
+  <main>
+    <svg class="stage" viewBox="0 0 900 640" preserveAspectRatio="xMidYMid meet" aria-label="The structure, from assembled to exploded">
+      <g id="ghost">
+        <ellipse class="ghost" cx="450" cy="64" rx="31" ry="35"/>
+        <path class="ghost" d="M402 106 C 366 114, 350 168, 354 260 C 358 350, 364 420, 376 486 L 376 600 L 524 600 L 524 486 C 536 420, 542 350, 546 260 C 550 168, 534 114, 498 106 Z"/>
+      </g>
+      <g id="wants"></g>
+      <g id="wires"></g>
+      <g id="regions"></g>
+      <g id="sealed"></g>
+    </svg>
+
+    <div class="layers" aria-label="Layers">
+      <div class="t">Layers</div>
+      <label><input type="checkbox" data-layer="fixed" checked> Fixed <span class="n">7</span></label>
+      <label><input type="checkbox" data-layer="fluid" checked> Fluid <span class="n">2</span></label>
+      <label><input type="checkbox" data-layer="wires" checked> Wires <span class="n">6</span></label>
+      <label><input type="checkbox" data-layer="sealed" checked> Sealed <span class="n">10</span></label>
+    </div>
+
+    <aside class="inspect" id="inspect" aria-live="polite">
+      <button class="close" id="close" aria-label="Close">×</button>
+      <div class="kind" id="i-kind"></div>
+      <h2 id="i-name"></h2>
+      <p id="i-what"></p>
+      <div id="i-gives-wrap"><div class="lab">Gives</div><p id="i-gives"></p></div>
+      <div id="i-costs-wrap"><div class="lab">Costs</div><p id="i-costs"></p></div>
+      <div class="lab" id="i-conn-lab">Connects to</div>
+      <div class="chips" id="i-chips"></div>
+      <div class="row">
+        <button class="b" id="isolate">Isolate</button>
+        <button class="b q" id="clear">Clear</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="dial">
+      <button class="end" id="toA">Assembled</button>
+      <input type="range" id="t" min="0" max="1000" value="0" aria-label="Explode">
+      <button class="end" id="toE">Every piece</button>
+    </div>
+    <button class="b q reset" id="reset">Reset</button>
+    <div class="caption" id="caption"></div>
+    <div class="hint">Drag the dial. Tap any part.</div>
+  </footer>
+</div>
+
+<script>
+// ---------- data (plain language only; derived from content-source.md) ----------
+const REGIONS = [
+  {id:'head', name:'Mental pressure', state:'fixed', island:'A', shape:'tri', lbl:{x:34,y:5,anchor:'start'},
+   a:{x:450,y:70}, e:{x:170,y:170},
+   what:'Constant, self-generated mental pressure. Questions arrive without anything prompting them.',
+   gives:'Never needs outside stimulation to get the mind going.',
+   costs:'Cannot be turned off. Pressures other people\u2019s minds without noticing.'},
+  {id:'mind', name:'Processing', state:'fixed', island:'A', shape:'tridown', lbl:{x:34,y:5,anchor:'start'},
+   a:{x:450,y:140}, e:{x:170,y:280},
+   what:'A fixed way of thinking. The same shape of analysis at twenty and at sixty.',
+   gives:'Reliable. Can be certain, hold a position, keep one lens.',
+   costs:'Certainty is structural, not evidential. Cannot think in a different shape.'},
+  {id:'throat', name:'The outlet', state:'fluid', island:null, shape:'square', lbl:{x:0,y:44,anchor:'middle'},
+   a:{x:450,y:218}, e:{x:420,y:300},
+   what:'The only place anything becomes real in the world. Sixteen possible wires in. Zero completed.',
+   gives:'An adaptive voice with many registers. Says what is needed, when invited.',
+   costs:'Inconsistent access to expression. Pressure to speak in order to be seen.'},
+  {id:'identity', name:'Identity and direction', state:'fixed', island:'B', shape:'diamond', lbl:{x:-34,y:-24,anchor:'end'},
+   a:{x:450,y:305}, e:{x:640,y:250},
+   what:'Knows who she is, structurally. A heading that does not move.',
+   gives:'Does not dissolve into other people. Always knows when off course.',
+   costs:'Cannot be talked out of a direction, including a wrong one.'},
+  {id:'will', name:'Will and worth', state:'fixed', island:'B', shape:'trismall', lbl:{x:28,y:5,anchor:'start'},
+   a:{x:532,y:340}, e:{x:760,y:210},
+   what:'Consistent willpower. A promise holds after the enthusiasm drains. Worth is internal.',
+   gives:'The rarest thing she has, and the equipment that makes a commitment possible.',
+   costs:'Overestimates what others can commit to. Can force through a gut no.'},
+  {id:'instinct', name:'Instinct', state:'fixed', island:'B', shape:'trileft', lbl:{x:-32,y:32,anchor:'middle'},
+   a:{x:335,y:400}, e:{x:560,y:360},
+   what:'Immediate, wordless knowing. Safety, health, timing. Speaks once, quietly.',
+   gives:'The fastest system in the body. The first read is almost always right.',
+   costs:'Easily talked over by the loud fixed mind. Fear lives here permanently.'},
+  {id:'engine', name:'The work engine', state:'fixed', island:'B', shape:'square', lbl:{x:0,y:44,anchor:'middle'},
+   a:{x:450,y:415}, e:{x:690,y:380},
+   what:'Deep, renewable work energy. Starts on contact, not on command.',
+   gives:'Can go hard for years on something right. Also where yes and no live.',
+   costs:'Will not start on a false key. Its two sealed capacities are directing resources and completing.'},
+  {id:'emotion', name:'Emotion', state:'fluid', island:null, shape:'triright', lbl:{x:30,y:32,anchor:'middle'},
+   a:{x:568,y:415}, e:{x:820,y:440},
+   what:'No wave of her own. Takes in the room and amplifies it.',
+   gives:'Reads emotional fields accurately. And because there is no wave, the gut is trustworthy now.',
+   costs:'Swallows truth to keep the field calm. Pressure with no exit reads as mood.'},
+  {id:'pressure', name:'Pressure and drive', state:'fixed', island:'B', shape:'square', lbl:{x:0,y:44,anchor:'middle'},
+   a:{x:450,y:525}, e:{x:640,y:500},
+   what:'Self-generated urgency at her own rate. Immune to other people\u2019s panic.',
+   gives:'Her own tempo. Unbothered by deadlines that terrify others.',
+   costs:'Radiates pressure onto others. External deadlines read as static, except for completion.'},
+];
+
+const WIRES = [
+  {id:'circling', from:'head', to:'mind', name:'The circling mind',
+   what:'Returns to a question until it opens. Recursive, not linear. Produces original insight on no schedule. Has no moment of enough.'},
+  {id:'initiate', from:'identity', to:'will', name:'The initiate',
+   what:'Goes into things that break her open and comes back changed. Courage that is not bravado. Shocks others without meaning to.'},
+  {id:'convictions', from:'identity', to:'engine', name:'Following convictions',
+   what:'Power is available only when she is being herself. Compromise disconnects the engine.'},
+  {id:'form', from:'identity', to:'instinct', name:'Perfected form',
+   what:'Knows what is healthy for her specifically. Does not transfer to anyone else.'},
+  {id:'power', from:'engine', to:'instinct', name:'Power',
+   what:'Instinct straight into action, no thinking step. Only works in the present.'},
+  {id:'transformation', from:'instinct', to:'pressure', name:'Transformation',
+   what:'Ambition with a durability filter. Rises through recognition, never self-promotion. Her one wire to other people.'},
+];
+
+const SEALED = [
+  {id:'naming', region:'throat', name:'Precise naming', wants:'mind', off:{x:-15,y:15}, e:{x:90,y:420},
+   what:'Finding the exact word for a thing. Unconscious; others see it in her more than she does. Would wire to processing.'},
+  {id:'craft', region:'throat', name:'Demonstrated craft', wants:'instinct', off:{x:15,y:15}, e:{x:140,y:520},
+   what:'Here is how it is done. Conscious. Would wire to instinct, as depth made visible.'},
+  {id:'completion', region:'engine', name:'Completion', wants:'pressure', off:{x:15,y:15}, e:{x:830,y:580},
+   what:'The primary capacity of her life theme. Seeing cycles through. No mechanism, and it will not improve. The closer has to be built from outside.'},
+  {id:'resources', region:'engine', name:'Resource direction', wants:'identity', off:{x:-15,y:15}, e:{x:560,y:590},
+   what:'Where power and material get pointed. Would wire to identity.'},
+  {id:'begin', region:'pressure', name:'Begin new experience', wants:'emotion', off:{x:-15,y:15}, e:{x:240,y:560},
+   what:'The pressure that starts the whole cycle of experience. Present as pressure, absent as route.'},
+  {id:'mutate', region:'pressure', name:'Mutate within a limit', wants:'engine', off:{x:15,y:15}, e:{x:350,y:585},
+   what:'The push to make something new inside a constraint. Would wire to the engine.'},
+  {id:'melancholy', region:'emotion', name:'Melancholy and elation', wants:'pressure', off:{x:-16,y:12}, e:{x:830,y:100},
+   what:'Swings that arrive for no reason. The fuel for what is mutating.'},
+  {id:'principles', region:'emotion', name:'Sensitivity to principles', wants:'pressure', off:{x:0,y:19}, e:{x:720,y:80},
+   what:'Registers a broken agreement in the body before it can be named.'},
+  {id:'openness', region:'emotion', name:'Social openness', wants:'throat', off:{x:16,y:12}, e:{x:860,y:330},
+   what:'Charm she can turn on without knowing she is doing it. Would wire to the outlet.'},
+  {id:'control', region:'will', name:'Material control', wants:'throat', off:{x:0,y:17}, e:{x:60,y:300},
+   what:'Control over resources and how a thing is run. Would wire to the gathering voice in the outlet.'},
+];
+
+// ---------- helpers ----------
+const byId = (arr) => Object.fromEntries(arr.map(o => [o.id, o]));
+const R = byId(REGIONS), W = byId(WIRES), S = byId(SEALED);
+const lerp = (a,b,t) => a + (b-a)*t;
+const svgNS = 'http://www.w3.org/2000/svg';
+const el = (n, attrs={}) => { const e = document.createElementNS(svgNS, n); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+
+function shapePath(shape){
+  const s = 24;
+  switch(shape){
+    case 'tri':      return `M0 ${-s} L${s} ${s*0.75} L${-s} ${s*0.75} Z`;
+    case 'tridown':  return `M${-s} ${-s*0.75} L${s} ${-s*0.75} L0 ${s} Z`;
+    case 'trismall': return `M0 ${-s*0.8} L${s*0.8} ${s*0.6} L${-s*0.8} ${s*0.6} Z`;
+    case 'trileft':  return `M${-s} 0 L${s*0.8} ${-s} L${s*0.8} ${s} Z`;
+    case 'triright': return `M${s} 0 L${-s*0.8} ${-s} L${-s*0.8} ${s} Z`;
+    case 'diamond':  return `M0 ${-s*1.15} L${s} 0 L0 ${s*1.15} L${-s} 0 Z`;
+    default:         return `M${-s} ${-s} L${s} ${-s} L${s} ${s} L${-s} ${s} Z`;
+  }
+}
+function labelOffset(shape){
+  return shape==='trileft' ? {x:-34, y:38} : shape==='triright' ? {x:34, y:38} : shape==='trismall' ? {x:0,y:34} : {x:0, y:44};
+}
+
+// ---------- state ----------
+let t = 0;
+let selected = null;      // {kind:'region'|'wire'|'sealed', id}
+let isolated = false;
+const layers = {fixed:true, fluid:true, wires:true, sealed:true};
+
+// ---------- build ----------
+const gWires = document.getElementById('wires');
+const gRegions = document.getElementById('regions');
+const gSealed = document.getElementById('sealed');
+const gWants = document.getElementById('wants');
+const gGhost = document.getElementById('ghost');
+
+const wireEls = {}, wireHits = {}, regionEls = {}, sealedEls = {}, wantEls = {};
+
+WIRES.forEach(w => {
+  const hit = el('line', {class:'hitline'});
+  const ln  = el('line', {class:'wire', id:'w-'+w.id});
+  hit.addEventListener('click', () => select('wire', w.id));
+  gWires.appendChild(ln); gWires.appendChild(hit);
+  wireEls[w.id] = ln; wireHits[w.id] = hit;
+});
+
+REGIONS.forEach(r => {
+  const g = el('g', {class:'region '+r.state, id:'r-'+r.id, tabindex:'0', role:'button', 'aria-label':r.name});
+  const p = el('path', {class:'shape', d:shapePath(r.shape)});
+  const tx = el('text', {class:'lbl', x:r.lbl.x, y:r.lbl.y, 'text-anchor':r.lbl.anchor});
+  tx.textContent = r.name;
+  g.appendChild(p); g.appendChild(tx);
+  g.addEventListener('click', () => select('region', r.id));
+  g.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); select('region', r.id);} });
+  gRegions.appendChild(g);
+  regionEls[r.id] = g;
+});
+
+SEALED.forEach(s => {
+  const g = el('g', {class:'sealed', id:'s-'+s.id, tabindex:'0', role:'button', 'aria-label':s.name});
+  const hit = el('circle', {class:'hit', r:22});
+  const ring = el('circle', {class:'ring', r:12});
+  const dot = el('circle', {class:'dot', r:6});
+  const tx = el('text', {class:'lbl', x:0, y:26, 'text-anchor':'middle'});
+  tx.textContent = s.name;
+  g.appendChild(hit); g.appendChild(ring); g.appendChild(dot); g.appendChild(tx);
+  g.addEventListener('click', () => select('sealed', s.id));
+  g.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); select('sealed', s.id);} });
+  gSealed.appendChild(g);
+  sealedEls[s.id] = g;
+  const want = el('line', {class:'want', id:'want-'+s.id});
+  gWants.appendChild(want);
+  wantEls[s.id] = want;
+});
+
+// ---------- positions ----------
+function regionPos(r){ return {x:lerp(r.a.x, r.e.x, t), y:lerp(r.a.y, r.e.y, t)}; }
+function sealedPos(s){
+  const r = R[s.region];
+  const ax = r.a.x + s.off.x, ay = r.a.y + s.off.y;
+  // hold to the region briefly, then drift; makes the detachment legible
+  const tt = Math.max(0, (t - 0.08) / 0.92);
+  const ease = tt*tt*(3-2*tt);
+  return {x:lerp(ax, s.e.x, ease), y:lerp(ay, s.e.y, ease)};
+}
+
+function layout(){
+  const pos = {};
+  REGIONS.forEach(r => { pos[r.id] = regionPos(r); regionEls[r.id].setAttribute('transform', `translate(${pos[r.id].x} ${pos[r.id].y})`); });
+  WIRES.forEach(w => {
+    const a = pos[w.from], b = pos[w.to];
+    [wireEls[w.id], wireHits[w.id]].forEach(L => { L.setAttribute('x1',a.x); L.setAttribute('y1',a.y); L.setAttribute('x2',b.x); L.setAttribute('y2',b.y); });
+  });
+  SEALED.forEach(s => {
+    const p = sealedPos(s);
+    sealedEls[s.id].setAttribute('transform', `translate(${p.x} ${p.y})`);
+    sealedEls[s.id].classList.toggle('show', t > 0.55 || (selected && selected.kind==='sealed' && selected.id===s.id));
+    const want = wantEls[s.id];
+    const target = pos[s.wants];
+    want.setAttribute('x1', p.x); want.setAttribute('y1', p.y);
+    want.setAttribute('x2', target.x); want.setAttribute('y2', target.y);
+  });
+  gGhost.setAttribute('opacity', Math.max(0, 1 - t*2.2));
+  caption();
+}
+
+function caption(){
+  const c = document.getElementById('caption');
+  if (t < 0.12) c.innerHTML = 'Assembled. One person, as she appears.';
+  else if (t < 0.45) c.innerHTML = 'Coming apart. Watch which parts stay together.';
+  else if (t < 0.8) c.innerHTML = 'The wired parts hold. The sealed ones let go.';
+  else c.innerHTML = '<em>Two islands. One gap. Ten loose pieces.</em>';
+}
+
+// ---------- layers / dim ----------
+function applyVisibility(){
+  const keep = isolated && selected ? connectedSet(selected) : null;
+  REGIONS.forEach(r => {
+    const show = layers[r.state];
+    const g = regionEls[r.id];
+    g.style.display = show ? '' : 'none';
+    g.classList.toggle('dim', !!keep && !keep.has('region:'+r.id));
+    g.classList.toggle('sel', !!selected && selected.kind==='region' && selected.id===r.id);
+  });
+  WIRES.forEach(w => {
+    const show = layers.wires && layers[R[w.from].state] && layers[R[w.to].state];
+    wireEls[w.id].style.display = show ? '' : 'none';
+    wireHits[w.id].style.display = show ? '' : 'none';
+    wireEls[w.id].classList.toggle('dim', !!keep && !keep.has('wire:'+w.id));
+    wireEls[w.id].classList.toggle('sel', !!selected && selected.kind==='wire' && selected.id===w.id);
+  });
+  SEALED.forEach(s => {
+    const show = layers.sealed;
+    const g = sealedEls[s.id];
+    g.style.display = show ? '' : 'none';
+    g.classList.toggle('dim', !!keep && !keep.has('sealed:'+s.id));
+    g.classList.toggle('sel', !!selected && selected.kind==='sealed' && selected.id===s.id);
+    wantEls[s.id].classList.toggle('on', !!selected && selected.kind==='sealed' && selected.id===s.id && show);
+  });
+}
+
+function connectedSet(sel){
+  const set = new Set([sel.kind+':'+sel.id]);
+  if (sel.kind==='region'){
+    WIRES.forEach(w => { if (w.from===sel.id||w.to===sel.id){ set.add('wire:'+w.id); set.add('region:'+w.from); set.add('region:'+w.to);} });
+    SEALED.forEach(s => { if (s.region===sel.id) set.add('sealed:'+s.id); });
+  } else if (sel.kind==='wire'){
+    const w = W[sel.id]; set.add('region:'+w.from); set.add('region:'+w.to);
+  } else {
+    const s = S[sel.id]; set.add('region:'+s.region); set.add('region:'+s.wants);
+  }
+  return set;
+}
+
+// ---------- inspect ----------
+const inspect = document.getElementById('inspect');
+function select(kind, id){
+  selected = {kind, id};
+  const q = s => document.getElementById(s);
+  const chips = q('i-chips'); chips.innerHTML = '';
+  const addChip = (label, k, i, metal) => {
+    const b = document.createElement('button'); b.className = 'chip' + (metal?' metal':''); b.textContent = label;
+    b.addEventListener('click', () => select(k, i)); chips.appendChild(b);
+  };
+  q('i-gives-wrap').style.display = ''; q('i-costs-wrap').style.display = '';
+  if (kind==='region'){
+    const r = R[id];
+    q('i-kind').textContent = r.state==='fixed' ? 'Region. Fixed.' : 'Region. Fluid.';
+    q('i-name').textContent = r.name; q('i-what').textContent = r.what;
+    q('i-gives').textContent = r.gives; q('i-costs').textContent = r.costs;
+    WIRES.filter(w => w.from===id||w.to===id).forEach(w => addChip(w.name, 'wire', w.id));
+    SEALED.filter(s => s.region===id).forEach(s => addChip(s.name, 'sealed', s.id, true));
+  } else if (kind==='wire'){
+    const w = W[id];
+    q('i-kind').textContent = 'Wire.';
+    q('i-name').textContent = w.name; q('i-what').textContent = w.what;
+    q('i-gives-wrap').style.display = 'none'; q('i-costs-wrap').style.display = 'none';
+    addChip(R[w.from].name, 'region', w.from); addChip(R[w.to].name, 'region', w.to);
+  } else {
+    const s = S[id];
+    q('i-kind').textContent = 'Sealed capacity. No wire.';
+    q('i-name').textContent = s.name; q('i-what').textContent = s.what;
+    q('i-gives-wrap').style.display = 'none'; q('i-costs-wrap').style.display = 'none';
+    addChip('Sits in ' + R[s.region].name.toLowerCase(), 'region', s.region);
+    addChip('Would wire to ' + R[s.wants].name.toLowerCase(), 'region', s.wants, true);
+  }
+  inspect.classList.add('open'); document.querySelector('main').classList.add('has-panel');
+  applyVisibility(); layout();
+}
+function clearSel(){ selected = null; isolated = false; document.getElementById('isolate').textContent = 'Isolate'; inspect.classList.remove('open'); document.querySelector('main').classList.remove('has-panel'); applyVisibility(); layout(); }
+document.getElementById('close').addEventListener('click', clearSel);
+document.getElementById('clear').addEventListener('click', clearSel);
+document.getElementById('isolate').addEventListener('click', () => { isolated = !isolated; document.getElementById('isolate').textContent = isolated ? 'Show all' : 'Isolate'; applyVisibility(); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') clearSel(); });
+
+// ---------- layers ----------
+document.querySelectorAll('.layers input').forEach(cb => cb.addEventListener('change', () => { layers[cb.dataset.layer] = cb.checked; applyVisibility(); }));
+
+// ---------- dial ----------
+const range = document.getElementById('t');
+range.addEventListener('input', () => { t = range.value/1000; layout(); });
+let anim = null;
+function tween(to, ms=1100){
+  if (anim) cancelAnimationFrame(anim);
+  const from = t, start = performance.now();
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce){ t = to; range.value = Math.round(t*1000); layout(); return; }
+  const step = now => {
+    const k = Math.min(1, (now-start)/ms);
+    const e = k<.5 ? 4*k*k*k : 1-Math.pow(-2*k+2,3)/2;
+    t = lerp(from, to, e); range.value = Math.round(t*1000); layout();
+    if (k<1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+document.getElementById('toA').addEventListener('click', () => tween(0));
+document.getElementById('toE').addEventListener('click', () => tween(1));
+document.getElementById('reset').addEventListener('click', () => {
+  document.querySelectorAll('.layers input').forEach(cb => { cb.checked = true; layers[cb.dataset.layer] = true; });
+  isolated = false; document.getElementById('isolate').textContent = 'Isolate';
+  clearSel(); tween(0, 700);
+});
+
+// ---------- go ----------
+applyVisibility(); layout();
+</script>
+</body>
+</html>
