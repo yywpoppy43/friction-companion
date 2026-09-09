@@ -1,6 +1,11 @@
 /* one node — layer 1. Warm paper, ink for what is fixed and wired, one metal
    accent for what is loose. Nothing else gets colour. */
 :root{
+  /* The brief commits to one visual world: warm paper, ink for what is fixed
+     and wired, a single metal accent for what is loose. Deliberately not
+     theme-reactive — every colour is painted explicitly so the page holds on
+     any host ground. */
+  color-scheme:light;
   --paper:#efe8da;
   --paper-deep:#e2d8c3;
   --ink:#26211b;

@@ -63,3 +63,18 @@ the phrase as the label.
 **No gate or channel numbers anywhere.** Enforced in the generator, not the
 renderer: the appendix is cut before parsing and the build refuses to write if
 appendix vocabulary or a gate/channel number reaches the data file.
+
+---
+
+## How to see it
+
+`one-node/index.html` is the real thing — four files plus generated data, opened
+from a local clone. Nothing else is needed; there is no server and no install.
+
+`one-node/dist/one-node.html` is the same page as one self-contained file,
+produced by `build/bundle.mjs` and published so it can be opened from a link on
+any device. It is generated, never edited. After changing anything:
+
+    node build/derive.mjs && node build/bundle.mjs
+
+then republish the same file to keep the same URL.
