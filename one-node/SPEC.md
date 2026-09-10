@@ -36,35 +36,40 @@ A chart can't show what happens over time. This can. That's the only reason it e
 
 Each behavior below cites its source. The machine may not do anything not on this list without labeling it illustrative (§4).
 
-**Generation.** Four parts generate: the work engine (strongest), pressure and drive, will and worth, and mental pressure. Source: content-source §1.2 — these are the three motors plus the mental pressure center. The prototype had every fixed part generating; that was wrong. **Identity, processing, and instinct conduct. They hold and pass. They do not generate.**
+**Generation.** Four parts generate: the work engine, pressure and drive, will and worth, and mental pressure. Source: `mechanism.pressure-differential` `[firm]` — *three energy sources always running (engine, pressure, will) plus mental pressure that generates its own questions.* **Which of the four is strongest is not grounded** — the source lists them flat. The engine-first default is illustrative (§4). The prototype had every fixed part generating; that was wrong. **Identity, processing, and instinct conduct. They hold and pass. They do not generate.**
 
 **Constancy.** Generation does not slow when the exit is closed. Source: mechanism.pressure-differential — *production is constant and independent of output.*
 
-**Flow.** What's generated moves along the six wires, between connected parts only. Source: §1.3. Wires: mental pressure ↔ processing; identity ↔ will; identity ↔ engine; identity ↔ instinct; engine ↔ instinct; instinct ↔ pressure.
+**Flow.** What's generated moves along the six wires, between connected parts only. Source: the six wire ids (`wire.circling-mind`, `wire.initiate`, `wire.following-convictions`, `wire.perfected-form`, `wire.power`, `wire.transformation`) for the endpoints, and `split` for "connected only". *Load travelling along a wire is a rendering choice — the source says wires connect, never that anything is carried (§4).* Wires: mental pressure ↔ processing; identity ↔ will; identity ↔ engine; identity ↔ instinct; engine ↔ instinct; instinct ↔ pressure.
 
 **Two islands.** The mind (mental pressure + processing) and the body (identity, will, engine, instinct, pressure) are not connected. Nothing crosses. Source: `split`.
 
-**No exit.** The outlet has zero completed wires. Nothing reaches it on its own. Source: region.throat — *sixteen possible wires in, zero completed.*
+**No exit — but not a closed system.** The outlet has zero completed wires; nothing reaches it on its own. Source: `region.throat` — *sixteen possible wires could run into it. She has zero completed.*
 
-**Emotion takes no load.** It's open. It doesn't generate and nothing routes to it. Source: region.emotion. But see §4 — how pressure *reads* through it is a claim worth showing.
+**The passive vent.** Pressure is already leaving, and leaving nothing behind. Source: `mechanism.discharge-without-residue` `[firm]` — *she has been discharging — talking, testing with people, working assets… Real discharge; the pressure gets out. But it evaporates.* The machine leaks continuously, so it settles below full instead of pinning. The rate is illustrative (§4); the leak is not a route to the outlet and it deposits nothing.
 
-**Sealed capacities.** Ten of them, sitting in their regions, carrying no load, attached to nothing. Source: §1.4. They are visibly real and visibly unrouted.
+**Emotion takes no internal load.** It's open, it doesn't generate, and no wire routes to it. Source: `region.emotion`. What it *does* take is the room — *takes in the emotional weather of whoever she's with and amplifies it* — and **this machine has no outside** (`gap.environment`: *Hardware has no outside world*). The machine says so rather than implying emotion is empty. But see §4 — how pressure *reads* through it is a claim worth showing.
 
-**The reading.** Below ~70% of total capacity: *building.* Above: *frustration.* Source: `not-self` — frustration as the signal, and only two causes.
+**Sealed capacities.** Ten of them, sitting in their regions, attached to nothing — and **full, not empty**. Source: the ten `sealed.*` ids; §1.4's own heading *present as pressure, absent as mechanism*; `convergence.four-operations` `[firm]`. They are visibly real, visibly loaded, and visibly unrouted.
 
-**The deposit.** An external route to the outlet, opened by an agreement held by someone with no authority over the work. It drains the body island. It does not drain the mind island. It closes on its own. Source: design.deposit-structure; mechanism.autonomy-resolved; `split`.
+**The reading.** Below ~70% of total capacity: *building.* Above: *frustration.* Source: `not-self` `[firm]` — *frustration is pressure with nowhere to go… This is her gauge*; `mechanism.the-loop` `[firm]` — *frustration comes from accumulation*; *building* is her own word (`mechanism.pressure-differential`). **The labels are grounded; the level cut is illustrative (§4)** — `not-self`'s gauge is about whether pressure is moving, not how much there is, and its "only two causes" are behavioural, never a threshold. Above the line the machine also offers the tagged alternate: pressure with no exit *does not announce itself as pressure. It gets read as depression, flatness, futility* `[arguable]`.
 
-**Refill.** After a deposit, pressure returns at the unchanged rate. The exit never widens. Source: mechanism.pressure-differential — *frequency of discharge, not quality of output.*
+**The deposit.** An external route to the outlet, opened by an agreement whose terms are hers, held by someone with no authority over the work, **on a date she committed to and cannot move**. It drains the body island. It does not drain the mind island — the body reaches the outlet, the mind's bridges are different ones and none is complete. Source: `design.deposit-structure`; `mechanism.autonomy-resolved`; `convergence.deposit-is-yin-fire`; `missing-piece.now` (why the body can reach the outlet at all: the missing capacity *appears in three [routes] — and those three lead from exactly the three functions in the integration circuit*); `split`.
+
+**Refill.** After a deposit, pressure returns at the unchanged rate. No internal closer develops and a deposit adds no wire. Source: `mechanism.pressure-differential` `[firm]` — *Production is constant and independent of output*; `sealed.completion` `[firm]` — *this will not improve… no internal circuit to develop.* **The machine does not say the exit never widens.** Whether the block is structural or seasonal is `conflict.permanent-or-temporary`, and her ruling stands as the marker text there: *"I don't find the permanent-or-season framing useful. It isn't permanent. It isn't a season either."*
 
 ## 4. What is illustrative — and must be labeled
 
 These are choices, not claims. They must be visible as assumptions.
 
-- **The specific rates.** Which generator is strongest is grounded (the engine). The numeric ratios are not. Show them as *relative, illustrative* and let them be adjusted.
+- **The specific rates.** Neither the ranking nor the ratios are grounded — the source lists the four sources flat and never compares them. Engine-first is a reading, not a claim. Show all of it as *relative, illustrative* and let it be adjusted.
 - **Capacities.** How much each part holds before it swells. Illustrative.
 - **The 70% threshold.** The content source says frustration is the signal; it doesn't say at what level. Illustrative, adjustable.
 - **The deposit's duration and how fast it drains.** Illustrative. Default slow (§6).
-- **The particle rendering.** Whatever the medium — dots, flow, fluid — is a rendering choice, not a claim.
+- **The particle rendering.** Whatever the medium — dots, flow, fluid — is a rendering choice, not a claim. So is load travelling along a wire at all, and so is the vent being continuous where the source describes talk as episodic.
+- **The vent rate**, and that the vent applies to both islands. Evaporation is not a wire and not a route to the outlet, so it does not cross the split; but the source does not say where it happens. Illustrative.
+- **Flat generation rates.** `region.pressure` describes *periods where pressure builds and drives hard, then drops.* The machine runs flat. Illustrative.
+- **Uniform wire choice**, and therefore that occupancy follows wire count. Illustrative.
 - **How pressure reads through emotion.** The content source says pressure with no exit reads as mood rather than as pressure (region.emotion, `[arguable]`). Showing this — for example, emotion's color shifting as total pressure rises even though it holds no load — is a strong idea and an *arguable* claim. If built, it carries the `[arguable]` tag visibly.
 
 **Rule:** a small control, always available — *Show assumptions.* When on, every illustrative parameter is visible with its current value and the word *illustrative*. When off, the machine just runs.
@@ -86,10 +91,10 @@ All of these are keyboard-reachable.
 
 The deposit is the one action. It has to be understood, not just seen.
 
-- **Opening it holds.** Pressing *Make a deposit* opens the route and it stays open until she closes it, or until a visible timer runs out (default 15 seconds, adjustable). No four-second flash.
+- **The date opens it, not the press.** *Make a deposit* sets the terms and commits a date; the date opens the route. It cannot be opened early. Source: `design.deposit-structure` — *a fixed rhythm… Non-negotiable, because a movable rhythm is one the circling mind will move. The date does the closing so she never has to judge that something is complete.* Once open it holds until the timer runs out (default 15 seconds, adjustable). No four-second flash. One lab override lives under *Show assumptions*, labelled *illustrative, not the mechanism*, for inspecting drain behaviour without committing.
 - **The route is visibly external.** It is not a wire. It's drawn as scaffolding — attached at the outlet, reaching outward, in the metal accent. It touches nothing in the mind island.
 - **What leaves is visible leaving.** Whatever the rendering, she should be able to watch load move from the body parts, through the outlet, out.
-- **After it closes, a readout.** *Deposit 003. Left the body: 41. Still in the mind: 18. Pressure 82% → 34%.* Numbers are model units; that's fine. The point is she sees exactly what changed and what didn't.
+- **After it closes, a readout.** *Run 3. Left the body: 41. Still in the mind: 18. Pressure 82% → 34%.* Model runs are numbered **Run 1, Run 2…** — never *Deposit 003*, which is hers: `deposit.001` and `deposit.002` are taken and *her own deposits begin at 002*. Numbers are model units; that's fine. The point is she sees exactly what changed and what didn't.
 - **A ledger.** Every deposit recorded, in order. This is the model's version of the deposit layer in the content source; in a later phase (§10) it becomes her real dated entries.
 
 ## 7. Inspection — restoring the detail
@@ -100,7 +105,7 @@ The prototype's hover was good and its content was thin. Both problems are solve
 - **Click:** the panel. The full entry for that part from `data/node.js` — every field, every claim, every confidence tag, the source, and the `connects to` list as tappable chips. **This is where the detail lives.** Nothing from the content source is dropped; it moves one click down.
 - **From the panel, isolate.** Dim everything not connected to the selected part. Kept from the first build.
 - **Every element of the machine has an id.** The nine regions, six wires, ten sealed capacities, the split, the deposit route. Each maps to a content-source id. The machine is fully inspectable.
-- **Confidence tags render.** `[firm]`, `[read]`, `[hers]`, `[arguable]`, `[uncertain]`, `[corrected]` — and `[hers — pending]` as a visible *answer owed here* marker.
+- **Confidence tags render**, whole and unflattened. Six are declared in the content source; ten forms are in use: `[firm]`, `[read]`, `[hers]`, `[arguable]`, `[uncertain]`, `[corrected]`, `[hers — pending]`, `[hers + arguable]`, `[hers — bookmarked]`, `[hers — bookmarked as a tool to reuse]`. `[hers — pending]` renders as a visible *answer owed here* marker carrying her own words.
 
 ## 8. The split — visible in motion, and on demand
 
@@ -117,12 +122,12 @@ This is where the elemental chart enters, and it's the strongest reason to layer
 A month selector. Each month adjusts the machine, and every adjustment cites content-source §2.3.
 
 - **August 2026** — *filled.* Generation multiplier up (the water frame completed). No route. Wood pushed deeper: the sealed body operations visibly recede. Source: elements.august.
-- **September 2026** — *binds.* The forging fire arrives: a deposit route, when opened, holds longer and drains more cleanly (structure is supported). But all three combinations bind: the sealed pieces are locked, not released. Generation at peak (metal at its seat). Source: elements.september.
-- **October 2026** — *cracks.* The Dog clashes the Dragons. A route opens on its own for a period, without a deposit — the storehouses release. What's released is the wood and water inside them, plus the month's own yin fire. Source: elements.october. `[uncertain]` tag visible.
+- **September 2026** — *binds.* The forging fire arrives: a deposit route, when opened, holds longer — structure is supported (`convergence.deposit-is-yin-fire` `[firm]`). It does **not** drain better; the month is *Strong, defining, clarifying. Not draining.* Flow belongs to October: *Build in the binding month. Flow in the clashing one.* The combinations bind, and the pivot one is `[arguable]` — *the pivot the month turns on*; her reframe `[hers]` is that *binding is not failure. It's a container.* What locks is the wood in the storehouses — the four sealed body operations, not all ten. Her element is at peak; that generation peaks with it is an inference `[arguable]`. Source: `elements.september`, `elements.wood-buried`, `convergence.four-operations`.
+- **October 2026** — *cracks.* The Dog clashes the Dragons. A route opens on its own for a period, without a deposit — the storehouses release. **The drainage is not clean:** the month's stem is still resource and still dams water. What's released is the wood and water inside them `[corrected]` — not yin fire; that is supplied by the month's own branch `[arguable]`. Source: `elements.october`, `elements.dragons`. `[uncertain]` visible, and *hold as a condition to watch for, not a schedule.*
 - **November 2026** — *first sprout.* Source: elements.november, `[read]`.
-- **The decade** — a persistent modifier, always on: resource damming output. Source: elements.decade.
+- **The decade** — a persistent modifier, on for every month the machine can model: resource damming output. It *muddies… not blocks*, so it degrades output rather than zeroing it, and it *ends: roughly 2029* `[uncertain]` — so "always on" is not "permanent". Source: `elements.decade`. A second persistent modifier over these months, `elements.year-2026` `[read]`, is not yet used.
 
-When a month runs out of content, the layer says so: *No reading past December 2026. This layer needs a new deposit.* That's the layer honestly reporting staleness, not a bug.
+When a month runs out of content, the layer says so: *No monthly reading past November 2026 (it ends about December 7). This layer needs a new deposit.* There is no December block — the last month is `elements.november`. At the year level `elements.decade` does carry reads for 2027 and 2028 `[read]` and the decade turn `[uncertain]`, so a year selector past 2026 has content at lower confidence where a month selector has none. That's the layer honestly reporting staleness, not a bug.
 
 This is the layering doing real work. Hardware says here is the machine. Elements say here is what this month does to it.
 
@@ -168,8 +173,8 @@ Claude Code chooses the medium: 2D canvas, SVG, or WebGL/3D. Constraints:
 
 One phase at a time. Reviewed before the next.
 
-1. **The machine core.** Generation from the four generators, flow on six wires, two islands, no exit, pressure reading, sealed capacities visible. Time controls (§5). *Show assumptions* (§4). Hover only.
-2. **The deposit.** Slowed, held, external, with readout and ledger (§6).
+1. **The machine core.** Generation from the four generators, flow on six wires, two islands, no completed exit, **the passive vent**, pressure reading, sealed capacities visible and full, **the empty *next deposit* slot on the timeline** — the mechanism visible before it is live. Time controls (§5). *Show assumptions* (§4). Hover only.
+2. **The three routes.** The deposit, slowed, held, external, opened by its committed date, with readout and ledger (§6) — built as a *comparison*, because the comparison is the point: **talk** vents and leaves nothing (`mechanism.discharge-without-residue`), **starting** relieves and adds an unfinished thing (`mechanism.the-loop`, `sealed.begin-experience`), **the deposit** leaves a residue. Same relief, three different afterwards.
 3. **Inspection.** Click → full panel from `data/node.js`. Isolate. Tags (§7).
 4. **The split on demand.** The separate control (§8).
 5. **Weather.** The month selector and modulation (§9).
@@ -186,3 +191,46 @@ Read this file, `content-source.md`, and `the-machine.html`. Then reply with:
 4. Anything in this spec that contradicts the content source.
 
 Stop and wait.
+
+---
+
+## 16. Rulings — September 10, 2026
+
+Her decisions on the spec-versus-source contradictions, recorded here because §5 of
+this file wins where documents disagree and these change what it says. Numbering is
+from the review that produced them.
+
+1. **The mind and the deposit — answered, `[hers]`.** *"When something of mine goes
+   out, the mental circling stops. Not reduces — stops. The stuck feeling and the
+   flatness go with it, immediately. The longer I was isolated before the exit, the
+   stronger that relief."* So: the mind's load stays structurally undrained — no wire.
+   But the mind's **circulation rate is coupled to total pressure**: when pressure
+   drops, the circling quiets, and the reading says so. *"Nothing connects them"* is
+   dropped as a flat claim. Added to `content-source.md` under `split`; it partly
+   answers the `[read]` claim there.
+2. **The exit is not closed.** Phase 1 gets the passive vent. Phase 2 becomes the
+   comparison of three routes (§14).
+3. **"Never widens" — behaviour kept, word dropped.** No internal closer develops;
+   deposits add no wire; that is `[firm]` and renders. The `[hers — pending]` marker
+   on `conflict.permanent-or-temporary` carries her words verbatim: *"I don't find
+   the permanent-or-season framing useful. It isn't permanent. It isn't a season
+   either. It's not a question I have an answer to from this angle, and I'm not sure
+   it has value asked this way."*
+4. **The path to the outlet** is `missing-piece.now`. The identity-to-outlet path is
+   grounded; the mind's bridges are different ones, which is why it doesn't drain.
+5. **The deposit is a date, not a button.** The button sets terms and commits a date;
+   the date opens the route; it cannot be opened early.
+6. **September binds. October flows, and not cleanly.**
+7–19. Accepted as reviewed and folded into §3, §4, §6, §7 and §9 above: engine-first
+   is illustrative; sealed capacities full and stuck; frustration labels grounded and
+   the level cut illustrative, with flatness as the tagged alternate; emotion takes no
+   *internal* load and the machine has no outside; weather tags as listed; year-level
+   reads after November at lower confidence; model runs numbered *Run 1, Run 2*, never
+   *Deposit 003*; flat rates listed as an assumption; section numbers re-cited to ids.
+   From the prototype: a drain must not zero every particle's dwell — load leaves
+   progressively.
+
+**Method note.** The review behind these rulings ran four citation verifiers and three
+of six hunting lenses to completion; the adversarial refutation stage and the
+completeness critic did not run (session limit). The findings are one careful reading
+plus three independent readers, not refuter-tested.

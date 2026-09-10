@@ -1,0 +1,144 @@
+/* one node — the machine. Phase 1.
+   Warm paper. Ink for what is fixed and wired. One metal accent for what is
+   loose or external — the sealed capacities and the load in motion. A second
+   accent used only for the frustration state. One serif throughout, controls
+   included. The machine is the hero; the controls are quiet. */
+:root{
+  color-scheme:light;
+  --paper:#efe9dd;
+  --paper-deep:#e3d9c6;
+  --ink:#221d17;
+  --soft:#6d6152;
+  --faint:#b4a68f;
+  --metal:#9a6b14;
+  --metal-soft:#d3b26a;
+  --hot:#8c3a24;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.5;overflow:hidden}
+.frame{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+
+header{padding:16px 24px 2px;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+h1{font-size:21px;font-weight:500;margin:0;letter-spacing:.005em}
+.sub{color:var(--soft);font-size:14px;margin-top:2px}
+.stamp{color:var(--faint);font-size:12.5px;text-align:right}
+
+main{position:relative;min-height:0;overflow:hidden}
+#stagewrap{position:absolute;inset:0;transition:right .22s ease}
+main.has-panel #stagewrap{right:352px}
+svg.stage,canvas.dust{position:absolute;inset:0;width:100%;height:100%}
+canvas.dust{pointer-events:none}
+
+/* ---- the figure and its parts ---- */
+.fig{fill:#e0d5c0}
+.fig.arm{fill:#d8cbb2}
+.wire{stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;fill:none}
+.wirehit{stroke:transparent;stroke-width:20;fill:none;cursor:pointer}
+.wirehit:focus-visible{stroke:var(--metal);stroke-opacity:.4}
+.region{cursor:pointer}
+.rhit{fill:transparent}
+.rbody{stroke:var(--ink);stroke-width:2.2;transition:fill .5s}
+.region.fixed .rbody{fill:var(--ink)}
+.region.fluid .rbody{fill:var(--paper);stroke-dasharray:5 4}
+.region.full .rbody{fill:var(--hot)}
+.region.fluid.full .rbody{fill:var(--paper)}
+.rlabel{font:13px var(--serif);fill:var(--ink);pointer-events:none;
+  paint-order:stroke;stroke:var(--paper);stroke-width:4.5px;stroke-linejoin:round}
+.sealed{cursor:pointer}
+.shit{fill:transparent}
+.sdot{fill:var(--metal)}
+.sring{fill:none;stroke:var(--metal);stroke-width:1.1;stroke-dasharray:2.6 3;opacity:.85}
+.region:focus-visible .rbody,.sealed:focus-visible .sdot{stroke:var(--metal);stroke-width:3}
+.region:focus,.sealed:focus,.wirehit:focus{outline:none}
+
+/* ---- gauge ---- */
+.gauge{position:absolute;left:24px;top:8px;width:196px;font-size:13.5px;color:var(--soft)}
+.gauge .lab{display:flex;justify-content:space-between;margin-bottom:5px}
+.gauge .lab b{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--paper-deep);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 100% 0 0;background:var(--ink);transition:right .18s linear,background .5s}
+.bar.hot i{background:var(--hot)}
+.gauge .meta{margin-top:8px;font-size:12.5px;color:var(--faint);line-height:1.45}
+.gauge .meta b{font-weight:500;color:var(--soft);font-variant-numeric:tabular-nums}
+
+/* ---- hover ---- */
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);
+  font-size:13px;padding:7px 10px;max-width:290px;line-height:1.38;opacity:0;transition:opacity .12s}
+.tip.on{opacity:1}
+.tip b{font-weight:500}
+.tip .mnote{color:var(--metal-soft)}
+
+/* ---- assumptions ---- */
+.assume{position:absolute;right:0;top:0;bottom:0;width:352px;background:rgba(239,233,221,.97);
+  border-left:1px solid var(--paper-deep);padding:16px 18px;overflow:auto;
+  transform:translateX(24px);opacity:0;pointer-events:none;transition:transform .22s ease,opacity .22s ease}
+.assume.open{transform:none;opacity:1;pointer-events:auto}
+.assume h2{font-size:17px;font-weight:500;margin:0 0 4px;padding-right:24px}
+.assume .intro{color:var(--soft);font-size:13.5px;margin:0 0 14px}
+.aclose{position:absolute;right:10px;top:10px;background:none;border:0;font:20px/1 var(--serif);
+  cursor:pointer;color:var(--soft)}
+.arow{margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid var(--paper-deep)}
+.arow label{display:block;font-size:14px;margin-bottom:5px}
+.ill{color:var(--metal);font-size:11.5px;letter-spacing:.04em;text-transform:lowercase}
+.actl{display:flex;align-items:center;gap:10px}
+.actl input[type=range]{flex:1;min-width:0}
+.aval{font-size:13px;color:var(--soft);min-width:62px;text-align:right;font-variant-numeric:tabular-nums}
+.anote{margin:6px 0 0;font-size:12.5px;color:var(--soft);line-height:1.42}
+.assume h3{font-size:13px;font-weight:500;margin:16px 0 6px;color:var(--soft)}
+.assume ul{margin:0 0 12px;padding-left:17px;font-size:12.5px;color:var(--soft);line-height:1.45}
+.assume li{margin-bottom:6px}
+
+/* ---- footer ---- */
+footer{padding:8px 24px 16px}
+.read{text-align:center;font-size:16px;min-height:1.5em}
+.read em{font-style:normal;font-weight:500}
+.readsub{text-align:center;font-size:13.5px;color:var(--soft);min-height:0;margin-top:3px;
+  opacity:0;transition:opacity .2s;max-width:760px;margin-left:auto;margin-right:auto}
+.readsub.on{opacity:1}
+.tag{color:var(--metal);font-size:12px;white-space:nowrap}
+.ventnote{text-align:center;font-size:12.5px;color:var(--faint);margin-top:4px;min-height:1.3em}
+
+.timeline{margin:8px auto 0;max-width:900px}
+.timeline svg{display:block;width:100%;height:60px;cursor:ew-resize;touch-action:none}
+.tlgrid{stroke:var(--paper-deep);stroke-width:1}
+.tlline{fill:none;stroke:var(--ink);stroke-width:1.6}
+.tlthr{stroke:var(--hot);stroke-width:1;stroke-dasharray:4 4;opacity:.55}
+.tlnow{stroke:var(--ink);stroke-width:1.2;opacity:.5}
+.tlfuture{fill:var(--paper-deep);opacity:.35}
+.tlfoot{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-top:2px}
+.slot{font-size:12px;color:var(--metal);opacity:.8}
+
+.controls{display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px}
+button{font:14.5px var(--serif);padding:7px 13px;cursor:pointer;border:1px solid var(--ink);
+  background:var(--ink);color:var(--paper)}
+button.q{background:none;color:var(--ink)}
+button.q.on{background:var(--paper-deep)}
+button:focus-visible{outline:2px solid var(--metal);outline-offset:2px}
+.grp{display:flex;border:1px solid var(--ink)}
+.grp button{border:0;border-right:1px solid var(--ink);padding:7px 11px}
+.grp button:last-child{border-right:0}
+.holdwrap{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--soft)}
+.holdwrap input{width:96px}
+#holdval{font-variant-numeric:tabular-nums;min-width:34px}
+
+@media (max-width:900px) and (orientation:portrait){
+  header{padding:12px 14px 0;flex-direction:column;gap:2px}
+  h1{font-size:19px}
+  .stamp{text-align:left;white-space:normal}
+  main.has-panel #stagewrap{right:0}
+  .gauge{left:12px;top:4px;width:150px;font-size:12.5px}
+  .gauge .meta{display:none}
+  .assume{left:0;right:0;top:auto;bottom:0;width:auto;max-height:64%;border-left:0;
+    border-top:1px solid var(--paper-deep);transform:translateY(20px)}
+  .assume.open{transform:none}
+  footer{padding:6px 12px 12px}
+  .read{font-size:15px}
+  .controls{gap:7px}
+  button{padding:8px 12px}
+  .timeline svg{height:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  .bar i,#stagewrap,.assume,.tip,.rbody{transition:none}
+}

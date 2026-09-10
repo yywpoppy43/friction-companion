@@ -5,7 +5,7 @@
 > `content-source.md` is missing. Fixing any of it means editing
 > `content-source.md`, which only Poppy does.
 
-Source: `content-source.md`, sha256 `63409a0f82eb237c…`
+Source: `content-source.md`, sha256 `ed8db5069638ef70…`
 Checked 112 content blocks, 348 directed `connects to` edges.
 The 2 deposit blocks are not checked here: a deposit joins the graph
 through `attached to`, and an empty deposit is a slot, not a gap.
@@ -76,7 +76,7 @@ there. Included because it is the same class of gap.
 
 **Inferences the generator made, each one logged**
 
-- appendix cut at byte 115265; 4408 bytes excluded from the data
+- appendix cut at byte 116055; 4408 bytes excluded from the data
 - 11 field line(s) outside any block, ignored: (lead) One authoritative version per thing. | (lead) Plain language only in anything displayed. | (lead) Every part carries a source tag | (lead) The Deposits section is append-only. | (lead) The Technical Reference appendix is for verification only. | (lead) Other people's charts are not in this file. | (lead) Layer → section. | (lead) Each part is a block with an `id`. | (lead) Isolate | (lead) Regions | The explode dial: wired regions stay connected as they spread; sealed capaciti
 - sealed.completion: completing region read from the phrase "the pressure center" -> region.pressure
 - sealed.material-control: completing region read from the phrase "the outlet" -> region.throat

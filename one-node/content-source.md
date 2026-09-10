@@ -93,6 +93,7 @@ This file *is* the first deposit: what could be seen as of that date.
 - **id:** split
 - **what it is:** the fixed functions form two separate islands that do not touch. Island A: mental pressure + processing (the mind). Island B: identity + will + engine + instinct + pressure (the body). The gap sits at the outlet.
 - **what it means:** the mind and the body run as two independent systems on separate clocks. Understanding something does not cause action. Acting does not require understanding first. One does not produce the other, ever. `[read]` — flagged for her to check; she has not confirmed or denied this
+- **her answer, September 10, 2026:** when something of hers goes out, the mental circling stops. Not reduces — stops. The stuck feeling and the flatness go with it, immediately. The longer she was isolated before the exit, the stronger that relief. `[hers]` — this partly answers the `[read]` claim above. The two islands still exchange no load: there is no wire, and an exit does not empty the mind. What is not independent is the *rate* — the circling is coupled to whether anything is getting out.
 - **how it shows:** understanding exactly what to do and being unable to move (not procrastination — no wire). Doing things and understanding afterward why. A felt sense of being two people.
 - **what follows:** don't wait for clarity before moving. Certain people close the gap and produce a feeling of wholeness that fires regardless of whether they're good for her — test by what gets made, not by how it feels.
 - **the three possible bridges:** three wires could connect the outlet to the mind. She holds one half of one (see `sealed.precise-naming`). None is complete.
@@ -812,7 +813,7 @@ This file *is* the first deposit: what could be seen as of that date.
 - **elements say:** the wood is buried, not absent. A clash can crack the storehouse. The damming decade ends around 2029.
 - **why it's real:** one says structural and lifelong; the other says a condition with an end date. This determines whether she's designing a permanent workaround or waiting out a season.
 - **Claude's read:** the hardware claim is stronger — missing wires don't appear. But the elemental claim may be describing something real about *degree*: the block could be structurally permanent and situationally worse right now, easing when the decade turns. Both true at different resolutions. **The piece Claude would most want to be wrong about.** `[uncertain]`
-- **her note:** she said she has the answer to this and will give it later. Pending. `[hers — pending]`
+- **her note, September 10, 2026:** "I don't find the permanent-or-season framing useful. It isn't permanent. It isn't a season either. It's not a question I have an answer to from this angle, and I'm not sure it has value asked this way." `[hers — pending]` — the framing is rejected; the question stays open. This is the marker text wherever an answer-owed marker renders on this conflict.
 - **connects to:** sealed.completion, region.throat, elements.wood-buried, elements.decade, elements.october
 - **source:** three categories
 

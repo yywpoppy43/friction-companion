@@ -25,11 +25,16 @@ const read = f => readFileSync(join(ROOT, f), 'utf8');
 /* an inline <script> ends at the first </script anywhere in its text */
 const safe = js => js.replace(/<\/script/gi, '<\\/script');
 
-const html   = read('index.html');
-const css    = read('app.css');
-const data   = read('data/node.js');
-const layout = read('layout.js');
-const app    = read('app.js');
+/* Entry defaults to the machine (SPEC §14). Pass another html file to bundle it
+   instead — index.html is the superseded layer-1 explorer, kept as history. */
+const ENTRY = process.argv[2] || 'machine.html';
+const OUT   = process.argv[3] || 'machine.html';
+const html  = read(ENTRY);
+
+/* pull the scripts and stylesheets the entry actually references, in order */
+const srcs = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
+const cssf = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)].map(m => m[1]);
+const css  = cssf.map(read).join('\n');
 
 /* the body of index.html, minus the tags the host supplies and the four
    <script src>/<link> tags we are replacing with their contents */
@@ -39,8 +44,8 @@ const body = html
   .replace(/[ \t]*<script src="[^"]*"><\/script>\n?/g, '')
   .trim();
 
-const title = 'one node';
-const sha = /sourceSha256":\s*"([0-9a-f]{64})"/.exec(data)[1];
+const title = ENTRY === 'machine.html' ? 'the machine' : 'one node';
+const sha = /sourceSha256":\s*"([0-9a-f]{64})"/.exec(read('data/node.js'))[1];
 
 const out = `<title>${title}</title>
 <!-- one node — layer 1: hardware.
@@ -52,31 +57,26 @@ ${css.trim()}
 
 ${body}
 
-<script>
-${safe(data).trim()}
-</script>
-<script>
-${safe(layout).trim()}
-</script>
-<script>
-${safe(app).trim()}
-</script>
+${srcs.map(f => '<script>\n' + safe(read(f)).trim() + '\n</script>').join('\n')}
 `;
 
 mkdirSync(join(ROOT, 'dist'), { recursive: true });
-writeFileSync(join(ROOT, 'dist', 'one-node.html'), out);
+writeFileSync(join(ROOT, 'dist', OUT), out);
 
 /* the bundle must be self-contained and must still carry no appendix */
 const problems = [];
 if (/<script src=|<link rel="stylesheet"/.test(out)) problems.push('an external reference survived bundling');
-for (const id of ['ghost', 'wants', 'wires', 'regions', 'sealed', 'inspect', 'caption', 'stamp', 't'])
-  if (!out.includes('id="' + id + '"')) problems.push('missing element #' + id);
+const NEED = ENTRY === 'machine.html'
+  ? ['stage', 'dust', 'pv', 'bar', 'read', 'tl', 'pause', 'step', 'reset', 'assume', 'alist', 'hold', 'stamp']
+  : ['ghost', 'wants', 'wires', 'regions', 'sealed', 'inspect', 'caption', 'stamp', 't'];
+for (const id of NEED) if (!out.includes('id="' + id + '"')) problems.push('missing element #' + id);
+if (srcs.length < 2) problems.push('entry referenced fewer scripts than expected');
 for (const bad of ['Ajna', 'Sacral', 'Solar Plexus', 'Spleen', 'Jovian', 'Incarnation Cross'])
   if (out.includes(bad)) problems.push('appendix vocabulary "' + bad + '" reached the bundle');
 if (/\b(?:gates?|channels?)\s+\d/i.test(out)) problems.push('a gate or channel number reached the bundle');
 if (problems.length) { console.error('REFUSING TO WRITE:'); problems.forEach(p => console.error('  x ' + p)); process.exit(1); }
 
 console.log('one node — bundler');
-console.log('  wrote  dist/one-node.html  ' + out.length + ' bytes  (' + (out.length / 1024).toFixed(0) + ' KB)');
+console.log('  wrote  dist/' + OUT + '  ' + out.length + ' bytes  (' + (out.length / 1024).toFixed(0) + ' KB)');
 console.log('  sha256 of the bundle       ' + createHash('sha256').update(out).digest('hex').slice(0, 12) + '…');
 console.log('  self-contained, no appendix, all elements present');

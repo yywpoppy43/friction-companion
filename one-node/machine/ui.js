@@ -1,0 +1,334 @@
+/* one node — the machine. Controls, gauge, reading, inspection.
+ *
+ * Phase 1 of SPEC §14: the core running, the passive vent, the time controls,
+ * Show assumptions, hover only. No deposit, no click panel, no split control,
+ * no weather. The next-deposit slot appears on the timeline, empty, so the
+ * mechanism is visible before it is live.
+ */
+(function () {
+  'use strict';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var BY = {};
+  NODE.parts.forEach(function (p) { BY[p.id] = p; });
+
+  /* ------------------------------------------------------------- structure */
+  var REG = NODE.parts.filter(function (p) { return p.kind === 'region'; });
+  var WIR = NODE.parts.filter(function (p) { return p.kind === 'wire'; });
+  var SEA = NODE.parts.filter(function (p) { return p.kind === 'sealed'; });
+  var idx = {}; REG.forEach(function (r, i) { idx[r.id] = i; });
+
+  var regions = REG.map(function (r) {
+    return { id: r.id, name: r.name, state: r.state, island: r.island, wires: [] };
+  });
+  WIR.forEach(function (w) {
+    regions[idx[w.a]].wires.push(idx[w.b]);
+    regions[idx[w.b]].wires.push(idx[w.a]);
+  });
+  var structure = { regions: regions, wires: WIR, sealed: SEA };
+
+  var model = MODEL.create(structure, PARAMS);
+  var view  = VIEWER.build({ svg: $('stage'), canvas: $('dust'), structure: structure, data: NODE });
+
+  /* ----------------------------------------------------------------- state */
+  var running = true, speed = 1, held = null, holdAt = null, acc = 0;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var hist = [];                                   /* {t, p} every 0.5s */
+  var HIST_BACK = 150, HIST_FWD = 30;
+  var lastSample = -1;
+
+  function pct(x) { return Math.round(x * 100); }
+  function thr() { return PARAMS.thresholdPct.value / 100; }
+
+  /* ----------------------------------------------------------------- gauge */
+  function paintGauge(pr) {
+    var hot = pr >= thr();
+    $('pv').textContent = pct(pr) + '%';
+    $('fill').style.right = (100 - pct(pr)) + '%';
+    $('bar').classList.toggle('hot', hot);
+    $('mindrate').textContent = model.mindSpeed().toFixed(2) + '×';
+  }
+
+  /* --------------------------------------------------------------- reading */
+  /* Every line here is the source's or hers, and says which. */
+  function paintReading(pr, loads) {
+    var hot = pr >= thr();
+    var main, tag = '', sub = '';
+
+    var rel = model.relief();
+    if (rel && model.time() - rel.at < 7) {
+      var longHeld = rel.isolatedFor > 55;
+      main = 'The circling stopped. Not slowed — <em>stopped</em>. The stuck feeling went with it.'
+           + (longHeld ? ' It had been held a long time; the relief is stronger for that.' : '');
+      tag = 'hers';
+      sub = 'The mind did not empty — no wire runs to it, and nothing crossed. What changed is the rate.';
+    } else if (pr < 0.25) {
+      main = 'Running clear. Generation has started; nothing is near its limit.';
+    } else if (pr < 0.5) {
+      main = 'Filling. Nothing has completed a route out — there is no completed route to take.';
+    } else if (!hot) {
+      main = '<em>Building.</em> The parts hold what they generate and pass it on.';
+    } else {
+      main = '<em>Frustration.</em> Not tiredness, not sadness. Pressure with nowhere to go.';
+      sub = 'Or it may not announce itself as pressure at all — it can read as depression, flatness, futility, as a fact about the situation rather than a hydraulic state.';
+      tag = 'arguable';
+    }
+    $('read').innerHTML = main;
+    $('readsub').innerHTML = sub ? sub + (tag ? ' <span class="tag">[' + tag + ']</span>' : '')
+                                 : (tag ? '<span class="tag">[' + tag + ']</span>' : '');
+    $('readsub').classList.toggle('on', !!(sub || tag));
+    $('ventnote').textContent = model.venting()
+      ? 'Venting hard — illustrative, not the mechanism.'
+      : 'Some of it is getting out — talking, testing, working assets. It leaves nothing behind.';
+  }
+
+  /* -------------------------------------------------------------- timeline */
+  var tl = $('tl'), tlPath = $('tlline'), tlNow = $('tlnow'), tlThr = $('tlthr');
+  var TLW = 1000, TLH = 60;
+
+  function sample(pr) {
+    var t = model.time();
+    if (t - lastSample < 0.5 && lastSample >= 0) return;
+    lastSample = t;
+    hist.push({ t: t, p: pr });
+    while (hist.length && hist[0].t < t - HIST_BACK - 5) hist.shift();
+  }
+  function paintTimeline(pr) {
+    var t = model.time();
+    var span = HIST_BACK + HIST_FWD, t0 = Math.max(0, t - HIST_BACK);
+    var xOf = function (tt) { return (tt - t0) / span * TLW; };
+    var yOf = function (p) { return TLH - p * TLH; };
+    var d = '';
+    for (var i = 0; i < hist.length; i++) {
+      if (hist[i].t < t0) continue;
+      d += (d ? 'L' : 'M') + xOf(hist[i].t).toFixed(1) + ' ' + yOf(hist[i].p).toFixed(1);
+    }
+    tlPath.setAttribute('d', d || 'M0 ' + TLH);
+    tlNow.setAttribute('x1', xOf(t)); tlNow.setAttribute('x2', xOf(t));
+    tlThr.setAttribute('y1', yOf(thr())); tlThr.setAttribute('y2', yOf(thr()));
+    $('tlfuture').setAttribute('x', xOf(t));
+    $('tlfuture').setAttribute('width', Math.max(0, TLW - xOf(t)));
+    $('tlclock').textContent = Math.floor(t / 60) + ':' + ('0' + Math.floor(t % 60)).slice(-2);
+  }
+
+  /* scrub */
+  var scrubbing = false;
+  function scrubTo(clientX) {
+    var b = tl.getBoundingClientRect();
+    var f = Math.min(1, Math.max(0, (clientX - b.left) / b.width));
+    var t = model.time();
+    var span = HIST_BACK + HIST_FWD, t0 = Math.max(0, t - HIST_BACK);
+    var target = t0 + f * span;
+    var range = model.seekable();
+    target = Math.min(t, Math.max(range.from, target));
+    model.seek(target);
+    while (hist.length && hist[hist.length - 1].t > model.time()) hist.pop();
+    lastSample = model.time();
+    redraw();
+  }
+  tl.addEventListener('pointerdown', function (e) {
+    scrubbing = true; setRunning(false); tl.setPointerCapture(e.pointerId); scrubTo(e.clientX);
+  });
+  tl.addEventListener('pointermove', function (e) { if (scrubbing) scrubTo(e.clientX); });
+  tl.addEventListener('pointerup', function () { scrubbing = false; });
+  tl.addEventListener('pointercancel', function () { scrubbing = false; });
+
+  /* ------------------------------------------------------------ inspection */
+  /* Hover: one line, the content source's own words. The full entry is phase 3. */
+  function plain(s) {
+    return String(s)
+      .replace(/`\[[^\]]+\]`/g, '')
+      .replace(/`([^`]+)`/g, function (_, c) { return BY[c] ? BY[c].name : c; })
+      .replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\*([^*]+)\*/g, '$1')
+      .replace(/\s+/g, ' ').trim();
+  }
+  function firstSentence(s, cap) {
+    s = plain(s);
+    var m = /^(.{20,}?[.!?])(\s|$)/.exec(s);
+    var out = m ? m[1] : s;
+    if (out.length > (cap || 190)) out = out.slice(0, (cap || 190)).replace(/\s+\S*$/, '') + '…';
+    return out;
+  }
+  var MACHINE_NOTE = {
+    'region.emotion': 'This machine has no outside, so none of what it takes in reaches it here.',
+    'region.throat': 'Nothing completes a route to it.',
+  };
+  function hoverFor(id) {
+    var p = BY[id];
+    if (!p) return '';
+    var f = p.fields.filter(function (x) { return /^(what it is|what it does)$/.test(x.label); })[0]
+         || p.fields[0];
+    var line = f ? firstSentence(f.value) : '';
+    line = line.charAt(0).toUpperCase() + line.slice(1);
+    if (!/[.!?]$/.test(line)) line += '.';
+    var note = MACHINE_NOTE[id] || (p.kind === 'sealed' ? 'Real, full, and attached to nothing.' : '');
+    return '<b>' + p.name + '</b> — ' + line + (note ? ' <span class="mnote">' + note + '</span>' : '');
+  }
+  var tip = $('tip');
+  function showTip(id, ev) {
+    tip.innerHTML = hoverFor(id);
+    tip.classList.add('on');
+    var b = $('stagewrap').getBoundingClientRect();
+    var x = Math.min(ev.clientX - b.left + 14, b.width - 300);
+    tip.style.left = Math.max(6, x) + 'px';
+    tip.style.top = Math.min(ev.clientY - b.top + 16, b.height - 70) + 'px';
+  }
+  function hideTip() { tip.classList.remove('on'); }
+  Object.keys(view.hit).forEach(function (id) {
+    var n = view.hit[id];
+    n.addEventListener('pointerenter', function (e) { showTip(id, e); });
+    n.addEventListener('pointermove', function (e) { showTip(id, e); });
+    n.addEventListener('pointerleave', hideTip);
+    n.addEventListener('focus', function () {
+      var box = n.getBoundingClientRect(), w = $('stagewrap').getBoundingClientRect();
+      showTip(id, { clientX: box.left + box.width / 2, clientY: box.top + box.height / 2 });
+    });
+    n.addEventListener('blur', hideTip);
+  });
+
+  /* ----------------------------------------------------------- assumptions */
+  var panel = $('assume'), assumeOn = false;
+  function buildAssumptions() {
+    var box = $('alist'); box.innerHTML = '';
+    Object.keys(PARAMS).forEach(function (k) {
+      var P = PARAMS[k];
+      var row = document.createElement('div'); row.className = 'arow';
+      var lab = document.createElement('label');
+      lab.setAttribute('for', 'p-' + k);
+      lab.innerHTML = P.label + ' <span class="ill">illustrative</span>';
+      var wrap = document.createElement('div'); wrap.className = 'actl';
+      var inp = document.createElement('input');
+      inp.type = 'range'; inp.id = 'p-' + k;
+      inp.min = P.min; inp.max = P.max; inp.step = P.step; inp.value = P.value;
+      var val = document.createElement('span'); val.className = 'aval';
+      var fmt = function (v) { return v + (/^[a-z]/i.test(P.unit || '') ? ' ' : '') + (P.unit || ''); };
+      val.textContent = fmt(P.value);
+      inp.addEventListener('input', function () {
+        P.value = parseFloat(inp.value);
+        val.textContent = fmt(P.value);
+        redraw();
+      });
+      wrap.appendChild(inp); wrap.appendChild(val);
+      var note = document.createElement('p'); note.className = 'anote';
+      note.innerHTML = plain(P.note);
+      row.appendChild(lab); row.appendChild(wrap); row.appendChild(note);
+      box.appendChild(row);
+    });
+    var ul = $('astated'); ul.innerHTML = '';
+    STATED_ASSUMPTIONS.forEach(function (s) {
+      var li = document.createElement('li'); li.innerHTML = plain(s); ul.appendChild(li);
+    });
+  }
+  function setAssume(on) {
+    assumeOn = on;
+    panel.classList.toggle('open', on);
+    $('assumeBtn').setAttribute('aria-pressed', on ? 'true' : 'false');
+    $('assumeBtn').textContent = on ? 'Hide assumptions' : 'Show assumptions';
+    document.querySelector('main').classList.toggle('has-panel', on);
+    view.fit(); redraw();
+  }
+  $('assumeBtn').addEventListener('click', function () { setAssume(!assumeOn); });
+  $('aclose').addEventListener('click', function () { setAssume(false); });
+  $('venthard').addEventListener('click', function () {
+    model.ventHard(3, 26); setRunning(true);
+  });
+
+  /* -------------------------------------------------------------- controls */
+  function setRunning(on) {
+    running = on;
+    $('pause').textContent = on ? 'Pause' : 'Resume';
+    $('pause').setAttribute('aria-pressed', on ? 'false' : 'true');
+    if (on) holdAt = holdAt;                     /* hold stays armed across a resume */
+  }
+  $('pause').addEventListener('click', function () { setRunning(!running); });
+  $('step').addEventListener('click', function () { setRunning(false); advance(5); });
+  $('reset').addEventListener('click', function () {
+    model.reset(); hist = []; lastSample = -1; holdTripped = false; setRunning(true); redraw();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.spd'), function (b) {
+    b.addEventListener('click', function () {
+      speed = parseFloat(b.dataset.s);
+      Array.prototype.forEach.call(document.querySelectorAll('.spd'), function (o) {
+        o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+      });
+    });
+  });
+  var holdTripped = false;
+  $('hold').addEventListener('input', function () {
+    var v = parseInt($('hold').value, 10);
+    holdAt = (isNaN(v) || v <= 0) ? null : v / 100;   /* 0 is off, not "stop now" */
+    holdTripped = false;
+    $('holdval').textContent = holdAt === null ? 'off' : Math.round(holdAt * 100) + '%';
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.key === ' ') { e.preventDefault(); setRunning(!running); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); setRunning(false); advance(5); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); setRunning(false);
+      var r = model.seekable(); model.seek(Math.max(r.from, model.time() - 5));
+      while (hist.length && hist[hist.length - 1].t > model.time()) hist.pop();
+      lastSample = model.time(); redraw(); }
+    else if (e.key === '1') document.querySelector('.spd[data-s="0.25"]').click();
+    else if (e.key === '2') document.querySelector('.spd[data-s="1"]').click();
+    else if (e.key === '3') document.querySelector('.spd[data-s="4"]').click();
+    else if (e.key === 'r' || e.key === 'R') $('reset').click();
+    else if (e.key === 'a' || e.key === 'A') setAssume(!assumeOn);
+    else if (e.key === 'Escape') { hideTip(); if (assumeOn) setAssume(false); }
+  });
+
+  /* ------------------------------------------------------------------ loop */
+  function advance(seconds) {
+    var n = Math.round(seconds / MODEL.DT);
+    for (var i = 0; i < n; i++) {
+      model.tick();
+      if (holdAt !== null && !holdTripped && model.pressure() >= holdAt) {
+        holdTripped = true; setRunning(false);
+        $('read').innerHTML = 'Held at ' + Math.round(holdAt * 100) + '%.';
+        break;
+      }
+    }
+    redraw();
+  }
+
+  function redraw() {
+    var pr = model.pressure(), loads = model.loads(), hot = pr >= thr();
+    sample(pr);
+    paintGauge(pr); paintReading(pr, loads); paintTimeline(pr);
+    view.paintRegions(loads, pr, hot);
+    if (reduce.matches) view.drawStill(); else view.drawParts(model, loads, pr, hot);
+    $('total').textContent = model.parts().length;
+  }
+
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.1, (now - last) / 1000); last = now;
+    if (running && !scrubbing) {
+      acc += dt * speed;
+      var guard = 0;
+      while (acc >= MODEL.DT && guard++ < 600) {
+        acc -= MODEL.DT;
+        model.tick();
+        if (holdAt !== null && !holdTripped && model.pressure() >= holdAt) {
+          holdTripped = true; setRunning(false); acc = 0; break;
+        }
+      }
+    }
+    redraw();
+    requestAnimationFrame(frame);
+  }
+
+  /* The stage animates its width when the panel opens, so measuring it right
+     after the class toggle reads the box mid-transition and the canvas ends up
+     out of register with the SVG. Observe the box instead of guessing when it
+     settled. */
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () { view.fit(); redraw(); }).observe($('stagewrap'));
+  }
+  window.addEventListener('resize', function () { view.fit(); redraw(); });
+  buildAssumptions();
+  $('stamp').textContent = 'Phase 1 · the core, the vent, the controls · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
+  setRunning(true);
+  redraw();
+  requestAnimationFrame(frame);
+})();
