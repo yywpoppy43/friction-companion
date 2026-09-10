@@ -9,6 +9,9 @@
   'use strict';
 
   var $ = function (id) { return document.getElementById(id); };
+  /* one set of text helpers, owned by the inspector */
+  var esc = INSPECT.esc, plain = INSPECT.plain,
+      inline = INSPECT.inline, firstSentence = INSPECT.firstSentence;
   var BY = {};
   NODE.parts.forEach(function (p) { BY[p.id] = p; });
 
@@ -217,20 +220,6 @@
 
   /* ------------------------------------------------------------ inspection */
   /* Hover: one line, the content source's own words. The full entry is phase 3. */
-  function plain(s) {
-    return String(s)
-      .replace(/`\[[^\]]+\]`/g, '')
-      .replace(/`([^`]+)`/g, function (_, c) { return BY[c] ? BY[c].name : c; })
-      .replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\*([^*]+)\*/g, '$1')
-      .replace(/\s+/g, ' ').trim();
-  }
-  function firstSentence(s, cap) {
-    s = plain(s);
-    var m = /^(.{20,}?[.!?])(\s|$)/.exec(s);
-    var out = m ? m[1] : s;
-    if (out.length > (cap || 190)) out = out.slice(0, (cap || 190)).replace(/\s+\S*$/, '') + '…';
-    return out;
-  }
   var EXTRA = {
     'route': ['The deposit route',
       'An external route to the outlet, opened by an agreement whose terms are hers, held by someone with no authority over the work.',
@@ -268,8 +257,18 @@
     tip.style.top = Math.min(ev.clientY - b.top + 16, b.height - 70) + 'px';
   }
   function hideTip() { tip.classList.remove('on'); }
+  var CANVAS_ID = {
+    'route': 'design.deposit-structure',
+    'unfinished': 'mechanism.the-loop',
+  };
+  var partIdFor = function (id) { return CANVAS_ID[id] || id; };
+
   Object.keys(view.hit).forEach(function (id) {
     var n = view.hit[id];
+    n.addEventListener('click', function () { openPart(partIdFor(id)); });
+    n.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPart(partIdFor(id)); }
+    });
     n.addEventListener('pointerenter', function (e) { showTip(id, e); });
     n.addEventListener('pointermove', function (e) { showTip(id, e); });
     n.addEventListener('pointerleave', hideTip);
@@ -279,6 +278,39 @@
     });
     n.addEventListener('blur', hideTip);
   });
+
+  /* ---------------------------------------------------------- the panel */
+  var ON_CANVAS = {};
+  Object.keys(view.hit).forEach(function (id) { ON_CANVAS[partIdFor(id)] = true; });
+  /* the element the panel's id belongs to, for dimming and selection */
+  var ELEMENT_OF = {};
+  Object.keys(view.hit).forEach(function (id) { ELEMENT_OF[partIdFor(id)] = id; });
+
+  var focusView = {
+    applyFocus: function (sel, keepSet) {
+      var elSel = sel ? ELEMENT_OF[sel] : null;
+      var elKeep = null;
+      if (keepSet) {
+        elKeep = {};
+        Object.keys(keepSet).forEach(function (pid) {
+          if (ELEMENT_OF[pid]) elKeep[ELEMENT_OF[pid]] = true;
+        });
+      }
+      view.applyFocus(elSel, elKeep);
+    },
+  };
+
+  INSPECT.init({ by: BY, onCanvas: ON_CANVAS, view: focusView, onSelect: function (id) {
+    document.querySelector('main').classList.toggle('has-inspect', !!id);
+    if (id) setAssume(false);
+    view.fit();
+  } });
+
+  function openPart(id) {
+    if (!ON_CANVAS[id]) return;
+    hideTip();
+    INSPECT.select(id);
+  }
 
   /* ----------------------------------------------------------- assumptions */
   var panel = $('assume'), assumeOn = false;
@@ -314,6 +346,7 @@
     });
   }
   function setAssume(on) {
+    if (on && INSPECT.selected()) INSPECT.clear();
     assumeOn = on;
     panel.classList.toggle('open', on);
     $('assumeBtn').setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -394,7 +427,14 @@
     else if (e.key === 'd' || e.key === 'D') { if (!$('commit').disabled) $('commit').click(); }
     else if (e.key === 'r' || e.key === 'R') $('reset').click();
     else if (e.key === 'a' || e.key === 'A') setAssume(!assumeOn);
-    else if (e.key === 'Escape') { hideTip(); if (assumeOn) setAssume(false); }
+    else if (e.key === 'Escape') {
+      hideTip();
+      if (INSPECT.selected()) INSPECT.clear();
+      else if (assumeOn) setAssume(false);
+    }
+    else if (e.key === 'i' || e.key === 'I') {
+      if (INSPECT.selected()) document.getElementById('isolate').click();
+    }
   });
 
   /* ------------------------------------------------------------------ loop */
@@ -449,7 +489,7 @@
   }
   window.addEventListener('resize', function () { view.fit(); redraw(); });
   buildAssumptions();
-  $('stamp').textContent = 'Phase 2 · three routes out · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
+  $('stamp').textContent = 'Phase 3 · inspection · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
   model.setRhythm($('rhythm').checked);
   setRunning(true);
   redraw();

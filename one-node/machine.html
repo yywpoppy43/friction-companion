@@ -41,6 +41,20 @@
       <div class="tip" id="tip"></div>
     </div>
 
+    <aside class="inspect" id="inspect" aria-label="Part" aria-live="polite">
+      <button class="aclose" id="i-close" aria-label="Close">×</button>
+      <div class="ikind" id="i-kind"></div>
+      <h2 id="i-name"></h2>
+      <div class="owed" id="i-owed" style="display:none"></div>
+      <div id="i-fields"></div>
+      <div class="icount" id="i-count"></div>
+      <div id="i-src"></div>
+      <div class="flab">Connects to</div>
+      <div class="chips" id="i-chips"></div>
+      <div class="off" id="i-off"></div>
+      <div class="irow"><button class="q" id="isolate">Isolate</button></div>
+    </aside>
+
     <aside class="assume" id="assume" aria-label="Assumptions">
       <button class="aclose" id="aclose" aria-label="Close">×</button>
       <h2>Assumptions</h2>
@@ -114,6 +128,7 @@
 <script src="machine/figure.js"></script>
 <script src="machine/model.js"></script>
 <script src="machine/view.js"></script>
+<script src="machine/inspect.js"></script>
 <script src="machine/ui.js"></script>
 </body>
 </html>

@@ -19,7 +19,7 @@ var VIEWER = (function () {
   function build(opts) {
     var svg = opts.svg, cv = opts.canvas, S = opts.structure, D = opts.data;
     var cx = cv.getContext('2d');
-    var gRegion = {}, gSealed = {}, gWire = {}, hit = {};
+    var gRegion = {}, gSealed = {}, gWire = {}, wireVis = {}, hit = {};
 
     svg.setAttribute('viewBox', VIEW_BOX.x + ' ' + VIEW_BOX.y + ' ' + VIEW_BOX.w + ' ' + VIEW_BOX.h);
 
@@ -33,11 +33,12 @@ var VIEWER = (function () {
     var gW = el('g', { class: 'wires' });
     S.wires.forEach(function (w) {
       var a = REGION_XY[w.a], b = REGION_XY[w.b];
-      gW.appendChild(el('line', { class: 'wire', x1: a.x, y1: a.y, x2: b.x, y2: b.y }));
+      var ln = el('line', { class: 'wire', x1: a.x, y1: a.y, x2: b.x, y2: b.y });
+      gW.appendChild(ln);
       var h = el('line', { class: 'wirehit', x1: a.x, y1: a.y, x2: b.x, y2: b.y,
                            tabindex: '0', role: 'button', 'aria-label': w.name });
       gW.appendChild(h);
-      gWire[w.id] = h; hit[w.id] = h;
+      gWire[w.id] = h; hit[w.id] = h; wireVis[w.id] = ln;
     });
     svg.appendChild(gW);
 
@@ -54,6 +55,16 @@ var VIEWER = (function () {
       n.appendChild(el('circle', { class: 'sdot',  r: 5.2 }));
       gS.appendChild(n); gSealed[s.id] = n; hit[s.id] = n;
     });
+
+    /* The split. The one thing on the machine that is an absence: two short
+       marks with a clear gap between them, where the islands do not meet. */
+    var gSplit = el('g', { class: 'split', tabindex: '0', role: 'button',
+                           'aria-label': 'The split' });
+    gSplit.appendChild(el('path', { class: 'splitmark', d: 'M470 252 L516 252' }));
+    gSplit.appendChild(el('path', { class: 'splitmark', d: 'M564 252 L610 252' }));
+    gSplit.appendChild(el('rect', { class: 'splithit', x: 466, y: 240, width: 148, height: 24 }));
+    svg.appendChild(gSplit);
+    hit['split'] = gSplit;
 
     /* The deposit route. Not a wire: the three legs are the routes the missing
        capacity would complete, and the piece beyond the outlet is scaffolding —
@@ -154,11 +165,13 @@ var VIEWER = (function () {
         q = P[i];
         if (q.b !== -1) continue;
         var id = R[q.a].id, c = REGION_XY[id];
+        cx.globalAlpha = litRegion(id) ? 1 : 0.13;
         var spread = swellRadius(id, loads) * 0.74 * q.rr;
         x = c.x + Math.cos(q.ang) * spread;
         y = c.y + Math.sin(q.ang) * spread * 0.85;
         cx.beginPath(); cx.arc(X(x), Y(y), rest, 0, 6.2832); cx.fill();
       }
+      cx.globalAlpha = 1;
 
       cx.fillStyle = moveFill;
       for (i = 0; i < P.length; i++) {
@@ -167,8 +180,10 @@ var VIEWER = (function () {
         var a = REGION_XY[R[q.a].id], b = REGION_XY[R[q.b].id];
         x = a.x + (b.x - a.x) * q.prog;
         y = a.y + (b.y - a.y) * q.prog;
+        cx.globalAlpha = (litRegion(R[q.a].id) || litRegion(R[q.b].id)) ? 1 : 0.13;
         cx.beginPath(); cx.arc(X(x), Y(y), move, 0, 6.2832); cx.fill();
       }
+      cx.globalAlpha = 1;
 
       /* what is leaving, on its way out through the scaffolding */
       cx.fillStyle = 'rgba(154,107,20,.95)';
@@ -187,6 +202,23 @@ var VIEWER = (function () {
 
     /* Reduced motion: the model still runs. Only the dust stops. */
     function drawStill() { cx.clearRect(0, 0, W, H); }
+
+    /* Isolate: everything not connected to the selection goes quiet. The
+       canvas dims with the parts, or the load would stay bright on a dim body. */
+    var focusKeep = null, focusSel = null;
+    function applyFocus(sel, keepSet) {
+      focusKeep = keepSet; focusSel = sel;
+      Object.keys(hit).forEach(function (id) {
+        var off = !!keepSet && !keepSet[id];
+        hit[id].classList.toggle('dim', off);
+        hit[id].classList.toggle('sel', sel === id);
+        if (wireVis[id]) {
+          wireVis[id].classList.toggle('dim', off);
+          wireVis[id].classList.toggle('sel', sel === id);
+        }
+      });
+    }
+    function litRegion(id) { return !focusKeep || !!focusKeep[id]; }
 
     var drawnUnfinished = -1;
     function paintUnfinished(n) {
@@ -222,7 +254,7 @@ var VIEWER = (function () {
     fit();
     return {
       fit: fit, drawParts: drawParts, drawStill: drawStill, paintRegions: paintRegions,
-      paintUnfinished: paintUnfinished, paintRoute: paintRoute,
+      paintUnfinished: paintUnfinished, paintRoute: paintRoute, applyFocus: applyFocus,
       hit: hit, regionEl: gRegion, sealedEl: gSealed, wireEl: gWire,
       toScreen: function (x, y) { return { x: X(x), y: Y(y) }; },
     };
