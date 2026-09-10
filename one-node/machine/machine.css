@@ -64,6 +64,36 @@ canvas.dust{pointer-events:none}
 .gauge .meta b{font-weight:500;color:var(--soft);font-variant-numeric:tabular-nums}
 
 /* ---- hover ---- */
+.ledger{position:absolute;right:22px;top:8px;width:230px;font-size:12.5px;color:var(--soft)}
+main.has-panel .ledger{display:none}
+.ledger .lhead{margin-bottom:5px}
+.ledger table{border-collapse:collapse;width:100%}
+.ledger th{font-weight:500;color:var(--ink);text-align:left;padding:2px 6px 2px 0;font-size:13px}
+.ledger td{padding:2px 0;font-variant-numeric:tabular-nums}
+.ledger td.res{color:var(--faint);font-size:11.5px;text-align:right}
+.ledger .lruns{margin-top:8px;line-height:1.5;font-size:11.5px;color:var(--faint);
+  max-height:150px;overflow:hidden}
+.ledger .lruns b{font-weight:400;color:var(--soft)}
+.lline{display:none}
+
+/* the deposit route: not a wire, and only there when it is */
+.route{opacity:0;transition:opacity .3s;pointer-events:none}
+.route.armed{opacity:.32;pointer-events:auto}
+.route.open{opacity:1;pointer-events:auto}
+.route .leg{fill:none;stroke:var(--metal);stroke-width:1.6;stroke-dasharray:5 5}
+.route .scaffold{fill:none;stroke:var(--metal);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.route .rung{stroke:var(--metal);stroke-width:1.4}
+.route .routehit{fill:none;stroke:transparent;stroke-width:20;cursor:pointer}
+.route:focus-visible .scaffold{stroke-width:4}
+.route:focus{outline:none}
+
+/* started, relieving, never leaving */
+.unftick{stroke:var(--ink);stroke-width:2;opacity:.5}
+.unflabel{font:11.5px var(--serif);fill:var(--soft)}
+.unfinished{cursor:pointer}
+.unfinished:focus-visible .unftick{stroke:var(--metal);opacity:1}
+.unfinished:focus{outline:none}
+
 .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);
   font-size:13px;padding:7px 10px;max-width:290px;line-height:1.38;opacity:0;transition:opacity .12s}
 .tip.on{opacity:1}
@@ -110,6 +140,14 @@ footer{padding:8px 24px 16px}
 .tlfoot{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-top:2px}
 .slot{font-size:12px;color:var(--metal);opacity:.8}
 
+.controls.routes{margin-top:9px;gap:8px}
+.route-btn{padding:7px 14px}
+.rhythm{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--soft);cursor:pointer}
+.rhythm input{accent-color:var(--ink);width:14px;height:14px;margin:0}
+.due{font-size:13px;color:var(--metal);min-width:132px;font-variant-numeric:tabular-nums}
+.due.none{color:var(--faint)}
+.tlslot{stroke:var(--metal);stroke-width:1.4;stroke-dasharray:3 3}
+.tlopen{fill:var(--metal);opacity:.16}
 .controls{display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px}
 button{font:14.5px var(--serif);padding:7px 13px;cursor:pointer;border:1px solid var(--ink);
   background:var(--ink);color:var(--paper)}
@@ -130,6 +168,23 @@ button:focus-visible{outline:2px solid var(--metal);outline-offset:2px}
   main.has-panel #stagewrap{right:0}
   .gauge{left:12px;top:4px;width:150px;font-size:12.5px}
   .gauge .meta{display:none}
+  /* the ledger stops covering the figure: one line, in a band the stage
+     gives back at the bottom */
+  svg.stage,canvas.dust{height:calc(100% - 19px)}
+  .ledger{left:10px;right:10px;top:auto;bottom:0;width:auto;font-size:11.5px;text-align:center}
+  .ledger .lhead,.ledger table,.ledger .lruns{display:none}
+  .lline{display:block;color:var(--soft);font-variant-numeric:tabular-nums}
+  .due{min-width:0}
+  /* and the figure takes back the height the second control row costs */
+  .ventnote{display:none}
+  .read{font-size:14.5px}
+  .readsub{font-size:12.5px}
+  .timeline{margin-top:6px}
+  .timeline svg{height:40px}
+  .controls{margin-top:7px;gap:6px}
+  .controls.routes{margin-top:7px;gap:6px}
+  button{padding:7px 10px;font-size:13.5px}
+  .rhythm,.due{font-size:12px}
   .assume{left:0;right:0;top:auto;bottom:0;width:auto;max-height:64%;border-left:0;
     border-top:1px solid var(--paper-deep);transform:translateY(20px)}
   .assume.open{transform:none}

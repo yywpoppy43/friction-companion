@@ -28,6 +28,16 @@
           Mind circling <b id="mindrate">1.00×</b>
         </div>
       </div>
+      <div class="ledger" id="ledger" aria-live="polite">
+        <div class="lhead">Routes out</div>
+        <table id="ltable">
+          <tr><th>Talk</th><td id="l-talk">—</td><td class="res" id="l-talk-r">leaves nothing</td></tr>
+          <tr><th>Start</th><td id="l-start">—</td><td class="res" id="l-start-r">leaves an unfinished thing</td></tr>
+          <tr><th>Deposit</th><td id="l-dep">—</td><td class="res" id="l-dep-r">leaves a dated record</td></tr>
+        </table>
+        <div class="lruns" id="lruns"></div>
+        <div class="lline" id="lline"></div>
+      </div>
       <div class="tip" id="tip"></div>
     </div>
 
@@ -60,13 +70,23 @@
         <line class="tlgrid" x1="0" y1="59.5" x2="1000" y2="59.5"></line>
         <line class="tlthr" id="tlthr" x1="0" y1="18" x2="1000" y2="18"></line>
         <path class="tlline" id="tlline" d="M0 60"></path>
+        <rect class="tlopen" id="tlopen" x="0" y="0" width="0" height="60" style="display:none"></rect>
+        <line class="tlslot" id="tlslot" x1="900" y1="0" x2="900" y2="60" style="display:none"></line>
         <line class="tlnow" id="tlnow" x1="833" y1="0" x2="833" y2="60"></line>
       </svg>
       <div class="tlfoot">
         <span>two and a half minutes back</span>
         <span id="tlclock">0:00</span>
-        <span class="slot">next deposit · no date set</span>
+        <span class="slot" id="slotlabel">next deposit · no date set</span>
       </div>
+    </div>
+
+    <div class="controls routes">
+      <button class="q route-btn" id="talk">Talk it out</button>
+      <button class="q route-btn" id="start">Start something</button>
+      <button class="route-btn" id="commit">Commit a deposit</button>
+      <label class="rhythm"><input type="checkbox" id="rhythm" checked> keep the rhythm</label>
+      <span class="due" id="due">no date set</span>
     </div>
 
     <div class="controls">

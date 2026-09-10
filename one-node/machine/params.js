@@ -56,6 +56,38 @@ var PARAMS = {
     note: 'The size of the coupling. Illustrative.',
   },
 
+  /* --- the three routes out ---------------------------------------------- */
+  talkBurst: {
+    value: 0.18, min: 0.02, max: 0.6, step: 0.01, unit: '× load',
+    label: 'Talking releases',
+    note: 'Grounded that talking discharges and deposits nothing (`mechanism.discharge-without-residue`). How much one round releases is not.',
+  },
+  startRelief: {
+    value: 0.12, min: 0.02, max: 0.5, step: 0.01, unit: '× body',
+    label: 'Starting releases',
+    note: 'Grounded that starting relieves and adds an unfinished thing (`mechanism.the-loop`, `mechanism.pressure-differential`). The size of the relief is not.',
+  },
+  unfinishedGain: {
+    value: 0.02, min: 0, max: 0.2, step: 0.005, unit: '/thing',
+    label: 'Each unfinished thing raises generation by',
+    note: 'Grounded that the count drives the pressure back up — that is the loop (`mechanism.the-loop` [firm]). By how much per thing is not.',
+  },
+  depositInterval: {
+    value: 45, min: 10, max: 180, step: 5, unit: 's',
+    label: 'Days to the committed date',
+    note: 'Model seconds standing in for a weekly or biweekly rhythm (`design.deposit-structure`). The rhythm is grounded; this interval is a stand-in.',
+  },
+  holdSeconds: {
+    value: 15, min: 3, max: 60, step: 1, unit: 's',
+    label: 'The route holds open for',
+    note: 'The spec asks for long enough to watch. Illustrative.',
+  },
+  exitSeconds: {
+    value: 2.5, min: 0.5, max: 10, step: 0.1, unit: 's',
+    label: 'Time to travel out through the scaffolding',
+    note: 'Rendering. Illustrative.',
+  },
+
   /* --- rendering --------------------------------------------------------- */
   swellMax: { value: 0.55, min: 0, max: 1.2, step: 0.05, unit: '×', label: 'How much a full part swells', note: 'Rendering. Illustrative.' },
 };
@@ -80,4 +112,7 @@ var STATED_ASSUMPTIONS = [
   'The vent applies to both islands. Evaporation is not a wire and not a route to the outlet, so it does not cross the split, but the source does not say where it happens.',
   'This machine has no outside. `gap.environment`: Hardware has no outside world. Emotion takes in the room and amplifies it, and none of that can appear here.',
   'One model unit is one model unit. No number here is a fact about her.',
+  'The deposit drains the body through identity, the engine and instinct, because `missing-piece.now` says the routes into the outlet lead from exactly those three. Which of the three a given unit takes is not stated anywhere, and is chosen at random here.',
+  'An unfinished thing raises generation. The source says the count drives the pressure back up; it does not say through which part, so the rise is spread across all four.',
+  'Talking releases from both islands. Its content is her thinking, and the source says the same material has to be generated again from scratch — but where the release lands is not stated.',
 ];

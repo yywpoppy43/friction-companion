@@ -9,7 +9,7 @@
  * Both read the same viewBox, so they stay in register at any size.
  */
 
-var VIEW_BOX = { x: 300, y: 8, w: 480, h: 618 };
+var VIEW_BOX = { x: 300, y: 8, w: 480, h: 652 };
 
 var VIEWER = (function () {
   'use strict';
@@ -54,6 +54,46 @@ var VIEWER = (function () {
       n.appendChild(el('circle', { class: 'sdot',  r: 5.2 }));
       gS.appendChild(n); gSealed[s.id] = n; hit[s.id] = n;
     });
+
+    /* The deposit route. Not a wire: the three legs are the routes the missing
+       capacity would complete, and the piece beyond the outlet is scaffolding —
+       external, built, and touching nothing in the mind island. */
+    var gRoute = el('g', { class: 'route', tabindex: '0', role: 'button',
+                           'aria-label': 'The deposit route' });
+    var thr = REGION_XY[ROUTE.at];
+    ROUTE.legs.forEach(function (id) {
+      var a = REGION_XY[id];
+      gRoute.appendChild(el('path', { class: 'leg',
+        d: 'M' + a.x + ' ' + a.y + ' L' + thr.x + ' ' + thr.y }));
+    });
+    gRoute.appendChild(el('path', { class: 'scaffold',
+      d: 'M' + thr.x + ' ' + thr.y + ' L' + ROUTE.elbow.x + ' ' + ROUTE.elbow.y +
+         ' L' + ROUTE.out.x + ' ' + ROUTE.out.y }));
+    /* rungs, so the external piece reads as built rather than drawn */
+    (function () {
+      var ax = ROUTE.elbow.x, ay = ROUTE.elbow.y, bx = ROUTE.out.x, by = ROUTE.out.y;
+      var dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy), nx = -dy / L, ny = dx / L;
+      for (var k = 1; k <= 4; k++) {
+        var f = k / 5, cxp = ax + dx * f, cyp = ay + dy * f;
+        gRoute.appendChild(el('line', { class: 'rung',
+          x1: cxp + nx * 5, y1: cyp + ny * 5, x2: cxp - nx * 5, y2: cyp - ny * 5 }));
+      }
+    })();
+    gRoute.appendChild(el('path', { class: 'routehit',
+      d: 'M' + thr.x + ' ' + thr.y + ' L' + ROUTE.elbow.x + ' ' + ROUTE.elbow.y +
+         ' L' + ROUTE.out.x + ' ' + ROUTE.out.y }));
+    svg.appendChild(gRoute);
+    hit['route'] = gRoute;
+
+    /* Unfinished things. Started, relieving, and never leaving. */
+    var gUnf = el('g', { class: 'unfinished', tabindex: '0', role: 'button',
+                         'aria-label': 'Unfinished things' });
+    var unfTicks = el('g', {});
+    var unfLabel = el('text', { class: 'unflabel', x: UNFINISHED_BAND.x - 10,
+                                y: UNFINISHED_BAND.y + 4, 'text-anchor': 'end' });
+    gUnf.appendChild(unfTicks); gUnf.appendChild(unfLabel);
+    svg.appendChild(gUnf);
+    hit['unfinished'] = gUnf;
 
     /* regions */
     var gR = el('g', { class: 'regions' });
@@ -123,16 +163,50 @@ var VIEWER = (function () {
       cx.fillStyle = moveFill;
       for (i = 0; i < P.length; i++) {
         q = P[i];
-        if (q.b === -1) continue;
+        if (q.b === -1 || q.b === MODEL.OUT) continue;
         var a = REGION_XY[R[q.a].id], b = REGION_XY[R[q.b].id];
         x = a.x + (b.x - a.x) * q.prog;
         y = a.y + (b.y - a.y) * q.prog;
         cx.beginPath(); cx.arc(X(x), Y(y), move, 0, 6.2832); cx.fill();
       }
+
+      /* what is leaving, on its way out through the scaffolding */
+      cx.fillStyle = 'rgba(154,107,20,.95)';
+      var t0 = REGION_XY[ROUTE.at], e = ROUTE.elbow, o = ROUTE.out;
+      for (i = 0; i < P.length; i++) {
+        q = P[i];
+        if (q.b !== MODEL.OUT) continue;
+        var f = q.prog, px, py;
+        if (f < 0.42) { var g = f / 0.42; px = t0.x + (e.x - t0.x) * g; py = t0.y + (e.y - t0.y) * g; }
+        else { var g2 = (f - 0.42) / 0.58; px = e.x + (o.x - e.x) * g2; py = e.y + (o.y - e.y) * g2; }
+        cx.globalAlpha = f > 0.75 ? Math.max(0, (1 - f) / 0.25) : 1;
+        cx.beginPath(); cx.arc(X(px), Y(py), move * 1.15, 0, 6.2832); cx.fill();
+      }
+      cx.globalAlpha = 1;
     }
 
     /* Reduced motion: the model still runs. Only the dust stops. */
     function drawStill() { cx.clearRect(0, 0, W, H); }
+
+    var drawnUnfinished = -1;
+    function paintUnfinished(n) {
+      if (n === drawnUnfinished) return;
+      drawnUnfinished = n;
+      while (unfTicks.firstChild) unfTicks.removeChild(unfTicks.firstChild);
+      var B = UNFINISHED_BAND, perRow = Math.floor(B.w / B.gap), cap = perRow * B.rows;
+      var shown = Math.min(n, cap);
+      for (var i = 0; i < shown; i++) {
+        var row = Math.floor(i / perRow), col = i % perRow;
+        var x = B.x + col * B.gap, y = B.y + row * B.rowGap;
+        unfTicks.appendChild(el('line', { class: 'unftick', x1: x, y1: y, x2: x, y2: y + B.tick }));
+      }
+      unfLabel.textContent = n ? (n + ' unfinished' + (n > cap ? ' (' + cap + ' shown)' : '')) : '';
+    }
+
+    function paintRoute(state) {
+      gRoute.classList.toggle('armed', state === 'armed');
+      gRoute.classList.toggle('open', state === 'open');
+    }
 
     function paintRegions(loads, pr, hot) {
       S.regions.forEach(function (r) {
@@ -148,6 +222,7 @@ var VIEWER = (function () {
     fit();
     return {
       fit: fit, drawParts: drawParts, drawStill: drawStill, paintRegions: paintRegions,
+      paintUnfinished: paintUnfinished, paintRoute: paintRoute,
       hit: hit, regionEl: gRegion, sealedEl: gSealed, wireEl: gWire,
       toScreen: function (x, y) { return { x: X(x), y: Y(y) }; },
     };

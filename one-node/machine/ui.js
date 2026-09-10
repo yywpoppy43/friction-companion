@@ -56,12 +56,56 @@
     var main, tag = '', sub = '';
 
     var rel = model.relief();
+    var runsList = model.runs(), lastRun = runsList[runsList.length - 1];
+    var justClosed = lastRun && model.time() - lastRun.closedAt < 10;
+
+    if (model.routeOpen()) {
+      var cur = model.currentRun();
+      main = 'The route is open. <em>' + (cur ? cur.left : 0) + '</em> units have left the body.';
+      sub = 'It is not a wire. It was built, it is held open by a date she set, and it '
+          + 'touches nothing in the mind.';
+      $('read').innerHTML = main;
+      $('readsub').innerHTML = sub;
+      $('readsub').classList.add('on');
+      $('ventnote').textContent = 'Closing in ' + model.routeLeft().toFixed(0) + 's.';
+      return;
+    }
+    if (justClosed) {
+      main = '<em>Run ' + lastRun.n + '.</em> Left the body: ' + lastRun.left
+           + '. Still in the mind: ' + lastRun.mind
+           + '. Pressure ' + pct(lastRun.from) + '% → ' + pct(lastRun.to) + '%.';
+      sub = 'The circling stopped. Not slowed — <em>stopped</em>. The mind did not empty: '
+          + 'no wire runs to it, and nothing crossed. What changed is the rate. '
+          + '<span class="tag">[hers]</span>';
+      $('read').innerHTML = main;
+      $('readsub').innerHTML = sub;
+      $('readsub').classList.add('on');
+      $('ventnote').textContent = 'The exit did not widen. Nothing about the machine changed except how full it is.';
+      return;
+    }
+    var act = model.lastAct();
+    var justActed = act && model.time() - act.at < 8;
+    if (justActed && act.kind === 'talk') {
+      $('read').innerHTML = 'Talked it out. <em>' + act.released + '</em> units left, and the circling quieted with them.';
+      $('readsub').innerHTML = 'Nothing was deposited. The same material will have to be generated again from scratch. '
+        + '<span class="tag">[firm]</span>';
+      $('readsub').classList.add('on');
+      $('ventnote').textContent = 'Real discharge. No residue.';
+      return;
+    }
+    if (justActed && act.kind === 'start') {
+      $('read').innerHTML = 'Started something. <em>' + act.released + '</em> units left, immediately.';
+      $('readsub').innerHTML = 'And it added an unfinished thing. There are <em>' + model.unfinished()
+        + '</em> now, and the count is raising generation — relief comes from starting, frustration from accumulation. '
+        + '<span class="tag">[firm]</span>';
+      $('readsub').classList.add('on');
+      $('ventnote').textContent = 'Generation is running at ' + model.loopMultiplier().toFixed(2) + '× because of them.';
+      return;
+    }
     if (rel && model.time() - rel.at < 7) {
-      var longHeld = rel.isolatedFor > 55;
-      main = 'The circling stopped. Not slowed — <em>stopped</em>. The stuck feeling went with it.'
-           + (longHeld ? ' It had been held a long time; the relief is stronger for that.' : '');
+      main = 'Pressure fell, and the circling quieted with it.';
       tag = 'hers';
-      sub = 'The mind did not empty — no wire runs to it, and nothing crossed. What changed is the rate.';
+      sub = 'The mind holds what it held — no wire runs to it. What changed is the rate.';
     } else if (pr < 0.25) {
       main = 'Running clear. Generation has started; nothing is near its limit.';
     } else if (pr < 0.5) {
@@ -81,6 +125,30 @@
       ? 'Venting hard — illustrative, not the mechanism.'
       : 'Some of it is getting out — talking, testing, working assets. It leaves nothing behind.';
   }
+
+  /* ---------------------------------------------------------------- ledger */
+  var drawnRuns = -1;
+  function paintLedger() {
+    var T = model.tally(), runsList = model.runs(), unf = model.unfinished();
+    $('l-talk').textContent  = T.talks ? T.talks + '× · ' + T.talkReleased + ' out' : '—';
+    $('l-start').textContent = T.starts ? T.starts + '× · ' + T.startReleased + ' out' : '—';
+    $('l-dep').textContent   = T.deposits ? T.deposits + ' run' + (T.deposits > 1 ? 's' : '')
+                                          + ' · ' + T.depositReleased + ' out' : '—';
+    $('l-start-r').textContent = unf ? unf + ' unfinished, still open' : 'leaves an unfinished thing';
+    $('lline').textContent = [
+      'talk ' + T.talks + '×',
+      'start ' + T.starts + '× · ' + unf + ' unfinished',
+      'deposit ' + T.deposits + (T.deposits === 1 ? ' run' : ' runs'),
+    ].join('   ·   ');
+    if (runsList.length !== drawnRuns) {
+      drawnRuns = runsList.length;
+      $('lruns').innerHTML = runsList.slice(-6).reverse().map(function (r) {
+        return '<div><b>Run ' + r.n + '</b> · ' + clock(r.at) + ' · body ' + r.left
+             + ' · mind ' + r.mind + ' · ' + pct(r.from) + '%→' + pct(r.to) + '%</div>';
+      }).join('');
+    }
+  }
+  function clock(t) { return Math.floor(t / 60) + ':' + ('0' + Math.floor(t % 60)).slice(-2); }
 
   /* -------------------------------------------------------------- timeline */
   var tl = $('tl'), tlPath = $('tlline'), tlNow = $('tlnow'), tlThr = $('tlthr');
@@ -108,7 +176,21 @@
     tlThr.setAttribute('y1', yOf(thr())); tlThr.setAttribute('y2', yOf(thr()));
     $('tlfuture').setAttribute('x', xOf(t));
     $('tlfuture').setAttribute('width', Math.max(0, TLW - xOf(t)));
-    $('tlclock').textContent = Math.floor(t / 60) + ':' + ('0' + Math.floor(t % 60)).slice(-2);
+    $('tlclock').textContent = clock(t);
+
+    /* the committed date sits ahead of now, where it cannot be reached early */
+    var at = model.depositAt();
+    var slot = $('tlslot');
+    if (at !== null && xOf(at) <= TLW) {
+      slot.setAttribute('x1', xOf(at)); slot.setAttribute('x2', xOf(at));
+      slot.style.display = '';
+    } else slot.style.display = 'none';
+    $('tlopen').style.display = model.routeOpen() ? '' : 'none';
+    if (model.routeOpen()) {
+      var cur = model.currentRun();
+      $('tlopen').setAttribute('x', xOf(cur ? cur.at : t));
+      $('tlopen').setAttribute('width', Math.max(1, xOf(t) - xOf(cur ? cur.at : t)));
+    }
   }
 
   /* scrub */
@@ -149,11 +231,23 @@
     if (out.length > (cap || 190)) out = out.slice(0, (cap || 190)).replace(/\s+\S*$/, '') + '…';
     return out;
   }
+  var EXTRA = {
+    'route': ['The deposit route',
+      'An external route to the outlet, opened by an agreement whose terms are hers, held by someone with no authority over the work.',
+      'Not a wire. The three legs are the routes the missing capacity would complete — from identity, the engine and instinct. It touches nothing in the mind.'],
+    'unfinished': ['Unfinished things',
+      'Starting is fully supported by the engine and immediately satisfying, and it adds an unfinished thing.',
+      'Nothing here finishes. The count raises generation, which is what makes the loop a loop.'],
+  };
   var MACHINE_NOTE = {
     'region.emotion': 'This machine has no outside, so none of what it takes in reaches it here.',
     'region.throat': 'Nothing completes a route to it.',
   };
   function hoverFor(id) {
+    if (EXTRA[id]) {
+      var e = EXTRA[id];
+      return '<b>' + e[0] + '</b> — ' + e[1] + ' <span class="mnote">' + e[2] + '</span>';
+    }
     var p = BY[id];
     if (!p) return '';
     var f = p.fields.filter(function (x) { return /^(what it is|what it does)$/.test(x.label); })[0]
@@ -233,6 +327,27 @@
     model.ventHard(3, 26); setRunning(true);
   });
 
+  /* ----------------------------------------------------------- the routes */
+  $('talk').addEventListener('click', function () { model.talk(); setRunning(true); redraw(); });
+  $('start').addEventListener('click', function () { model.startThing(); setRunning(true); redraw(); });
+  $('commit').addEventListener('click', function () {
+    if (model.commit()) { setRunning(true); redraw(); }
+  });
+  $('rhythm').addEventListener('change', function () { model.setRhythm($('rhythm').checked); });
+
+  function paintRoutes() {
+    var due = model.dueIn(), open = model.routeOpen();
+    $('commit').disabled = open || due !== null;
+    $('commit').textContent = due !== null ? 'Committed' : 'Commit a deposit';
+    var d = $('due');
+    if (open) { d.textContent = 'the route is open'; d.classList.remove('none'); }
+    else if (due !== null) { d.textContent = 'opens in ' + due.toFixed(0) + 's'; d.classList.remove('none'); }
+    else { d.textContent = 'no date set'; d.classList.add('none'); }
+    $('slotlabel').textContent = open ? 'the route is open'
+      : due !== null ? 'next deposit · ' + clock(model.depositAt()) : 'next deposit · no date set';
+    view.paintRoute(open ? 'open' : due !== null ? 'armed' : 'shut');
+  }
+
   /* -------------------------------------------------------------- controls */
   function setRunning(on) {
     running = on;
@@ -243,7 +358,9 @@
   $('pause').addEventListener('click', function () { setRunning(!running); });
   $('step').addEventListener('click', function () { setRunning(false); advance(5); });
   $('reset').addEventListener('click', function () {
-    model.reset(); hist = []; lastSample = -1; holdTripped = false; setRunning(true); redraw();
+    model.reset(); model.setRhythm($('rhythm').checked);
+    hist = []; lastSample = -1; holdTripped = false; drawnRuns = -1;
+    setRunning(true); redraw();
   });
   Array.prototype.forEach.call(document.querySelectorAll('.spd'), function (b) {
     b.addEventListener('click', function () {
@@ -272,6 +389,9 @@
     else if (e.key === '1') document.querySelector('.spd[data-s="0.25"]').click();
     else if (e.key === '2') document.querySelector('.spd[data-s="1"]').click();
     else if (e.key === '3') document.querySelector('.spd[data-s="4"]').click();
+    else if (e.key === 't' || e.key === 'T') $('talk').click();
+    else if (e.key === 's' || e.key === 'S') $('start').click();
+    else if (e.key === 'd' || e.key === 'D') { if (!$('commit').disabled) $('commit').click(); }
     else if (e.key === 'r' || e.key === 'R') $('reset').click();
     else if (e.key === 'a' || e.key === 'A') setAssume(!assumeOn);
     else if (e.key === 'Escape') { hideTip(); if (assumeOn) setAssume(false); }
@@ -295,7 +415,9 @@
     var pr = model.pressure(), loads = model.loads(), hot = pr >= thr();
     sample(pr);
     paintGauge(pr); paintReading(pr, loads); paintTimeline(pr);
+    paintLedger(); paintRoutes();
     view.paintRegions(loads, pr, hot);
+    view.paintUnfinished(model.unfinished());
     if (reduce.matches) view.drawStill(); else view.drawParts(model, loads, pr, hot);
     $('total').textContent = model.parts().length;
   }
@@ -327,7 +449,8 @@
   }
   window.addEventListener('resize', function () { view.fit(); redraw(); });
   buildAssumptions();
-  $('stamp').textContent = 'Phase 1 · the core, the vent, the controls · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
+  $('stamp').textContent = 'Phase 2 · three routes out · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
+  model.setRhythm($('rhythm').checked);
   setRunning(true);
   redraw();
   requestAnimationFrame(frame);

@@ -63,4 +63,15 @@ var FIGURE_ARMS = [3, 4];      /* drawn a shade darker so the arms read */
    live. Grounded by missing-piece.now: the routes into the outlet lead from
    identity, engine and instinct, which is why the body can reach it and the
    mind cannot. */
-var ROUTE = { from: 'region.identity', at: 'region.throat', out: { x: 540, y: 40 } };
+var ROUTE = {
+  /* the three legs the missing capacity would wire, per missing-piece.now */
+  legs: ['region.identity', 'region.engine', 'region.instinct'],
+  at: 'region.throat',
+  /* and the scaffolding beyond it: away from the body, and nowhere near the
+     mind island, which it must not touch */
+  out: { x: 352, y: 214 },
+  elbow: { x: 452, y: 196 },
+};
+
+/* Unfinished things pile up below the feet and never leave. */
+var UNFINISHED_BAND = { x: 402, y: 622, w: 276, rows: 3, gap: 8, rowGap: 11, tick: 8 };
