@@ -28,7 +28,7 @@ var VIEWER = (function () {
     var gRegion = {}, gSealed = {}, gWire = {}, wireVis = {}, hit = {};
 
     /* ------------------------------------------------------- live geometry */
-    var sep = 0;
+    var sep = 0, sealedState = {};
     var POS = {}, SPOS = {}, FRAME = { x: VIEW_BOX.x, y: VIEW_BOX.y, w: VIEW_BOX.w, h: VIEW_BOX.h };
 
     function computePositions() {
@@ -41,7 +41,10 @@ var VIEWER = (function () {
       var ease = tt * tt * (3 - 2 * tt);
       Object.keys(SEALED_XY).forEach(function (id) {
         var g = SEALED_XY[id], host = POS[g.r];
-        SPOS[id] = lerpPt({ x: host.x + g.dx, y: host.y + g.dy }, SEALED_APART[id], ease);
+        /* a receding piece sits further from its region — the wood going
+           further under, drawn */
+        var k = sealedState[id] === 'recede' ? 2.1 : 1;
+        SPOS[id] = lerpPt({ x: host.x + g.dx * k, y: host.y + g.dy * k }, SEALED_APART[id], ease);
       });
       FRAME.x = lerp(VIEW_BOX.x, VIEW_APART.x, sep);
       FRAME.y = lerp(VIEW_BOX.y, VIEW_APART.y, sep);
@@ -255,6 +258,17 @@ var VIEWER = (function () {
       unfLabel.textContent = n ? (n + ' unfinished' + (n > cap ? ' (' + cap + ' shown)' : '')) : '';
     }
 
+    /* August pushes the four body operations under; September locks them. */
+    function setSealedState(map) {
+      sealedState = map || {};
+      S.sealed.forEach(function (s) {
+        var st = sealedState[s.id] || '';
+        gSealed[s.id].classList.toggle('recede', st === 'recede');
+        gSealed[s.id].classList.toggle('locked', st === 'locked');
+      });
+      computePositions(); applyGeometry();
+    }
+
     function paintRoute(state) {
       gRoute.classList.toggle('armed', state === 'armed');
       gRoute.classList.toggle('open', state === 'open');
@@ -333,6 +347,7 @@ var VIEWER = (function () {
       fit: fit, drawParts: drawParts, drawStill: drawStill, paintRegions: paintRegions,
       paintUnfinished: paintUnfinished, paintRoute: paintRoute, applyFocus: applyFocus,
       setSeparation: setSeparation, separation: function () { return sep; },
+      setSealedState: setSealedState,
       hit: hit, regionEl: gRegion, sealedEl: gSealed, wireEl: gWire,
     };
   }

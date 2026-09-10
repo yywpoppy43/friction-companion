@@ -15,7 +15,7 @@
 var INSPECT = (function () {
   'use strict';
 
-  var BY = {}, ON = {}, view = null, onSelect = null;
+  var BY = {}, ON = {}, PLACED = {}, view = null, onSelect = null;
   var selected = null, isolated = false;
 
   /* ------------------------------------------------------------------ text */
@@ -105,7 +105,7 @@ var INSPECT = (function () {
     var p = BY[id], out = [];
     if (p.kind === 'wire') { out.push(p.a, p.b); }
     if (p.kind === 'sealed') { out.push(p.region, p.completesAt); }
-    Object.keys(ON).forEach(function (o) {
+    Object.keys(PLACED).forEach(function (o) {
       var q = BY[o];
       if (!q) return;
       /* a wire that touches this region brings the region at its far end with
@@ -117,8 +117,8 @@ var INSPECT = (function () {
   }
   function connectedSet(id) {
     var set = {}; set[id] = true;
-    structural(id).forEach(function (x) { if (ON[x]) set[x] = true; });
-    (BY[id].adjacent || []).forEach(function (x) { if (ON[x]) set[x] = true; });
+    structural(id).forEach(function (x) { if (PLACED[x]) set[x] = true; });
+    (BY[id].adjacent || []).forEach(function (x) { if (PLACED[x]) set[x] = true; });
     return set;
   }
 
@@ -188,7 +188,11 @@ var INSPECT = (function () {
         + '<span class="offnote">In the data, in layers not built yet.</span>'
       : '';
 
-    q('isolate').textContent = isolated ? 'Show all' : 'Isolate';
+    /* a month can be read but not isolated: it is nowhere on the machine */
+    var iso = q('isolate');
+    iso.disabled = !PLACED[id];
+    iso.title = PLACED[id] ? '' : 'This has a reading but no place on the machine.';
+    iso.textContent = isolated ? 'Show all' : 'Isolate';
   }
 
   /* ------------------------------------------------------------- selection */
@@ -208,7 +212,7 @@ var INSPECT = (function () {
     apply();
   }
   function toggleIsolate() {
-    if (!selected) return;
+    if (!selected || !PLACED[selected]) return;
     isolated = !isolated;
     document.getElementById('isolate').textContent = isolated ? 'Show all' : 'Isolate';
     apply();
@@ -220,7 +224,8 @@ var INSPECT = (function () {
   function apply() { if (view) view.applyFocus(selected, keep()); }
 
   function init(opts) {
-    BY = opts.by; ON = opts.onCanvas; view = opts.view; onSelect = opts.onSelect;
+    BY = opts.by; ON = opts.onCanvas; PLACED = opts.placed || opts.onCanvas;
+    view = opts.view; onSelect = opts.onSelect;
     document.getElementById('i-close').addEventListener('click', clear);
     document.getElementById('isolate').addEventListener('click', toggleIsolate);
     return api;

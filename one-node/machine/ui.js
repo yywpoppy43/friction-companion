@@ -282,6 +282,12 @@
   /* ---------------------------------------------------------- the panel */
   var ON_CANVAS = {};
   Object.keys(view.hit).forEach(function (id) { ON_CANVAS[partIdFor(id)] = true; });
+  /* a month has a panel but no element on the machine, so it can be read and
+     not isolated — there is nothing on the canvas to isolate it to */
+  var PLACED = {};
+  Object.keys(ON_CANVAS).forEach(function (id) { PLACED[id] = true; });
+  [WEATHER.decade.id, WEATHER.year.id].concat(WEATHER.order)
+    .forEach(function (id) { ON_CANVAS[id] = true; });
   /* the element the panel's id belongs to, for dimming and selection */
   var ELEMENT_OF = {};
   Object.keys(view.hit).forEach(function (id) { ELEMENT_OF[partIdFor(id)] = id; });
@@ -300,7 +306,7 @@
     },
   };
 
-  INSPECT.init({ by: BY, onCanvas: ON_CANVAS, view: focusView, onSelect: function (id) {
+  INSPECT.init({ by: BY, onCanvas: ON_CANVAS, placed: PLACED, view: focusView, onSelect: function (id) {
     document.querySelector('main').classList.toggle('has-inspect', !!id);
     if (id) setAssume(false);
     view.fit();
@@ -381,6 +387,104 @@
     view.paintRoute(open ? 'open' : due !== null ? 'armed' : 'shut');
   }
 
+  /* -------------------------------------------------------------- weather */
+  /* SPEC §9. The machine is timeless; a month multiplies its parameters and
+     says which way the source points and which number is mine. */
+  var month = null;
+
+  function today() { var d = new Date(); return d.toISOString().slice(0, 10); }
+  function currentMonthId() {
+    var t = today();
+    for (var i = 0; i < WEATHER.order.length; i++) {
+      var m = WEATHER.months[WEATHER.order[i]];
+      if (t >= m.from && t < m.to) return WEATHER.order[i];
+    }
+    return null;
+  }
+
+  function weatherEffects(id) {
+    var w = { gen: 1, hold: 1, exit: 1, auto: false, autoEvery: 55 }, sealedMap = {};
+    if (!id) return { w: w, sealed: sealedMap };
+    /* the decade is on for every month the machine can model */
+    WEATHER.decade.effects.forEach(function (e) { if (e.k === 'exit') w.exit *= e.v; });
+    WEATHER.months[id].effects.forEach(function (e) {
+      if (e.k === 'gen')  w.gen  *= e.v;
+      if (e.k === 'hold') w.hold *= e.v;
+      if (e.k === 'exit') w.exit *= e.v;
+      if (e.k === 'auto') w.auto = true;
+      if (e.k === 'sealed') BODY_OPERATIONS.forEach(function (s) { sealedMap[s] = e.v; });
+    });
+    return { w: w, sealed: sealedMap };
+  }
+  /* the wood, in the machine's vocabulary: the four sealed body operations */
+  var BODY_OPERATIONS = ['sealed.completion', 'sealed.resource-direction',
+                         'sealed.begin-experience', 'sealed.mutate-in-limit'];
+
+  function setMonth(id) {
+    month = id;
+    var e = weatherEffects(id);
+    model.setWeather(e.w);
+    view.setSealedState(e.sealed);
+    paintWeather();
+    redraw();
+  }
+
+  function tagsHtml(list) {
+    return (list || []).map(function (t) { return '<span class="tag">[' + t + ']</span>'; }).join(' ');
+  }
+
+  function paintWeather() {
+    var cur = currentMonthId();
+    var box = $('wbtns');
+    if (!box.childNodes.length) {
+      var mk = function (id, label, word) {
+        var b = document.createElement('button');
+        b.innerHTML = esc(label) + (word ? ' <span class="wword">' + esc(word) + '</span>' : '');
+        b.addEventListener('click', function () { setMonth(id); });
+        box.appendChild(b);
+        return b;
+      };
+      mk(null, 'Timeless', '');
+      WEATHER.order.forEach(function (id) {
+        mk(id, WEATHER.months[id].short, WEATHER.months[id].word);
+      });
+    }
+    Array.prototype.forEach.call(box.children, function (b, i) {
+      var id = i === 0 ? null : WEATHER.order[i - 1];
+      b.classList.toggle('on', id === month);
+      b.setAttribute('aria-pressed', id === month ? 'true' : 'false');
+    });
+    $('wnow').textContent = cur ? WEATHER.months[cur].short + ' is the month now' : '';
+
+    var d = $('wdetail');
+    if (!month) {
+      d.innerHTML = cur
+        ? '<span class="wfull">The machine has no time in it. ' + esc(WEATHER.months[cur].label)
+          + ' is running outside it — pick it to see what it does.</span>'
+        : '<span class="stale">' + esc(WEATHER.stale) + '</span> '
+          + '<span class="wfull">'
+          + esc(WEATHER.staleYear).replace(/\[(\w+)\]/g, '<span class="tag">[$1]</span>')
+          + '</span>';
+      return;
+    }
+    var m = WEATHER.months[month];
+    var eff = m.effects.map(function (e) {
+      return '<span class="weff">' + esc(e.text) + '</span>' + (e.tag ? ' ' + tagsHtml([e.tag]) : '');
+    });
+    eff.push('<span class="weff">' + esc(WEATHER.decade.effects[0].text) + '</span> ' + tagsHtml(WEATHER.decade.tags));
+    /* On a phone only the headline stays here; the rest is one tap away in the
+       panel, which is where the detail lives. */
+    d.innerHTML =
+      '<span class="whead"><b>' + esc(m.label) + ' — ' + esc(m.word) + '.</b> '
+      + '<span class="wfull">' + INSPECT.inline(m.line) + ' </span>' + tagsHtml(m.tags) + '</span>'
+      + '<span class="wfull"><br>' + eff.join('<span class="wsep">·</span>')
+      + (m.nothing ? '<br>' + esc(m.nothing) : '')
+      + '<br><span class="wq">“' + esc(m.quote) + '”</span> ' + (m.quoteTag ? tagsHtml([m.quoteTag]) : '')
+      + '</span> <button class="wlink" id="wread">the whole reading</button>';
+    var link = $('wread');
+    if (link) link.addEventListener('click', function () { openPart(month); });
+  }
+
   /* ------------------------------------------------------------- separate */
   /* SPEC §8, the diagnostic view. The machine keeps running the whole way:
      nothing here touches the model, only where its parts are drawn. */
@@ -426,7 +530,7 @@
   $('reset').addEventListener('click', function () {
     model.reset(); model.setRhythm($('rhythm').checked);
     hist = []; lastSample = -1; holdTripped = false; drawnRuns = -1;
-    INSPECT.clear(); setSep(0);
+    INSPECT.clear(); setSep(0); setMonth(null);
     setRunning(true); redraw();
   });
   Array.prototype.forEach.call(document.querySelectorAll('.spd'), function (b) {
@@ -524,8 +628,9 @@
   }
   window.addEventListener('resize', function () { view.fit(); redraw(); });
   buildAssumptions();
-  $('stamp').textContent = 'Phase 4 · the split on demand · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
+  $('stamp').textContent = 'Phase 5 · weather · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
   model.setRhythm($('rhythm').checked);
+  setMonth(null);
   setRunning(true);
   redraw();
   requestAnimationFrame(frame);

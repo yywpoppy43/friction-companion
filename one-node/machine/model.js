@@ -66,6 +66,7 @@ var MODEL = (function () {
 
     var rng, t, parts, acc, ventMul, ventFor, ventCarry, snaps, hi, lastP, relief, ticks;
     var unfinished, routeOpen, routeUntil, depositAt, rhythm, runs, tally, run, lastAct;
+    var wx, autoAt;
 
     function reset(seed) {
       rng = makeRng(seed === undefined ? 20260910 : seed);
@@ -77,8 +78,10 @@ var MODEL = (function () {
       unfinished = 0;
       routeOpen = false; routeUntil = 0; depositAt = null; rhythm = true;
       runs = [];
-      tally = { talks: 0, talkReleased: 0, starts: 0, startReleased: 0, deposits: 0, depositReleased: 0 };
+      tally = { talks: 0, talkReleased: 0, starts: 0, startReleased: 0,
+                deposits: 0, depositReleased: 0, opened: 0, openedReleased: 0 };
       run = null; lastAct = null;
+      wx = { gen: 1, hold: 1, exit: 1, auto: false, autoEvery: 55 }; autoAt = null;
     }
 
     function newDwell() { return rng.range(p('dwellMin'), p('dwellMax')); }
@@ -100,6 +103,17 @@ var MODEL = (function () {
     /* mechanism.the-loop: every unfinished thing is still live, and the count
        pushes the pressure back up. That is what makes the loop a loop. */
     function loopMultiplier() { return 1 + p('unfinishedGain') * unfinished; }
+
+    /* Weather modulates; it does not rewrite. The parameters stay exactly as
+       set in params.js and the month multiplies on top, so turning the month
+       off returns the machine to itself. */
+    function setWeather(w) {
+      wx = { gen: 1, hold: 1, exit: 1, auto: false, autoEvery: 55 };
+      if (w) for (var k in w) wx[k] = w[k];
+      autoAt = wx.auto ? t + wx.autoEvery : null;
+    }
+    function holdSecs() { return p('holdSeconds') * wx.hold; }
+    function exitSecs() { return p('exitSeconds') * wx.exit; }
 
     function loadOf(pred) {
       var n = 0;
@@ -152,23 +166,32 @@ var MODEL = (function () {
       return true;
     }
     function setRhythm(on) { rhythm = !!on; }
-    function openRoute() {
+    function openRoute(via) {
       routeOpen = true;
-      routeUntil = t + p('holdSeconds');
-      depositAt = null;
-      run = { n: runs.length + 1, at: t, from: pressure(), left: 0 };
+      routeUntil = t + holdSecs() * (via === 'month' ? 2.2 : 1);
+      /* a month opening the route does not consume the date she committed to;
+         her deposit is still due when it is due */
+      if (via !== 'month') depositAt = null;
+      run = { n: runs.length + 1, at: t, from: pressure(), left: 0, via: via || 'deposit' };
     }
     function closeRoute() {
       routeOpen = false;
+      var closedVia = run ? run.via : 'deposit';
       if (run) {
         run.to = pressure();
         run.mind = mindLoad();
         run.closedAt = t;
         runs.push(run);
-        tally.deposits++; tally.depositReleased += run.left;
+        /* a month that opens on its own is drainage, but it is not a deposit
+           and must not be counted as one */
+        if (run.via === 'month') { tally.opened++; tally.openedReleased += run.left; }
+        else { tally.deposits++; tally.depositReleased += run.left; }
         run = null;
       }
-      if (rhythm) depositAt = t + p('depositInterval');
+      if (wx.auto && autoAt === null) autoAt = t + wx.autoEvery;
+      /* a month opening the route on its own is not her rhythm and must not
+         start one — only a deposit she committed re-arms the next date */
+      if (rhythm && closedVia === 'deposit') depositAt = t + p('depositInterval');
     }
 
     /* ---------------------------------------------------------------- tick */
@@ -179,6 +202,8 @@ var MODEL = (function () {
       t += DT; ticks++;
 
       if (depositAt !== null && !routeOpen && t >= depositAt) openRoute();
+      /* the clash opens what the other months bind — no deposit, no date */
+      if (autoAt !== null && !routeOpen && t >= autoAt) { openRoute('month'); autoAt = null; }
       if (routeOpen && t >= routeUntil) closeRoute();
 
       /* generation — constant, indifferent to whether anything can leave, and
@@ -186,7 +211,7 @@ var MODEL = (function () {
       for (var k in GEN_OF) {
         var gi = idx[k];
         if (gi === undefined) continue;
-        acc[k] += p(GEN_OF[k]) * loop * DT;
+        acc[k] += p(GEN_OF[k]) * loop * wx.gen * DT;
         while (acc[k] >= 1) { acc[k] -= 1; spawn(gi); }
       }
 
@@ -222,7 +247,7 @@ var MODEL = (function () {
              own dwell is up. Nothing is yanked out the moment the route opens.
              The outlet is in neither island, so it is tested before the body. */
           if (routeOpen && q.a === THROAT) {
-            q.b = OUT; q.prog = 0; q.rate = 1 / p('exitSeconds'); continue;
+            q.b = OUT; q.prog = 0; q.rate = 1 / exitSecs(); continue;
           }
           if (routeOpen && isBody(q.a)) {
             if (TO_OUTLET.indexOf(q.a) >= 0) { q.b = THROAT; q.prog = 0; q.rate = newRate(); continue; }
@@ -274,7 +299,8 @@ var MODEL = (function () {
                routeUntil: routeUntil, depositAt: depositAt, rhythm: rhythm,
                runs: JSON.stringify(runs), tally: JSON.stringify(tally),
                run: run ? JSON.stringify(run) : null,
-               lastAct: lastAct ? JSON.stringify(lastAct) : null };
+               lastAct: lastAct ? JSON.stringify(lastAct) : null,
+               autoAt: autoAt };
     }
     function restore(s) {
       t = s.t; ticks = s.ticks; rng.set(s.rng);
@@ -285,6 +311,7 @@ var MODEL = (function () {
       runs = JSON.parse(s.runs); tally = JSON.parse(s.tally);
       run = s.run ? JSON.parse(s.run) : null;
       lastAct = s.lastAct ? JSON.parse(s.lastAct) : null;
+      autoAt = s.autoAt === undefined ? null : s.autoAt;
       parts = [];
       for (var i = 0; i < s.a.length; i += 7) {
         parts.push({ a: s.a[i], b: s.a[i + 1], prog: s.a[i + 2], dwell: s.a[i + 3],
@@ -346,6 +373,9 @@ var MODEL = (function () {
       currentRun: function () { return run; },
       tally: function () { return tally; },
       lastAct: function () { return lastAct; },
+      setWeather: setWeather,
+      weather: function () { return wx; },
+      autoIn: function () { return autoAt === null ? null : Math.max(0, autoAt - t); },
       mindLoad: mindLoad,
       regions: R, index: idx, throatIndex: THROAT, toOutlet: TO_OUTLET,
     };

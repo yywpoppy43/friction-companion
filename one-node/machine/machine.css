@@ -50,6 +50,9 @@ canvas.dust{pointer-events:none}
 .shit{fill:transparent}
 .sdot{fill:var(--metal)}
 .sring{fill:none;stroke:var(--metal);stroke-width:1.1;stroke-dasharray:2.6 3;opacity:.85}
+.sealed.recede{opacity:.42}
+.sealed.locked .sring{stroke-dasharray:none;stroke-width:2;opacity:1}
+.sealed.locked .sdot{r:4}
 .region:focus-visible .rbody,.sealed:focus-visible .sdot{stroke:var(--metal);stroke-width:3}
 .region:focus,.sealed:focus,.wirehit:focus{outline:none}
 
@@ -203,6 +206,24 @@ footer{padding:8px 24px 16px}
 .tlfoot{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-top:2px}
 .slot{font-size:12px;color:var(--metal);opacity:.8}
 
+.weatherbar{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.wlab{font-size:12.5px;color:var(--faint);letter-spacing:.03em}
+.wbtns{display:flex;border:1px solid var(--paper-deep)}
+.wbtns button{border:0;border-right:1px solid var(--paper-deep);background:none;color:var(--soft);
+  font:13px var(--serif);padding:5px 10px;cursor:pointer}
+.wbtns button:last-child{border-right:0}
+.wbtns button.on{background:var(--ink);color:var(--paper)}
+.wbtns button .wword{color:var(--metal);font-size:11.5px}
+.wbtns button.on .wword{color:var(--metal-soft)}
+.wnow{font-size:12px;color:var(--metal)}
+.wdetail{text-align:center;font-size:12.5px;color:var(--soft);line-height:1.5;max-width:860px;
+  margin:5px auto 0;min-height:0}
+.wdetail .weff{color:var(--ink)}
+.wdetail .wsep{color:var(--faint);margin:0 4px}
+.wdetail .wq{font-style:italic}
+.wdetail .wlink{background:none;border:0;font:inherit;color:var(--metal);cursor:pointer;
+  text-decoration:underline;text-underline-offset:2px;padding:0}
+.wdetail .stale{color:var(--hot)}
 .controls.routes{margin-top:9px;gap:8px}
 .route-btn{padding:7px 14px}
 .rhythm{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--soft);cursor:pointer}
@@ -240,6 +261,12 @@ button:focus-visible{outline:2px solid var(--metal);outline-offset:2px}
   .due{min-width:0}
   /* and the figure takes back the height the second control row costs */
   .ventnote{display:none}
+  .weatherbar{margin-top:7px;gap:6px}
+  .wlab{display:none}
+  .wbtns button{padding:5px 7px;font-size:12px}
+  .wbtns button .wword{display:none}
+  .wdetail{font-size:11.5px;margin-top:3px}
+  .wdetail .wfull{display:none}
   .read{font-size:14.5px}
   .readsub{font-size:12.5px}
   .timeline{margin-top:6px}
