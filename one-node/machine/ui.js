@@ -381,6 +381,39 @@
     view.paintRoute(open ? 'open' : due !== null ? 'armed' : 'shut');
   }
 
+  /* ------------------------------------------------------------- separate */
+  /* SPEC §8, the diagnostic view. The machine keeps running the whole way:
+     nothing here touches the model, only where its parts are drawn. */
+  var sepRange = $('sep'), sepAnim = null;
+  function setSep(v, quiet) {
+    view.setSeparation(v);
+    if (!quiet) sepRange.value = Math.round(v * 1000);
+    $('sepToggle').textContent = v > 0.5 ? 'together' : 'apart';
+    $('sepcap').innerHTML = v > 0.8 ? 'Two islands. One gap. Ten loose pieces.'
+                          : v > 0.25 ? 'Coming apart. The wired parts stay together.'
+                          : '';
+    redraw();
+  }
+  sepRange.addEventListener('input', function () {
+    if (sepAnim) { cancelAnimationFrame(sepAnim); sepAnim = null; }
+    setSep(sepRange.value / 1000, true);
+  });
+  function tweenSep(to, ms) {
+    if (sepAnim) cancelAnimationFrame(sepAnim);
+    var from = view.separation(), start = performance.now();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setSep(to); return; }
+    var stepFn = function (now) {
+      var k = Math.min(1, (now - start) / (ms || 1100));
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      setSep(from + (to - from) * e);
+      sepAnim = k < 1 ? requestAnimationFrame(stepFn) : null;
+    };
+    sepAnim = requestAnimationFrame(stepFn);
+  }
+  $('sepToggle').addEventListener('click', function () {
+    tweenSep(view.separation() > 0.5 ? 0 : 1);
+  });
+
   /* -------------------------------------------------------------- controls */
   function setRunning(on) {
     running = on;
@@ -393,6 +426,7 @@
   $('reset').addEventListener('click', function () {
     model.reset(); model.setRhythm($('rhythm').checked);
     hist = []; lastSample = -1; holdTripped = false; drawnRuns = -1;
+    INSPECT.clear(); setSep(0);
     setRunning(true); redraw();
   });
   Array.prototype.forEach.call(document.querySelectorAll('.spd'), function (b) {
@@ -426,6 +460,7 @@
     else if (e.key === 's' || e.key === 'S') $('start').click();
     else if (e.key === 'd' || e.key === 'D') { if (!$('commit').disabled) $('commit').click(); }
     else if (e.key === 'r' || e.key === 'R') $('reset').click();
+    else if (e.key === 'x' || e.key === 'X') $('sepToggle').click();
     else if (e.key === 'a' || e.key === 'A') setAssume(!assumeOn);
     else if (e.key === 'Escape') {
       hideTip();
@@ -489,7 +524,7 @@
   }
   window.addEventListener('resize', function () { view.fit(); redraw(); });
   buildAssumptions();
-  $('stamp').textContent = 'Phase 3 · inspection · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
+  $('stamp').textContent = 'Phase 4 · the split on demand · content-source ' + NODE.meta.sourceSha256.slice(0, 7);
   model.setRhythm($('rhythm').checked);
   setRunning(true);
   redraw();

@@ -27,6 +27,11 @@
           In the machine <b id="total">0</b> units<br>
           Mind circling <b id="mindrate">1.00×</b>
         </div>
+        <div class="sepctl">
+          <label for="sep">Separate</label>
+          <input type="range" id="sep" min="0" max="1000" value="0" step="1" aria-label="Separate the structure">
+          <button class="linky" id="sepToggle">apart</button>
+        </div>
       </div>
       <div class="ledger" id="ledger" aria-live="polite">
         <div class="lhead">Routes out</div>
@@ -74,6 +79,7 @@
   </main>
 
   <footer>
+    <div class="sepcap" id="sepcap"></div>
     <div class="read" id="read"></div>
     <div class="readsub" id="readsub"></div>
     <div class="ventnote" id="ventnote"></div>

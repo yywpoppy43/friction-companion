@@ -1,12 +1,16 @@
 /* one node — the machine. The view.
  *
  * SVG carries every addressable thing: nine regions, six wires, ten sealed
- * capacities, the figure. Each is a real element with an id, a tabindex and a
- * label, so hover and keyboard come from the browser rather than from
- * hit-testing a bitmap. Canvas carries the load, because a few hundred moving
- * dots is what canvas is for.
+ * capacities, the split, the deposit route, the unfinished pile, the figure.
+ * Each is a real element with an id, a tabindex and a label, so hover, click
+ * and keyboard come from the browser rather than from hit-testing a bitmap.
+ * Canvas carries the load, because a few hundred moving dots is what canvas
+ * is for. Both read the same frame, so they stay in register at any size.
  *
- * Both read the same viewBox, so they stay in register at any size.
+ * Nothing here is fixed in place. Every position is a point between the
+ * assembled layout and the separated one, so the diagnostic view of SPEC §8
+ * is the same machine at a different value of one number — and it keeps
+ * running the whole way.
  */
 
 var VIEW_BOX = { x: 300, y: 8, w: 480, h: 652 };
@@ -15,14 +19,38 @@ var VIEWER = (function () {
   'use strict';
   var NS = 'http://www.w3.org/2000/svg';
   function el(n, a) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); return e; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpPt(a, b, t) { return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) }; }
 
   function build(opts) {
-    var svg = opts.svg, cv = opts.canvas, S = opts.structure, D = opts.data;
+    var svg = opts.svg, cv = opts.canvas, S = opts.structure;
     var cx = cv.getContext('2d');
     var gRegion = {}, gSealed = {}, gWire = {}, wireVis = {}, hit = {};
 
-    svg.setAttribute('viewBox', VIEW_BOX.x + ' ' + VIEW_BOX.y + ' ' + VIEW_BOX.w + ' ' + VIEW_BOX.h);
+    /* ------------------------------------------------------- live geometry */
+    var sep = 0;
+    var POS = {}, SPOS = {}, FRAME = { x: VIEW_BOX.x, y: VIEW_BOX.y, w: VIEW_BOX.w, h: VIEW_BOX.h };
 
+    function computePositions() {
+      Object.keys(REGION_XY).forEach(function (id) {
+        POS[id] = lerpPt(REGION_XY[id], REGION_APART[id], sep);
+      });
+      /* A sealed capacity holds onto its region for the first stretch, then
+         lets go — which is what makes the detachment read as detachment. */
+      var tt = Math.max(0, (sep - 0.08) / 0.92);
+      var ease = tt * tt * (3 - 2 * tt);
+      Object.keys(SEALED_XY).forEach(function (id) {
+        var g = SEALED_XY[id], host = POS[g.r];
+        SPOS[id] = lerpPt({ x: host.x + g.dx, y: host.y + g.dy }, SEALED_APART[id], ease);
+      });
+      FRAME.x = lerp(VIEW_BOX.x, VIEW_APART.x, sep);
+      FRAME.y = lerp(VIEW_BOX.y, VIEW_APART.y, sep);
+      FRAME.w = lerp(VIEW_BOX.w, VIEW_APART.w, sep);
+      FRAME.h = lerp(VIEW_BOX.h, VIEW_APART.h, sep);
+    }
+    computePositions();
+
+    /* ------------------------------------------------------------ the body */
     var gFig = el('g', { class: 'figure' });
     FIGURE.forEach(function (d, i) {
       gFig.appendChild(el('path', { d: d, class: FIGURE_ARMS.indexOf(i) >= 0 ? 'fig arm' : 'fig' }));
@@ -32,86 +60,62 @@ var VIEWER = (function () {
     /* wires under the parts */
     var gW = el('g', { class: 'wires' });
     S.wires.forEach(function (w) {
-      var a = REGION_XY[w.a], b = REGION_XY[w.b];
-      var ln = el('line', { class: 'wire', x1: a.x, y1: a.y, x2: b.x, y2: b.y });
+      var ln = el('line', { class: 'wire' });
       gW.appendChild(ln);
-      var h = el('line', { class: 'wirehit', x1: a.x, y1: a.y, x2: b.x, y2: b.y,
-                           tabindex: '0', role: 'button', 'aria-label': w.name });
+      var h = el('line', { class: 'wirehit', tabindex: '0', role: 'button', 'aria-label': w.name });
       gW.appendChild(h);
       gWire[w.id] = h; hit[w.id] = h; wireVis[w.id] = ln;
     });
     svg.appendChild(gW);
 
-    /* sealed capacities: drawn full, and attached to nothing.
-       §1.4 — present as pressure, absent as mechanism. */
-    var gS = el('g', { class: 'sealeds' });
-    S.sealed.forEach(function (s) {
-      var g = SEALED_XY[s.id], host = REGION_XY[g.r];
-      var x = host.x + g.dx, y = host.y + g.dy;
-      var n = el('g', { class: 'sealed', transform: 'translate(' + x + ' ' + y + ')',
-                        tabindex: '0', role: 'button', 'aria-label': s.name });
-      n.appendChild(el('circle', { class: 'shit', r: 15 }));
-      n.appendChild(el('circle', { class: 'sring', r: 10.5 }));
-      n.appendChild(el('circle', { class: 'sdot',  r: 5.2 }));
-      gS.appendChild(n); gSealed[s.id] = n; hit[s.id] = n;
-    });
-
     /* The split. The one thing on the machine that is an absence: two short
        marks with a clear gap between them, where the islands do not meet. */
-    var gSplit = el('g', { class: 'split', tabindex: '0', role: 'button',
-                           'aria-label': 'The split' });
-    gSplit.appendChild(el('path', { class: 'splitmark', d: 'M470 252 L516 252' }));
-    gSplit.appendChild(el('path', { class: 'splitmark', d: 'M564 252 L610 252' }));
-    gSplit.appendChild(el('rect', { class: 'splithit', x: 466, y: 240, width: 148, height: 24 }));
+    var gSplit = el('g', { class: 'split', tabindex: '0', role: 'button', 'aria-label': 'The split' });
+    var splitA = el('path', { class: 'splitmark' });
+    var splitB = el('path', { class: 'splitmark' });
+    var splitHit = el('rect', { class: 'splithit' });
+    gSplit.appendChild(splitA); gSplit.appendChild(splitB); gSplit.appendChild(splitHit);
     svg.appendChild(gSplit);
     hit['split'] = gSplit;
 
     /* The deposit route. Not a wire: the three legs are the routes the missing
        capacity would complete, and the piece beyond the outlet is scaffolding —
        external, built, and touching nothing in the mind island. */
-    var gRoute = el('g', { class: 'route', tabindex: '0', role: 'button',
-                           'aria-label': 'The deposit route' });
-    var thr = REGION_XY[ROUTE.at];
-    ROUTE.legs.forEach(function (id) {
-      var a = REGION_XY[id];
-      gRoute.appendChild(el('path', { class: 'leg',
-        d: 'M' + a.x + ' ' + a.y + ' L' + thr.x + ' ' + thr.y }));
-    });
-    gRoute.appendChild(el('path', { class: 'scaffold',
-      d: 'M' + thr.x + ' ' + thr.y + ' L' + ROUTE.elbow.x + ' ' + ROUTE.elbow.y +
-         ' L' + ROUTE.out.x + ' ' + ROUTE.out.y }));
-    /* rungs, so the external piece reads as built rather than drawn */
-    (function () {
-      var ax = ROUTE.elbow.x, ay = ROUTE.elbow.y, bx = ROUTE.out.x, by = ROUTE.out.y;
-      var dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy), nx = -dy / L, ny = dx / L;
-      for (var k = 1; k <= 4; k++) {
-        var f = k / 5, cxp = ax + dx * f, cyp = ay + dy * f;
-        gRoute.appendChild(el('line', { class: 'rung',
-          x1: cxp + nx * 5, y1: cyp + ny * 5, x2: cxp - nx * 5, y2: cyp - ny * 5 }));
-      }
-    })();
-    gRoute.appendChild(el('path', { class: 'routehit',
-      d: 'M' + thr.x + ' ' + thr.y + ' L' + ROUTE.elbow.x + ' ' + ROUTE.elbow.y +
-         ' L' + ROUTE.out.x + ' ' + ROUTE.out.y }));
+    var gRoute = el('g', { class: 'route', tabindex: '0', role: 'button', 'aria-label': 'The deposit route' });
+    var routeLegs = ROUTE.legs.map(function () { var e = el('path', { class: 'leg' }); gRoute.appendChild(e); return e; });
+    var routeScaffold = el('path', { class: 'scaffold' });
+    gRoute.appendChild(routeScaffold);
+    var routeRungs = [1, 2, 3, 4].map(function () { var e = el('line', { class: 'rung' }); gRoute.appendChild(e); return e; });
+    var routeHit = el('path', { class: 'routehit' });
+    gRoute.appendChild(routeHit);
     svg.appendChild(gRoute);
     hit['route'] = gRoute;
 
     /* Unfinished things. Started, relieving, and never leaving. */
-    var gUnf = el('g', { class: 'unfinished', tabindex: '0', role: 'button',
-                         'aria-label': 'Unfinished things' });
+    var gUnf = el('g', { class: 'unfinished', tabindex: '0', role: 'button', 'aria-label': 'Unfinished things' });
     var unfTicks = el('g', {});
-    var unfLabel = el('text', { class: 'unflabel', x: UNFINISHED_BAND.x - 10,
-                                y: UNFINISHED_BAND.y + 4, 'text-anchor': 'end' });
+    var unfLabel = el('text', { class: 'unflabel', 'text-anchor': 'end' });
     gUnf.appendChild(unfTicks); gUnf.appendChild(unfLabel);
     svg.appendChild(gUnf);
     hit['unfinished'] = gUnf;
 
+    /* sealed capacities: drawn full, and attached to nothing.
+       §1.4 — present as pressure, absent as mechanism. */
+    var gS = el('g', { class: 'sealeds' });
+    S.sealed.forEach(function (s) {
+      var n = el('g', { class: 'sealed', tabindex: '0', role: 'button', 'aria-label': s.name });
+      n.appendChild(el('circle', { class: 'shit', r: 15 }));
+      n.appendChild(el('circle', { class: 'sring', r: 10.5 }));
+      n.appendChild(el('circle', { class: 'sdot',  r: 5.2 }));
+      gS.appendChild(n); gSealed[s.id] = n; hit[s.id] = n;
+    });
+    svg.appendChild(gS);
+
     /* regions */
     var gR = el('g', { class: 'regions' });
     S.regions.forEach(function (r) {
-      var pos = REGION_XY[r.id], lab = REGION_LABEL[r.id];
+      var lab = REGION_LABEL[r.id];
       var n = el('g', { class: 'region ' + r.state + (r.island ? ' isle-' + r.island : ' isle-none'),
-                        transform: 'translate(' + pos.x + ' ' + pos.y + ')',
                         tabindex: '0', role: 'button', 'aria-label': r.name });
       n.appendChild(el('circle', { class: 'rhit', r: 30 }));
       n.appendChild(el('circle', { class: 'rbody', r: 15 }));
@@ -120,8 +124,75 @@ var VIEWER = (function () {
       n.appendChild(t);
       gR.appendChild(n); gRegion[r.id] = n; hit[r.id] = n;
     });
-    svg.appendChild(gS);
     svg.appendChild(gR);
+
+    /* --------------------------------------------------------- apply frame */
+    function applyGeometry(loads) {
+      svg.setAttribute('viewBox', FRAME.x + ' ' + FRAME.y + ' ' + FRAME.w + ' ' + FRAME.h);
+
+      S.regions.forEach(function (r) {
+        var p = POS[r.id];
+        gRegion[r.id].setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')');
+      });
+      S.wires.forEach(function (w) {
+        var a = POS[w.a], b = POS[w.b];
+        [wireVis[w.id], gWire[w.id]].forEach(function (L) {
+          L.setAttribute('x1', a.x.toFixed(1)); L.setAttribute('y1', a.y.toFixed(1));
+          L.setAttribute('x2', b.x.toFixed(1)); L.setAttribute('y2', b.y.toFixed(1));
+        });
+      });
+      S.sealed.forEach(function (s) {
+        var p = SPOS[s.id];
+        gSealed[s.id].setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')');
+      });
+
+      /* the split marks travel into the gap once the gap is real */
+      var a0 = [470, 252, 516, 252], b0 = [564, 252, 610, 252];
+      var A = a0.map(function (v, i) { return lerp(v, SPLIT_APART.a[i], sep); });
+      var B = b0.map(function (v, i) { return lerp(v, SPLIT_APART.b[i], sep); });
+      splitA.setAttribute('d', 'M' + A[0].toFixed(1) + ' ' + A[1].toFixed(1) + ' L' + A[2].toFixed(1) + ' ' + A[3].toFixed(1));
+      splitB.setAttribute('d', 'M' + B[0].toFixed(1) + ' ' + B[1].toFixed(1) + ' L' + B[2].toFixed(1) + ' ' + B[3].toFixed(1));
+      splitHit.setAttribute('x', A[0] - 4); splitHit.setAttribute('y', Math.min(A[1], B[3]) - 12);
+      splitHit.setAttribute('width', Math.max(20, B[2] - A[0] + 8));
+      splitHit.setAttribute('height', Math.abs(B[3] - A[1]) + 24);
+
+      /* the route, still attached to the door wherever the door is */
+      var thr = POS[ROUTE.at];
+      var elbow = { x: thr.x + ROUTE.elbowOff.x, y: thr.y + ROUTE.elbowOff.y };
+      var out   = { x: thr.x + ROUTE.outOff.x,   y: thr.y + ROUTE.outOff.y };
+      ROUTE.legs.forEach(function (id, i) {
+        var a = POS[id];
+        routeLegs[i].setAttribute('d', 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) + ' L' + thr.x.toFixed(1) + ' ' + thr.y.toFixed(1));
+      });
+      var d = 'M' + thr.x.toFixed(1) + ' ' + thr.y.toFixed(1)
+            + ' L' + elbow.x.toFixed(1) + ' ' + elbow.y.toFixed(1)
+            + ' L' + out.x.toFixed(1) + ' ' + out.y.toFixed(1);
+      routeScaffold.setAttribute('d', d); routeHit.setAttribute('d', d);
+      var dx = out.x - elbow.x, dy = out.y - elbow.y, L = Math.hypot(dx, dy) || 1;
+      var nx = -dy / L, ny = dx / L;
+      routeRungs.forEach(function (e, k) {
+        var f = (k + 1) / 5, px = elbow.x + dx * f, py = elbow.y + dy * f;
+        e.setAttribute('x1', (px + nx * 5).toFixed(1)); e.setAttribute('y1', (py + ny * 5).toFixed(1));
+        e.setAttribute('x2', (px - nx * 5).toFixed(1)); e.setAttribute('y2', (py - ny * 5).toFixed(1));
+      });
+
+      /* the pile moves clear of the spread */
+      bandX = lerp(UNFINISHED_BAND.x, UNFINISHED_APART.x, sep);
+      bandY = lerp(UNFINISHED_BAND.y, UNFINISHED_APART.y, sep);
+      unfLabel.setAttribute('x', bandX - 10); unfLabel.setAttribute('y', bandY + 4);
+      drawnUnfinished = -1;                    /* ticks are placed absolutely */
+      paintUnfinished(lastUnfinished);
+
+      /* the body dissolves as the parts leave it */
+      gFig.setAttribute('opacity', Math.max(0, 1 - sep * 2.2).toFixed(3));
+    }
+
+    function setSeparation(t) {
+      sep = Math.max(0, Math.min(1, t));
+      computePositions();
+      applyGeometry();
+      fit();
+    }
 
     /* ---------------------------------------------------------- the canvas */
     var W = 0, H = 0, sc = 1, ox = 0, oy = 0, dpr = 1;
@@ -132,9 +203,14 @@ var VIEWER = (function () {
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       cv.style.width = W + 'px'; cv.style.height = H + 'px';
       cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      sc = Math.min(W / VIEW_BOX.w, H / VIEW_BOX.h);
-      ox = (W - VIEW_BOX.w * sc) / 2 - VIEW_BOX.x * sc;
-      oy = (H - VIEW_BOX.h * sc) / 2 - VIEW_BOX.y * sc;
+      sc = Math.min(W / FRAME.w, H / FRAME.h);
+      ox = (W - FRAME.w * sc) / 2 - FRAME.x * sc;
+      oy = (H - FRAME.h * sc) / 2 - FRAME.y * sc;
+      /* Labels are drawn in model units, so a wider frame shrinks them on
+         screen — at full separation on a phone that is about six pixels.
+         Size them from the scale instead, and they hold steady. */
+      var target = W < 520 ? 11.5 : 13;
+      svg.style.setProperty('--labelsize', (target / sc).toFixed(2) + 'px');
     }
     var X = function (x) { return ox + x * sc; };
     var Y = function (y) { return oy + y * sc; };
@@ -142,8 +218,56 @@ var VIEWER = (function () {
     function swellRadius(id, loads) {
       var cap = PART_CAP[id] || 0;
       if (!cap) return 15;
-      var f = Math.min(1.35, (loads[id] || 0) / cap);
+      var f = Math.min(1.35, ((loads && loads[id]) || 0) / cap);
       return 15 * (1 + PARAMS.swellMax.value * f);
+    }
+
+    /* Isolate: everything not connected to the selection goes quiet. The
+       canvas dims with the parts, or the load would stay bright on a dim body. */
+    var focusKeep = null;
+    function applyFocus(sel, keepSet) {
+      focusKeep = keepSet;
+      Object.keys(hit).forEach(function (id) {
+        var off = !!keepSet && !keepSet[id];
+        hit[id].classList.toggle('dim', off);
+        hit[id].classList.toggle('sel', sel === id);
+        if (wireVis[id]) {
+          wireVis[id].classList.toggle('dim', off);
+          wireVis[id].classList.toggle('sel', sel === id);
+        }
+      });
+    }
+    function litRegion(id) { return !focusKeep || !!focusKeep[id]; }
+
+    var drawnUnfinished = -1, lastUnfinished = 0, bandX = UNFINISHED_BAND.x, bandY = UNFINISHED_BAND.y;
+    function paintUnfinished(n) {
+      lastUnfinished = n;
+      if (n === drawnUnfinished) return;
+      drawnUnfinished = n;
+      while (unfTicks.firstChild) unfTicks.removeChild(unfTicks.firstChild);
+      var B = UNFINISHED_BAND, perRow = Math.floor(B.w / B.gap), cap = perRow * B.rows;
+      var shown = Math.min(n, cap);
+      for (var i = 0; i < shown; i++) {
+        var row = Math.floor(i / perRow), col = i % perRow;
+        var x = bandX + col * B.gap, y = bandY + row * B.rowGap;
+        unfTicks.appendChild(el('line', { class: 'unftick', x1: x, y1: y, x2: x, y2: y + B.tick }));
+      }
+      unfLabel.textContent = n ? (n + ' unfinished' + (n > cap ? ' (' + cap + ' shown)' : '')) : '';
+    }
+
+    function paintRoute(state) {
+      gRoute.classList.toggle('armed', state === 'armed');
+      gRoute.classList.toggle('open', state === 'open');
+    }
+
+    function paintRegions(loads, pr, hot) {
+      S.regions.forEach(function (r) {
+        var n = gRegion[r.id];
+        n.querySelector('.rbody').setAttribute('r', swellRadius(r.id, loads).toFixed(2));
+        var cap = PART_CAP[r.id] || 0;
+        var full = cap ? (loads[r.id] || 0) / cap : 0;
+        n.classList.toggle('full', full >= 0.92 && hot);
+      });
     }
 
     /* Load at rest sits inside an ink part, where a metal dot would be
@@ -153,18 +277,16 @@ var VIEWER = (function () {
     function drawParts(model, loads, pr, hot) {
       cx.clearRect(0, 0, W, H);
       var P = model.parts(), R = model.regions;
-      var rest = 2.4 * sc, move = 3.1 * sc;      /* model units, like the parts */
+      var rest = 2.4 * sc, move = 3.1 * sc;
       if (rest < 1.1) rest = 1.1;
       if (move < 1.4) move = 1.4;
-      var restFill = 'rgba(239,233,221,.55)';
-      var moveFill = hot ? 'rgba(140,58,36,.95)' : 'rgba(154,107,20,.92)';
       var i, q, x, y;
 
-      cx.fillStyle = restFill;
+      cx.fillStyle = 'rgba(239,233,221,.55)';
       for (i = 0; i < P.length; i++) {
         q = P[i];
         if (q.b !== -1) continue;
-        var id = R[q.a].id, c = REGION_XY[id];
+        var id = R[q.a].id, c = POS[id];
         cx.globalAlpha = litRegion(id) ? 1 : 0.13;
         var spread = swellRadius(id, loads) * 0.74 * q.rr;
         x = c.x + Math.cos(q.ang) * spread;
@@ -173,11 +295,11 @@ var VIEWER = (function () {
       }
       cx.globalAlpha = 1;
 
-      cx.fillStyle = moveFill;
+      cx.fillStyle = hot ? 'rgba(140,58,36,.95)' : 'rgba(154,107,20,.92)';
       for (i = 0; i < P.length; i++) {
         q = P[i];
         if (q.b === -1 || q.b === MODEL.OUT) continue;
-        var a = REGION_XY[R[q.a].id], b = REGION_XY[R[q.b].id];
+        var a = POS[R[q.a].id], b = POS[R[q.b].id];
         x = a.x + (b.x - a.x) * q.prog;
         y = a.y + (b.y - a.y) * q.prog;
         cx.globalAlpha = (litRegion(R[q.a].id) || litRegion(R[q.b].id)) ? 1 : 0.13;
@@ -187,7 +309,9 @@ var VIEWER = (function () {
 
       /* what is leaving, on its way out through the scaffolding */
       cx.fillStyle = 'rgba(154,107,20,.95)';
-      var t0 = REGION_XY[ROUTE.at], e = ROUTE.elbow, o = ROUTE.out;
+      var t0 = POS[ROUTE.at];
+      var e = { x: t0.x + ROUTE.elbowOff.x, y: t0.y + ROUTE.elbowOff.y };
+      var o = { x: t0.x + ROUTE.outOff.x,   y: t0.y + ROUTE.outOff.y };
       for (i = 0; i < P.length; i++) {
         q = P[i];
         if (q.b !== MODEL.OUT) continue;
@@ -203,60 +327,13 @@ var VIEWER = (function () {
     /* Reduced motion: the model still runs. Only the dust stops. */
     function drawStill() { cx.clearRect(0, 0, W, H); }
 
-    /* Isolate: everything not connected to the selection goes quiet. The
-       canvas dims with the parts, or the load would stay bright on a dim body. */
-    var focusKeep = null, focusSel = null;
-    function applyFocus(sel, keepSet) {
-      focusKeep = keepSet; focusSel = sel;
-      Object.keys(hit).forEach(function (id) {
-        var off = !!keepSet && !keepSet[id];
-        hit[id].classList.toggle('dim', off);
-        hit[id].classList.toggle('sel', sel === id);
-        if (wireVis[id]) {
-          wireVis[id].classList.toggle('dim', off);
-          wireVis[id].classList.toggle('sel', sel === id);
-        }
-      });
-    }
-    function litRegion(id) { return !focusKeep || !!focusKeep[id]; }
-
-    var drawnUnfinished = -1;
-    function paintUnfinished(n) {
-      if (n === drawnUnfinished) return;
-      drawnUnfinished = n;
-      while (unfTicks.firstChild) unfTicks.removeChild(unfTicks.firstChild);
-      var B = UNFINISHED_BAND, perRow = Math.floor(B.w / B.gap), cap = perRow * B.rows;
-      var shown = Math.min(n, cap);
-      for (var i = 0; i < shown; i++) {
-        var row = Math.floor(i / perRow), col = i % perRow;
-        var x = B.x + col * B.gap, y = B.y + row * B.rowGap;
-        unfTicks.appendChild(el('line', { class: 'unftick', x1: x, y1: y, x2: x, y2: y + B.tick }));
-      }
-      unfLabel.textContent = n ? (n + ' unfinished' + (n > cap ? ' (' + cap + ' shown)' : '')) : '';
-    }
-
-    function paintRoute(state) {
-      gRoute.classList.toggle('armed', state === 'armed');
-      gRoute.classList.toggle('open', state === 'open');
-    }
-
-    function paintRegions(loads, pr, hot) {
-      S.regions.forEach(function (r) {
-        var n = gRegion[r.id];
-        var body = n.querySelector('.rbody');
-        body.setAttribute('r', swellRadius(r.id, loads).toFixed(2));
-        var cap = PART_CAP[r.id] || 0;
-        var full = cap ? (loads[r.id] || 0) / cap : 0;
-        n.classList.toggle('full', full >= 0.92 && hot);
-      });
-    }
-
+    applyGeometry();
     fit();
     return {
       fit: fit, drawParts: drawParts, drawStill: drawStill, paintRegions: paintRegions,
       paintUnfinished: paintUnfinished, paintRoute: paintRoute, applyFocus: applyFocus,
+      setSeparation: setSeparation, separation: function () { return sep; },
       hit: hit, regionEl: gRegion, sealedEl: gSealed, wireEl: gWire,
-      toScreen: function (x, y) { return { x: X(x), y: Y(y) }; },
     };
   }
 
