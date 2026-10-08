@@ -35,9 +35,17 @@ The database defaults to a SQLite file at `data/local.db`, created and migrated 
 
 ```sh
 npm test            # model tests (node --test)
-npm run typecheck
+npm run typecheck   # next typegen + tsc
 npm run build
 ```
+
+End-to-end acceptance (needs Playwright and a Chromium; run against a server with an empty database):
+
+```sh
+OWNER_PASSCODE=... BASE=http://localhost:3000 node e2e/acceptance.cjs
+```
+
+It places the five fixtures from the brief and checks their verdicts, exercises every screen at 390px wide, and fails on any horizontal overflow or banned wording (streaks, points, praise, prompts to come back).
 
 ## Data
 
@@ -59,6 +67,7 @@ On `/data`, copy the snippet shown there, run it in the browser console of the o
    - `DATABASE_AUTH_TOKEN` = the database token
    - `OWNER_PASSCODE` = the passcode the owner types on `/login`
    - `AUTH_SECRET` = a long random string (`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
+   - `NEXT_PUBLIC_TIME_ZONE` = the owner's IANA time zone (optional; dates print in UTC without it)
 3. Deploy. Migrations run on the first request. A separate Turso database for previews is a good idea once the app is in daily use.
 
 Any Postgres-backed setup is a schema swap in `src/db/schema.ts` and `drizzle.config.ts`; the app code only talks to Drizzle.

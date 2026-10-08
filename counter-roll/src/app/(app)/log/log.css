@@ -1,0 +1,15 @@
+/* Log — layout only. Tokens, type and the .list/.item/.spark rules come from globals.css.
+   A log row has five cells: name · verdict · remainder · date · actions. The shared .item grid has four. */
+.log .item { grid-template-columns: minmax(0, 1fr) auto auto auto auto; }
+.log .item .acts { display: flex; gap: 14px; align-items: baseline; white-space: nowrap; }
+@media (max-width: 700px) {
+  .log .item { grid-template-columns: minmax(0, 1fr) auto auto; row-gap: 6px; }
+  .log .item .name, .log .item .acts { grid-column: 1 / -1; }
+}
+
+/* over time: one small line per structure placed more than once */
+.log .series { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--rule); }
+.log .series:last-child { border-bottom: 1px solid var(--rule); }
+.log .series .lab { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+.log .series .lab .name { font-size: 15.5px; min-width: 0; overflow-wrap: anywhere; }
+.log .overtime { display: grid; gap: 10px; }

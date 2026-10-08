@@ -1,0 +1,7 @@
+/* Examiner — layout only. Tokens, type and the .list/.item/.stage rules come from globals.css.
+   A rep row has five cells: name · level · seconds · date · remove. The shared .item grid has four. */
+.examiner .item { grid-template-columns: minmax(0, 1fr) auto auto auto auto; }
+@media (max-width: 520px) {
+  .examiner .item { grid-template-columns: minmax(0, 1fr) auto auto auto; row-gap: 6px; }
+  .examiner .item .name { grid-column: 1 / -1; }
+}

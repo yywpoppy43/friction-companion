@@ -36,7 +36,9 @@ export function MapSvg({ current, others = [], halo = null, trail = null, ariaLa
           const inner = (
             <g className="old">
               <circle cx={p.cx} cy={p.cy} r="5" className={`pt ${o.cls}`} />
-              <text x={p.cx + 8} y={p.cy + 4}>{truncate(o.name)}</text>
+              {o.copy > 0.72
+                ? <text x={p.cx - 8} y={p.cy + 4} textAnchor="end">{truncate(o.name)}</text>
+                : <text x={p.cx + 8} y={p.cy + 4}>{truncate(o.name)}</text>}
             </g>
           );
           return o.href ? <Link key={o.id} href={o.href}>{inner}</Link> : <g key={o.id}>{inner}</g>;
@@ -47,7 +49,9 @@ export function MapSvg({ current, others = [], halo = null, trail = null, ariaLa
         <g>
           {halo != null && halo > 0.3 && <circle cx={c.cx} cy={c.cy} r={9 + halo * 4} className="halo" />}
           <circle cx={c.cx} cy={c.cy} r="9" className={`pt ${current.cls}`} />
-          <text x={c.cx + 13} y={c.cy + 4} style={{ fill: 'var(--ink)' }}>{current.name}</text>
+          {current.copy > 0.6
+            ? <text x={c.cx - 13} y={c.cy + 4} textAnchor="end" style={{ fill: 'var(--ink)' }}>{truncate(current.name, 26)}</text>
+            : <text x={c.cx + 13} y={c.cy + 4} style={{ fill: 'var(--ink)' }}>{truncate(current.name, 26)}</text>}
         </g>
       )}
     </svg>

@@ -1,0 +1,6 @@
+/* Mechanism — layout only. Tokens, type, .scene, .inst and the stage rules come from globals.css.
+   The page header mirrors the reference page: a rule in ink under the thesis, the scenes nav below it.
+   The last scene drops its rule so it does not double the shell footer's. */
+.mechanism > header { padding-top: 28px; padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+.mechanism > header .nav { margin-top: 26px; }
+.mechanism > .scene:last-child { border-bottom: 0; }

@@ -1,0 +1,11 @@
+/* Data — layout only. Tokens, type, .inst, .btn, .text, .eq and .notice come from globals.css. */
+
+/* the one-line snippet: wraps at any width instead of scrolling, and a tap selects all of it */
+.data .snippet { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+
+/* a label over its field, or a result over its warnings */
+.data .stack { display: grid; gap: 6px; }
+.data .stack input[type=file] { font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); max-width: 100%; }
+
+/* import warnings: mono, but names keep their case */
+.data .warnings { margin: 0; padding-left: 18px; display: grid; gap: 4px; text-transform: none; letter-spacing: .02em; }
