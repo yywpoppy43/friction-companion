@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start here · The Counter-Roll</title>
+<style>
+  :root { --paper:#f4efe6; --paper-2:#e9e1d2; --ink:#1f1a16; --ink-2:#625a4f; --rule:#d3c8b4; --copper:#b0532e; --teal:#2f6473; --gold:#a07a2c; }
+  @media (prefers-color-scheme: dark) { :root { --paper:#1a1715; --paper-2:#262120; --ink:#ede5d6; --ink-2:#b1a695; --rule:#3c352e; --copper:#e07a5a; --teal:#86bccb; --gold:#d6ad62; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 Georgia, 'Times New Roman', serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 20px 90px; }
+  h1 { font-size: clamp(40px, 9vw, 64px); line-height: 1.05; margin: 0 0 10px; font-weight: 400; }
+  h2 { font-size: 28px; line-height: 1.15; margin: 48px 0 12px; font-weight: 400; border-top: 1px solid var(--rule); padding-top: 24px; }
+  p { margin: 0 0 12px; }
+  .lead { font-size: 21px; line-height: 1.4; }
+  .mono, code, pre { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .step { display: grid; grid-template-columns: 38px 1fr; gap: 12px; margin: 22px 0; }
+  .num { width: 32px; height: 32px; border: 1.5px solid var(--gold); color: var(--gold); display: grid; place-items: center; font: 600 15px ui-monospace, Menlo, Consolas, monospace; margin-top: 2px; }
+  .step h3 { margin: 0 0 6px; font-size: 20px; font-weight: 600; }
+  pre { background: var(--paper-2); border-left: 3px solid var(--teal); padding: 12px 14px; margin: 10px 0 12px; font-size: 16px; overflow-x: auto; user-select: all; -webkit-user-select: all; cursor: copy; }
+  code { background: var(--paper-2); padding: 1px 6px; font-size: 15px; }
+  .tip { background: var(--paper-2); border-left: 3px solid var(--gold); padding: 10px 14px; margin: 12px 0; font-size: 16px; }
+  .os { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 10px 0; }
+  .os > div { border-top: 3px solid var(--copper); padding-top: 8px; font-size: 16px; }
+  .os > div.win { border-top-color: var(--teal); }
+  .os b { display: block; font: 600 12px ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+  @media (max-width: 560px) { .os { grid-template-columns: 1fr; } }
+  ol.look { padding-left: 22px; } ol.look li { margin: 10px 0; }
+  dl { margin: 0; } dt { font-weight: 600; margin-top: 16px; } dd { margin: 4px 0 0; color: var(--ink); }
+  .small { color: var(--ink-2); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="mono small">THE COUNTER-ROLL · PHASE ONE</p>
+  <h1>Start here</h1>
+  <p class="lead">This is the app as a folder on your own computer. Nothing is published. Your entries stay in one file inside the folder.</p>
+
+  <h2>What you need</h2>
+  <p>A Mac or a Windows computer, and an internet connection. The first run downloads some helper packages and fonts.</p>
+  <p>Plan on about 15 minutes the first time. Later starts take a few seconds. You do not need an account anywhere.</p>
+
+  <h2>Set up, once</h2>
+
+  <div class="step"><div class="num">1</div><div>
+    <h3>Install Node.js</h3>
+    <p>Node.js is the engine that runs the app. Go to <b>nodejs.org</b>. Download the version marked <b>LTS</b>. Open the file and click Next (Windows) or Continue (Mac) until it finishes. The default choices are fine.</p>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div>
+    <h3>Unzip the app</h3>
+    <p>Double-click <code>counter-roll-phase-one.zip</code>. On Windows, right-click it and choose <b>Extract All</b>. You get a folder called <b>counter-roll</b>. Move it somewhere easy, such as your Desktop.</p>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div>
+    <h3>Open a terminal inside that folder</h3>
+    <p>A terminal is a window where you type short commands. You only need three of them.</p>
+    <div class="os">
+      <div class="win"><b>Windows</b>Open the <b>counter-roll</b> folder. Click the address bar at the top of the window. Type <code>cmd</code> and press Enter. A black window opens.</div>
+      <div><b>Mac</b>Open the <b>Terminal</b> app: press Command and Space, type Terminal, press Enter. Type <code>cd</code> and a space. Drag the <b>counter-roll</b> folder from Finder into the Terminal window. Press Enter.</div>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="num">4</div><div>
+    <h3>Check that Node is there</h3>
+    <p>Type this and press Enter:</p>
+    <pre>node --version</pre>
+    <p>If you see <code>v22</code> or a bigger number, go on. If you see an error, close the window, open a new one as in step 3, and try again. A window that was open before the install does not know about Node.</p>
+  </div></div>
+
+  <div class="step"><div class="num">5</div><div>
+    <h3>Install the app's parts</h3>
+    <pre>npm install</pre>
+    <p>Wait one to three minutes. Lots of lines scroll by. Yellow warnings are normal. It is done when the window lets you type again.</p>
+  </div></div>
+
+  <div class="step"><div class="num">6</div><div>
+    <h3>Start the app</h3>
+    <pre>npm run local</pre>
+    <p>The first time, it builds the app. That takes a minute or two. When it is ready, a box appears with an address and a passcode.</p>
+  </div></div>
+
+  <div class="step"><div class="num">7</div><div>
+    <h3>Open it in your browser</h3>
+    <p>Go to this address in Chrome, Safari, Edge or Firefox:</p>
+    <pre>http://localhost:3000</pre>
+    <p>Type the passcode: <code>counter-roll</code></p>
+    <div class="tip">Keep the terminal window open while you use the app. Closing it stops the app.</div>
+  </div></div>
+
+  <h2>What to look at</h2>
+  <p>The tabs along the top are the screens. A good order:</p>
+  <ol class="look">
+    <li><b>Converter.</b> Answer the four questions about how you meet your own misses. Save. This sets one number that the other screens use.</li>
+    <li><b>Place.</b> Name any rule, routine or promise from your life. Answer the seven questions. Watch the dot on the map move and the arithmetic print as you answer. Press <b>place it</b>.</li>
+    <li><b>Rebuild.</b> This opens after you place something. Change one answer at a time and watch the dot travel. Save a rebuilt version if you like.</li>
+    <li><b>Log.</b> Everything you placed. Use the two menus at the top to see the same entries under other weights.</li>
+    <li><b>Pattern.</b> Appears once you have placed three things.</li>
+    <li><b>Examiner.</b> Log a miss. The timer starts when you pick the first sentence and stops when you press <b>second sentence done</b>.</li>
+    <li><b>Weights.</b> Move a slider and see every placement recompute before you save anything.</li>
+    <li><b>Data.</b> Bring in entries from the old single-page version, or download everything as JSON or CSV.</li>
+    <li><b>Mechanism.</b> The explanatory scenes from the original page, as interactive pieces.</li>
+  </ol>
+  <p class="small">The sentences, the questions and the arithmetic come from the original page and the scoring file. If a word or a number looks wrong to you, note which screen it was on. That is exactly what this review is for.</p>
+
+  <h2>Stop and start again</h2>
+  <p><b>To stop:</b> click the terminal window and press Ctrl and C together. Or just close the window.</p>
+  <p><b>To start again:</b> open a terminal in the folder (step 3) and type <code>npm run local</code>. Your entries are still there. This time it starts in a few seconds.</p>
+
+  <h2>Start from nothing</h2>
+  <p>Stop the app. Inside the <b>counter-roll</b> folder, delete the folder named <b>data</b>. Start the app again. All entries are gone and you begin clean. Delete only that folder.</p>
+
+  <h2>If something goes wrong</h2>
+  <dl>
+    <dt>"npm" or "node" is not recognized, or command not found</dt>
+    <dd>Node is not installed yet, or the terminal was opened before you installed it. Install it (step 1), then open a new terminal.</dd>
+    <dt>It says you need Node.js 22 or newer</dt>
+    <dd>Download the current LTS from nodejs.org, install it, open a new terminal, and run <code>npm run local</code> again.</dd>
+    <dt>The build stops and mentions fonts or the network</dt>
+    <dd>The build needs the internet for fonts. Check your connection and run <code>npm run local</code> again.</dd>
+    <dt>"Address already in use", or port 3000 is busy</dt>
+    <dd>Another program is using that address. On Windows type <code>set PORT=3001&amp;&amp; npm run local</code>. On Mac type <code>PORT=3001 npm run local</code>. Then open <code>http://localhost:3001</code>.</dd>
+    <dt>The page says it is not the passcode</dt>
+    <dd>The passcode is <code>counter-roll</code>, all lowercase, with a hyphen. It lives in a hidden file called <code>.env.local</code> inside the folder. On a Mac, press Command, Shift and Period in Finder to show hidden files.</dd>
+    <dt>Anything else</dt>
+    <dd>Select the last 20 lines in the terminal, copy them, and send them to me with a note about which step you were on.</dd>
+  </dl>
+
+  <h2>Using it on your phone</h2>
+  <p>Not in this version. It runs only on this computer, and nothing leaves it. Putting it online so you can open it on your phone is a separate step. We can do that when you are ready.</p>
+</main>
+</body>
+</html>

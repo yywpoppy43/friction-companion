@@ -68,13 +68,18 @@ export function passcodeMatches(given: string, expected: string): boolean {
   return diff === 0;
 }
 
-export const sessionCookieOptions = {
-  httpOnly: true,
-  sameSite: 'lax' as const,
-  secure: process.env.NODE_ENV === 'production',
-  path: '/',
-  maxAge: SESSION_DAYS * 86400,
-};
+/** `secure` is true only when the request came in over https (the host sets x-forwarded-proto), so http://localhost works in every browser. */
+export function sessionCookieOptions(secure: boolean) {
+  return {
+    httpOnly: true,
+    sameSite: 'lax' as const,
+    secure,
+    path: '/',
+    maxAge: SESSION_DAYS * 86400,
+  };
+}
+
+export const isHttps = (forwardedProto: string | null | undefined): boolean => forwardedProto?.split(',')[0]?.trim() === 'https';
 
 /** Only a path on this site is followed after sign-in. Anything that resolves elsewhere ('//x', '/\\x', 'https://x', malformed) goes to /place. */
 export function safeNext(raw: string): string {

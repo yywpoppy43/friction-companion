@@ -1,7 +1,7 @@
 'use server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { OWNER_ID, SESSION_COOKIE, authConfigured, passcodeMatches, safeNext, sessionCookieOptions, signSession } from '@/lib/auth';
+import { OWNER_ID, SESSION_COOKIE, authConfigured, isHttps, passcodeMatches, safeNext, sessionCookieOptions, signSession } from '@/lib/auth';
 
 export interface LoginState { message: string | null }
 
@@ -15,7 +15,8 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
     return { message: 'That is not the passcode.' };
   }
   const jar = await cookies();
-  jar.set(SESSION_COOKIE, await signSession(OWNER_ID), sessionCookieOptions);
+  const secure = isHttps((await headers()).get('x-forwarded-proto'));
+  jar.set(SESSION_COOKIE, await signSession(OWNER_ID), sessionCookieOptions(secure));
   redirect(safeNext(String(formData.get('next') ?? '')));
 }
 

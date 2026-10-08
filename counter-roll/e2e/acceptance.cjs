@@ -38,6 +38,10 @@ const check = (cond, msg) => { if (!cond) { fails.push(msg); console.log('FAIL',
   await page.fill('#passcode', PASSCODE);
   await page.click('button[type=submit]');
   await page.waitForURL(/\/place/);
+  if (BASE.startsWith('http://localhost')) {
+    const c = (await ctx.cookies()).find(x => x.name === 'cr_session');
+    check(c && c.secure === false && c.httpOnly === true, 'session cookie is HttpOnly and not Secure on http://localhost (works in Safari)');
+  }
 
   const shot = async (name) => {
     await page.screenshot({ path: path.join(OUT, name + '.png'), fullPage: true });
