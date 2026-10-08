@@ -75,9 +75,10 @@ export function LogScreen({ entries, weightVersions, runWeightVersion, mode, kNo
   const isActive = runWeightVersion.id === activeWeightVersionId;
   const converterSet = kNow != null;
   const measure = converterSet ? 'remainder' : 'gap';
+  const fellBack = mode === 'recorded' && entries.some((e) => e.placement.converterVersionId == null);
   const converterWords = !converterSet
     ? 'converter not set'
-    : mode === 'current' ? 'converter as it is now' : 'converter as recorded at placement';
+    : mode === 'current' ? 'converter as it is now' : 'converter as recorded at placement' + (fellBack ? ', as it is now where none was recorded' : '');
   const rerun = !isActive || mode === 'current';
 
   const points: MapPoint[] = entries.map((e) => ({
@@ -142,7 +143,7 @@ export function LogScreen({ entries, weightVersions, runWeightVersion, mode, kNo
           <p className="mono">over time · {measure} by structure</p>
           {!converterSet && <p className="notice">converter not set · the line shows the gap: felt minus warranted</p>}
           {series.length === 0 && (
-            <p className="notice">Place the same structure again later and its {measure} over time appears here.</p>
+            <p className="notice">A structure placed more than once shows its {measure} over time here.</p>
           )}
           {series.map((s) => {
             // one line, one measure: if any placement in the group was run without a converter, the whole line shows the gap

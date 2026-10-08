@@ -1,5 +1,6 @@
 import { currentOwner } from '@/lib/session';
 import { buildExport, stem, unauthorized } from '../rows';
+import { kOf } from '@/lib/compute';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -13,7 +14,8 @@ export async function GET(): Promise<Response> {
     exportedAt,
     activeWeightVersion: weights,
     weightVersions: ws.weightVersions,
-    converterVersions: ws.converterVersions,
+    // k under the active weights, like every other number in the file; kAtCreation is what the weights of its day gave
+    converterVersions: ws.converterVersions.map((v) => ({ id: v.id, answers: v.answers, createdAt: v.createdAt, k: kOf(v, weights.weights), kAtCreation: v.k })),
     structures: ws.structures,
     placements: rows,
     reps: ws.reps,

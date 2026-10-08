@@ -183,8 +183,8 @@ export function ConverterScene() {
             <text x="590" y="103" textAnchor="middle">outside, in the room</text>
           </g>
           <g ref={flyerHost} />
-          <text x="590" y="300" textAnchor="middle" className="t">{m.convRead}</text>
-          <text x="590" y="320" textAnchor="middle">{m.convSub}</text>
+          <text x="380" y="300" textAnchor="middle" className="t">{m.convRead}</text>
+          <text x="380" y="320" textAnchor="middle">{m.convSub}</text>
         </svg>
         <div className="row">
           <button type="button" className="btn copyb" onClick={correct}>a correction arrives</button>

@@ -25,6 +25,8 @@ export async function buildExport(ownerId: string): Promise<ExportSet> {
     felt: s.placement.felt,
     converterVersionId: s.placement.converterVersionId,
     weightVersionId: s.placement.weightVersionId,
+    runConverterVersionId: s.converter?.id ?? null,
+    runWeightVersionId: weights.id,
     k: s.k,
     score: s.score,
     verdict: s.verdict,

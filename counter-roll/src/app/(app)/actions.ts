@@ -82,6 +82,6 @@ export async function importLegacyAction(text: string): Promise<ActionResult<{ r
     }
     const result = await q.importLegacy(ownerId, parsed);
     touch();
-    return { ok: true, result, warnings: parsed.warnings };
+    return { ok: true, result, warnings: [...parsed.warnings, ...result.problems] };
   } catch (e) { return fail(e); }
 }

@@ -1,5 +1,5 @@
 import 'server-only';
-import { and, asc, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { getDb } from './client';
 import { owners, converterVersions, weightVersions, structures, placements, reps } from './schema';
 import type { ConverterVersionRow, PlacementRow, RepRow, StructureRow, WeightVersionRow } from './schema';
@@ -51,6 +51,12 @@ export function assertConverterAnswers(a: unknown): ConverterAnswers {
   }
   return out;
 }
+/** Trims a text field and refuses one over `max` characters. */
+export function clip(x: unknown, max: number, what: string): string {
+  const t = String(x ?? '').trim();
+  if (t.length > max) throw new Error(`${what} is too long (${max} characters at most)`);
+  return t;
+}
 export function assertLevel(x: unknown): number {
   if (typeof x !== 'number' || !EXAMINER_LEVELS.some(l => l.value === x)) throw new Error('level is not one of the four');
   return x;
@@ -67,10 +73,10 @@ export async function ensureOwner(ownerId: string): Promise<void> {
   const db = await getDb();
   const existing = await db.select({ id: owners.id }).from(owners).where(eq(owners.id, ownerId)).limit(1);
   if (existing.length === 0) await db.insert(owners).values({ id: ownerId, createdAt: now() }).onConflictDoNothing();
-  const w = await db.select({ id: weightVersions.id }).from(weightVersions).where(eq(weightVersions.ownerId, ownerId)).limit(1);
-  if (w.length === 0) {
-    await db.insert(weightVersions).values({ id: uuid(), ownerId, weights: DEFAULT_WEIGHTS, note: 'first setting', createdAt: now() });
-  }
+  // One statement, so two concurrent first requests (layout and page render in parallel) cannot both insert.
+  await db.run(sql`INSERT INTO weight_versions (id, owner_id, weights, note, created_at)
+    SELECT ${uuid()}, ${ownerId}, ${JSON.stringify(DEFAULT_WEIGHTS)}, 'first setting', ${now()}
+    WHERE NOT EXISTS (SELECT 1 FROM weight_versions WHERE owner_id = ${ownerId})`);
 }
 
 // ---- converter -----------------------------------------------------------------------------------
@@ -108,7 +114,7 @@ export async function createWeightVersion(ownerId: string, weights: Weights, not
   const check = validateWeights(weights);
   if (!check.ok) throw new Error(check.errors.join('; '));
   const db = await getDb();
-  const row = { id: uuid(), ownerId, weights, note: note?.trim() || null, createdAt: now() };
+  const row = { id: uuid(), ownerId, weights, note: clip(note, 80, 'the note') || null, createdAt: now() };
   await db.insert(weightVersions).values(row);
   return toWeights(row);
 }
@@ -211,7 +217,8 @@ export interface NewRep {
 
 export async function createRep(ownerId: string, input: NewRep): Promise<Rep> {
   const db = await getDb();
-  const act = input.act.trim(), actTranslation = input.actTranslation.trim(), adjustment = input.adjustment.trim();
+  const act = clip(input.act, 500, 'the miss'), actTranslation = clip(input.actTranslation, 500, 'the act'), adjustment = clip(input.adjustment, 500, 'the adjustment');
+  const verbatim = clip(input.verbatim, 500, 'its words') || null;
   if (!act) throw new Error('the miss needs a few words');
   if (!actTranslation || !adjustment) throw new Error('the second sentence has two parts: the act and the adjustment');
   const level = assertLevel(input.level);
@@ -219,7 +226,7 @@ export async function createRep(ownerId: string, input: NewRep): Promise<Rep> {
   const latencySec = Math.max(0, Math.round(Number(input.latencySec) || 0));
   const conv = await listConverterVersions(ownerId);
   const row = {
-    id: uuid(), ownerId, act, verbatim: input.verbatim?.trim() || null, level, actTranslation, adjustment, ground, latencySec,
+    id: uuid(), ownerId, act, verbatim, level, actTranslation, adjustment, ground, latencySec,
     converterVersionId: input.converterVersionId !== undefined ? input.converterVersionId : conv.at(-1)?.id ?? null,
     createdAt: input.createdAt ?? now(),
   };
@@ -234,7 +241,7 @@ export async function deleteRep(ownerId: string, id: string): Promise<void> {
 
 // ---- import --------------------------------------------------------------------------------------
 
-export interface ImportResult { converter: boolean; structures: number; placements: number; reps: number; skipped: number }
+export interface ImportResult { converter: boolean; structures: number; placements: number; reps: number; skipped: number; problems: string[] }
 
 /**
  * Brings the reference page's entries over. The converter, if present, becomes a version dated at
@@ -243,7 +250,7 @@ export interface ImportResult { converter: boolean; structures: number; placemen
  */
 export async function importLegacy(ownerId: string, parsed: LegacyImport): Promise<ImportResult> {
   await ensureOwner(ownerId);
-  const result: ImportResult = { converter: false, structures: 0, placements: 0, reps: 0, skipped: 0 };
+  const result: ImportResult = { converter: false, structures: 0, placements: 0, reps: 0, skipped: 0, problems: [] };
   const stamps = [...parsed.placements, ...parsed.reps].map(x => x.createdAt).filter((x): x is string => !!x).sort();
   const earliest = stamps[0] ?? now();
 
@@ -253,7 +260,11 @@ export async function importLegacy(ownerId: string, parsed: LegacyImport): Promi
     const same = existing.find(v => JSON.stringify(v.answers) === JSON.stringify(parsed.converter!.answers));
     if (same) converterVersionId = same.id;
     else {
-      const v = await createConverterVersion(ownerId, parsed.converter.answers, earliest < now() ? earliest : now());
+      // dated at the earliest imported entry so those entries can record it, but always after any version already here
+      const latest = existing.at(-1)?.createdAt;
+      const wanted = earliest < now() ? earliest : now();
+      const stamp = latest && latest >= wanted ? new Date(Date.parse(latest) + 1000).toISOString() : wanted;
+      const v = await createConverterVersion(ownerId, parsed.converter.answers, stamp);
       converterVersionId = v.id;
       result.converter = true;
     }
@@ -263,15 +274,20 @@ export async function importLegacy(ownerId: string, parsed: LegacyImport): Promi
 
   const before = await listPlacements(ownerId);
   const structuresBefore = new Set(before.map(p => p.structureId));
-  const key = (name: string, answers: DimAnswers, felt: number, createdAt: string | null) => `${name}|${JSON.stringify(answers)}|${felt}|${(createdAt ?? '').slice(0, 16)}`;
+  const cleanName = (name: string) => name.trim().replace(/\s+/g, ' ');
+  const key = (name: string, answers: DimAnswers, felt: number, createdAt: string | null) => `${cleanName(name)}|${JSON.stringify(answers)}|${felt}|${(createdAt ?? '').slice(0, 16)}`;
   const seen = new Set(before.map(p => key(p.structure, p.answers, p.felt, p.createdAt)));
   for (const lp of parsed.placements) {
     const k = key(lp.name, lp.answers, lp.felt, lp.createdAt);
     if (seen.has(k)) { result.skipped++; continue; }
     seen.add(k);
-    const created = await createPlacement(ownerId, { structureName: lp.name, answers: lp.answers, felt: lp.felt, createdAt: lp.createdAt ?? now(), converterVersionId });
-    if (!structuresBefore.has(created.structureId)) { structuresBefore.add(created.structureId); result.structures++; }
-    result.placements++;
+    try {
+      const created = await createPlacement(ownerId, { structureName: lp.name, answers: lp.answers, felt: lp.felt, createdAt: lp.createdAt ?? now(), converterVersionId });
+      if (!structuresBefore.has(created.structureId)) { structuresBefore.add(created.structureId); result.structures++; }
+      result.placements++;
+    } catch (e) {
+      result.problems.push(`placement "${cleanName(lp.name)}" not brought in: ${e instanceof Error ? e.message : 'unknown problem'}`);
+    }
   }
 
   const repsBefore = await listReps(ownerId);
@@ -281,8 +297,12 @@ export async function importLegacy(ownerId: string, parsed: LegacyImport): Promi
     const k = rkey(lr);
     if (rseen.has(k)) { result.skipped++; continue; }
     rseen.add(k);
-    await createRep(ownerId, { ...lr, createdAt: lr.createdAt ?? now(), converterVersionId });
-    result.reps++;
+    try {
+      await createRep(ownerId, { ...lr, createdAt: lr.createdAt ?? now(), converterVersionId });
+      result.reps++;
+    } catch (e) {
+      result.problems.push(`rep "${lr.act}" not brought in: ${e instanceof Error ? e.message : 'unknown problem'}`);
+    }
   }
   return result;
 }

@@ -27,7 +27,7 @@ export function PatternScreen({ pattern, byLevel, count, kNow, weightVersions, c
   return (
     <section className="screen">
       <header>
-        <p className="mono">pattern across {count} placements</p>
+        <p className="mono">pattern across {count} {count === 1 ? 'placement' : 'placements'}</p>
         <h2>Pattern</h2>
       </header>
 
@@ -50,7 +50,6 @@ export function PatternScreen({ pattern, byLevel, count, kNow, weightVersions, c
               <div>{term}, rough grain <b>{signed1(pattern.rows.byRough)}</b></div>
               <div>{term}, exact grain <b>{signed1(pattern.rows.byExact)}</b></div>
             </div>
-            <p className="mono">knot · {pattern.knot}</p>
           </div>
 
           <div className="breakdown">

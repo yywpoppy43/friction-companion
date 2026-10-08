@@ -5,7 +5,7 @@ import { placementRows, toCsv, csvCell, EXPORT_COLUMNS } from './export-rows.mjs
 
 const answers = { object: 0, miss: 0, scope: 0, reason: 1, author: 1, exit: 0.4, grain: 1, felt: 6 };
 const score = scoreStructure(answers, 0.3);
-const p = { id: 'p1', structure: 'a schedule, "handed" to me', createdAt: '2026-10-01T00:00:00.000Z', parentPlacementId: null, answers, felt: 6, converterVersionId: 'c1', weightVersionId: 'w1', k: 0.3, score, verdict: verdict(answers, score) };
+const p = { id: 'p1', structure: 'a schedule, "handed" to me', createdAt: '2026-10-01T00:00:00.000Z', parentPlacementId: null, answers, felt: 6, converterVersionId: 'c1', weightVersionId: 'w1', runConverterVersionId: 'c2', runWeightVersionId: 'w2', k: 0.3, score, verdict: verdict(answers, score) };
 
 test('rows carry raw answers and computed scores side by side', () => {
   const [row] = placementRows([p]);
@@ -13,6 +13,8 @@ test('rows carry raw answers and computed scores side by side', () => {
   assert.equal(row.object, 0); assert.equal(row.reason, 1); assert.equal(row.exit, 0.4);
   assert.equal(row.felt, 6);
   assert.equal(row.k, 0.3);
+  assert.equal(row.run_weight_version_id, 'w2');
+  assert.equal(row.run_converter_version_id, 'c2');
   assert.equal(row.warranted, Math.round(score.warranted * 1000) / 1000);
   assert.equal(row.verdict, 'Cage');
   assert.equal(row.rung, 0);
@@ -27,6 +29,6 @@ test('csv escapes quotes, commas and newlines and uses the column order', () => 
   const csv = toCsv(placementRows([p]));
   const lines = csv.split('\r\n');
   assert.equal(lines[0], EXPORT_COLUMNS.join(','));
-  assert.ok(lines[1].startsWith('p1,"a schedule, ""handed"" to me",2026-10-01T00:00:00.000Z,,0,0,0,1,1,0.4,1,6,c1,0.3,w1,'));
+  assert.ok(lines[1].startsWith('p1,"a schedule, ""handed"" to me",2026-10-01T00:00:00.000Z,,0,0,0,1,1,0.4,1,6,c1,w1,c2,w2,0.3,'), lines[1]);
   assert.equal(lines.at(-1), '');
 });

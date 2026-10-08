@@ -46,6 +46,9 @@ export default function MechanismPage() {
       <section className="scene" id="sort">
         <p className="mono"><b>6</b> · the algorithm</p>
         <h2>A structure is control to the degree it holds a copy of you and its terms were set for you. The alarm it deserves is the sum. The alarm you feel adds your converter. The remainder is the knot.</h2>
+        <div className="text">
+          <p>Two parts. Part one measures the structure: four dimensions for how much of it is a copy, three for how much was done to you. Part two measures you: four questions on the converter, answered once and kept. Then the felt alarm is split three ways. What the structure warrants. What your converter adds. What neither explains.</p>
+        </div>
         <div className="row"><Link className="btn" href="/place">open the sort</Link></div>
       </section>
 

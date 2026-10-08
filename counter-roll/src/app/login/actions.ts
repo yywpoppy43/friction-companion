@@ -1,7 +1,7 @@
 'use server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { OWNER_ID, SESSION_COOKIE, authConfigured, passcodeMatches, sessionCookieOptions, signSession } from '@/lib/auth';
+import { OWNER_ID, SESSION_COOKIE, authConfigured, passcodeMatches, safeNext, sessionCookieOptions, signSession } from '@/lib/auth';
 
 export interface LoginState { message: string | null }
 
@@ -16,8 +16,7 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   }
   const jar = await cookies();
   jar.set(SESSION_COOKIE, await signSession(OWNER_ID), sessionCookieOptions);
-  const next = String(formData.get('next') ?? '');
-  redirect(next.startsWith('/') && !next.startsWith('//') ? next : '/place');
+  redirect(safeNext(String(formData.get('next') ?? '')));
 }
 
 export async function logout(): Promise<void> {

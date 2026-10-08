@@ -7,7 +7,7 @@ export function Ladder({ rung }: { rung: number }) {
   return (
     <div className="ladder" aria-label="Rung">
       {RUNGS.map(([name, sub], i) => (
-        <div key={name} className={i === rung ? 'on' : undefined}>{name}<small>{sub}</small></div>
+        <div key={name} className={i === rung ? 'on' : undefined} aria-current={i === rung ? 'step' : undefined}>{name}<small>{sub}</small></div>
       ))}
     </div>
   );
@@ -30,7 +30,7 @@ export function VerdictBlock({ verdict, name, score, placeholder }: { verdict: V
   return (
     <div className="verdict">
       <p className={`kind ${verdict.cls}`}>{verdict.kind}</p>
-      {name ? <p className="mono">{name}</p> : null}
+      {name && name !== '—' ? <p className="mono">{name}</p> : null}
       <p>{verdict.text}</p>
       <Ladder rung={verdict.rung} />
       {moves.length > 0 && (

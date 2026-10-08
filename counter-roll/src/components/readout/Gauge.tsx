@@ -9,7 +9,7 @@ export function Gauge({ score, felt, complete }: { score: Score; felt: number | 
   const sentence = !complete || felt == null
     ? ''
     : k == null
-      ? 'Set the converter to split the alarm into layers.'
+      ? 'Set the converter in part two to split the alarm into layers.'
       : r != null && r > 1.5
         ? `Remainder ${signed1(r)}. A third layer is firing. Check author.`
         : r != null && r < -1.5

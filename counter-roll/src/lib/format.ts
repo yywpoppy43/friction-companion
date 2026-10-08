@@ -12,7 +12,12 @@ export const levelCls = (level: number): 'copy' | 'mixed' | 'form' => (level >= 
 
 // Dates print the same on the server and in the browser (one locale, one zone), so hydration never disagrees.
 // The zone can be set for the owner with NEXT_PUBLIC_TIME_ZONE (an IANA name); it defaults to UTC.
-const TIME_ZONE = process.env.NEXT_PUBLIC_TIME_ZONE || 'UTC';
+const TIME_ZONE = (() => {
+  const raw = process.env.NEXT_PUBLIC_TIME_ZONE?.trim();
+  if (!raw) return 'UTC';
+  try { new Intl.DateTimeFormat('en-GB', { timeZone: raw }); return raw; }
+  catch { console.warn(`NEXT_PUBLIC_TIME_ZONE "${raw}" is not an IANA time zone; dates print in UTC.`); return 'UTC'; }
+})();
 export function dateShort(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;

@@ -156,6 +156,7 @@ export function ExaminerScreen({ reps, trend, k, converterLabel }: {
             <label className="mono" htmlFor={actId}>the miss · what happened to the act</label>
             <input
               type="text"
+              maxLength={500}
               id={actId}
               className="text"
               value={act}
@@ -174,6 +175,7 @@ export function ExaminerScreen({ reps, trend, k, converterLabel }: {
             <label className="mono" htmlFor={wordsId}>its words, if you have them</label>
             <input
               type="text"
+              maxLength={500}
               id={wordsId}
               className="text"
               value={words}
@@ -187,6 +189,7 @@ export function ExaminerScreen({ reps, trend, k, converterLabel }: {
             <div className="lab"><span className="dim">second</span><span className="ask">Translate. Subject: the act.</span></div>
             <input
               type="text"
+              maxLength={500}
               className="text"
               value={actTranslation}
               onChange={(e) => setActTranslation(e.target.value)}
@@ -196,6 +199,7 @@ export function ExaminerScreen({ reps, trend, k, converterLabel }: {
             />
             <input
               type="text"
+              maxLength={500}
               className="text"
               value={adjustment}
               onChange={(e) => setAdjustment(e.target.value)}

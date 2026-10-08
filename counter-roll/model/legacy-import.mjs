@@ -95,8 +95,9 @@ export function parseLegacy(input) {
     else found.sort.forEach((it, i) => {
       if (!isObj(it)) { warnings.push(`placement ${i + 1}: not an object, skipped`); return; }
       const a = isObj(it.a) ? it.a : it;
-      const name = str(it.name) || str(a.name);
+      const name = (str(it.name) || str(a.name)).replace(/\s+/g, ' ');
       if (!name) { warnings.push(`placement ${i + 1}: no name, skipped`); return; }
+      if (name.length > 200) { warnings.push(`placement ${i + 1}: name is over 200 characters, skipped`); return; }
       const answers = {};
       for (const d of DIMS) {
         const v = num(a[d.key]);

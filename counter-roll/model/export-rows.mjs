@@ -8,7 +8,7 @@ import { DIMS } from './sort-algorithm.mjs';
 export const EXPORT_COLUMNS = Object.freeze([
   'placement_id', 'structure', 'created_at', 'parent_placement_id',
   ...DIMS.map(d => d.key), 'felt',
-  'converter_version_id', 'k', 'weight_version_id',
+  'converter_version_id', 'weight_version_id', 'run_converter_version_id', 'run_weight_version_id', 'k',
   'copy_share', 'imposed_share', 'warranted', 'converter_share', 'predicted', 'gap', 'remainder',
   'verdict', 'rung',
 ]);
@@ -16,8 +16,11 @@ export const EXPORT_COLUMNS = Object.freeze([
 const r3 = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
 
 /**
+ * converter_version_id / weight_version_id are what the placement recorded when it was made;
+ * run_converter_version_id / run_weight_version_id are what the scores in the same row were computed under.
  * @param {Array<{ id: string, structure: string, createdAt: string, parentPlacementId: string|null, answers: Record<string, number>, felt: number,
- *                 converterVersionId: string|null, weightVersionId: string|null, k: number|null, score: any, verdict: { kind: string, rung: number } }>} placements
+ *                 converterVersionId: string|null, weightVersionId: string|null, runConverterVersionId?: string|null, runWeightVersionId?: string|null,
+ *                 k: number|null, score: any, verdict: { kind: string, rung: number } }>} placements
  */
 export function placementRows(placements) {
   return placements.map(p => {
@@ -30,8 +33,10 @@ export function placementRows(placements) {
     for (const d of DIMS) row[d.key] = p.answers[d.key];
     row.felt = p.felt;
     row.converter_version_id = p.converterVersionId ?? null;
-    row.k = r3(p.k);
     row.weight_version_id = p.weightVersionId ?? null;
+    row.run_converter_version_id = p.runConverterVersionId ?? null;
+    row.run_weight_version_id = p.runWeightVersionId ?? null;
+    row.k = r3(p.k);
     row.copy_share = r3(p.score.copy);
     row.imposed_share = r3(p.score.imp);
     row.warranted = r3(p.score.warranted);

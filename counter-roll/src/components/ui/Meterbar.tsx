@@ -16,7 +16,7 @@ export function Meterbar({ label, tone, fill, second, mark, value }: {
       <div className="track">
         <div className="fill" style={{ width: pct(fill) }} />
         {second && <div className="fill second" style={{ left: pct(second.left), width: pct(second.width) }} />}
-        {mark != null && <div className="mark" style={{ left: pct(mark) }} />}
+        {mark != null && <div className="mark" style={{ left: `calc(${pct(mark)} - ${(3 * Math.max(0, Math.min(1, mark))).toFixed(1)}px)` }} />}
       </div>
       <span className="val">{value}</span>
     </div>

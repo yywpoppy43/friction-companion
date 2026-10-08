@@ -75,3 +75,14 @@ export const sessionCookieOptions = {
   path: '/',
   maxAge: SESSION_DAYS * 86400,
 };
+
+/** Only a path on this site is followed after sign-in. Anything that resolves elsewhere ('//x', '/\\x', 'https://x', malformed) goes to /place. */
+export function safeNext(raw: string): string {
+  if (!raw.startsWith('/') || raw.startsWith('//') || raw.startsWith('/\\')) return '/place';
+  try {
+    const u = new URL(raw, 'http://x');
+    const path = u.pathname + u.search;
+    if (u.origin === 'http://x' && path.startsWith('/') && !path.startsWith('//') && new URL(path, 'http://x').origin === 'http://x') return path;
+  } catch { /* malformed */ }
+  return '/place';
+}

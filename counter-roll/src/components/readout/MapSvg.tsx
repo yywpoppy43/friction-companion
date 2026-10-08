@@ -18,7 +18,7 @@ export function MapSvg({ current, others = [], halo = null, trail = null, ariaLa
 }) {
   const c = current ? pxOf(current) : null;
   return (
-    <svg className="map" viewBox="0 0 380 380" role="img" aria-label={ariaLabel ?? 'A map. Left: holds a form. Right: holds a copy of you. Top: terms yours. Bottom: terms set for you. A halo around the dot shows how much the converter adds.'}>
+    <svg className="map" viewBox="0 0 380 380" role={others.some((o) => o.href) ? 'group' : 'img'} aria-label={ariaLabel ?? 'A map. Left: holds a form. Right: holds a copy of you. Top: terms yours. Bottom: terms set for you. A halo around the dot shows how much the converter adds.'}>
       <rect x="50" y="34" width="296" height="296" style={{ fill: 'var(--paper-2)', stroke: 'none' }} />
       <line className="axis" x1="198" y1="34" x2="198" y2="330" />
       <line className="axis" x1="50" y1="182" x2="346" y2="182" />

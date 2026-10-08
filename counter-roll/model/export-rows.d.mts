@@ -4,6 +4,7 @@ export const EXPORT_COLUMNS: readonly string[];
 export interface ExportPlacement {
   id: string; structure: string; createdAt: string; parentPlacementId: string | null;
   answers: DimAnswers; felt: number; converterVersionId: string | null; weightVersionId: string | null;
+  runConverterVersionId?: string | null; runWeightVersionId?: string | null;
   k: number | null; score: Score; verdict: Pick<Verdict, 'kind' | 'rung'>;
 }
 export type ExportRow = Record<string, string | number | null>;

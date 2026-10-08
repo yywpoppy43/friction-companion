@@ -71,6 +71,17 @@ test('bad answers are skipped with a warning instead of guessed', () => {
   assert.equal(r.warnings.length, 7);
 });
 
+test('names are whitespace-collapsed and over-long names are skipped with a warning', () => {
+  const r = parseLegacy({ sort: [
+    { id: '1717000000000', name: 'weekly  class\n', a: { felt: 5, object: 0, miss: 0, scope: 0, reason: 0, author: 0, exit: 0, grain: 0 } },
+    { id: '1717000000001', name: 'x'.repeat(250), a: { felt: 5, object: 0, miss: 0, scope: 0, reason: 0, author: 0, exit: 0, grain: 0 } },
+  ] });
+  assert.equal(r.placements.length, 1);
+  assert.equal(r.placements[0].name, 'weekly class');
+  assert.equal(r.warnings.length, 1);
+  assert.match(r.warnings[0], /over 200 characters/);
+});
+
 test('placements come back in time order', () => {
   const r = parseLegacy({ sort: [SORT[1], SORT[0]] });
   assert.equal(r.placements[0].name, 'weekly class');
