@@ -1,5 +1,7 @@
 # Active Friction Voice Companion — Backend
 
+> This repository also holds **[The Counter-Roll](counter-roll/README.md)** (`counter-roll/`), a separate Next.js app: a personal instrument that sorts structures from copies. It has its own `package.json`, tests and CI.
+
 The **Behavioral Physics Engine** behind an active-state audio companion. It is a
 headless, event-driven backend that drives the PRD's *Friction State Machine*,
 selects verbal *Cues* from a strict relational matrix, and fires them at precise

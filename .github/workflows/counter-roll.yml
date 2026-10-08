@@ -1,0 +1,32 @@
+name: counter-roll
+
+on:
+  push:
+    paths: ['counter-roll/**', '.github/workflows/counter-roll.yml']
+  pull_request:
+    paths: ['counter-roll/**', '.github/workflows/counter-roll.yml']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: counter-roll
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: counter-roll/package-lock.json
+      - run: npm ci
+      - name: model tests (node --test)
+        run: npm test
+      - name: typecheck
+        run: npm run typecheck
+      - name: build
+        run: npm run build
+        env:
+          DATABASE_URL: file:./data/ci.db
+          OWNER_PASSCODE: ci
+          AUTH_SECRET: ci-only-secret-not-for-use-anywhere-else

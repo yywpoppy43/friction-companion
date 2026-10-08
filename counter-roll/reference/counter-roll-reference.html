@@ -1,0 +1,1244 @@
+<title>The Counter-Roll</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&display=swap">
+<style>
+  /* Layout: seven scenes down one column. Each scene is a live instrument first and a few lines second.
+     Three accents only: copper = the copy / correction / alarm; slate-teal = the living thing, water, examination; gold = a form. */
+  :root {
+    --paper: #f4efe6; --paper-2: #e9e1d2; --paper-3: #dfd5c2;
+    --ink: #1f1a16; --ink-2: #625a4f; --rule: #d3c8b4;
+    --copy: #b0532e; --copy-soft: #efd3c6;
+    --live: #2f6473; --live-soft: #cfdfe3;
+    --form: #a07a2c; --form-soft: #eadcb8;
+    --f-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+    --f-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    --f-zh: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1715; --paper-2: #262120; --paper-3: #332c28; --ink: #ede5d6; --ink-2: #b1a695; --rule: #3c352e;
+      --copy: #e07a5a; --copy-soft: #4a2a1f; --live: #86bccb; --live-soft: #1f3a42; --form: #d6ad62; --form-soft: #3f3418;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1715; --paper-2: #262120; --paper-3: #332c28; --ink: #ede5d6; --ink-2: #b1a695; --rule: #3c352e;
+    --copy: #e07a5a; --copy-soft: #4a2a1f; --live: #86bccb; --live-soft: #1f3a42; --form: #d6ad62; --form-soft: #3f3418;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 820px; margin: 0 auto; padding-inline: 20px; padding-block: 44px 100px; }
+  h1, h2, h3 { font-family: var(--f-display); font-weight: 400; margin: 0; line-height: 1.05; text-wrap: balance; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(50px, 9vw, 88px); }
+  h2 { font-size: clamp(30px, 4.6vw, 44px); }
+  h3 { font-size: clamp(22px, 3vw, 27px); }
+  p { margin: 0; max-width: 64ch; }
+  .thesis { font-family: var(--f-display); font-size: clamp(24px, 3.4vw, 32px); line-height: 1.22; max-width: 26ch; margin-top: 18px; }
+  .mono { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .mono b { color: var(--copy); font-weight: 500; }
+  .zh { font-family: var(--f-zh); }
+  header { padding-bottom: 32px; border-bottom: 1px solid var(--ink); }
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .nav a { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; border: 1px solid var(--rule); padding: 6px 10px; }
+  .nav a:hover { color: var(--ink); border-color: var(--ink); }
+
+  .scene { padding-block: 60px; border-bottom: 1px solid var(--rule); display: grid; gap: 22px; scroll-margin-top: 20px; }
+  .text { display: grid; gap: 12px; }
+  .case { border-left: 2px solid var(--form); padding: 4px 0 4px 18px; display: grid; gap: 6px; }
+  .case .mono { color: var(--form); }
+
+  /* instruments */
+  .inst { background: var(--paper-2); padding: 20px 20px 18px; display: grid; gap: 16px; }
+  .inst .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .btn { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; padding: 9px 14px; border: 1px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.copyb { border-color: var(--copy); color: var(--copy); }
+  .btn.formb { border-color: var(--form); color: var(--form); }
+  .btn.liveb { border-color: var(--live); color: var(--live); }
+  .btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .btn:focus-visible, input:focus-visible, .chip:focus-visible, .nav a:focus-visible { outline: 2px solid var(--form); outline-offset: 2px; }
+  .counters { display: flex; flex-wrap: wrap; gap: 18px; font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); }
+  .counters b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .counters .cp { color: var(--copy); }
+  .counters .fm { color: var(--form); }
+  .counters .lv { color: var(--live); }
+  .stage { width: 100%; height: auto; display: block; }
+  .stage text { font-family: var(--f-mono); font-size: 13px; fill: var(--ink-2); }
+  .stage text.t { fill: var(--ink); }
+  .stage text.cp { fill: var(--copy); }
+  .stage text.fm { fill: var(--form); }
+  .stage text.lv { fill: var(--live); }
+  .stage text.zh { font-family: var(--f-zh); font-size: 20px; }
+  .stage .box { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+  .stage .fmk { stroke: var(--form); fill: none; stroke-width: 2.2; }
+  .stage .fms { fill: var(--form-soft); stroke: var(--form); stroke-width: 1.5; }
+  .stage .cpf { fill: var(--copy); stroke: none; }
+  .stage .cps { fill: var(--copy-soft); stroke: var(--copy); stroke-width: 1.5; }
+  .stage .lvf { fill: var(--live); stroke: none; }
+  .stage .lvk { stroke: var(--live); fill: none; stroke-width: 3; }
+  .stage .lvs { fill: var(--live-soft); stroke: var(--live); stroke-width: 1.2; }
+  .stage .ink { stroke: var(--ink); fill: none; stroke-width: 2; }
+  .stage .thin { stroke: var(--ink-2); fill: none; stroke-width: 1.2; }
+  .stage .grid { stroke: var(--rule); stroke-width: 1; }
+  .stage .dash { stroke-dasharray: 6 5; }
+  .alarm-ring { fill: var(--copy); transition: opacity .25s ease, r .25s ease; }
+  .meterbar { display: grid; grid-template-columns: 150px 1fr 48px; gap: 12px; align-items: center; font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); }
+  .meterbar .track { height: 14px; background: var(--paper); border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .meterbar .fill { position: absolute; inset: 0 auto 0 0; width: 0; transition: width .35s ease; }
+  .meterbar.copy .fill { background: var(--copy); }
+  .meterbar.live .fill { background: var(--live); }
+  .meterbar.form .fill { background: var(--form); }
+  .meterbar.ink .fill { background: var(--ink); }
+  .meterbar .fill.second { background: var(--copy); opacity: .85; }
+  .meterbar .mark { position: absolute; top: -4px; bottom: -4px; width: 3px; background: var(--live); transition: left .35s ease; }
+  .meterbar .val { text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .slider { display: grid; gap: 6px; }
+  .slider input { width: 100%; accent-color: var(--ink); }
+  .slider .ends { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); letter-spacing: .04em; }
+  .readout { font-family: var(--f-display); font-size: clamp(22px, 3vw, 28px); line-height: 1.2; min-height: 1.2em; }
+  .two { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; align-items: start; }
+  @media (max-width: 640px) { .two { grid-template-columns: 1fr; } .meterbar { grid-template-columns: 110px 1fr 40px; } }
+
+  /* the sort */
+  .sort { display: grid; gap: 24px; }
+  .qgrid { display: grid; gap: 16px; }
+  .q { display: grid; gap: 8px; }
+  .q .lab { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .q .lab .dim { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); min-width: 92px; }
+  .q .lab .ask { font-size: 16.5px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opts label, .chip { position: relative; border: 1px solid var(--rule); background: var(--paper); padding: 7px 11px; cursor: pointer; font-size: 15px; line-height: 1.3; display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-body); color: var(--ink); }
+  .opts label:has(input:checked), .chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  .opts input { margin: 0; position: absolute; opacity: 0; width: 0; height: 0; }
+  .sort input[type=text] { font-family: var(--f-body); font-size: 17px; padding: 10px 12px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); width: 100%; max-width: 520px; }
+  .felt { display: grid; gap: 6px; }
+  .felt input { width: 100%; max-width: 520px; accent-color: var(--copy); }
+  .parthead { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 16px; }
+  .parthead h3 { font-size: 24px; }
+
+  .calc { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+  @media (max-width: 700px) { .calc { grid-template-columns: 1fr; } }
+  .map { width: 100%; height: auto; display: block; }
+  .map text { font-family: var(--f-mono); font-size: 11.5px; fill: var(--ink-2); letter-spacing: .04em; }
+  .map .axis { stroke: var(--rule); stroke-width: 1; }
+  .map .edge { fill: none; stroke: var(--ink-2); stroke-width: 1; }
+  .map .pt { fill: var(--paper); stroke: var(--ink); stroke-width: 2; transition: cx .5s ease, cy .5s ease; }
+  .map .pt.copy { fill: var(--copy); stroke: var(--copy); }
+  .map .pt.form { fill: var(--form); stroke: var(--form); }
+  .map .pt.mixed { fill: var(--paper); stroke: var(--ink); }
+  .map .halo { fill: var(--copy); opacity: .18; transition: r .5s ease; }
+  .map .old { opacity: .5; }
+  .map .old text { font-size: 10px; }
+  .map .trail { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; fill: none; }
+  .verdict { display: grid; gap: 10px; align-content: start; }
+  .verdict .kind { font-family: var(--f-display); font-size: 34px; line-height: 1; }
+  .kind.copy, .k-copy { color: var(--copy); }
+  .kind.form, .k-form { color: var(--form); }
+  .kind.mixed, .k-mixed { color: var(--ink); }
+  .verdict p { font-size: 15.5px; }
+  .ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .ladder div { font-family: var(--f-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); padding: 8px 6px; border-top: 3px solid var(--rule); }
+  .ladder div.on { color: var(--ink); border-top-color: var(--ink); }
+  .ladder div small { display: block; text-transform: none; letter-spacing: 0; font-size: 11px; margin-top: 2px; color: var(--ink-2); }
+  .eq { font-family: var(--f-mono); font-size: 12.5px; line-height: 1.6; color: var(--ink-2); display: grid; gap: 4px; }
+  .eq b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .eq .cp { color: var(--copy); } .eq .fm { color: var(--form); } .eq .lv { color: var(--live); }
+  .profile { display: grid; gap: 6px; }
+  .pr { display: grid; grid-template-columns: 92px 1fr 40px; gap: 10px; align-items: center; font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); }
+  .pr .track { height: 9px; background: var(--paper); border: 1px solid var(--rule); position: relative; }
+  .pr .fill { position: absolute; inset: 0 auto 0 0; width: 0; transition: width .4s ease; background: var(--copy); }
+  .pr.imp .fill { background: var(--ink-2); }
+  .pr.conv .fill { background: var(--copy); opacity: .7; }
+  .pr .val { text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .gauge { display: grid; gap: 8px; }
+  .gap { font-family: var(--f-display); font-size: 24px; line-height: 1.15; }
+  .moves { display: grid; gap: 6px; }
+  .moves .mv { display: grid; grid-template-columns: 92px 1fr; gap: 10px; font-size: 15px; align-items: baseline; }
+  .moves .mv .dim { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--copy); }
+  .rebuild { display: grid; gap: 10px; }
+  .rebuild .rb { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: center; }
+  .rebuild .rb .dim { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+  .rebuild .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 13.5px; padding: 5px 9px; }
+  .list { display: grid; border-top: 1px solid var(--rule); }
+  .item { display: grid; grid-template-columns: 1fr auto auto auto; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+  .item .name { min-width: 0; overflow-wrap: anywhere; }
+  .item .k { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; }
+  .item .g { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .item button { font-family: var(--f-mono); font-size: 12px; background: none; border: 0; color: var(--ink-2); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 0; }
+  .empty { font-size: 15px; color: var(--ink-2); padding: 10px 0; }
+  .pattern { background: var(--paper-2); padding: 18px 20px; display: grid; gap: 10px; }
+  .pattern .big { font-family: var(--f-display); font-size: clamp(22px, 3vw, 28px); line-height: 1.2; }
+  .pattern .rows { display: grid; gap: 4px; font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); }
+  .pattern .rows b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .kread { display: grid; gap: 6px; }
+  .kread .kv { font-family: var(--f-display); font-size: 28px; line-height: 1.1; }
+
+  ol.rules { margin: 0; padding: 0; list-style: none; counter-reset: r; display: grid; gap: 10px; }
+  ol.rules li { counter-increment: r; display: grid; grid-template-columns: 30px 1fr; gap: 10px; font-size: 16px; }
+  ol.rules li::before { content: counter(r); font-family: var(--f-mono); font-size: 13px; color: var(--form); padding-top: 4px; }
+  ol.rules b { font-weight: 600; }
+  .end { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; }
+  .end .zhbig { font-family: var(--f-zh); font-size: clamp(40px, 7vw, 64px); line-height: 1.1; color: var(--form); writing-mode: vertical-rl; }
+  @media (max-width: 560px) { .end { grid-template-columns: 1fr; } .end .zhbig { writing-mode: horizontal-tb; font-size: 36px; } }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pair > div { border-top: 3px solid var(--copy); padding-top: 10px; display: grid; gap: 6px; }
+  .pair > div.ok { border-top-color: var(--live); }
+  .pair .zhw { font-family: var(--f-zh); font-size: 34px; line-height: 1; }
+  .pair > div .zhw { color: var(--copy); } .pair > div.ok .zhw { color: var(--live); }
+  .pair p { font-size: 15.5px; }
+  @media (max-width: 520px) { .pair { grid-template-columns: 1fr; } }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px 9px 0; border-top: 1px solid var(--rule); }
+  th { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); font-weight: 500; border-top: 0; }
+  td.tier { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+  td.tier.est { color: var(--live); } td.tier.mod { color: var(--form); } td.tier.txt { color: var(--ink-2); }
+  .tbl { overflow-x: auto; }
+  ol.open { margin: 0; padding-left: 0; list-style: none; counter-reset: o; display: grid; gap: 14px; }
+  ol.open li { counter-increment: o; display: grid; grid-template-columns: 30px 1fr; gap: 10px; font-size: 17px; }
+  ol.open li::before { content: counter(o); font-family: var(--f-display); font-size: 26px; line-height: 1; color: var(--copy); }
+  .test { font-family: var(--f-display); font-size: clamp(22px, 3vw, 28px); line-height: 1.25; max-width: 32ch; }
+  @media (prefers-reduced-motion: reduce) { .meterbar .fill, .pr .fill, .map .pt, .alarm-ring, .meterbar .mark, .map .halo { transition: none; } }
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>The Counter-Roll</h1>
+  <p class="thesis">Control is a copy held against a living thing. The copy can sit in the structure. It can also sit in you. Both come through one door, and the door has one alarm.</p>
+  <nav class="nav" aria-label="Scenes">
+    <a href="#door">1 · the door</a><a href="#taste">2 · the taste</a><a href="#converter">3 · the converter</a><a href="#ground">4 · two childhoods</a><a href="#rope">5 · the rope</a><a href="#sort">6 · the sort</a><a href="#examiner">7 · the examiner</a><a href="#out">8 · the way out</a><a href="#grounds">grounds</a><a href="#open">open</a>
+  </nav>
+</header>
+
+<!-- ============ 1 THE DOOR ============ -->
+<section class="scene" id="door">
+  <p class="mono"><b>1</b> · how it starts</p>
+  <h2>One door. One alarm. Everything that says "do this" trips it.</h2>
+  <div class="inst">
+    <svg class="stage" id="doorStage" viewBox="0 0 760 300" role="img" aria-label="Forms and copies travel toward a door. The alarm at the door fires at full size for every one of them.">
+      <text x="20" y="28" class="t">arriving</text>
+      <text x="400" y="28" class="t" text-anchor="middle">the door</text>
+      <text x="640" y="28" class="t" text-anchor="middle">the alarm</text>
+      <line class="grid" x1="20" y1="150" x2="370" y2="150" />
+      <g id="doorItems"></g>
+      <rect class="box" x="370" y="70" width="60" height="170" />
+      <rect x="376" y="76" width="48" height="158" style="fill:var(--paper-2);stroke:none" />
+      <circle cx="414" cy="158" r="3.5" style="fill:var(--ink);stroke:none" />
+      <circle class="alarm-ring" id="alarmRing" cx="640" cy="150" r="6" style="opacity:.25" />
+      <circle cx="640" cy="150" r="58" style="fill:none;stroke:var(--rule);stroke-width:1;stroke-dasharray:3 4" />
+      <text x="640" y="236" text-anchor="middle" id="alarmText">resting</text>
+      <g transform="translate(20,262)">
+        <rect class="fms" x="0" y="0" width="22" height="22" /><text x="30" y="16" class="fm">a form · when, where, what</text>
+        <rect class="cpf" x="250" y="0" width="22" height="22" /><circle cx="261" cy="7" r="3" style="fill:var(--paper-2);stroke:none" /><rect x="256.5" y="11.5" width="9" height="8" rx="2" style="fill:var(--paper-2);stroke:none" /><text x="280" y="16" class="cp">a copy of you · who to be</text>
+      </g>
+    </svg>
+    <div class="row">
+      <button type="button" class="btn formb" id="sendForm">send a form</button>
+      <button type="button" class="btn copyb" id="sendCopy">send a copy</button>
+      <button type="button" class="btn" id="sendMix">send ten, mixed</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn" id="doorNow" aria-pressed="true">door as it is</button>
+      <button type="button" class="btn" id="doorSorted" aria-pressed="false">a door that sorts</button>
+    </div>
+    <div class="counters">
+      <span>forms sent <b class="fm" id="cForms">0</b></span>
+      <span>copies sent <b class="cp" id="cCopies">0</b></span>
+      <span>full alarms <b id="cAlarms">0</b></span>
+      <span>force spent <b id="cSpent">0</b></span>
+    </div>
+  </div>
+  <div class="text">
+    <p>A form holds a shape for an act: when, where, what, how long. A copy holds a picture of you: who to be, how to feel. Both arrive as "do this." A door that can't tell them apart fires at full size for each. Watch the count: every form costs as much as a copy.</p>
+    <p>Switch to a door that sorts. Same traffic. The alarm fires for copies and stays quiet for forms. Nothing was let in that shouldn't be. The cost drops by the share of traffic that was forms. In most lives, that share is most of it.</p>
+  </div>
+</section>
+
+<!-- ============ 2 THE TASTE ============ -->
+<section class="scene" id="taste">
+  <p class="mono"><b>2</b> · how the door lost its sort</p>
+  <h2>Served together long enough, two things store as one taste. Then the alarm has one volume.</h2>
+  <div class="inst">
+    <div class="two">
+      <div style="display:grid;gap:14px">
+        <div class="meterbar copy"><span>fusion</span><div class="track"><div class="fill" id="fuseFill"></div></div><span class="val" id="fuseVal">100</span></div>
+        <div class="row">
+          <button type="button" class="btn copyb" id="serveTogether">serve form + correction</button>
+          <button type="button" class="btn formb" id="serveAlone">serve a form alone</button>
+          <button type="button" class="btn" id="serveBad">one bad serving</button>
+          <button type="button" class="btn" id="serveReset">start over</button>
+        </div>
+        <div class="counters">
+          <span>reps alone <b class="fm" id="cAlone">0</b></span>
+          <span>bad servings <b class="cp" id="cBad">0</b></span>
+        </div>
+        <p class="readout" id="fuseRead">Fully fused. Every form tastes like correction.</p>
+      </div>
+      <svg class="stage" id="gradStage" viewBox="0 0 360 260" role="img" aria-label="The alarm's response curve. Fused: flat at full volume from copy to form. Unfused: full for a copy, near zero for a form.">
+        <text x="20" y="22" class="t">how loud the alarm fires</text>
+        <line class="grid" x1="40" y1="200" x2="340" y2="200" />
+        <line class="grid" x1="40" y1="200" x2="40" y2="40" />
+        <text x="40" y="222" class="cp">a copy of you</text>
+        <text x="340" y="222" class="fm" text-anchor="end">a form</text>
+        <text x="46" y="48">full</text>
+        <text x="46" y="196">quiet</text>
+        <path id="gradGhost" class="thin dash" d="M40 48 L340 48" style="opacity:.5" />
+        <path id="gradPath" class="lvk" d="M40 48 L340 48" style="stroke:var(--copy)" />
+        <text x="190" y="250" text-anchor="middle" id="gradText">one volume for everything</text>
+      </svg>
+    </div>
+  </div>
+  <div class="text">
+    <p>Eat a dish once with the flu and the dish tastes wrong for years. The body files the pair, not the parts. A childhood of forms served with correction files form and correction as one. That is the flat line: an alarm that cannot tell a copy from a form fires the same for both.</p>
+    <p>The pair comes apart the way it formed. A form served alone, small, with nothing bad after, lowers the fusion a step. One bad serving raises it two steps. That asymmetry is why cold turkey can't do this. The unfusing is reps, and a single mold in the middle of the reps sets you back further than a rep moves you forward.</p>
+  </div>
+</section>
+
+<!-- ============ 3 THE CONVERTER ============ -->
+<section class="scene" id="converter">
+  <p class="mono"><b>3</b> · how the copy moved inside</p>
+  <h2>The copy moved inside. Now the structure doesn't need to hold one. You supply it.</h2>
+  <div class="inst">
+    <svg class="stage" id="convStage" viewBox="0 0 760 340" role="img" aria-label="A child, early, with no copy inside. Corrections arrive from an outside measure and each leaves a mark inside. After enough, the measure itself moves inside. From then on a form arriving calls up the inner copy even though the form holds nothing about the person. A slider moves the seat of evaluation back inside and changes what it measures.">
+      <text x="200" y="30" class="t" text-anchor="middle" id="selfLabel">you, early · nothing written yet</text>
+      <circle id="selfCircle" cx="200" cy="175" r="100" style="fill:var(--live-soft);stroke:var(--live);stroke-width:2" />
+      <g id="marks"></g>
+      <g id="innerMeasure" style="opacity:0">
+        <rect x="160" y="150" width="80" height="50" class="cps" />
+        <text x="200" y="172" text-anchor="middle" class="cp" id="innerLabel1">their measure</text>
+        <text x="200" y="190" text-anchor="middle" class="cp" id="innerLabel2">inside</text>
+      </g>
+      <g id="outerMeasure">
+        <rect x="520" y="60" width="140" height="56" class="box" />
+        <text x="590" y="83" text-anchor="middle" class="t">their measure</text>
+        <text x="590" y="103" text-anchor="middle">outside, in the room</text>
+      </g>
+      <g id="flyer"></g>
+      <text x="590" y="300" text-anchor="middle" id="convRead" class="t">a correction arrives. it is meant as help.</text>
+      <text x="590" y="320" text-anchor="middle" id="convSub">it also answers: what am I?</text>
+    </svg>
+    <div class="row">
+      <button type="button" class="btn copyb" id="convCorrect">a correction arrives</button>
+      <button type="button" class="btn" id="convMoveIn" disabled>the measure moves inside</button>
+      <button type="button" class="btn formb" id="convForm">a form arrives</button>
+      <button type="button" class="btn" id="convReset">start over</button>
+    </div>
+    <div class="counters">
+      <span>corrections <b class="cp" id="cCorr">0</b></span>
+      <span>copy written <b id="cWritten">0%</b></span>
+      <span>forms that fired the copy <b class="cp" id="cFired">0</b></span>
+    </div>
+    <div class="slider">
+      <label class="mono" for="seat">where the measure sits, and what it measures</label>
+      <input type="range" id="seat" min="0" max="100" value="0" aria-label="Seat of evaluation">
+      <div class="ends"><span class="zh">自责 · their measure, blaming the self</span><span class="zh">自省 · my measure, examining the act</span></div>
+    </div>
+  </div>
+  <div class="text">
+    <p>A child is corrected before it knows who it is. Each correction is meant as help. Each one also answers a question the child cannot yet answer alone: what am I? The answers pile up into a copy, written from outside, by people whose measure the child has no way to doubt.</p>
+    <p>Then the measure moves in. The evaluator no longer needs to be in the room. Any miss, on any form, calls up the copy, and the copy says what it was taught to say. That is why the first option under "object" felt thin to you. A pure form still says something about you, because now the saying is yours. The structure holds the act. You hold the verdict.</p>
+    <p>The way out is not to stop evaluating. It is two moves on the slider. Bring the seat of evaluation back inside, so the measure is yours. Then change what it measures: the act, not the self.</p>
+  </div>
+  <div class="pair">
+    <div><span class="zhw">自责</span><p><b>Self-blame.</b> 责 carries 贝, the cowrie shell, money. Its oldest sense is to press for a debt. Self-blame audits the self against a ledger and finds it owing. That ledger is the counter-roll, turned inward.</p></div>
+    <div class="ok"><span class="zhw">自省</span><p><b>Self-examination.</b> 省 is to look closely. Zengzi examined himself three times a day, and every question was about an act: was I loyal in counsel, true to my friends, did I practice what I taught. Not one about worth. A look, not a debt.</p></div>
+  </div>
+  <div class="case">
+    <p class="mono">in your case</p>
+    <p>Your words: "error, corrected." Corrected a lot, early, before you had a self to defend. The sort you run on structures ends at the door. This one starts after it. The gap in scene five is where it shows up as a number, and the four questions in part two of the sort measure it directly.</p>
+  </div>
+</section>
+
+<!-- ============ 4 TWO CHILDHOODS ============ -->
+<section class="scene" id="ground">
+  <p class="mono"><b>4</b> · judgment or examination · the mechanism</p>
+  <h2>The same correction teaches the act either way. The difference is what it makes the variable: the act, or you.</h2>
+  <div class="inst">
+    <div class="row" role="group" aria-label="How corrections arrive">
+      <button type="button" class="btn copyb" id="modeA" aria-pressed="true">about the person · warmth rides on it</button>
+      <button type="button" class="btn liveb" id="modeB" aria-pressed="false">about the act · the ground confirmed</button>
+    </div>
+    <div class="two">
+      <svg class="stage" id="groundStage" viewBox="0 0 360 300" role="img" aria-label="A figure with two meters: the self as ground, and skill at the act. Corrections raise skill in both modes. In the first mode they also eat the ground; in the second the ground holds.">
+        <text x="20" y="24" class="t">the self as ground</text>
+        <rect x="20" y="40" width="130" height="220" style="fill:var(--paper);stroke:var(--rule);stroke-width:1" />
+        <rect id="groundFill" x="20" y="40" width="130" height="220" style="fill:var(--live);opacity:.85" />
+        <line x1="12" y1="40" x2="158" y2="40" style="stroke:var(--ink-2);stroke-dasharray:3 3" />
+        <text x="162" y="44" style="font-size:11px">steady · 100</text>
+        <text id="groundNum" x="85" y="286" text-anchor="middle" class="t">100</text>
+        <text x="220" y="24" class="t">skill at the act</text>
+        <rect x="220" y="40" width="60" height="220" style="fill:var(--paper);stroke:var(--rule);stroke-width:1" />
+        <rect id="skillFill" x="220" y="260" width="60" height="0" style="fill:var(--form)" />
+        <text id="skillNum" x="250" y="286" text-anchor="middle" class="t">0</text>
+        <text id="groundState" x="320" y="150" text-anchor="middle" style="font-size:12px"></text>
+      </svg>
+      <div style="display:grid;gap:12px">
+        <div class="row">
+          <button type="button" class="btn" id="tenCorr">ten corrections</button>
+          <button type="button" class="btn" id="oneSuccess">a success</button>
+          <button type="button" class="btn" id="missAlone">a miss, alone, years later</button>
+          <button type="button" class="btn" id="groundReset">start over</button>
+        </div>
+        <div class="counters">
+          <span>corrections <b id="gCorr">0</b></span>
+          <span>successes <b id="gSucc">0</b></span>
+          <span>misses alone <b id="gMiss">0</b></span>
+        </div>
+        <p class="readout" id="groundRead">Nothing has arrived yet.</p>
+        <p class="mono" id="groundSentence"></p>
+      </div>
+    </div>
+  </div>
+  <div class="text">
+    <p>Run ten corrections in each mode and compare. Skill rises the same in both. The intention behind the correction is the same in both: they want you better. The difference is the second channel. "You can do better, and I know you can" leaves the ground where it was. "What's wrong with you" moves the ground into the variable column. From then on every miss re-opens the question the child cannot yet answer, and the self is graded alongside the act.</p>
+    <p>Press "a success" in the first mode. The ground inflates past steady. Press a correction after it. It crashes below where it started. That swing is measured in adolescents whose parents' warmth tracked their grades: inflated after success, shame after failure, both faces of one unstable worth. Then press "a miss, alone, years later." No one is in the room. In the first mode the ground still drops. That drop, with no one present, is the converter. In the second mode the act adjusts and the ground does not move. That is examination without collapse.</p>
+    <p>Confidence, in this picture, is not a feeling. It is the ground staying put while the act is corrected. A child who had it confirmed can be corrected a thousand times and keep it. A child who didn't has to grow it later, by hand, one miss at a time.</p>
+  </div>
+  <div class="case">
+    <p class="mono">in your case</p>
+    <p>Your observation is the mechanism. "You can do better" with the value confirmed, against pure criticism from good intention: same act channel, opposite second channel. A young child cannot tell which one is arriving. The body files both as "you." The examiner in scene seven is the by-hand version of the confirmation that didn't come with the corrections.</p>
+  </div>
+</section>
+
+<!-- ============ 5 THE ROPE ============ -->
+<section class="scene" id="rope">
+  <p class="mono"><b>5</b> · the paradox</p>
+  <h2>Hating the copy is a rope to the copy. Cutting every form is a flood.</h2>
+  <div class="inst">
+    <svg class="stage" id="ropeStage" viewBox="0 0 760 250" role="img" aria-label="A copy on the left with its own direction. A figure on the right tied to it by a rope. Obey: the rope is taut and the figure moves the copy's way. Rebel: taut, and the figure moves exactly opposite. Free: the rope goes slack and the figure moves its own way.">
+      <rect class="box" x="60" y="95" width="130" height="60" />
+      <text class="t" x="125" y="121" text-anchor="middle">the copy</text>
+      <path class="ink" d="M100 142 L146 142" /><path d="M144 136 L156 142 L144 148 Z" style="fill:var(--ink);stroke:none" />
+      <path id="ropePath" class="thin" d="M190 125 L560 125" />
+      <circle class="box" id="figure" cx="580" cy="125" r="22" />
+      <path id="figArrow" class="ink" d="M602 125 L650 125" style="stroke-width:2.6" />
+      <path id="figHead" d="M646 118 L660 125 L646 132 Z" style="fill:var(--ink);stroke:none" />
+      <text id="ropeLabel" x="375" y="112" text-anchor="middle">taut</text>
+      <text id="posLabel" class="t" x="580" y="190" text-anchor="middle">obey</text>
+      <text id="posSub" x="580" y="210" text-anchor="middle">the copy decides. you follow.</text>
+    </svg>
+    <div class="slider">
+      <input type="range" id="posSlider" min="0" max="100" value="0" aria-label="Position toward the copy">
+      <div class="ends"><span>obey</span><span>rebel</span><span>free</span></div>
+    </div>
+    <div class="two" style="margin-top:6px">
+      <div class="slider">
+        <label class="mono" for="formsKept">forms kept in your life</label>
+        <input type="range" id="formsKept" min="0" max="100" value="0" aria-label="Share of forms kept">
+        <div class="ends"><span>none · absolute freedom</span><span>all</span></div>
+      </div>
+      <svg class="stage" viewBox="0 0 360 200" role="img" aria-label="Water from one source. With no forms it spreads into pools. With forms it runs between banks to a mouth.">
+        <circle class="lvf" cx="180" cy="22" r="8" />
+        <g id="pools">
+          <ellipse class="lvs" cx="60" cy="120" rx="38" ry="16" />
+          <ellipse class="lvs" cx="300" cy="110" rx="40" ry="16" />
+          <ellipse class="lvs" cx="120" cy="170" rx="42" ry="16" />
+          <ellipse class="lvs" cx="250" cy="172" rx="40" ry="15" />
+          <path class="lvk" d="M180 30 C140 60 100 90 70 112" style="stroke-width:4" />
+          <path class="lvk" d="M180 30 C220 60 260 85 290 104" style="stroke-width:4" />
+          <path class="lvk" d="M180 30 C170 80 150 130 128 160" style="stroke-width:4" />
+          <path class="lvk" d="M180 30 C200 80 230 130 248 162" style="stroke-width:4" />
+        </g>
+        <g id="bed" style="opacity:0">
+          <path class="fmk" d="M150 36 C146 90 148 140 154 180" />
+          <path class="fmk" d="M210 36 C214 90 212 140 206 180" />
+          <path class="lvk" id="bedChannel" d="M180 30 L180 178" style="stroke-width:2" />
+          <path class="lvf" d="M166 180 L194 180 L202 196 L158 196 Z" />
+        </g>
+        <text x="180" y="10" text-anchor="middle" id="arrive" style="font-size:12px;fill:var(--ink)">force arriving: 0%</text>
+      </svg>
+    </div>
+  </div>
+  <div class="text">
+    <p>Three positions toward any copy. Obey: it decides, you follow. Rebel: it decides, you invert. Free: it is one input, and you decide. Drag to rebel and look at the rope. Still taut. The figure's direction is still set by the copy, just mirrored. That is why reverse psychology works on people who hate control.</p>
+    <p>The second slider is the cost. Rebel long enough and every form goes out with the copies. Force with no bed does not stop. It spreads. The generation never fails. The arriving does. And the inner copy from scene three is untouched by any of it, because it was never outside.</p>
+  </div>
+</section>
+
+<!-- ============ 5 THE SORT ============ -->
+<section class="scene sort" id="sort">
+  <p class="mono"><b>6</b> · the algorithm</p>
+  <h2>A structure is control to the degree it holds a copy of you and its terms were set for you. The alarm it deserves is the sum. The alarm you feel adds your converter. The remainder is the knot.</h2>
+  <div class="text">
+    <p>Two parts. Part one measures the structure: four dimensions for how much of it is a copy, three for how much was done to you. Part two measures you: four questions on the converter, answered once and kept. Then the felt alarm is split three ways. What the structure warrants. What your converter adds. What neither explains.</p>
+  </div>
+
+  <div class="inst">
+    <div class="parthead"><span class="mono">part two · you</span><h3>The converter</h3><span class="mono" id="kStatus">not set</span></div>
+    <form id="convform" class="qgrid">
+      <div class="q"><div class="lab"><span class="dim">sentence</span><span class="ask">When you miss a form, the first sentence in your head is</span></div>
+        <div class="opts">
+          <label><input type="radio" name="c1" value="0" id="c1a">"Adjust."</label>
+          <label><input type="radio" name="c1" value="0.4" id="c1b">"I should have."</label>
+          <label><input type="radio" name="c1" value="0.75" id="c1c">"This is what I'm like."</label>
+          <label><input type="radio" name="c1" value="1" id="c1d">"This is what I'm worth."</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">speed</span><span class="ask">It arrives</span></div>
+        <div class="opts">
+          <label><input type="radio" name="c2" value="0" id="c2a">after I've looked at what happened</label>
+          <label><input type="radio" name="c2" value="0.6" id="c2b">at the same moment as the miss</label>
+          <label><input type="radio" name="c2" value="1" id="c2c">before the act is finished. I'm already grading.</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">follow</span><span class="ask">What you do next</span></div>
+        <div class="opts">
+          <label><input type="radio" name="c3" value="0" id="c3a">fix the act, move on</label>
+          <label><input type="radio" name="c3" value="0.4" id="c3b">replay the miss a few times</label>
+          <label><input type="radio" name="c3" value="0.8" id="c3c">correct myself harder than the structure asked</label>
+          <label><input type="radio" name="c3" value="1" id="c3d">cut the whole structure</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">seat</span><span class="ask">The measure you grade against is</span></div>
+        <div class="opts">
+          <label><input type="radio" name="c4" value="0" id="c4a">my own measure of the act</label>
+          <label><input type="radio" name="c4" value="0.7" id="c4b">how it looks to them</label>
+          <label><input type="radio" name="c4" value="1" id="c4c">what they would say</label>
+        </div></div>
+    </form>
+    <div class="kread" id="kread"></div>
+  </div>
+
+  <div class="inst">
+    <div class="parthead"><span class="mono">part one · the structure</span><h3>Place one</h3></div>
+    <form id="sortform" class="qgrid">
+      <div class="q">
+        <label class="mono" for="sname">the structure</label>
+        <input type="text" id="sname" placeholder="a weekly class · a daily check-in · a deadline I set · my rule about X" autocomplete="off">
+      </div>
+      <div class="q"><div class="lab"><span class="dim">object</span><span class="ask">What does it hold?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="object" value="0" id="ob0">an act at a time and place, an amount. Nothing about who I am.</label>
+          <label><input type="radio" name="object" value="0.5" id="ob1">an act, with a picture of who I am attached to it</label>
+          <label><input type="radio" name="object" value="1" id="ob2">a picture of who I should be or how I should feel. No act in it.</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">miss</span><span class="ask">When it's missed, what does the structure do?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="miss" value="0" id="mi0">nothing. I adjust and it's over.</label>
+          <label><input type="radio" name="miss" value="0.6" id="mi1">it treats the miss as a statement about me</label>
+          <label><input type="radio" name="miss" value="1" id="mi2">someone's warmth toward me rises or falls with it. How they treat me changes, not only what they think.</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">scope</span><span class="ask">How much of you does it claim?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="scope" value="0" id="sc0">one act</label>
+          <label><input type="radio" name="scope" value="0.5" id="sc1">several areas of my life</label>
+          <label><input type="radio" name="scope" value="1" id="sc2">who I am, everywhere</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">reason</span><span class="ask">Is the why visible?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="reason" value="0" id="re0">yes, I can say what it's for</label>
+          <label><input type="radio" name="reason" value="1" id="re1">no. "because."</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">author</span><span class="ask">Who set the terms?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="author" value="0" id="au0">I did</label>
+          <label><input type="radio" name="author" value="0.45" id="au1">someone else, and I agreed</label>
+          <label><input type="radio" name="author" value="1" id="au2">someone else. no agreement.</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">exit</span><span class="ask">Can you see the end?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="exit" value="0" id="ex0">yes. I know when and how it ends.</label>
+          <label><input type="radio" name="exit" value="0.4" id="ex1">it can be reopened if I ask</label>
+          <label><input type="radio" name="exit" value="1" id="ex2">no end in sight</label>
+        </div></div>
+      <div class="q"><div class="lab"><span class="dim">grain</span><span class="ask">How fine is the prescription?</span></div>
+        <div class="opts">
+          <label><input type="radio" name="grain" value="0" id="gr0">rough: a window, a week, "this month"</label>
+          <label><input type="radio" name="grain" value="1" id="gr1">exact: a minute, a count, a script</label>
+        </div></div>
+      <div class="q felt"><div class="lab"><span class="dim">felt</span><span class="ask">The alarm as you feel it, <span id="feltVal">5</span> of 10</span></div>
+        <input type="range" id="felt" min="0" max="10" value="5" step="1" aria-label="Felt alarm">
+      </div>
+      <div class="row">
+        <button type="submit" class="btn primary" id="placeBtn" disabled>place it</button>
+        <button type="button" class="btn" id="clearBtn">clear</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="calc">
+    <div style="display:grid;gap:18px">
+      <svg class="map" id="map" viewBox="0 0 380 380" role="img" aria-label="A map. Left: holds a form. Right: holds a copy of you. Top: terms yours. Bottom: terms set for you. A halo around the dot shows how much the converter adds.">
+        <rect x="50" y="34" width="296" height="296" style="fill:var(--paper-2);stroke:none" />
+        <line class="axis" x1="198" y1="34" x2="198" y2="330" />
+        <line class="axis" x1="50" y1="182" x2="346" y2="182" />
+        <rect class="edge" x="50" y="34" width="296" height="296" />
+        <text x="56" y="52">trellis</text>
+        <text x="340" y="52" text-anchor="end">inner mold</text>
+        <text x="56" y="322">agreement · cage</text>
+        <text x="340" y="322" text-anchor="end">mold</text>
+        <text x="50" y="22">holds a form</text>
+        <text x="346" y="22" text-anchor="end">holds a copy of you</text>
+        <text transform="rotate(-90 40 182)" x="40" y="182" text-anchor="middle" style="font-size:10.5px">terms yours ↑ · set for you ↓</text>
+        <g id="oldpts"></g>
+        <path id="trail" class="trail" d="" />
+        <g id="newpt"></g>
+      </svg>
+      <div class="profile" id="profile" aria-label="Dimension profile"></div>
+    </div>
+    <div class="verdict" id="verdict">
+      <p class="kind mixed">—</p>
+      <p>Answer the eight and the position computes here, with the arithmetic.</p>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="eq" id="eq" aria-live="polite"></div>
+    <div class="gauge" id="gauge"></div>
+  </div>
+
+  <div class="rebuild" id="rebuild" hidden>
+    <p class="mono">rebuild it · change one dimension and watch it move</p>
+    <div id="rbRows"></div>
+  </div>
+
+  <div>
+    <p class="mono">placed</p>
+    <div class="list" id="list"><p class="empty">Nothing placed yet. Five placements show a pattern.</p></div>
+  </div>
+  <div class="pattern" id="pattern" hidden></div>
+
+  <div class="text">
+    <p>The arithmetic is open on purpose. Copy-share is object at 40, miss at 30, scope at 15, reason at 15. Imposed-share is author at 55, exit at 25, grain at 20. Warranted alarm is 55 percent copy-share and 45 percent imposed-share, on a scale of ten. The converter is sentence at 35, seat at 25, speed at 20, follow at 20, and it adds its share of whatever room is left above the warranted alarm. Those weights are a first setting. Your placements will say whether they hold.</p>
+    <p>The remainder is the instrument. Felt, minus warranted, minus the converter's share. Near zero means the two layers explain the alarm: the structure and you. Large and positive on forms set by others means a third thing is running, and that thing is authorship. The pattern box tells the layers apart after five placements.</p>
+  </div>
+</section>
+
+<!-- ============ 7 THE EXAMINER ============ -->
+<section class="scene sort" id="examiner">
+  <p class="mono"><b>7</b> · the practice · uninstalling the converter</p>
+  <h2>The first sentence is a reflex. You cannot stop it arriving. You can train a second sentence until it arrives almost as fast.</h2>
+  <div class="text">
+    <p>The sort works on structures. This works on you. Each miss is one rep. Log the first sentence as it came. Translate it so its subject is the act. Name what the miss did not touch. The instrument times the second sentence. Over reps, two things fall: the level of the first sentence, and the seconds before the second one. The converter score in part two of the sort is the baseline; re-answer it monthly and watch it move.</p>
+  </div>
+  <div class="inst">
+    <form id="exform" class="qgrid">
+      <div class="q">
+        <label class="mono" for="exact">the miss · what happened to the act</label>
+        <input type="text" id="exact" placeholder="forgot to send the thing · skipped the class · snapped at someone" autocomplete="off">
+      </div>
+      <div class="q"><div class="lab"><span class="dim">first</span><span class="ask">The first sentence, as it arrived</span></div>
+        <div class="opts">
+          <label><input type="radio" name="exlevel" value="0" id="exl0">"Adjust."</label>
+          <label><input type="radio" name="exlevel" value="0.4" id="exl1">"I should have."</label>
+          <label><input type="radio" name="exlevel" value="0.75" id="exl2">"This is what I'm like."</label>
+          <label><input type="radio" name="exlevel" value="1" id="exl3">"This is what I'm worth."</label>
+        </div></div>
+      <div class="q">
+        <label class="mono" for="exverb">its words, if you have them</label>
+        <input type="text" id="exverb" placeholder="optional" autocomplete="off">
+      </div>
+      <div class="q"><div class="lab"><span class="dim">second</span><span class="ask">Translate. Subject: the act.</span></div>
+        <input type="text" id="exact2" placeholder="the act: …" autocomplete="off">
+        <input type="text" id="exadj" placeholder="the adjustment: …" autocomplete="off">
+      </div>
+      <div class="q"><div class="lab"><span class="dim">ground</span><span class="ask">What this miss did not touch</span></div>
+        <div class="opts">
+          <label><input type="radio" name="exground" value="intention" id="exg0">my intention</label>
+          <label><input type="radio" name="exground" value="worth" id="exg1">my worth</label>
+          <label><input type="radio" name="exground" value="building" id="exg2">what I'm building</label>
+          <label><input type="radio" name="exground" value="people" id="exg3">the people in it</label>
+          <label><input type="radio" name="exground" value="none" id="exg4">nothing needed separating</label>
+        </div></div>
+      <div class="row">
+        <button type="submit" class="btn primary" id="exDone" disabled>second sentence done</button>
+        <span class="mono" id="exTimer"></span>
+        <a class="btn" href="#sort" style="text-decoration:none">re-measure the converter</a>
+      </div>
+    </form>
+  </div>
+  <div class="two">
+    <svg class="stage" id="exChart" viewBox="0 0 380 220" role="img" aria-label="Two lines over reps: the level of the first sentence, and the seconds until the second sentence.">
+      <text x="20" y="22" class="t">over reps</text>
+      <line class="grid" x1="40" y1="180" x2="360" y2="180" />
+      <line class="grid" x1="40" y1="180" x2="40" y2="40" />
+      <text x="44" y="46" class="cp" style="font-size:11px">first sentence · level</text>
+      <text x="44" y="60" class="lv" style="font-size:11px">second sentence · seconds</text>
+      <path id="exLevelPath" class="lvk" d="" style="stroke:var(--copy)" />
+      <path id="exLatPath" class="lvk" d="" />
+      <text id="exEmpty" x="200" y="120" text-anchor="middle">no reps yet</text>
+    </svg>
+    <div class="verdict" id="exRead">
+      <p class="kind mixed">—</p>
+      <p>The second sentence has not been timed yet.</p>
+    </div>
+  </div>
+  <div>
+    <p class="mono">reps</p>
+    <div class="list" id="exList"><p class="empty">No reps yet.</p></div>
+  </div>
+  <div class="text">
+    <p>Why this and not insight. Knowing the critic is wrong is a conclusion, and conclusions arrive seconds after a reflex. What beats a reflex is another fast answer, already practiced. People trained to answer their own criticism with a steady, warm voice show less shame and less self-attack within weeks, and the content of the criticism does not have to change for the collapse to stop. What stops it is the second voice and its tone. The two lines on the chart are that voice getting faster and the first voice getting lighter.</p>
+    <p>The ground line is the part that didn't come with your corrections. It has to be said now, by you, each rep, until it is already there before the miss. Zengzi's form: a question about an act, an answer, done. No debt.</p>
+  </div>
+</section>
+
+<!-- ============ 8 THE WAY OUT ============ -->
+<section class="scene" id="out">
+  <p class="mono"><b>8</b> · how to walk out and evolve</p>
+  <h2>The way out is not fewer forms. It is forms that cannot become copies, served in reps, graded by your own measure of the act.</h2>
+  <svg class="stage" viewBox="0 0 760 210" role="img" aria-label="Four rungs: imposed, swallowed, chosen, yours. The copy moves from outside, to inside as a should, to a form you endorse, to a form indistinguishable from what you want.">
+    <line class="grid" x1="40" y1="150" x2="720" y2="150" />
+    <g>
+      <rect class="cps" x="60" y="80" width="56" height="56" /><circle cx="88" cy="97" r="7" style="fill:var(--paper);stroke:none" /><rect x="77" y="107" width="22" height="22" rx="5" style="fill:var(--paper);stroke:none" />
+      <text class="t" x="88" y="176" text-anchor="middle">imposed</text><text x="88" y="194" text-anchor="middle">their copy, outside</text>
+    </g>
+    <g>
+      <circle class="box" cx="268" cy="108" r="36" /><rect class="cpf" x="254" y="94" width="28" height="28" /><circle cx="268" cy="103" r="4" style="fill:var(--paper);stroke:none" /><rect x="262" y="109" width="12" height="11" rx="3" style="fill:var(--paper);stroke:none" />
+      <text class="t" x="268" y="176" text-anchor="middle">swallowed</text><text x="268" y="194" text-anchor="middle">their copy, inside you</text>
+    </g>
+    <g>
+      <circle class="box" cx="448" cy="108" r="36" /><rect class="fmk" x="432" y="92" width="32" height="32" /><line class="fmk" x1="448" y1="92" x2="448" y2="124" /><line class="fmk" x1="432" y1="108" x2="464" y2="108" />
+      <text class="t" x="448" y="176" text-anchor="middle">chosen</text><text x="448" y="194" text-anchor="middle">a form you endorse</text>
+    </g>
+    <g>
+      <circle class="box" cx="628" cy="108" r="36" /><path class="fmk" d="M612 92 L612 124 L644 124" /><path class="lvk" d="M620 116 C624 100 640 100 640 108 C640 116 624 124 620 116 Z" style="stroke-width:2.2;fill:var(--live-soft)" />
+      <text class="t" x="628" y="176" text-anchor="middle">yours</text><text x="628" y="194" text-anchor="middle">the form and the want are one</text>
+    </g>
+    <path class="thin" d="M126 108 L222 108" /><path d="M220 103 L230 108 L220 113 Z" style="fill:var(--ink-2);stroke:none" />
+    <path class="thin" d="M306 108 L402 108" /><path d="M400 103 L410 108 L400 113 Z" style="fill:var(--ink-2);stroke:none" />
+    <path class="thin" d="M486 108 L582 108" /><path d="M580 103 L590 108 L580 113 Z" style="fill:var(--ink-2);stroke:none" />
+    <text class="cp" x="180" y="60" text-anchor="middle">most people stop here</text>
+    <text class="cp" x="360" y="60" text-anchor="middle">rebels throw out the rung</text>
+  </svg>
+  <div class="text">
+    <p>Four rungs. A copy imposed from outside. The same copy swallowed, so it runs inside you as a should and you police yourself the way you were policed. That rung is the converter. A form you chose because you can say what it is for. A form so fully yours that following it and wanting it are the same act.</p>
+    <p>The rebel's move is to throw out the ladder at rung two, with the converter still inside. The force is then free and spreads, and the inner copy keeps grading. The way out is rungs three and four, and they are reached by reps, not by a decision.</p>
+  </div>
+  <div class="end">
+    <div class="zhbig">从心所欲，不逾矩</div>
+    <div class="text">
+      <p>Confucius, at seventy: "I could follow what my heart wanted and not cross the square." The square, 矩, is a carpenter's tool. A fixed form. At the end, the form is still there. The heart no longer collides with it, because the form was built to the heart's own measure.</p>
+      <p>That is the fourth rung. Not no copy. A form so exact to you that it reads as your own want.</p>
+    </div>
+  </div>
+  <ol class="rules">
+    <li><span><b>Move the seat of evaluation first.</b> Grade the act, not the self. The sentence after a miss is "I adjust," and it is the full sentence. 自省, not 自责. The examiner is the rep for this, and every other move runs on it.</span></li>
+    <li><span><b>Untie the taste by sorting, out loud, every time.</b> Each form you name as a form, and pass through, sharpens the line in scene two. This is discrimination training. Reps, not insight.</span></li>
+    <li><span><b>Start with forms that score near zero on all seven.</b> One act. Rough grain. A visible end. Terms yours. The smaller the first loads, the fewer bad servings.</span></li>
+    <li><span><b>Author before you accept.</b> A structure someone else proposes becomes yours when you restate its terms and set the exit. Same structure. Different rung.</span></li>
+    <li><span><b>Keep the grain rough.</b> A window keeps the want. A minute kills it. Thirteen studies say so.</span></li>
+    <li><span><b>Then build the bed.</b> Banks of forms only, each passing the seven, graded by your own measure. A bed laid before the seat moves is a dam you will blame yourself for.</span></li>
+  </ol>
+</section>
+
+<!-- ============ GROUNDS ============ -->
+<section class="scene" id="grounds">
+  <p class="mono">grounds</p>
+  <h2>What each dimension stands on.</h2>
+  <div class="tbl"><table>
+    <tr><th>Dimension</th><th>Finding</th><th>Source</th><th>Tier</th></tr>
+    <tr><td>object</td><td>Control of a child's behavior (rules, monitoring) and control of a child's inner world (guilt, love withdrawal, shaming) are distinct constructs with opposite outcomes. Structure is not the opposite of autonomy; control is.</td><td>Barber 1996, Child Development; Soenens & Vansteenkiste 2010, Developmental Review; Jang, Reeve & Deci 2010, J. Educational Psychology</td><td class="tier est">established</td></tr>
+    <tr><td>miss · warmth</td><td>Regard made conditional on compliance produces compliance plus resentment, introjected pressure and unstable self-worth. When affection tracks achievement, self-evaluation swings with performance: inflated after success, shame after failure.</td><td>Assor, Roth & Deci 2004, J. Personality; Assor & Tal 2012, J. Adolescence</td><td class="tier est">established, correlational</td></tr>
+    <tr><td>miss · verdict</td><td>Criticism aimed at the person rather than the act leaves children more helpless after setbacks.</td><td>Kamins & Dweck 1999, Developmental Psychology</td><td class="tier est">established</td></tr>
+    <tr><td>converter · seat</td><td>Where a person's evaluation sits, inside or outside, is a named variable. Conditions of worth, taken in from others, move it outside. Growth moves it back inside.</td><td>Rogers 1951, 1959: locus of evaluation, conditions of worth</td><td class="tier mod">theory, clinical</td></tr>
+    <tr><td>converter · sentence</td><td>Self-criticism has measurable forms: a self felt as inadequate, a self that is hated, and a self that is reassured. The first two predict depression and shame.</td><td>Gilbert, Clarke, Hempel, Miles & Irons 2004, British J. Clinical Psychology</td><td class="tier est">established measure</td></tr>
+    <tr><td>converter · speed</td><td>The brain's error signal within a tenth of a second of a mistake is larger in anxious and perfectionistic people. The grading is reflex-fast.</td><td>Hajcak and colleagues; Weinberg et al. 2012</td><td class="tier mod">model, applied here</td></tr>
+    <tr><td>two childhoods · the second channel</td><td>One added sentence beside critical comments, saying they came with high expectations and belief the student could meet them, more than doubled revision rates among students who trusted school least. Content unchanged.</td><td>Yeager et al. 2014, J. Experimental Psychology: General</td><td class="tier est">established</td></tr>
+    <tr><td>two childhoods · the swing</td><td>Adolescents whose mothers' warmth tracked achievement showed self-aggrandizement after success and shame after failure, and rigid over-investment.</td><td>Assor & Tal 2012, J. Adolescence</td><td class="tier est">established, correlational</td></tr>
+    <tr><td>two childhoods · contingent worth</td><td>Self-worth staked on outcomes is unstable by construction: it rises and falls with each result in the staked domain. Secure worth is not contingent.</td><td>Crocker & Wolfe 2001, Psychological Review; Kernis 2003</td><td class="tier est">established</td></tr>
+    <tr><td>two childhoods · the child</td><td>Young children's self-evaluations are global and built from adults' evaluations; the ability to hold self and act apart develops later.</td><td>Harter, The Construction of the Self</td><td class="tier mod">developmental model</td></tr>
+    <tr><td>examiner · the second voice</td><td>Training a warm, steady inner voice that answers one's own criticism reduced shame, self-criticism and depression in highly self-critical people within weeks.</td><td>Gilbert & Procter 2006, Clinical Psychology & Psychotherapy</td><td class="tier est">established, small samples</td></tr>
+    <tr><td>examiner · tone over content</td><td>In two-chair work, the contempt in the self-critical voice, more than its content, predicted the collapse of the self that received it.</td><td>Whelton & Greenberg 2005, Personality and Individual Differences</td><td class="tier est">established</td></tr>
+    <tr><td>自责</td><td>说文：责，求也。从贝。The oldest sense is to demand what is owed; 债, debt, is its later derivative. Self-blame is a debt audit.</td><td>Shuowen Jiezi</td><td class="tier txt">text</td></tr>
+    <tr><td>scope · exit</td><td>Reactance scales with the importance of the freedom, the share of freedoms threatened, and the implication for other freedoms.</td><td>Brehm 1966; Steindl et al. 2015, Zeitschrift für Psychologie</td><td class="tier est">established</td></tr>
+    <tr><td>reason · author</td><td>A rationale, acknowledgment of the person's view, and a sense of choice move a regulation from imposed toward owned.</td><td>Deci, Eghrari, Patrick & Leone 1994; Ryan & Deci 2000</td><td class="tier est">established</td></tr>
+    <tr><td>grain</td><td>Putting leisure at an exact time lowers expected and actual enjoyment. Rough scheduling ("this afternoon") does not. Thirteen studies.</td><td>Tonietto & Malkoc 2016, J. Marketing Research</td><td class="tier est">established</td></tr>
+    <tr><td>the flat line</td><td>Anxious systems overgeneralize a learned alarm: the response gradient from threat to safe cue flattens. Discrimination training sharpens it.</td><td>Lissek et al. 2014, Biological Psychiatry; Dunsmoor & Paz 2015</td><td class="tier mod">model, applied here</td></tr>
+    <tr><td>the rungs</td><td>Regulation moves from external, to introjected (a swallowed should), to identified, to integrated.</td><td>Ryan & Deci 2000, American Psychologist</td><td class="tier est">established</td></tr>
+    <tr><td>want vs have-to</td><td>Goals held as wants are reached with less effort; the same goals held as have-tos feel like obstacles.</td><td>Milyavskaya, Inzlicht, Hope & Koestner 2015, JPSP</td><td class="tier est">established</td></tr>
+    <tr><td>自省 · 自责</td><td>吾日三省吾身. Three daily questions, each about an act. The tradition's self-examination is aimed at conduct, not at worth.</td><td>Analects 1.4</td><td class="tier txt">text</td></tr>
+    <tr><td>the fourth rung</td><td>从心所欲，不逾矩. The square stays. The heart stops colliding with it.</td><td>Analects 2.4</td><td class="tier txt">text</td></tr>
+    <tr><td>the weights</td><td>40 · 30 · 15 · 15, 55 · 25 · 20, the 55/45 split, and 35 · 25 · 20 · 20 for the converter are a first setting. Nothing here fixes them.</td><td>this instrument</td><td class="tier mod">to be tuned</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ OPEN ============ -->
+<section class="scene" id="open">
+  <p class="mono">open</p>
+  <h2>Seven questions the placements can answer.</h2>
+  <ol class="open">
+    <li><span>Is the converter louder than the door? If the remainder after the converter is near zero on pure forms, the knot is self-judgment, and no amount of refusing outside structure touches it.</span></li>
+    <li><span>Which dimension does the remainder key on? If it stays large whenever <i>author</i> is "someone else," even for pure forms, a second knot is running: authorship. Two knots need two different reps.</span></li>
+    <li><span>Does grain alone move your alarm? Same structure, "this week" versus "Tuesday at three." If the gap drops with rough grain, that is the cheapest lever you have, and it costs the other person nothing.</span></li>
+    <li><span>Does authoring neutralize a proposal? Take one structure someone proposed, restate its terms in your words, set the exit, and place it twice: as proposed, as restated. The distance between the two dots is the size of the authorship lever.</span></li>
+    <li><span>Where do the thrown-out structures cluster? If they sit in the mold quadrant, the throwing was correct sorting. If some sit on the form side, the throwing was the flat line, and those are the first to serve again, small.</span></li>
+    <li><span>Is the inner mold heavier than the outer ones? Place your own standards and your cold-turkey rules. If they score copy-high and author-mine, the second rung is still occupied.</span></li>
+    <li><span>What does rung four look like for you? Not a rule you keep. A form you'd choose again every morning if asked. Name one. That is the seed of the bed.</span></li>
+    <li><span>Which falls first in the examiner, the level or the seconds? If the seconds fall while the level stays, the second voice is getting faster but the first is unchanged: keep going, the first follows. If the level falls first, the seat has already moved and the reps are confirming it.</span></li>
+  </ol>
+  <p class="test">Set the converter once. Place five: two you kept, two you threw out, one of your own rules. Log the next five misses in the examiner. If the remainder is near zero on forms and the examiner's level falls, the knot is self-judgment and it is already moving. If the remainder is large on forms set by others, there is a third layer, and it has a name.</p>
+</section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+  function sv(tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); }
+
+  /* ================= 1 THE DOOR ================= */
+  var doorItems = document.getElementById('doorItems');
+  var ring = document.getElementById('alarmRing'), alarmText = document.getElementById('alarmText');
+  var cForms = document.getElementById('cForms'), cCopies = document.getElementById('cCopies'), cAlarms = document.getElementById('cAlarms'), cSpent = document.getElementById('cSpent');
+  var sorted = false, items = [], counts = { forms: 0, copies: 0, alarms: 0, spent: 0 }, ringTimer = null, running = false;
+  function makeItem(type) {
+    var g = sv('g', {});
+    if (type === 'form') { g.appendChild(sv('rect', { x: -11, y: -11, width: 22, height: 22, 'class': 'fms' })); }
+    else {
+      g.appendChild(sv('rect', { x: -11, y: -11, width: 22, height: 22, 'class': 'cpf' }));
+      g.appendChild(sv('circle', { cx: 0, cy: -4, r: 3, style: 'fill:var(--paper-2);stroke:none' }));
+      g.appendChild(sv('rect', { x: -4.5, y: 0.5, width: 9, height: 8, rx: 2, style: 'fill:var(--paper-2);stroke:none' }));
+    }
+    g.setAttribute('transform', 'translate(10,150)');
+    doorItems.appendChild(g);
+    return { el: g, type: type, x: 10, y: 150 - 40 + Math.random() * 80 };
+  }
+  function fire(size) {
+    var r = 6 + 52 * size;
+    ring.setAttribute('r', r); ring.style.opacity = size > 0.15 ? '0.95' : '0.25';
+    alarmText.textContent = size > 0.85 ? 'FULL' : (size > 0.15 ? 'sized' : 'quiet');
+    alarmText.setAttribute('class', size > 0.85 ? 'cp' : (size > 0.15 ? 'fm' : ''));
+    clearTimeout(ringTimer);
+    ringTimer = setTimeout(function () { ring.setAttribute('r', 6); ring.style.opacity = '0.25'; alarmText.textContent = 'resting'; alarmText.setAttribute('class', ''); }, 420);
+  }
+  function arrive(it) {
+    if (it.type === 'form') counts.forms++; else counts.copies++;
+    var size = sorted ? (it.type === 'form' ? 0.08 : 1) : 1;
+    if (size > 0.85) counts.alarms++;
+    counts.spent += Math.round(size * 10);
+    fire(size);
+    cForms.textContent = counts.forms; cCopies.textContent = counts.copies; cAlarms.textContent = counts.alarms; cSpent.textContent = counts.spent;
+  }
+  var last = null;
+  function step(ts) {
+    if (!items.length) { running = false; return; }
+    if (last == null) last = ts;
+    var dt = Math.min(50, ts - last); last = ts;
+    var speed = reduce ? 1.2 : 0.22;
+    items = items.filter(function (it) {
+      it.x += speed * dt;
+      var yy = 150 + (it.y - 150) * Math.max(0, 1 - it.x / 360);
+      it.el.setAttribute('transform', 'translate(' + it.x.toFixed(1) + ',' + yy.toFixed(1) + ')');
+      if (it.x >= 372) { arrive(it); doorItems.removeChild(it.el); return false; }
+      return true;
+    });
+    requestAnimationFrame(step);
+  }
+  function send(type) { items.push(makeItem(type)); if (!running) { running = true; last = null; requestAnimationFrame(step); } }
+  document.getElementById('sendForm').addEventListener('click', function () { send('form'); });
+  document.getElementById('sendCopy').addEventListener('click', function () { send('copy'); });
+  document.getElementById('sendMix').addEventListener('click', function () {
+    var seq = ['form', 'form', 'copy', 'form', 'form', 'form', 'copy', 'form', 'form', 'copy'];
+    seq.forEach(function (t, i) { setTimeout(function () { send(t); }, i * 260); });
+  });
+  var dNow = document.getElementById('doorNow'), dSorted = document.getElementById('doorSorted');
+  dNow.addEventListener('click', function () { sorted = false; dNow.setAttribute('aria-pressed', 'true'); dSorted.setAttribute('aria-pressed', 'false'); });
+  dSorted.addEventListener('click', function () { sorted = true; dNow.setAttribute('aria-pressed', 'false'); dSorted.setAttribute('aria-pressed', 'true'); });
+
+  /* ================= 2 THE TASTE ================= */
+  var fusion = 100, alone = 0, bad = 0;
+  var fuseFill = document.getElementById('fuseFill'), fuseVal = document.getElementById('fuseVal'), fuseRead = document.getElementById('fuseRead');
+  var cAlone = document.getElementById('cAlone'), cBad = document.getElementById('cBad');
+  var gradPath = document.getElementById('gradPath'), gradText = document.getElementById('gradText');
+  function drawGrad() {
+    var f = fusion / 100, pts = [];
+    for (var i = 0; i <= 20; i++) { var x = i / 20; var a = Math.max(0.05, 1 - (1 - f) * Math.pow(x, 1.6)); pts.push([40 + 300 * x, 200 - 152 * a]); }
+    gradPath.setAttribute('d', pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' '));
+    gradPath.style.stroke = f > 0.66 ? 'var(--copy)' : (f > 0.33 ? 'var(--form)' : 'var(--live)');
+    gradText.textContent = f > 0.85 ? 'one volume for everything' : (f > 0.5 ? 'the line begins to drop at the form end' : (f > 0.2 ? 'two volumes. the door is sorting.' : 'sized. full for a copy, quiet for a form.'));
+  }
+  function drawFuse() {
+    fusion = Math.max(0, Math.min(100, fusion));
+    fuseFill.style.width = fusion + '%'; fuseVal.textContent = String(Math.round(fusion));
+    cAlone.textContent = alone; cBad.textContent = bad;
+    fuseRead.textContent = fusion >= 95 ? 'Fully fused. Every form tastes like correction.' : fusion >= 60 ? 'Still fused. A form alone registers, but barely.' : fusion >= 30 ? 'Loosening. Some forms pass as forms.' : fusion > 5 ? 'Mostly untied. A bad serving still sets you back two steps.' : 'Untied. Forms taste like forms. Copies still fire. That is the point.';
+    drawGrad();
+  }
+  document.getElementById('serveTogether').addEventListener('click', function () { fusion += 15; drawFuse(); });
+  document.getElementById('serveAlone').addEventListener('click', function () { fusion -= 6; alone++; drawFuse(); });
+  document.getElementById('serveBad').addEventListener('click', function () { fusion += 12; bad++; drawFuse(); });
+  document.getElementById('serveReset').addEventListener('click', function () { fusion = 100; alone = 0; bad = 0; drawFuse(); });
+  drawFuse();
+
+  /* ================= 3 THE CONVERTER ================= */
+  var marks = document.getElementById('marks'), flyer = document.getElementById('flyer'), inner = document.getElementById('innerMeasure'), outer = document.getElementById('outerMeasure');
+  var selfLabel = document.getElementById('selfLabel'), convRead = document.getElementById('convRead'), convSub = document.getElementById('convSub');
+  var innerL1 = document.getElementById('innerLabel1'), innerL2 = document.getElementById('innerLabel2'), selfCircle = document.getElementById('selfCircle');
+  var cCorr = document.getElementById('cCorr'), cWritten = document.getElementById('cWritten'), cFired = document.getElementById('cFired');
+  var bCorrect = document.getElementById('convCorrect'), bMove = document.getElementById('convMoveIn'), bForm = document.getElementById('convForm'), bReset = document.getElementById('convReset');
+  var seat = document.getElementById('seat');
+  var corr = 0, movedIn = false, fired = 0, busy = false;
+  var MARKPOS = [[-40,-30],[30,-45],[-10,-60],[45,10],[-50,20],[0,45],[40,50],[-30,55],[60,-20],[-60,-5],[15,-15],[-20,0]];
+  function fly(from, to, cls, done) {
+    var g = sv('g', {}); g.appendChild(sv('rect', { x: -9, y: -9, width: 18, height: 18, 'class': cls }));
+    flyer.appendChild(g); var t0 = null, dur = reduce ? 1 : 650;
+    function fr(ts) { if (t0 == null) t0 = ts; var p = Math.min(1, (ts - t0) / dur); var e = p < .5 ? 2*p*p : -1 + (4 - 2*p)*p; var x = from[0] + (to[0]-from[0])*e, y = from[1] + (to[1]-from[1])*e; g.setAttribute('transform', 'translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ')'); if (p < 1) requestAnimationFrame(fr); else { flyer.removeChild(g); done && done(); } }
+    requestAnimationFrame(fr);
+  }
+  function seatVal() { return parseInt(seat.value, 10) / 100; }
+  function paintSeat() {
+    var s = seatVal();
+    var innerRect = inner.querySelector('rect');
+    innerRect.setAttribute('class', s > 0.5 ? 'lvs' : 'cps');
+    innerL1.setAttribute('class', s > 0.5 ? 'lv' : 'cp'); innerL2.setAttribute('class', s > 0.5 ? 'lv' : 'cp');
+    innerL1.textContent = s > 0.5 ? 'my measure' : 'their measure';
+    innerL2.textContent = s > 0.5 ? 'of the act' : (movedIn ? 'inside' : 'outside');
+    Array.prototype.forEach.call(marks.children, function (m) { m.setAttribute('class', s > 0.5 ? 'lvs' : 'cps'); });
+    if (movedIn) { convRead.textContent = s > 0.5 ? 'the seat is yours. a miss is information about an act.' : 'the measure runs inside. any miss calls it up.'; convSub.textContent = s > 0.5 ? '自省 · examine the act' : '自责 · blame the self'; }
+  }
+  function drawCounts() { cCorr.textContent = corr; cWritten.textContent = Math.min(100, Math.round(corr / 8 * 100)) + '%'; cFired.textContent = fired; bMove.disabled = movedIn || corr < 6; }
+  bCorrect.addEventListener('click', function () {
+    if (busy || movedIn) return; busy = true;
+    var from = movedIn ? [200, 175] : [590, 88];
+    fly(from, [200, 175], 'cps', function () {
+      var p = MARKPOS[corr % MARKPOS.length];
+      marks.appendChild(sv('rect', { x: 200 + p[0] - 7, y: 175 + p[1] - 7, width: 14, height: 14, 'class': seatVal() > 0.5 ? 'lvs' : 'cps' }));
+      corr++; drawCounts(); busy = false;
+      selfLabel.textContent = corr < 3 ? 'you, early · a line written' : corr < 6 ? 'you, early · the copy is forming' : 'you · the copy is written. the measure can move in.';
+      convRead.textContent = corr < 3 ? 'a correction arrives. it is meant as help.' : corr < 6 ? 'each one also answers: what am I?' : 'enough of them, and the room is no longer needed.';
+      convSub.textContent = corr < 6 ? 'written from outside, by a measure you cannot yet doubt' : 'the measure moves inside';
+    });
+  });
+  bMove.addEventListener('click', function () {
+    if (movedIn || corr < 6) return; movedIn = true; bMove.disabled = true;
+    fly([590, 88], [200, 175], 'cps', function () { outer.style.opacity = '0.25'; inner.style.opacity = '1'; paintSeat(); selfLabel.textContent = 'you · the evaluator is inside now'; });
+  });
+  bForm.addEventListener('click', function () {
+    if (busy) return; busy = true;
+    fly([30, 175], [200, 175], 'fms', function () {
+      busy = false;
+      if (!movedIn && corr === 0) { convRead.textContent = 'a form. nothing fires. there is nothing inside to fire.'; convSub.textContent = 'the act is done or not done. that is all.'; return; }
+      var s = seatVal();
+      if (movedIn && s <= 0.5) { fired++; drawCounts(); flash(selfCircle, 'var(--copy)'); convRead.textContent = 'a form arrived holding nothing about you. the copy fired anyway.'; convSub.textContent = 'the structure holds the act. you hold the verdict.'; }
+      else if (movedIn) { flash(selfCircle, 'var(--live)'); convRead.textContent = 'a form arrived. the act is examined. "adjust." nothing else.'; convSub.textContent = 'your measure, aimed at the act'; }
+      else { flash(selfCircle, 'var(--copy)'); convRead.textContent = 'a form arrived. the marks stir, but the measure is still outside.'; convSub.textContent = 'it fires fully once it has moved in'; }
+    });
+  });
+  function flash(node, color) { var old = node.style.stroke; node.style.stroke = color; node.style.strokeWidth = '6'; setTimeout(function () { node.style.stroke = old; node.style.strokeWidth = '2'; }, 420); }
+  bReset.addEventListener('click', function () { clear(marks); clear(flyer); corr = 0; movedIn = false; fired = 0; busy = false; inner.style.opacity = '0'; outer.style.opacity = '1'; seat.value = 0; selfLabel.textContent = 'you, early · nothing written yet'; convRead.textContent = 'a correction arrives. it is meant as help.'; convSub.textContent = 'it also answers: what am I?'; drawCounts(); paintSeat(); });
+  seat.addEventListener('input', paintSeat);
+  drawCounts();
+
+  /* ================= 4 TWO CHILDHOODS ================= */
+  var modeA = document.getElementById('modeA'), modeB = document.getElementById('modeB');
+  var groundFill = document.getElementById('groundFill'), groundNum = document.getElementById('groundNum'), skillFill = document.getElementById('skillFill'), skillNum = document.getElementById('skillNum'), groundState = document.getElementById('groundState');
+  var gCorr = document.getElementById('gCorr'), gSucc = document.getElementById('gSucc'), gMiss = document.getElementById('gMiss'), groundRead = document.getElementById('groundRead'), groundSentence = document.getElementById('groundSentence');
+  var G = { mode: 'A', ground: 100, skill: 0, corr: 0, succ: 0, miss: 0, inflated: false };
+  function drawGround() {
+    var g = Math.max(0, Math.min(140, G.ground));
+    var h = 220 * Math.min(1, g / 140) * (140 / 140);
+    // scale: 100 = 157px (so there is room above for inflation up to 140 = 220px)
+    var px = 220 * (g / 140);
+    groundFill.setAttribute('height', px.toFixed(1)); groundFill.setAttribute('y', (260 - px).toFixed(1));
+    groundFill.style.fill = g < 60 ? 'var(--copy)' : (g > 105 ? 'var(--form)' : 'var(--live)');
+    groundNum.textContent = Math.round(g);
+    var sk = Math.max(0, Math.min(100, G.skill)); var sp = 220 * (sk / 140);
+    skillFill.setAttribute('height', sp.toFixed(1)); skillFill.setAttribute('y', (260 - sp).toFixed(1)); skillNum.textContent = Math.round(sk);
+    groundState.textContent = g > 105 ? 'inflated' : (g < 60 ? 'collapsing' : (g < 90 ? 'eroding' : 'steady'));
+    groundState.setAttribute('class', g > 105 ? 'fm' : (g < 60 ? 'cp' : (g < 90 ? 'cp' : 'lv')));
+    gCorr.textContent = G.corr; gSucc.textContent = G.succ; gMiss.textContent = G.miss;
+    void h;
+  }
+  function setMode(m) { G.mode = m; modeA.setAttribute('aria-pressed', String(m === 'A')); modeB.setAttribute('aria-pressed', String(m === 'B')); groundRead.textContent = m === 'A' ? 'Corrections arrive about the person. Warmth rides on them.' : 'Corrections arrive about the act. The ground is confirmed each time.'; groundSentence.textContent = ''; }
+  modeA.addEventListener('click', function () { setMode('A'); });
+  modeB.addEventListener('click', function () { setMode('B'); });
+  document.getElementById('tenCorr').addEventListener('click', function () {
+    var i = 0;
+    function one() {
+      if (i >= 10) return;
+      i++; G.corr++; G.skill += 7;
+      if (G.mode === 'A') { G.ground -= G.inflated ? 12 : 7; G.inflated = false; groundRead.textContent = 'Correction ' + G.corr + '. The act improves. The ground is charged for it.'; groundSentence.textContent = '"what is wrong with you" · learned: I am wrong'; }
+      else { groundRead.textContent = 'Correction ' + G.corr + '. The act improves. The ground is confirmed.'; groundSentence.textContent = '"you can do better, and I know you can" · learned: the act adjusts'; }
+      drawGround(); setTimeout(one, reduce ? 0 : 140);
+    }
+    one();
+  });
+  document.getElementById('oneSuccess').addEventListener('click', function () {
+    G.succ++;
+    if (G.mode === 'A') { G.ground = Math.min(140, Math.max(G.ground, 100) + 30); G.inflated = true; groundRead.textContent = 'A success. The ground inflates past steady. It is still the variable.'; groundSentence.textContent = 'worth up with the result · it will come down with the next one'; }
+    else { groundRead.textContent = 'A success. The act landed. The ground does not move, because it was never the thing being measured.'; groundSentence.textContent = 'steady · the result is about the act'; }
+    drawGround();
+  });
+  document.getElementById('missAlone').addEventListener('click', function () {
+    G.miss++;
+    if (G.mode === 'A') { G.ground -= G.inflated ? 35 : 15; G.inflated = false; groundRead.textContent = 'A miss, alone. No one is in the room. The ground drops anyway. That drop is the converter.'; groundSentence.textContent = '自责 · a debt pressed on the self, by the self'; }
+    else { groundRead.textContent = 'A miss, alone. The act is examined. The ground does not move.'; groundSentence.textContent = '自省 · a look at the act. "adjust."'; }
+    drawGround();
+  });
+  document.getElementById('groundReset').addEventListener('click', function () { G.ground = 100; G.skill = 0; G.corr = 0; G.succ = 0; G.miss = 0; G.inflated = false; groundRead.textContent = 'Nothing has arrived yet.'; groundSentence.textContent = ''; drawGround(); });
+  setMode('A'); drawGround();
+
+  /* ================= 7 THE EXAMINER ================= */
+  var exform = document.getElementById('exform'), exact = document.getElementById('exact'), exverb = document.getElementById('exverb'), exact2 = document.getElementById('exact2'), exadj = document.getElementById('exadj');
+  var exDone = document.getElementById('exDone'), exTimer = document.getElementById('exTimer'), exRead = document.getElementById('exRead'), exList = document.getElementById('exList');
+  var exLevelPath = document.getElementById('exLevelPath'), exLatPath = document.getElementById('exLatPath'), exEmpty = document.getElementById('exEmpty');
+  var EXKEY = 'counter-roll-examiner-v1', reps = [], exStart = null, exTick = null;
+  try { var r0 = JSON.parse(localStorage.getItem(EXKEY) || '[]'); if (Array.isArray(r0)) reps = r0; } catch (e) {}
+  function saveReps() { try { localStorage.setItem(EXKEY, JSON.stringify(reps)); } catch (e) {} }
+  function exLevel() { var r = exform.querySelector('input[name="exlevel"]:checked'); return r ? parseFloat(r.value) : null; }
+  function exGround() { var r = exform.querySelector('input[name="exground"]:checked'); return r ? r.value : null; }
+  function exReady() { exDone.disabled = !(exact.value.trim() && exLevel() != null && exact2.value.trim() && exadj.value.trim() && exGround()); }
+  function startTimer() { if (exStart != null) return; exStart = Date.now(); exTick = setInterval(function () { exTimer.textContent = Math.round((Date.now() - exStart) / 1000) + 's since the first sentence'; }, 500); }
+  exform.addEventListener('input', exReady);
+  exform.addEventListener('change', function (e) { if (e.target && e.target.name === 'exlevel') startTimer(); exReady(); });
+  var LEVELNAME = { '0': 'adjust', '0.4': 'should', '0.75': 'what I’m like', '1': 'what I’m worth' };
+  function drawReps() {
+    clear(exList);
+    if (!reps.length) { exList.appendChild(el('p', 'empty', 'No reps yet.')); exEmpty.style.display = ''; exLevelPath.setAttribute('d', ''); exLatPath.setAttribute('d', ''); return; }
+    exEmpty.style.display = 'none';
+    reps.slice().reverse().forEach(function (r) {
+      var row = el('div', 'item'); row.appendChild(el('span', 'name', r.act + ' → ' + r.act2 + ' / ' + r.adj));
+      row.appendChild(el('span', 'k ' + (r.level >= 0.75 ? 'k-copy' : r.level >= 0.4 ? 'k-mixed' : 'k-form'), LEVELNAME[String(r.level)] || ''));
+      row.appendChild(el('span', 'g', r.lat + 's'));
+      var b = el('button', null, 'remove'); b.type = 'button'; b.addEventListener('click', function () { reps = reps.filter(function (x) { return x.id !== r.id; }); saveReps(); drawReps(); });
+      row.appendChild(b); exList.appendChild(row);
+    });
+    var n = reps.length, maxLat = Math.max(30, Math.max.apply(null, reps.map(function (r) { return r.lat; })));
+    function xOf(i) { return n === 1 ? 200 : 40 + 320 * (i / (n - 1)); }
+    exLevelPath.setAttribute('d', reps.map(function (r, i) { return (i ? 'L' : 'M') + xOf(i).toFixed(1) + ' ' + (180 - 130 * r.level).toFixed(1); }).join(' '));
+    exLatPath.setAttribute('d', reps.map(function (r, i) { return (i ? 'L' : 'M') + xOf(i).toFixed(1) + ' ' + (180 - 130 * Math.min(1, r.lat / maxLat)).toFixed(1); }).join(' '));
+    if (n === 1) { exLevelPath.setAttribute('d', 'M196 ' + (180 - 130 * reps[0].level).toFixed(1) + ' L204 ' + (180 - 130 * reps[0].level).toFixed(1)); exLatPath.setAttribute('d', 'M196 ' + (180 - 130 * Math.min(1, reps[0].lat / maxLat)).toFixed(1) + ' L204 ' + (180 - 130 * Math.min(1, reps[0].lat / maxLat)).toFixed(1)); }
+  }
+  function exReadout(r) {
+    clear(exRead);
+    var half = Math.floor(reps.length / 2);
+    var firstHalf = reps.slice(0, half), secondHalf = reps.slice(half);
+    var mL = function (arr) { return arr.length ? arr.reduce(function (a, b) { return a + b.level; }, 0) / arr.length : null; };
+    var mT = function (arr) { return arr.length ? arr.reduce(function (a, b) { return a + b.lat; }, 0) / arr.length : null; };
+    exRead.appendChild(el('p', 'kind ' + (r.level >= 0.75 ? 'copy' : r.level >= 0.4 ? 'mixed' : 'form'), 'Second sentence in ' + r.lat + 's'));
+    exRead.appendChild(el('p', 'mono', r.act));
+    exRead.appendChild(el('p', null, 'First sentence: ' + (LEVELNAME[String(r.level)] || '') + '. Translated: ' + r.act2 + ' — ' + r.adj + '. Untouched: ' + r.ground + '.'));
+    if (reps.length >= 4 && firstHalf.length && secondHalf.length) {
+      var dl = mL(secondHalf) - mL(firstHalf), dt = mT(secondHalf) - mT(firstHalf);
+      exRead.appendChild(el('p', null, 'Across ' + reps.length + ' reps: first-sentence level ' + (dl <= -0.1 ? 'falling' : dl >= 0.1 ? 'rising' : 'flat') + ' (' + (dl >= 0 ? '+' : '') + dl.toFixed(2) + '), seconds to the second sentence ' + (dt <= -2 ? 'falling' : dt >= 2 ? 'rising' : 'flat') + ' (' + (dt >= 0 ? '+' : '') + dt.toFixed(0) + 's).'));
+    } else exRead.appendChild(el('p', null, 'Four reps show a direction.'));
+  }
+  exform.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (exDone.disabled) return;
+    var lat = exStart ? Math.round((Date.now() - exStart) / 1000) : 0;
+    var r = { id: String(Date.now()), ts: Date.now(), act: exact.value.trim(), verb: exverb.value.trim(), level: exLevel(), act2: exact2.value.trim(), adj: exadj.value.trim(), ground: exGround(), lat: lat };
+    reps.push(r); saveReps(); drawReps(); exReadout(r);
+    clearInterval(exTick); exTick = null; exStart = null; exTimer.textContent = ''; exform.reset(); exReady();
+  });
+  drawReps(); exReady();
+
+  /* ================= 5 THE ROPE ================= */
+  var pos = document.getElementById('posSlider'), ropePath = document.getElementById('ropePath');
+  var figArrow = document.getElementById('figArrow'), figHead = document.getElementById('figHead'), ropeLabel = document.getElementById('ropeLabel'), posLabel = document.getElementById('posLabel'), posSub = document.getElementById('posSub');
+  function drawRope() {
+    var v = parseInt(pos.value, 10) / 100, cx = 580, cy = 125, angle, label, sub, slack;
+    if (v < 0.5) { var t = v / 0.5; angle = Math.PI * t; label = t < 0.5 ? 'obey' : 'rebel'; sub = t < 0.5 ? 'the copy decides. you follow.' : 'the copy decides. you invert it. still tied.'; slack = 0; }
+    else { var u = (v - 0.5) / 0.5; angle = Math.PI - u * (Math.PI * 0.75); label = u < 0.5 ? 'rebel' : 'free'; sub = u < 0.5 ? 'the copy decides. you invert it. still tied.' : 'the copy is one input. you decide. rope slack.'; slack = u; }
+    var len = 48, ex = cx + Math.cos(-angle) * len, ey = cy + Math.sin(-angle) * len;
+    figArrow.setAttribute('d', 'M' + (cx + Math.cos(-angle) * 22).toFixed(1) + ' ' + (cy + Math.sin(-angle) * 22).toFixed(1) + ' L' + ex.toFixed(1) + ' ' + ey.toFixed(1));
+    var ux = Math.cos(-angle), uy = Math.sin(-angle), px = -uy, py = ux;
+    figHead.setAttribute('d', 'M' + (ex - ux * 12 + px * 7).toFixed(1) + ' ' + (ey - uy * 12 + py * 7).toFixed(1) + ' L' + (ex + ux * 2).toFixed(1) + ' ' + (ey + uy * 2).toFixed(1) + ' L' + (ex - ux * 12 - px * 7).toFixed(1) + ' ' + (ey - uy * 12 - py * 7).toFixed(1) + ' Z');
+    var sag = 70 * slack;
+    ropePath.setAttribute('d', 'M190 125 Q375 ' + (125 + sag) + ' ' + (cx - 22) + ' 125');
+    ropePath.style.strokeDasharray = slack > 0.5 ? '4 6' : '';
+    ropeLabel.textContent = slack > 0.5 ? 'slack' : 'taut'; ropeLabel.setAttribute('y', String(112 + sag / 2));
+    posLabel.textContent = label; posSub.textContent = sub;
+    var col = label === 'free' ? 'var(--live)' : (label === 'rebel' ? 'var(--copy)' : 'var(--ink)');
+    figArrow.style.stroke = col; figHead.style.fill = col;
+  }
+  pos.addEventListener('input', drawRope); drawRope();
+  var kept = document.getElementById('formsKept'), pools = document.getElementById('pools'), bed = document.getElementById('bed'), bedCh = document.getElementById('bedChannel'), arriveT = document.getElementById('arrive');
+  function drawKept() { var k = parseInt(kept.value, 10) / 100; pools.style.opacity = String(1 - k * 0.95); bed.style.opacity = String(Math.min(1, k * 1.4)); bedCh.style.strokeWidth = String(2 + 16 * k); arriveT.textContent = 'force arriving: ' + Math.round(k * 100) + '%'; }
+  kept.addEventListener('input', drawKept); drawKept();
+
+  /* ================= 5 THE SORT ================= */
+  var DIMS = [
+    { key: 'object', side: 'copy', w: 0.40, name: 'object', levels: ['an act, nothing about me', 'an act with a picture of me attached', 'a picture of who I should be'], vals: [0, 0.5, 1], move: 'Hold the act, not the person. Strip the picture of you out of it.' },
+    { key: 'miss', side: 'copy', w: 0.30, name: 'miss', levels: ['nothing, I adjust', 'a statement about me', 'their warmth changes'], vals: [0, 0.6, 1], move: 'Make a miss information. If warmth rides on it, that is the mold, not the form.' },
+    { key: 'scope', side: 'copy', w: 0.15, name: 'scope', levels: ['one act', 'several areas', 'who I am'], vals: [0, 0.5, 1], move: 'Narrow it to one act.' },
+    { key: 'reason', side: 'copy', w: 0.15, name: 'reason', levels: ['the why is visible', '"because."'], vals: [0, 1], move: 'Say what it is for, in one sentence.' },
+    { key: 'author', side: 'imp', w: 0.55, name: 'author', levels: ['I set the terms', 'someone else, I agreed', 'someone else, no agreement'], vals: [0, 0.45, 1], move: 'Restate the terms in your own words. Agree to them or counter them. Authored, it changes rung.' },
+    { key: 'exit', side: 'imp', w: 0.25, name: 'exit', levels: ['end visible', 'reopenable on ask', 'no end in sight'], vals: [0, 0.4, 1], move: 'Set the exit before you step in. A date, a count, a condition.' },
+    { key: 'grain', side: 'imp', w: 0.20, name: 'grain', levels: ['rough', 'exact'], vals: [0, 1], move: 'Make it a window, not a minute.' }
+  ];
+  var CONV = [
+    { key: 'c1', w: 0.35, name: 'sentence' }, { key: 'c2', w: 0.20, name: 'speed' }, { key: 'c3', w: 0.20, name: 'follow' }, { key: 'c4', w: 0.25, name: 'seat' }
+  ];
+  var W_COPY = 0.55, W_IMP = 0.45;
+  var form = document.getElementById('sortform'), nameEl = document.getElementById('sname'), placeBtn = document.getElementById('placeBtn');
+  var convform = document.getElementById('convform'), kread = document.getElementById('kread'), kStatus = document.getElementById('kStatus');
+  var feltEl = document.getElementById('felt'), feltVal = document.getElementById('feltVal');
+  var verdictEl = document.getElementById('verdict'), eqEl = document.getElementById('eq'), gaugeEl = document.getElementById('gauge'), profEl = document.getElementById('profile');
+  var oldG = document.getElementById('oldpts'), newG = document.getElementById('newpt'), trail = document.getElementById('trail');
+  var rebuildEl = document.getElementById('rebuild'), rbRows = document.getElementById('rbRows');
+  var listEl = document.getElementById('list'), patternEl = document.getElementById('pattern');
+  var KEY = 'counter-roll-sort-v3', KKEY = 'counter-roll-converter-v1';
+  var placed = [], convAns = null;
+  try { var s = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(s)) placed = s; } catch (e) {}
+  try { var c = JSON.parse(localStorage.getItem(KKEY) || 'null'); if (c && typeof c === 'object') convAns = c; } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(placed)); } catch (e) {} }
+  function saveConv() { try { localStorage.setItem(KKEY, JSON.stringify(convAns)); } catch (e) {} }
+
+  function readConv() {
+    var a = {}, complete = true;
+    CONV.forEach(function (d) { var r = convform.querySelector('input[name="' + d.key + '"]:checked'); if (!r) { complete = false; a[d.key] = null; } else a[d.key] = parseFloat(r.value); });
+    a.complete = complete; return a;
+  }
+  function kOf(a) { if (!a || !a.complete) return null; var k = 0; CONV.forEach(function (d) { k += d.w * a[d.key]; }); return k; }
+  function kLabel(k) { return k == null ? '' : k < 0.25 ? 'the examiner' : k < 0.5 ? 'the should' : k < 0.75 ? 'the verdict' : 'the sentence on worth'; }
+  function drawK() {
+    clear(kread);
+    var k = kOf(convAns);
+    if (k == null) { kStatus.textContent = 'not set'; kread.appendChild(el('p', null, 'Answer the four. They describe you, not a structure, so they are asked once and kept.')); return; }
+    kStatus.textContent = 'set';
+    var line = el('p', 'kv'); line.textContent = kLabel(k) + ' · ' + k.toFixed(2);
+    var eq = el('p', 'eq'); eq.innerHTML = 'converter = ' + CONV.map(function (d) { return d.w.toFixed(2) + '×' + convAns[d.key].toFixed(2); }).join(' + ') + ' = <b>' + k.toFixed(2) + '</b>';
+    var expl = el('p', null, k < 0.25 ? 'Misses arrive as information about acts. The seat is yours. The gap you feel on forms will be the structure’s, or authorship’s.' : k < 0.5 ? 'A should runs after each miss. Introjected standard, rung two, light. It will add a quarter of the remaining room to every alarm.' : k < 0.75 ? 'The miss becomes a statement about you. Rung two, heavy. On pure forms this adds most of what you feel.' : 'The miss is a sentence on worth. Every form will fire near full regardless of what it holds. Move the seat before anything else.');
+    kread.appendChild(line); kread.appendChild(eq); kread.appendChild(expl);
+  }
+  function restoreConv() { if (!convAns) return; CONV.forEach(function (d) { var v = convAns[d.key]; if (v == null) return; var r = convform.querySelector('input[name="' + d.key + '"][value="' + v + '"]'); if (r) r.checked = true; }); }
+  convform.addEventListener('change', function () { var a = readConv(); convAns = a.complete ? a : convAns; if (a.complete) saveConv(); drawK(); live(); drawPattern(); });
+
+  function readForm() {
+    var a = { name: nameEl.value.trim(), felt: parseInt(feltEl.value, 10) }, complete = !!a.name;
+    DIMS.forEach(function (d) { var r = form.querySelector('input[name="' + d.key + '"]:checked'); if (!r) { complete = false; a[d.key] = null; } else a[d.key] = parseFloat(r.value); });
+    a.complete = complete; return a;
+  }
+  function score(a, k) {
+    var copy = 0, imp = 0, parts = [];
+    DIMS.forEach(function (d) { var v = a[d.key] == null ? 0 : a[d.key]; var c = d.w * v; if (d.side === 'copy') copy += c; else imp += c; parts.push({ dim: d, v: v, c: c }); });
+    var warranted = 10 * (W_COPY * copy + W_IMP * imp);
+    var conv = k == null ? 0 : k * (10 - warranted);
+    var predicted = warranted + conv;
+    return { copy: copy, imp: imp, warranted: warranted, conv: conv, predicted: predicted, gap: a.felt - warranted, remainder: a.felt - predicted, k: k, parts: parts };
+  }
+  function verdictOf(a, sc) {
+    var r = {}, authorMine = a.author === 0, authorImposed = a.author === 1;
+    if (sc.copy < 0.35) {
+      if (authorImposed) { r.kind = 'Cage'; r.cls = 'mixed'; r.rung = 0; r.text = 'A form you never agreed to. The form may be fine. The terms aren’t yours. Author them or leave.'; }
+      else { r.kind = 'Trellis'; r.cls = 'form'; r.rung = authorMine ? 3 : 2; r.text = 'It holds a shape, not you. Keep it. The miss is where a trellis turns; watch that one dimension.'; }
+    } else if (sc.copy < 0.65) { r.kind = 'Trellis with a mold in it'; r.cls = 'mixed'; r.rung = authorMine ? 2 : 1; r.text = 'The form is usable. Something in it holds a picture of you. The profile shows which dimension. Take that out and keep the rest.'; }
+    else if (authorMine) { r.kind = 'Inner mold'; r.cls = 'copy'; r.rung = 1; r.text = 'A copy of you, held by you. Cold turkey lives here. Replace the copy with a form: not who to be, but what goes out, and when.'; }
+    else { r.kind = 'Mold'; r.cls = 'copy'; r.rung = 0; r.text = 'A copy of you, held by someone else. There is nothing in it to tune. Decline the terms.'; }
+    if (a.exit === 1) r.text += ' No end in sight. Without an exit even a trellis becomes a dam.';
+    if (sc.k != null && sc.copy < 0.35 && sc.conv > 2.5) r.text += ' Most of what you feel here is the converter, not the structure.';
+    return r;
+  }
+  function pxOf(sc) { return { cx: 50 + sc.copy * 296, cy: 34 + sc.imp * 296 }; }
+  function render(a, opts) {
+    opts = opts || {};
+    var k = kOf(convAns), sc = score(a, k);
+    clear(eqEl);
+    var l1 = el('div'); l1.innerHTML = '<span class="cp">copy-share</span> = ' + sc.parts.filter(function (p) { return p.dim.side === 'copy'; }).map(function (p) { return p.dim.w.toFixed(2) + '×' + p.v.toFixed(2); }).join(' + ') + ' = <b>' + sc.copy.toFixed(2) + '</b>';
+    var l2 = el('div'); l2.innerHTML = 'imposed-share = ' + sc.parts.filter(function (p) { return p.dim.side === 'imp'; }).map(function (p) { return p.dim.w.toFixed(2) + '×' + p.v.toFixed(2); }).join(' + ') + ' = <b>' + sc.imp.toFixed(2) + '</b>';
+    var l3 = el('div'); l3.innerHTML = 'warranted = 10 × (' + W_COPY + '×' + sc.copy.toFixed(2) + ' + ' + W_IMP + '×' + sc.imp.toFixed(2) + ') = <b>' + sc.warranted.toFixed(1) + '</b>';
+    var l4 = el('div'); l4.innerHTML = k == null ? '<span class="cp">converter</span> not set · its share is unknown' : '<span class="cp">converter</span> adds ' + k.toFixed(2) + ' × (10 − ' + sc.warranted.toFixed(1) + ') = <b>' + sc.conv.toFixed(1) + '</b>';
+    var l5 = el('div'); l5.innerHTML = 'felt = <b>' + a.felt + '</b>   remainder = ' + a.felt + ' − ' + sc.warranted.toFixed(1) + (k == null ? '' : ' − ' + sc.conv.toFixed(1)) + ' = <b class="' + (sc.remainder > 1.5 ? 'cp' : (sc.remainder < -1.5 ? 'lv' : '')) + '">' + (sc.remainder >= 0 ? '+' : '') + sc.remainder.toFixed(1) + '</b>';
+    [l1, l2, l3, l4, l5].forEach(function (x) { eqEl.appendChild(x); });
+    clear(profEl);
+    sc.parts.forEach(function (p) { var row = el('div', 'pr' + (p.dim.side === 'imp' ? ' imp' : '')); row.appendChild(el('span', null, p.dim.name)); var tr = el('div', 'track'); var fl = el('div', 'fill'); fl.style.width = (p.v * 100) + '%'; tr.appendChild(fl); row.appendChild(tr); row.appendChild(el('span', 'val', p.v.toFixed(1))); profEl.appendChild(row); });
+    if (k != null) { var row = el('div', 'pr conv'); row.appendChild(el('span', null, 'converter')); var tr = el('div', 'track'); var fl = el('div', 'fill'); fl.style.width = (k * 100) + '%'; tr.appendChild(fl); row.appendChild(tr); row.appendChild(el('span', 'val', k.toFixed(2))); profEl.appendChild(row); }
+    clear(gaugeEl);
+    var g1 = el('div', 'meterbar ink'); g1.appendChild(el('span', null, 'structure')); var t1 = el('div', 'track'); var f1 = el('div', 'fill'); f1.style.width = (sc.warranted * 10) + '%'; t1.appendChild(f1);
+    var f1b = el('div', 'fill second'); f1b.style.left = (sc.warranted * 10) + '%'; f1b.style.width = (sc.conv * 10) + '%'; t1.appendChild(f1b);
+    var mk = el('div', 'mark'); mk.style.left = (a.felt * 10) + '%'; t1.appendChild(mk);
+    g1.appendChild(t1); g1.appendChild(el('span', 'val', sc.predicted.toFixed(1))); gaugeEl.appendChild(g1);
+    var leg = el('p', 'eq'); leg.innerHTML = 'black: structure <b>' + sc.warranted.toFixed(1) + '</b> · <span class="cp">copper: your converter</span> <b>' + sc.conv.toFixed(1) + '</b> · <span class="lv">teal mark: felt</span> <b>' + a.felt + '</b>'; gaugeEl.appendChild(leg);
+    var gp = el('p', 'gap');
+    gp.textContent = !a.complete ? '' : k == null ? 'Set the converter in part two to split the alarm into layers.' : (sc.remainder > 1.5 ? 'Remainder +' + sc.remainder.toFixed(1) + '. A third layer is firing. Check author.' : (sc.remainder < -1.5 ? 'Remainder ' + sc.remainder.toFixed(1) + '. Quieter than both layers predict. Something is getting in.' : 'Remainder ' + (sc.remainder >= 0 ? '+' : '') + sc.remainder.toFixed(1) + '. Two layers explain it: the structure, and you.'));
+    gaugeEl.appendChild(gp);
+    clear(verdictEl);
+    if (!a.complete) { verdictEl.appendChild(el('p', 'kind mixed', '—')); verdictEl.appendChild(el('p', null, 'Answer the eight and the position computes here, with the arithmetic.')); clear(newG); trail.setAttribute('d', ''); return sc; }
+    var v = verdictOf(a, sc);
+    verdictEl.appendChild(el('p', 'kind ' + v.cls, v.kind));
+    verdictEl.appendChild(el('p', 'mono', a.name));
+    verdictEl.appendChild(el('p', null, v.text));
+    var lad = el('div', 'ladder');
+    [['imposed', 'their copy, outside'], ['swallowed', 'their copy, inside'], ['chosen', 'a form you endorse'], ['yours', 'form = want']].forEach(function (r, i) { var d = el('div', i === v.rung ? 'on' : ''); d.textContent = r[0]; d.appendChild(el('small', null, r[1])); lad.appendChild(d); });
+    verdictEl.appendChild(lad);
+    var hot = sc.parts.filter(function (p) { return p.v >= 0.4; }).sort(function (x, y) { return y.c - x.c; });
+    var mv = el('div', 'moves'); mv.appendChild(el('p', 'mono', 'what moves it'));
+    if (k != null && sc.conv >= 2) { var r0 = el('div', 'mv'); r0.appendChild(el('span', 'dim', 'converter −' + sc.conv.toFixed(1))); r0.appendChild(el('span', null, 'Move the seat. Grade the act, not the self. This is the biggest lever on this structure.')); mv.appendChild(r0); }
+    hot.forEach(function (p) { var r = el('div', 'mv'); r.appendChild(el('span', 'dim', p.dim.name + ' −' + p.c.toFixed(2))); r.appendChild(el('span', null, p.dim.move)); mv.appendChild(r); });
+    if (mv.children.length > 1) verdictEl.appendChild(mv);
+    clear(newG);
+    var c = pxOf(sc);
+    if (k != null && sc.conv > 0.3) newG.appendChild(sv('circle', { cx: c.cx, cy: c.cy, r: 9 + sc.conv * 4, 'class': 'halo' }));
+    newG.appendChild(sv('circle', { cx: c.cx, cy: c.cy, r: 9, 'class': 'pt ' + v.cls }));
+    var tx = sv('text', { x: c.cx + 13, y: c.cy + 4, style: 'fill:var(--ink)' }); tx.textContent = a.name; newG.appendChild(tx);
+    if (opts.from) { var f = pxOf(opts.from); trail.setAttribute('d', 'M' + f.cx + ' ' + f.cy + ' L' + c.cx + ' ' + c.cy); } else trail.setAttribute('d', '');
+    return sc;
+  }
+  function drawOld(exceptId) {
+    clear(oldG);
+    placed.forEach(function (it) { if (it.id === exceptId) return; var c = pxOf(it.sc); var g = sv('g', { 'class': 'old' }); g.appendChild(sv('circle', { cx: c.cx, cy: c.cy, r: 5, 'class': 'pt ' + it.cls })); var t = sv('text', { x: c.cx + 8, y: c.cy + 4 }); t.textContent = it.name.length > 14 ? it.name.slice(0, 13) + '…' : it.name; g.appendChild(t); oldG.appendChild(g); });
+  }
+  function recompute(it) { var k = kOf(convAns); var sc = score(it.a, k); it.sc = { copy: sc.copy, imp: sc.imp, warranted: sc.warranted, conv: sc.conv, predicted: sc.predicted, gap: sc.gap, remainder: sc.remainder }; return it; }
+  function drawList() {
+    clear(listEl);
+    if (!placed.length) { listEl.appendChild(el('p', 'empty', 'Nothing placed yet. Five placements show a pattern.')); return; }
+    placed.slice().reverse().forEach(function (it) {
+      recompute(it);
+      var row = el('div', 'item'); row.appendChild(el('span', 'name', it.name)); row.appendChild(el('span', 'k k-' + it.cls, it.kind));
+      var k = kOf(convAns);
+      row.appendChild(el('span', 'g', (k == null ? 'gap ' : 'rem ') + (((k == null ? it.sc.gap : it.sc.remainder) >= 0) ? '+' : '') + (k == null ? it.sc.gap : it.sc.remainder).toFixed(1)));
+      var b = el('button', null, 'remove'); b.type = 'button'; b.addEventListener('click', function () { placed = placed.filter(function (x) { return x.id !== it.id; }); save(); drawList(); drawOld(null); drawPattern(); });
+      row.appendChild(b); listEl.appendChild(row);
+    });
+  }
+  function mean(arr) { return arr.length ? arr.reduce(function (a, b) { return a + b; }, 0) / arr.length : null; }
+  function fmt(x) { return x == null ? '—' : (x >= 0 ? '+' : '') + x.toFixed(1); }
+  function drawPattern() {
+    clear(patternEl);
+    if (placed.length < 3) { patternEl.hidden = true; return; }
+    patternEl.hidden = false;
+    placed.forEach(recompute);
+    var k = kOf(convAns);
+    var val = function (p) { return k == null ? p.sc.gap : p.sc.remainder; };
+    var forms = placed.filter(function (p) { return p.a.object === 0; });
+    var gapForms = mean(forms.map(function (p) { return p.sc.gap; }));
+    var remForms = mean(forms.map(function (p) { return p.sc.remainder; }));
+    var byMine = mean(placed.filter(function (p) { return p.a.author === 0; }).map(val));
+    var byOther = mean(placed.filter(function (p) { return p.a.author > 0; }).map(val));
+    var byRough = mean(placed.filter(function (p) { return p.a.grain === 0; }).map(val));
+    var byExact = mean(placed.filter(function (p) { return p.a.grain === 1; }).map(val));
+    var big;
+    if (k == null) big = gapForms == null ? 'No pure form placed yet. Place one to measure the flat line.' : gapForms > 1.5 ? 'Forms fire above what they warrant: the flat line, measured. Set the converter to see how much of it is you.' : 'Forms are sized on these placements.';
+    else if (gapForms == null) big = 'No pure form placed yet. Place one to measure the flat line.';
+    else if (gapForms <= 1.5) big = 'Forms are sized. The alarm is not the knot on these placements.';
+    else if (remForms != null && Math.abs(remForms) <= 1.5) big = 'The converter explains the gap on forms. The knot is self-judgment, measured. The seat is the first move.';
+    else if (byOther != null && byMine != null && byOther - byMine > 1.5) big = 'After the converter, a remainder stays, and it rides on who set the terms. Two knots: self-judgment and authorship.';
+    else big = 'A remainder stays after the converter and does not follow authorship. Look at grain and exit in the rows.';
+    patternEl.appendChild(el('p', 'mono', 'pattern across ' + placed.length + ' placements'));
+    patternEl.appendChild(el('p', 'big', big));
+    var rows = el('div', 'rows');
+    [['mean gap on forms, before the converter', gapForms], ['mean remainder on forms, after the converter', k == null ? null : remForms], [(k == null ? 'gap' : 'remainder') + ', terms mine', byMine], [(k == null ? 'gap' : 'remainder') + ', terms theirs', byOther], [(k == null ? 'gap' : 'remainder') + ', rough grain', byRough], [(k == null ? 'gap' : 'remainder') + ', exact grain', byExact]].forEach(function (r) { var d = el('div'); d.innerHTML = r[0] + ' <b>' + fmt(r[1]) + '</b>'; rows.appendChild(d); });
+    patternEl.appendChild(rows);
+  }
+  function live() { var a = readForm(); placeBtn.disabled = !a.complete; feltVal.textContent = feltEl.value; render(a); drawOld(null); rebuildEl.hidden = true; }
+  form.addEventListener('input', live); form.addEventListener('change', live);
+  document.getElementById('clearBtn').addEventListener('click', function () { form.reset(); feltEl.value = 5; live(); });
+  function showRebuild(it) {
+    rebuildEl.hidden = false; clear(rbRows);
+    var cur = JSON.parse(JSON.stringify(it.a));
+    DIMS.forEach(function (d) {
+      var row = el('div', 'rb'); row.appendChild(el('span', 'dim', d.name)); var chips = el('div', 'chips');
+      d.levels.forEach(function (lv, i) { var b = el('button', 'chip', lv); b.type = 'button'; b.setAttribute('aria-pressed', String(cur[d.key] === d.vals[i])); b.addEventListener('click', function () { cur[d.key] = d.vals[i]; Array.prototype.forEach.call(chips.children, function (c, j) { c.setAttribute('aria-pressed', String(j === i)); }); cur.complete = true; render(cur, { from: it.sc }); }); chips.appendChild(b); });
+      row.appendChild(chips); rbRows.appendChild(row);
+    });
+    render(cur, { from: null });
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = readForm(); if (!a.complete) return;
+    var k = kOf(convAns), sc = score(a, k), v = verdictOf(a, sc);
+    var it = { id: String(Date.now()), name: a.name, a: a, sc: { copy: sc.copy, imp: sc.imp, warranted: sc.warranted, conv: sc.conv, predicted: sc.predicted, gap: sc.gap, remainder: sc.remainder }, kind: v.kind, cls: v.cls };
+    placed.push(it); save();
+    render(a); drawOld(it.id); drawList(); drawPattern(); showRebuild(it);
+    form.reset(); feltEl.value = 5; feltVal.textContent = '5'; placeBtn.disabled = true;
+    rebuildEl.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+  });
+  restoreConv(); drawK(); live(); drawOld(null); drawList(); drawPattern();
+})();
+</script>
