@@ -50,16 +50,19 @@
 
   <div class="step"><div class="num">2</div><div>
     <h3>Unzip the app</h3>
-    <p>Double-click <code>counter-roll-phase-one.zip</code>. On Windows, right-click it and choose <b>Extract All</b>. You get a folder called <b>counter-roll</b>. Move it somewhere easy, such as your Desktop.</p>
-  </div></div>
+    <p>Double-click <code>counter-roll-phase-one.zip</code>. On Windows, right-click it and choose <b>Extract All</b>, then <b>Extract</b>. Move the result somewhere easy, such as your Desktop.</p>
+    <div class="tip"><b>A folder inside a folder is normal.</b> Windows makes a folder called <b>counter-roll-phase-one</b>, and the folder <b>counter-roll</b> is inside it. Open folders until you see a file named <b>package.json</b> next to a folder named <b>src</b> and a file named <b>README.md</b>. Windows may hide the ending and show just <b>package</b>. That is the right place. Every command below must be typed there.</div>
+    </div></div>
 
   <div class="step"><div class="num">3</div><div>
     <h3>Open a terminal inside that folder</h3>
-    <p>A terminal is a window where you type short commands. You only need three of them.</p>
+    <p>A terminal is a window where you type short commands. You only need three of them. It must be opened <b>inside</b> the folder from step 2, the one that holds <b>package.json</b>.</p>
     <div class="os">
-      <div class="win"><b>Windows</b>Open the <b>counter-roll</b> folder. Click the address bar at the top of the window. Type <code>cmd</code> and press Enter. A black window opens.</div>
-      <div><b>Mac</b>Open the <b>Terminal</b> app: press Command and Space, type Terminal, press Enter. Type <code>cd</code> and a space. Drag the <b>counter-roll</b> folder from Finder into the Terminal window. Press Enter.</div>
+      <div class="win"><b>Windows</b>In File Explorer, open the folder that holds <b>package.json</b>. Click the address bar at the top of the window. Type <code>cmd</code> and press Enter. A black window opens.</div>
+      <div><b>Mac</b>Open the <b>Terminal</b> app: press Command and Space, type Terminal, press Enter. Type <code>cd</code> and a space. Drag the folder that holds <b>package.json</b> from Finder into the Terminal window. Press Enter.</div>
     </div>
+    <p><b>Check that you are in the right place.</b> The last line in the black window should end with the folder name, for example <code>C:\Users\you\Desktop\counter-roll&gt;</code>. If it shows only <code>C:\&gt;</code> or only your user name, you are in the wrong place. Close the window and try again.</p>
+    <p>Another way on Windows: type <code>cd</code> and a space in the black window, drag the folder from File Explorer into the black window, and press Enter.</p>
   </div></div>
 
   <div class="step"><div class="num">4</div><div>
@@ -113,6 +116,8 @@
 
   <h2>If something goes wrong</h2>
   <dl>
+    <dt>"Could not read package.json", or "ENOENT", or "no such file"</dt>
+    <dd>The black window is not inside the app's folder. It usually shows <code>C:\&gt;</code>. Close it. In File Explorer, open folders until you see <b>package.json</b> next to <b>src</b>. Click the address bar, type <code>cmd</code>, press Enter. Then type the command again.</dd>
     <dt>"npm" or "node" is not recognized, or command not found</dt>
     <dd>Node is not installed yet, or the terminal was opened before you installed it. Install it (step 1), then open a new terminal.</dd>
     <dt>It says you need Node.js 22 or newer</dt>
