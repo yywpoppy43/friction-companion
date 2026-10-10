@@ -31,7 +31,7 @@ cp .env.example .env.local     # set OWNER_PASSCODE and AUTH_SECRET
 npm run dev                    # http://localhost:3000
 ```
 
-The database defaults to a SQLite file at `data/local.db`, created and migrated on first request.
+The database defaults to a SQLite file at `data/local.db`, created and migrated on first request. Locally it uses the SQLite built into Node.js (22.16 or newer), so nothing native is installed and it runs on every platform, Windows on ARM included. Only a hosted `libsql://` URL loads the libsql client.
 
 ```sh
 npm test            # model tests (node --test)

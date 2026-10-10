@@ -20,8 +20,11 @@ process.chdir(root);
 const say = (s = '') => console.log(s);
 const stop = (msg) => { console.error(`\n${msg}\n`); process.exit(1); };
 
-const major = Number(process.versions.node.split('.')[0]);
-if (major < 22) stop(`This needs Node.js 22 or newer. You have ${process.versions.node}.\nInstall the current LTS version from https://nodejs.org, open a new terminal window, and run this again.`);
+const [major = 0, minor = 0] = process.versions.node.split('.').map(Number);
+if (major < 22 || (major === 22 && minor < 16)) stop(`This needs Node.js 22.16 or newer. You have ${process.versions.node}.\nInstall the current LTS version from https://nodejs.org, open a new terminal window, and run this again.`);
+
+// Node's built-in database prints an "experimental" notice. It is harmless, so keep the window quiet.
+const childEnv = { ...process.env, NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ''} --disable-warning=ExperimentalWarning`.trim() };
 
 const nextBin = path.join(root, 'node_modules', 'next', 'dist', 'bin', 'next');
 if (!fs.existsSync(nextBin)) stop('The app\'s parts are not installed yet.\nType   npm install   and press Enter. When it finishes, run this again.');
@@ -47,7 +50,7 @@ if (!env.OWNER_PASSCODE || !env.AUTH_SECRET) stop('.env.local is missing OWNER_P
 if (process.argv.includes('--rebuild') || !fs.existsSync(path.join(root, '.next', 'BUILD_ID'))) {
   say('Building the app. The first time takes a minute or two and needs an internet connection (for the fonts).');
   say();
-  const built = spawnSync(process.execPath, [nextBin, 'build'], { stdio: 'inherit', cwd: root });
+  const built = spawnSync(process.execPath, [nextBin, 'build'], { stdio: 'inherit', cwd: root, env: childEnv });
   if (built.status !== 0) stop('The build did not finish. If the lines above mention fonts or a network error, check your internet connection and run this again.');
 }
 
@@ -62,5 +65,5 @@ say('  To stop it, press Ctrl+C or close this window.');
 say('└──────────────────────────────────────────────────────────┘');
 say();
 
-const child = spawn(process.execPath, [nextBin, 'start', '-p', port], { stdio: 'inherit', cwd: root });
+const child = spawn(process.execPath, [nextBin, 'start', '-p', port], { stdio: 'inherit', cwd: root, env: childEnv });
 child.on('exit', (code) => process.exit(code ?? 0));
